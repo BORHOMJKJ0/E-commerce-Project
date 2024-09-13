@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Rules;
+
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
+use function Laravel\Prompts\password;
+
+class EmailAddress implements ValidationRule
+{
+    /**
+     * Run the validation rule.
+     *
+     * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
+     */
+    public function validate(string $attribute, mixed $value, Closure $fail): void
+    {
+        if(!$this->passes($attribute, $value)) {
+            $fail($attribute.' is not a valid email address, it must be end with a @gmail.com');
+        }
+    }
+
+    protected function passes(mixed $attribute, mixed $value): bool{
+        return str_ends_with($value, '@gmail.com');
+    }
+
+}
