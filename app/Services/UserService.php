@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Repositories\UserRepository;
 use App\Traits\ValidationTrait;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -78,10 +79,14 @@ class UserService
         return response()->json($message, 200);
     }
 
-    public function profile(): JsonResponse
+    public function profile(Request $request): JsonResponse
     {
-        $user_id = auth()->user()->id;
-        $user = $this->userRepository->findById($user_id);
+        $validationResponse = $this->validateRequest($request, ['user_id' => 'required|exists:users,id|integer']);
+        if ($validationResponse) {
+            return $validationResponse;
+        }
+        
+        $user = $this->userRepository->findById($request->user_id);
 
         return response()->json($user);
     }

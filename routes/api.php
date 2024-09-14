@@ -30,7 +30,7 @@ Route::group(['middleware' => 'api', 'prefix' => 'users'], function () {
     Route::post('register', [UserController::class, 'register']);
     Route::post('login', [UserController::class, 'login'])->middleware('verified');
     Route::post('logout', [UserController::class, 'logout']);
-    Route::get('profile', [UserController::class, 'profile'])->middleware('verified.email');
+    Route::get('profile', [UserController::class, 'profile']);
     Route::put('updateUser', [UserController::class, 'updateUser']);
     Route::get('email-verification', [EmailVerificationController::class, 'sendEmailVerification']);
     Route::post('email-verification', [EmailVerificationController::class, 'email_verification']);

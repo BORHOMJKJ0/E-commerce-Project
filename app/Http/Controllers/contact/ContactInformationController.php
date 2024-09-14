@@ -22,9 +22,9 @@ class ContactInformationController extends Controller
         return $this->contact_informationService->addContact($request);
     }
 
-    public function show()
+    public function show(Request $request)
     {
-        return $this->contact_informationService->show();
+        return $this->contact_informationService->show($request);
     }
 
     public function delete_certain_contact(Request $request)

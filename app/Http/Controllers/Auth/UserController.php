@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Repositories\UserRepository;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -33,9 +34,9 @@ class UserController extends Controller
         return $this->UserService->login($request);
     }
 
-    public function profile(): JsonResponse
+    public function profile(Request $request): JsonResponse
     {
-        return $this->UserService->profile();
+        return $this->UserService->profile($request);
     }
 
     public function logout(): JsonResponse
