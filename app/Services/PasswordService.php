@@ -14,14 +14,18 @@ use Illuminate\Support\Facades\Hash;
 class PasswordService
 {
     use ValidationTrait;
+
     protected $userRepository;
-    public function __construct(){
-        $this->userRepository = new UserRepository();
+
+    public function __construct()
+    {
+        $this->userRepository = new UserRepository;
     }
+
     public function forgetPassword(ForgetPasswordRequest $request): JsonResponse
     {
-        $validationResponse = $this->validateRequest($request,$request->rules());
-        if($validationResponse){
+        $validationResponse = $this->validateRequest($request, $request->rules());
+        if ($validationResponse) {
             return $validationResponse;
         }
 
@@ -30,28 +34,28 @@ class PasswordService
 
         ForgetPasswordJob::dispatch($user);
         $success['success'] = true;
+
         return response()->json($success, 200);
     }
 
-
     public function resetPassword(ResetPasswordRequest $request): JsonResponse
     {
-        $validationResponse = $this->validateRequest($request,$request->rules());
+        $validationResponse = $this->validateRequest($request, $request->rules());
 
-        if($validationResponse){
+        if ($validationResponse) {
             return $validationResponse;
         }
 
         $otp2 = $this->otp->validate($request->email, $request->otp);
 
-        if (!$otp2->status) {
+        if (! $otp2->status) {
             return response()->json(['error' => $otp2], 401);
         }
         $user = User::where('email', $request->email)->first();
 
-        $this->userRepository->update($user,['password' => Hash::make($request->password)]);
+        $this->userRepository->update($user, ['password' => Hash::make($request->password)]);
 
-//        $user->tokens()->delete();
+        //        $user->tokens()->delete();
         $success['success'] = true;
 
         return response()->json(['success' => $success], 200);

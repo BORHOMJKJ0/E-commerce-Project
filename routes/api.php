@@ -1,12 +1,12 @@
 <?php
 
+use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\ForgetPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\contact\ContactInformationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\UserController;
-use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\Auth\EmailVerificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,17 +19,16 @@ use App\Http\Controllers\Auth\EmailVerificationController;
 |
 */
 
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('password/forget-password',[ForgetPasswordController::class,'forgetPassword']);
-Route::post('password/reset',[ResetPasswordController::class,'resetPassword']);
+Route::post('password/forget-password', [ForgetPasswordController::class, 'forgetPassword']);
+Route::post('password/reset', [ResetPasswordController::class, 'resetPassword']);
 
 Route::group(['middleware' => 'api', 'prefix' => 'users'], function () {
     Route::post('register', [UserController::class, 'register']);
-    Route::post('login', [UserController::class, 'login']);
+    Route::post('login', [UserController::class, 'login'])->middleware('verified');
     Route::post('logout', [UserController::class, 'logout']);
     Route::get('profile', [UserController::class, 'profile'])->middleware('verified.email');
     Route::put('updateUser', [UserController::class, 'updateUser']);

@@ -2,8 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Events\VerifyEmailByCode;
-use App\Mail\SendActiveCode;
 use App\Models\User;
 use App\Notifications\EmailVerificationNotification;
 use Illuminate\Bus\Queueable;
@@ -11,13 +9,13 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Mail;
 
 class EmailVerificationJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $user;
+
     /**
      * Create a new job instance.
      */
@@ -31,6 +29,6 @@ class EmailVerificationJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $this->user->notify(new EmailVerificationNotification());
+        $this->user->notify(new EmailVerificationNotification);
     }
 }

@@ -23,10 +23,11 @@ class ContactRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'link'=>'required|string',
-            'contact_type_id'=>'required|integer'
+            'link' => 'required|string',
+            'contact_type_id' => 'required|integer',
         ];
     }
+
     public function failedValidation(Validator $validator)
     {
         response()->json([

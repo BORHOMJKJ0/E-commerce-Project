@@ -5,7 +5,6 @@ namespace App\Http\Requests\Auth;
 use App\Rules\EmailAddress;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 class ForgetPasswordRequest extends FormRequest
 {
@@ -25,9 +24,10 @@ class ForgetPasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email'=>['required','email','exists:users,email',new EmailAddress]
+            'email' => ['required', 'email', 'exists:users,email', new EmailAddress],
         ];
     }
+
     public function failedValidation(Validator $validator)
     {
         response()->json([

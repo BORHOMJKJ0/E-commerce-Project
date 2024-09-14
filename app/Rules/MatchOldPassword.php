@@ -17,7 +17,7 @@ class MatchOldPassword implements ValidationRule
     {
         $user = auth()->user();
         $password = $user->password;
-        if(!Hash::check($value, $password)) {
+        if (! Hash::check($value, $password)) {
             $fail("$attribute is not a valid password");
         }
     }

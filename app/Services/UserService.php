@@ -6,19 +6,18 @@ use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\UpdateUserRequest;
-use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Traits\ValidationTrait;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
     use ValidationTrait;
+
     protected $EmailVerificationController;
+
     protected $userRepository;
 
     public function __construct(EmailVerificationController $EmailVerificationController, UserRepository $userRepository)
@@ -27,10 +26,10 @@ class UserService
         $this->userRepository = $userRepository;
     }
 
-    public function register(RegisterRequest $request):JsonResponse
+    public function register(RegisterRequest $request): JsonResponse
     {
-        $validationResponse = $this->validateRequest($request,$request->rules());
-        if($validationResponse){
+        $validationResponse = $this->validateRequest($request, $request->rules());
+        if ($validationResponse) {
             return $validationResponse;
         }
 
@@ -38,13 +37,12 @@ class UserService
 
         $credentials = $request->only('email', 'password');
 
-        if (!$token = Auth::guard('api')->attempt($credentials)) {
+        if (! $token = Auth::guard('api')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
         $message = [
             'Email_message' => 'The activation code has been sent to your email',
-            'need_verified_at' => auth()->user()->email_verified_at == null,
             'token' => $token,
             'token_type' => 'bearer',
         ];
@@ -57,15 +55,15 @@ class UserService
 
     public function login(LoginRequest $request): JsonResponse
     {
-        $validationResponse = $this->validateRequest($request,$request->rules());
+        $validationResponse = $this->validateRequest($request, $request->rules());
 
-        if($validationResponse){
+        if ($validationResponse) {
             return $validationResponse;
         }
 
         $credentials = $request->only('email', 'password');
 
-        if (!$token = Auth::guard('api')->attempt($credentials)) {
+        if (! $token = Auth::guard('api')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -76,6 +74,7 @@ class UserService
     {
         auth()->logout();
         $message = ['message' => 'Successfully logged out'];
+
         return response()->json($message, 200);
     }
 
@@ -83,6 +82,7 @@ class UserService
     {
         $user_id = auth()->user()->id;
         $user = $this->userRepository->findById($user_id);
+
         return response()->json($user);
     }
 
@@ -97,8 +97,8 @@ class UserService
 
     public function updateUser(UpdateUserRequest $request): JsonResponse
     {
-        $validationResponse = $this->validateRequest($request,$request->rules());
-        if($validationResponse){
+        $validationResponse = $this->validateRequest($request, $request->rules());
+        if ($validationResponse) {
             return $validationResponse;
         }
 

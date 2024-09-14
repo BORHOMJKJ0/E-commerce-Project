@@ -2,11 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Http\Response;
-//use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Validation\Validator;
+//use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 
 class EmailVerificationRequest extends FormRequest
 {
@@ -26,9 +24,10 @@ class EmailVerificationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'otp'=>'required|numeric|digits:6',
+            'otp' => 'required|numeric|digits:6',
         ];
     }
+
     public function failedValidation(Validator $validator)
     {
         response()->json([

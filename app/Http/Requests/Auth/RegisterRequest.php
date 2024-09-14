@@ -2,14 +2,9 @@
 
 namespace App\Http\Requests\Auth;
 
-use App\Rules\CheckEmail;
 use App\Rules\EmailAddress;
-use App\Traits\failedValidationTrait;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Js;
 
 class RegisterRequest extends FormRequest
 {
@@ -31,10 +26,10 @@ class RegisterRequest extends FormRequest
 
         return [
             'name' => 'required|string|max:255',
-            'email'=>['required', 'string', 'email', 'max:255', 'unique:users,email',new EmailAddress],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email', new EmailAddress],
             'password' => 'required|string|min:8|confirmed',
-            'gender'=>'required|in:male,female',
-            'mobile'=>'required|string|size:10|unique:users,mobile',
+            'gender' => 'required|in:male,female',
+            'mobile' => 'required|string|size:10|unique:users,mobile',
         ];
     }
 
@@ -46,24 +41,24 @@ class RegisterRequest extends FormRequest
         ], 400);
     }
 
-//    public function attributes(): array{
-//        return [
-//            'name'=>__('main.name'),
-//            'email'=>__('main.email'),
-//            'mobile'=>__('main.mobile'),
-//            'password'=>__('main.password'),
-//            'password_confirmation'=>__('password_confirmation')
-//        ];
-//    }
+    //    public function attributes(): array{
+    //        return [
+    //            'name'=>__('main.name'),
+    //            'email'=>__('main.email'),
+    //            'mobile'=>__('main.mobile'),
+    //            'password'=>__('main.password'),
+    //            'password_confirmation'=>__('password_confirmation')
+    //        ];
+    //    }
 
-      public function attributes(): array{
-        return[
-            'name'=>'Name',
-            'email'=>'Email',
-            'password'=>'Password',
-            'gender'=>'Gender',
-            'mobile'=>'Mobile',
+    public function attributes(): array
+    {
+        return [
+            'name' => 'Name',
+            'email' => 'Email',
+            'password' => 'Password',
+            'gender' => 'Gender',
+            'mobile' => 'Mobile',
         ];
-      }
-
+    }
 }

@@ -5,10 +5,9 @@ namespace App\Http\Requests;
 use App\Rules\MatchOldPassword;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Hash;
+
 class UpdateUserRequest extends FormRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -26,8 +25,8 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'mobile'=>'required|string|size:10',
-            'old_password' =>['required' ,'string', new MatchOldPassword],
+            'mobile' => 'required|string|size:10',
+            'old_password' => ['required', 'string', new MatchOldPassword],
             'new_password' => 'required|string|min:8|confirmed',
         ];
     }

@@ -14,6 +14,7 @@ class ForgetPasswordJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $user;
+
     /**
      * Create a new job instance.
      */
@@ -27,6 +28,6 @@ class ForgetPasswordJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $this->user->notify(new ResetPasswordVerificationNotifiaction());
+        $this->user->notify(new ResetPasswordVerificationNotifiaction);
     }
 }

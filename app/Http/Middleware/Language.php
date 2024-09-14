@@ -15,9 +15,10 @@ class Language
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(in_array($request->header('lang'),['ar','en'])){
+        if (in_array($request->header('lang'), ['ar', 'en'])) {
             app()->setLocale($request->header('lang'));
         }
+
         return $next($request);
     }
 }

@@ -10,6 +10,7 @@ class contact_type extends Model
     use HasFactory;
 
     protected $table = 'contact_types';
+
     protected $fillable = ['type_english', 'type_arabic'];
 
     public function contact_information()
