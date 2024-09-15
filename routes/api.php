@@ -4,7 +4,10 @@ use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\ForgetPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\UserController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\contact\ContactInformationController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\WarehouseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +22,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::apiResource('products', ProductController::class);
+Route::apiResource('categories', CategoryController::class);
+Route::apiResource('warehouses', WarehouseController::class);
+Route::prefix('products')->controller(ProductController::class)->group(function () {
+    Route::get('/order/{column}/{direction}', 'orderBy');
+});
+Route::prefix('categories')->controller(CategoryController::class)->group(function () {
+    Route::get('/order/{column}/{direction}', 'orderBy');
+});
+Route::prefix('warehouses')->controller(WarehouseController::class)->group(function () {
+    Route::get('/order/{column}/{direction}', 'orderBy');
+});
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

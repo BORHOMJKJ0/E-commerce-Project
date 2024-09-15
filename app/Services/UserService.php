@@ -85,7 +85,7 @@ class UserService
         if ($validationResponse) {
             return $validationResponse;
         }
-        
+
         $user = $this->userRepository->findById($request->user_id);
 
         return response()->json($user);
