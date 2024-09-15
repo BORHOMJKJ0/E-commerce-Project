@@ -85,10 +85,10 @@ class UserService
         if ($validationResponse) {
             return $validationResponse;
         }
-        
-        $user = $this->userRepository->findById($request->user_id);
 
-        return response()->json($user);
+        $user = $this->userRepository->findById($request->user_id);
+        $contacts = $user->contacts()->get();
+        return response()->json(['user' => $user, 'contacts' => $contacts]);
     }
 
     public function respondWithToken($token): JsonResponse
