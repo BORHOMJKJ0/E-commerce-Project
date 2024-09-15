@@ -29,7 +29,7 @@ class EmailService
             return $validationResponse;
         }
 
-        $user = $this->userRepository->findById(auth()->user()->id);
+        $user = $this->userRepository->findByEmail($request->email);
         $otp2 = $this->otp->validate($user->email, $request->otp);
 
         if (! $otp2->status) {
@@ -41,10 +41,9 @@ class EmailService
         }
     }
 
-    public function sendEmailVerification(): \Illuminate\Http\JsonResponse
+    public function sendEmailVerification($email): \Illuminate\Http\JsonResponse
     {
-        $user_id = auth()->user()->id;
-        $user = $this->userRepository->findById($user_id);
+        $user = $this->userRepository->findByEmail($email);
 
         EmailVerificationJob::dispatch($user);
 

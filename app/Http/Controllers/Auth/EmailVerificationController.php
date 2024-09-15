@@ -5,14 +5,17 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EmailVerificationRequest;
 use App\Services\EmailService;
+use App\Traits\ValidationTrait;
+use Illuminate\Http\Request;
 
 class EmailVerificationController extends Controller
 {
+    use ValidationTrait;
+
     protected $EmailService;
 
     public function __construct()
     {
-        $this->middleware('auth:api');
         $this->EmailService = new EmailService;
     }
 
@@ -21,8 +24,14 @@ class EmailVerificationController extends Controller
         return $this->EmailService->email_verification($request);
     }
 
-    public function sendEmailVerification(): \Illuminate\Http\JsonResponse
+    public function sendEmailVerification(Request $request): \Illuminate\Http\JsonResponse
     {
-        return $this->EmailService->sendEmailVerification();
+
+        $validationResponse = $this->validateRequest($request, ['email' => 'required|email|exists:users,email']);
+        if ($validationResponse) {
+            return response()->json($validationResponse->original, 400);
+        }
+
+        return $this->EmailService->sendEmailVerification($request->email);
     }
 }

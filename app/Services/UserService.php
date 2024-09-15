@@ -43,12 +43,11 @@ class UserService
         }
 
         $message = [
+            'message' => 'The account has been created successfully',
             'Email_message' => 'The activation code has been sent to your email',
-            'token' => $token,
-            'token_type' => 'bearer',
         ];
 
-        $this->EmailVerificationController->sendEmailVerification();
+        $this->EmailVerificationController->sendEmailVerification($request);
 
         return response()->json($message);
 
@@ -87,8 +86,8 @@ class UserService
         }
 
         $user = $this->userRepository->findById($request->user_id);
-        $contacts = $user->contacts()->get();
-        return response()->json(['user' => $user, 'contacts' => $contacts]);
+
+        return response()->json($user);
     }
 
     public function respondWithToken($token): JsonResponse
