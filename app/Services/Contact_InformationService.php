@@ -34,7 +34,7 @@ class Contact_InformationService
         return response()->json([
             'message' => 'Contact information added successfully',
             'success' => true,
-        ], 200);
+        ], 201);
     }
 
     public function show(Request $request): JsonResponse

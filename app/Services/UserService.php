@@ -27,14 +27,18 @@ class UserService
         $this->userRepository = $userRepository;
     }
 
-    public function register(RegisterRequest $request): JsonResponse
+    public function show_all_users(){
+        return $this->userRepository->get_users_contacts();
+    }
+
+    public function register(RegisterRequest $request)
     {
         $validationResponse = $this->validateRequest($request, $request->rules());
         if ($validationResponse) {
             return $validationResponse;
         }
 
-        $this->userRepository->create($request->validated());
+        $user = $this->userRepository->create($request->validated());
 
         $credentials = $request->only('email', 'password');
 
@@ -42,14 +46,11 @@ class UserService
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $message = [
-            'message' => 'The account has been created successfully',
-            'Email_message' => 'The activation code has been sent to your email',
-        ];
-
         $this->EmailVerificationController->sendEmailVerification($request);
 
-        return response()->json($message);
+        $user = $this->userRepository->get_user_contact($user->id);
+
+        return response()->json($user, 201);
 
     }
 
@@ -67,13 +68,31 @@ class UserService
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        return $this->respondWithToken($token);
+        $user = $this->userRepository->findByEmail($request->email);
+
+        return response()->json([
+            'token' => $token,
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+            ],
+        ], 200);
     }
 
     public function logout(): JsonResponse
     {
+        $user = [
+            'id' => auth()->user()->id,
+            'name' => auth()->user()->name,
+            'email' => auth()->user()->email,
+        ];
+
         auth()->logout();
-        $message = ['message' => 'Successfully logged out'];
+        $message = [
+            'message' => 'Successfully logged out',
+            'user' => $user,
+        ];
 
         return response()->json($message, 200);
     }
@@ -87,7 +106,9 @@ class UserService
 
         $user = $this->userRepository->findById($request->user_id);
 
-        return response()->json($user);
+        $user = $this->userRepository->get_user_contact($request->user_id);
+
+        return response()->json($user, 200);
     }
 
     public function respondWithToken($token): JsonResponse
@@ -116,13 +137,15 @@ class UserService
         $user = $this->userRepository->findById($user_id);
         $this->userRepository->update($user, $newData);
 
+        $user = $this->userRepository->get_user_contact($user_id);
+
         $message = [
             'message' => 'Profile updated successfully',
-            'status_code' => 200,
+            'user' => $user,
             'success' => true,
         ];
 
-        return response()->json($message);
+        return response()->json($message, 200);
 
     }
 }

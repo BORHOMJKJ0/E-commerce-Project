@@ -46,6 +46,7 @@ Route::prefix('users')->group(function () {
 });
 
 Route::group(['middleware' => 'api', 'prefix' => 'users'], function () {
+    Route::get('show-all-users', [UserController::class, 'show_all_users']);
     Route::post('register', [UserController::class, 'register']);
     Route::post('login', [UserController::class, 'login'])->middleware('verified.email');
     Route::post('logout', [UserController::class, 'logout']);
