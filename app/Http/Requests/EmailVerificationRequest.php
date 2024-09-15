@@ -25,6 +25,7 @@ class EmailVerificationRequest extends FormRequest
     {
         return [
             'otp' => 'required|numeric|digits:6',
+            'email' => 'required|email|exists:users,email',
         ];
     }
 

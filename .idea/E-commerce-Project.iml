@@ -9,9 +9,20 @@
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests/Unit" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests/Feature" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laravel-lang/config" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laravel-lang/lang" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laravel-lang/locale-list" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laravel-lang/locales" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laravel-lang/native-country-names" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laravel-lang/native-currency-names" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laravel-lang/native-locale-names" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/laravel-lang/publisher" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/pint" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/prompts" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/sail" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/sanctum" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/serializable-closure" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/laravel/tinker" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/lcobucci/clock" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/lcobucci/jwt" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/league/commonmark" />

@@ -21,7 +21,7 @@ class WarehouseResource extends JsonResource
             'payment_date' => $this->payment_date,
             'settlement_date' => $this->settlement_date,
             'expiry_date' => $this->expiry_date,
-            'product' => $this->Product ? [
+            'products' => $this->Product ? [
                 'name' => $this->Product->name,
                 'price' => $this->Product->price,
                 'category' => $this->Product->Category ? $this->Product->Category->name : null,

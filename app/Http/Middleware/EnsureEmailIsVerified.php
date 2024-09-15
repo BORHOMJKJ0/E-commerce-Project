@@ -16,11 +16,7 @@ class EnsureEmailIsVerified
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (! $request->user()) {
-            $user = User::where('email', $request->eamil)->first();
-        } else {
-            $user = $request->user();
-        }
+        $user = User::where('email', $request->email)->first();
         if ($user->email_verified_at === null) {
             return response()->json(['message' => 'your email address is not verified'], 403);
         }

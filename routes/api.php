@@ -40,15 +40,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('password/forget-password', [ForgetPasswordController::class, 'forgetPassword']);
 Route::post('password/reset', [ResetPasswordController::class, 'resetPassword']);
+Route::prefix('users')->group(function () {
+    Route::get('email-verification', [EmailVerificationController::class, 'sendEmailVerification']);
+    Route::post('email-verification', [EmailVerificationController::class, 'email_verification']);
+});
 
 Route::group(['middleware' => 'api', 'prefix' => 'users'], function () {
+    Route::get('show-all-users', [UserController::class, 'show_all_users']);
     Route::post('register', [UserController::class, 'register']);
-    Route::post('login', [UserController::class, 'login'])->middleware('verified');
+    Route::post('login', [UserController::class, 'login'])->middleware('verified.email');
     Route::post('logout', [UserController::class, 'logout']);
     Route::get('profile', [UserController::class, 'profile']);
     Route::put('updateUser', [UserController::class, 'updateUser']);
-    Route::get('email-verification', [EmailVerificationController::class, 'sendEmailVerification']);
-    Route::post('email-verification', [EmailVerificationController::class, 'email_verification']);
     Route::post('contact-information', [ContactInformationController::class, 'addContact']);
     Route::get('contact-information', [ContactInformationController::class, 'show']);
     Route::delete('contact-information', [ContactInformationController::class, 'delete_certain_contact']);
