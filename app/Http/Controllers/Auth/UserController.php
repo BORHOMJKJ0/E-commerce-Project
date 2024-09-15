@@ -24,13 +24,16 @@ class UserController extends Controller
         $this->UserService = new UserService(new EmailVerificationController, new UserRepository);
     }
 
-    public function show_all_users(){
+    public function show_all_users()
+    {
         $users = $this->UserService->show_all_users();
+
         return response()->json($users);
     }
+
     public function register(RegisterRequest $request): JsonResponse
     {
-        return  $this->UserService->register($request);
+        return $this->UserService->register($request);
     }
 
     public function login(LoginRequest $request): JsonResponse

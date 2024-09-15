@@ -6,12 +6,22 @@
   <component name="ChangeListManager">
     <list default="true" id="7bf6e4e3-71b6-4b86-9d85-55328c86788d" name="Changes" comment="">
 <<<<<<< HEAD
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/.idea/E-commerce-Project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/E-commerce-Project.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Resources/WarehouseResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Resources/WarehouseResource.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Models/Product.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Product.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Repository/UserRepository.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/UserController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Repositories/UserRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Repositories/UserRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Repository/UserRepository.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Services/Contact_InformationService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/Contact_InformationService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Services/UserService.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Services/UserService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
+>>>>>>> e5802628b5a365b852fead5ef782d7ef988ec91a
 =======
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/UserController.php" afterDir="false" />
@@ -107,6 +117,9 @@
       <path value="$PROJECT_DIR$/vendor/symfony/translation" />
       <path value="$PROJECT_DIR$/vendor/symfony/translation-contracts" />
       <path value="$PROJECT_DIR$/vendor/theseer/tokenizer" />
+<<<<<<< HEAD
+>>>>>>> e5802628b5a365b852fead5ef782d7ef988ec91a
+=======
 >>>>>>> e5802628b5a365b852fead5ef782d7ef988ec91a
       <path value="$PROJECT_DIR$/vendor/doctrine/inflector" />
       <path value="$PROJECT_DIR$/vendor/doctrine/lexer" />
@@ -140,6 +153,7 @@
       <path value="$PROJECT_DIR$/vendor/guzzlehttp/uri-template" />
       <path value="$PROJECT_DIR$/vendor/archtechx/enums" />
       <path value="$PROJECT_DIR$/vendor/ichtrojan/laravel-otp" />
+<<<<<<< HEAD
 <<<<<<< HEAD
       <path value="$PROJECT_DIR$/vendor/dragon-code/support" />
       <path value="$PROJECT_DIR$/vendor/dragon-code/contracts" />
@@ -263,6 +277,19 @@
       <path value="$PROJECT_DIR$/vendor/laravel-lang/native-currency-names" />
       <path value="$PROJECT_DIR$/vendor/dragon-code/support" />
       <path value="$PROJECT_DIR$/vendor/lcobucci/clock" />
+=======
+      <path value="$PROJECT_DIR$/vendor/stella-maris/clock" />
+      <path value="$PROJECT_DIR$/vendor/laravel-lang/locale-list" />
+      <path value="$PROJECT_DIR$/vendor/laravel-lang/locales" />
+      <path value="$PROJECT_DIR$/vendor/laravel-lang/config" />
+      <path value="$PROJECT_DIR$/vendor/laravel-lang/lang" />
+      <path value="$PROJECT_DIR$/vendor/laravel-lang/native-locale-names" />
+      <path value="$PROJECT_DIR$/vendor/laravel-lang/publisher" />
+      <path value="$PROJECT_DIR$/vendor/laravel-lang/native-country-names" />
+      <path value="$PROJECT_DIR$/vendor/laravel-lang/native-currency-names" />
+      <path value="$PROJECT_DIR$/vendor/dragon-code/support" />
+      <path value="$PROJECT_DIR$/vendor/lcobucci/clock" />
+>>>>>>> e5802628b5a365b852fead5ef782d7ef988ec91a
       <path value="$PROJECT_DIR$/vendor/dragon-code/contracts" />
       <path value="$PROJECT_DIR$/vendor/dragon-code/pretty-array" />
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php81" />
@@ -280,6 +307,9 @@
       <path value="$PROJECT_DIR$/vendor/laravel/prompts" />
       <path value="$PROJECT_DIR$/vendor/laravel/sail" />
       <path value="$PROJECT_DIR$/vendor/symfony/yaml" />
+<<<<<<< HEAD
+>>>>>>> e5802628b5a365b852fead5ef782d7ef988ec91a
+=======
 >>>>>>> e5802628b5a365b852fead5ef782d7ef988ec91a
     </include_path>
   </component>
@@ -291,6 +321,7 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+<<<<<<< HEAD
 <<<<<<< HEAD
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
@@ -307,6 +338,8 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
 =======
+=======
+>>>>>>> e5802628b5a365b852fead5ef782d7ef988ec91a
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -318,6 +351,9 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+<<<<<<< HEAD
+>>>>>>> e5802628b5a365b852fead5ef782d7ef988ec91a
+=======
 >>>>>>> e5802628b5a365b852fead5ef782d7ef988ec91a
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -343,6 +379,7 @@
       <workItem from="1726340068131" duration="916000" />
       <workItem from="1726341029468" duration="614000" />
 <<<<<<< HEAD
+<<<<<<< HEAD
       <workItem from="1726348887645" duration="44000" />
       <workItem from="1726348949265" duration="47000" />
       <workItem from="1726348997174" duration="299000" />
@@ -352,6 +389,8 @@
       <workItem from="1726358702958" duration="797000" />
       <workItem from="1726388302173" duration="2264000" />
       <workItem from="1726390737956" duration="1033000" />
+=======
+>>>>>>> e5802628b5a365b852fead5ef782d7ef988ec91a
 =======
 >>>>>>> e5802628b5a365b852fead5ef782d7ef988ec91a
     </task>
@@ -371,6 +410,7 @@
       </map>
     </option>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
@@ -386,6 +426,8 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="184" y="9" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1726349612730" />
+=======
+>>>>>>> e5802628b5a365b852fead5ef782d7ef988ec91a
 =======
 >>>>>>> e5802628b5a365b852fead5ef782d7ef988ec91a
   </component>

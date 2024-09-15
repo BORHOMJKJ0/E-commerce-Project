@@ -19,11 +19,13 @@ class UserRepository
         }])->get();
     }
 
-    public function get_users_contacts(){
+    public function get_users_contacts()
+    {
         return User::select('id', 'name', 'email', 'mobile')->with(['contacts' => function ($query) {
             $query->select('id', 'user_id', 'contact_type_id');
         }])->get();
     }
+
     public function findById($id)
     {
         return User::where('id', $id)->first();

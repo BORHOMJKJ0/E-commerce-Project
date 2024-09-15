@@ -27,7 +27,8 @@ class UserService
         $this->userRepository = $userRepository;
     }
 
-    public function show_all_users(){
+    public function show_all_users()
+    {
         return $this->userRepository->get_users_contacts();
     }
 

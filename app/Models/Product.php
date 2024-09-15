@@ -22,10 +22,10 @@ class Product extends Model
         return $this->hasMany(Warehouse::class);
     }
 
-//        public function offers()
-//        {
-//            return $this->hasMany(Offer::class);
-//        }
+    //        public function offers()
+    //        {
+    //            return $this->hasMany(Offer::class);
+    //        }
 
     public function user()
     {
