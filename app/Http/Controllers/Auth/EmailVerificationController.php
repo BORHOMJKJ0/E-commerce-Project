@@ -24,14 +24,8 @@ class EmailVerificationController extends Controller
         return $this->EmailService->email_verification($request);
     }
 
-    public function sendEmailVerification(Request $request): \Illuminate\Http\JsonResponse
+    public function sendEmailVerification($email): \Illuminate\Http\JsonResponse
     {
-
-        $validationResponse = $this->validateRequest($request, ['email' => 'required|email|exists:users,email']);
-        if ($validationResponse) {
-            return response()->json($validationResponse->original, 400);
-        }
-
-        return $this->EmailService->sendEmailVerification($request->email);
+        return $this->EmailService->sendEmailVerification($email);
     }
 }

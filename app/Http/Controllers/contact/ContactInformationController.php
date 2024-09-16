@@ -17,23 +17,23 @@ class ContactInformationController extends Controller
         $this->contact_informationService = new contact_informationService;
     }
 
-    public function addContact(ContactRequest $request)
+    public function store(ContactRequest $request)
     {
         return $this->contact_informationService->addContact($request);
     }
 
-    public function show(Request $request)
+    public function show($user_id)
     {
-        return $this->contact_informationService->show($request);
+        return $this->contact_informationService->show($user_id);
     }
 
-    public function delete_certain_contact(Request $request)
+    public function destroy($contact_information_id)
     {
-        return $this->contact_informationService->delete_certain_contact($request);
+        return $this->contact_informationService->destroy($contact_information_id);
     }
 
-    public function delete_all_contact()
+    public function destroyAll()
     {
-        return $this->contact_informationService->delete_all_contact();
+        return $this->contact_informationService->destroyAll();
     }
 }
