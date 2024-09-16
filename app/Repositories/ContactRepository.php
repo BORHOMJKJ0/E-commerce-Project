@@ -16,21 +16,27 @@ class ContactRepository
 
     public function findByUserId($id)
     {
-        return DB::table('contact_informations')->where('user_id', $id)->get();
+        return DB::table('contact_informations')->where('user_id', $id)->select('id', 'link', 'user_id', 'contact_type_id')->get();
     }
 
     public function findById($id)
     {
-        return DB::table('contact_informations')->where('id', $id)->first();
+        return DB::table('contact_informations')->where('id', $id)->select('id','link', 'user_id', 'contact_type_id')->first();
     }
 
     public function deleteById($id)
     {
-        return DB::table('contact_informations')->where('id', $id)->delete();
+        $contact = $this->findById($id);
+        DB::table('contact_informations')->where('id', $id)->delete();
+
+        return $contact;
     }
 
     public function deleteByUser($user)
     {
-        return DB::table('contact_informations')->where('user_id', $user->id)->delete();
+        $contact = $this->findByUserId($user->id);
+        DB::table('contact_informations')->where('user_id', $user->id)->delete();
+
+        return $contact;
     }
 }

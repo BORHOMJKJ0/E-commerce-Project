@@ -1,1011 +1,362 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "E-commerce API",
-        "description": "API documentation for the E-commerce project",
-        "contact": {
-            "email": "support@yourapi.com"
-        },
-        "license": {
-            "name": "MIT",
-            "url": "https://opensource.org/licenses/MIT"
-        },
         "version": "1.0.0"
     },
     "paths": {
-        "/api/categories": {
-            "get": {
-                "summary": "Get all categories",
-                "operationId": "3f5817a34833d0a1f4af4548dd3aeaba",
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/CategoryResource"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            },
             "post": {
-                "summary": "Create a category",
-                "operationId": "71fcad552bb0eaba9fb191fd8d8dcab0",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "name"
                                 ],
+                                "properties": {
+                                        "type": "string",
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                                }
+                            }
+                        }
+                    },
+            "get": {
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        }
+                    }
+                },
+            "delete": {
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                            "type": "string",
+                        }
+                    },
+                                "schema": {
+                                            "type": "string",
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                        }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                        }
+                                }
+                            }
+                        }
+                    }
+            }
+        },
+            "post": {
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                ],
+                                "properties": {
+                                        "type": "string",
+                                    },
+                                        "type": "string",
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                        }
+                                    },
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                            "type": "string",
+                        }
+                    },
+                                "schema": {
+                                            "type": "string",
+                                }
+                            }
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                        }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+            "get": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                            }
+                                    }
+                                }
+                            }
+                        }
+                                        }
+                                    },
+            "post": {
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                ],
+                                "properties": {
+                                    },
+                                    },
+                                        "type": "string",
+                                    },
+                                        "type": "string",
+                                    },
+                                        "type": "string",
+                                    },
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                }
+                            }
+                        }
+                    },
+                }
+            }
+        },
+                    "required": true,
+                            "schema": {
+                        }
+                    }
+                "responses": {
+                    "200": {
+                                "schema": {
+                                        },
+                                                },
+                                                    "type": "string",
+                                        }
+                                    },
+                                "schema": {
+                                            "type": "string",
+                                        }
+                                    },
+                                "schema": {
+                                            "type": "string",
+                                        }
+                                    },
+                            }
+                        }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                                }
+                                        }
+                                    },
+                                }
+                            }
+                        }
+        },
+            "get": {
+                "parameters": [
+                    {
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                        },
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                    },
+                    },
+                    },
+                    },
+                },
                                 "properties": {
                                     "name": {
                                         "type": "string",
-                                        "example": "fruits"
+                                    },
+                                        "type": "string",
+                                    },
+                                        "type": "string",
+                                    },
+                                        "type": "string",
                                     }
                                 },
                                 "type": "object"
-                            }
-                        }
-                    }
                 },
-                "responses": {
-                    "201": {
-                        "description": "Category created successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/CategoryResource"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid input"
-                    }
-                }
-            }
-        },
-        "/api/categories/{id}": {
-            "get": {
-                "summary": "Get a category by ID",
-                "operationId": "c68e76d323c008827a9e47398b1583de",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/CategoryResource"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Category not found"
-                    }
-                }
-            },
-            "delete": {
-                "summary": "Delete a category",
-                "operationId": "4c12e22a7f8c617bd83bfa1fdc05428d",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Category deleted successfully"
-                    },
-                    "404": {
-                        "description": "Category not found"
-                    }
-                }
-            },
-            "patch": {
-                "summary": "Update a category",
-                "operationId": "676afd4a424724819de3254bd9c74e57",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "example": "Updated Category Name"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Category updated successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/CategoryResource"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Category not found"
-                    }
-                }
-            }
-        },
-        "/api/categories/order/{column}/{direction}": {
-            "get": {
-                "summary": "Order categories by a specific column",
-                "operationId": "0125b76227665b7ec385a0906854d7e9",
-                "parameters": [
-                    {
-                        "name": "column",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "name",
-                                "created_at",
-                                "updated_at"
-                            ]
-                        }
-                    },
-                    {
-                        "name": "direction",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "asc",
-                                "desc"
-                            ]
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/CategoryResource"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid column or direction"
-                    }
-                }
-            }
-        },
-        "/api/products": {
-            "get": {
-                "summary": "Get all products",
-                "operationId": "1bfaa78d1c2c3848ab8165c5dadcad3e",
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/ProductResource"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "summary": "Create a product",
-                "operationId": "e8185e307706e2cd84bbcf5171e2f09d",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "name",
-                                    "image",
-                                    "price",
-                                    "category_id",
-                                    "user_id"
-                                ],
-                                "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "example": "Sample Product"
+                                    "properties": {
+                                            "type": "string",
+                                        },
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                    },
+                                                        "type": "string",
+                                                    },
+                                                        "type": "string",
+                                                    },
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "integer",
+                                                                    "example": 1
+                                                                },
+                                                            },
+                                                },
+                                        },
                                     },
-                                    "image": {
-                                        "type": "string",
-                                        "example": "image_url.jpg"
+                    },
+                                    "properties": {
+                                            "type": "string",
+                                        },
+                                        }
                                     },
-                                    "price": {
-                                        "type": "number",
-                                        "format": "float",
-                                        "example": 50.75
+                                    "type": "object"
+                    },
+                                            "type": "string",
+                                        }
                                     },
-                                    "category_id": {
-                                        "type": "integer",
-                                        "example": 1
-                                    },
-                                    "user_id": {
-                                        "type": "integer",
-                                        "example": 1
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Warehouse created successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProductResource"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid input"
-                    }
-                }
-            }
-        },
-        "/api/products/{id}": {
-            "get": {
-                "summary": "Get a single product by ID",
-                "operationId": "7ab21ddb713501f3d4c2914892c02a21",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProductResource"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Product not found"
-                    }
-                }
-            },
-            "delete": {
-                "summary": "Delete a product",
-                "operationId": "e80a6ca46716acee6b47ea1ac91663c0",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Product deleted successfully"
-                    },
-                    "404": {
-                        "description": "Product not found"
-                    }
-                }
-            },
-            "patch": {
-                "summary": "Update a product",
-                "operationId": "f0caf1fe47821e6aad5d0c767b7476eb",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "image",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "price",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "number",
-                            "format": "float"
-                        }
-                    },
-                    {
-                        "name": "user_id",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "category_id",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Product updated successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProductResource"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Product not found"
-                    }
-                }
-            }
-        },
-        "/api/products/order/{column}/{direction}": {
-            "get": {
-                "summary": "Order products by a specific column",
-                "operationId": "ff2d0500d82dd3adf82e38ec6191bb59",
-                "parameters": [
-                    {
-                        "name": "column",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "name",
-                                "price",
-                                "created_at",
-                                "updated_at"
-                            ]
-                        }
-                    },
-                    {
-                        "name": "direction",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "asc",
-                                "desc"
-                            ]
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/ProductResource"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid column or direction"
-                    }
-                }
-            }
-        },
-        "/api/warehouses": {
-            "get": {
-                "summary": "Get all warehouses",
-                "operationId": "cab30faea02ec476b845ce791e30635b",
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/WarehouseResource"
-                                    }
+                                    "type": "object"
                                 }
                             }
                         }
                     }
-                }
-            },
-            "post": {
-                "summary": "Create a warehouse",
-                "operationId": "35cb07849f875859a84a1c37f93e8294",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "amount",
-                                    "pure_price",
-                                    "payment_date",
-                                    "settlement_date",
-                                    "expiry_date",
-                                    "product_id"
-                                ],
-                                "properties": {
-                                    "amount": {
-                                        "type": "number",
-                                        "example": 100
-                                    },
-                                    "pure_price": {
-                                        "type": "number",
-                                        "example": 50.75
-                                    },
-                                    "payment_date": {
-                                        "type": "string",
-                                        "format": "date",
-                                        "example": "2024-09-01"
-                                    },
-                                    "settlement_date": {
-                                        "type": "string",
-                                        "format": "date",
-                                        "example": "2024-09-15"
-                                    },
-                                    "expiry_date": {
-                                        "type": "string",
-                                        "format": "date",
-                                        "example": "2024-12-01"
-                                    },
-                                    "product_id": {
-                                        "type": "integer",
-                                        "example": 1
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Warehouse created successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/WarehouseResource"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid input"
-                    }
-                }
-            }
-        },
-        "/api/warehouses/{id}": {
-            "get": {
-                "summary": "Get a warehouse by ID",
-                "operationId": "50b188670a3ef5c41fd1cf4a699c41f0",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/WarehouseResource"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Warehouse not found"
-                    }
-                }
-            },
-            "delete": {
-                "summary": "Delete a warehouse",
-                "operationId": "b10a715b5257ca74f53c8407ac220de4",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Warehouse deleted successfully"
-                    },
-                    "404": {
-                        "description": "Warehouse not found"
-                    }
-                }
-            },
-            "patch": {
-                "summary": "Update a warehouse",
-                "operationId": "860ba4daf8c06a7d132352f5c5d178b2",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "amount",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "number",
-                            "format": "float"
-                        }
-                    },
-                    {
-                        "name": "pure_price",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "number",
-                            "format": "float"
-                        }
-                    },
-                    {
-                        "name": "payment_date",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "format": "date"
-                        }
-                    },
-                    {
-                        "name": "settlement_date",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "format": "date"
-                        }
-                    },
-                    {
-                        "name": "expiry_date",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "format": "date"
-                        }
-                    },
-                    {
-                        "name": "product_id",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Warehouse updated successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/WarehouseResource"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Warehouse not found"
-                    }
-                }
-            }
-        },
-        "/api/warehouses/order/{column}/{direction}": {
-            "get": {
-                "summary": "Order warehouses by a specific column",
-                "operationId": "61e2eb8e0b96e2d0f6085cdf419990cd",
-                "parameters": [
-                    {
-                        "name": "column",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "expiry_date",
-                                "created_at",
-                                "updated_at",
-                                "payment_date",
-                                "settlement_date",
-                                "pure_price"
-                            ]
-                        }
-                    },
-                    {
-                        "name": "direction",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "asc",
-                                "desc"
-                            ]
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/WarehouseResource"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid column or direction"
-                    }
-                }
-            }
-        }
-    },
-    "components": {
-        "schemas": {
-            "CategoryResource": {
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "name": {
-                        "type": "string",
-                        "example": "Electronics"
-                    },
-                    "products": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/ProductResource"
-                        }
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-09-15 12:30"
-                    }
-                },
-                "type": "object"
-            },
-            "ProductResource": {
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "name": {
-                        "type": "string",
-                        "example": "Product A"
-                    },
-                    "image": {
-                        "type": "string",
-                        "example": "https://example.com/product.jpg"
-                    },
-                    "price": {
-                        "type": "number",
-                        "format": "float",
-                        "example": "99.99"
-                    },
-                    "user": {
-                        "type": "string",
-                        "example": "John Doe"
-                    },
-                    "total_amount": {
-                        "type": "integer",
-                        "example": 500
-                    },
-                    "expiry_date": {
-                        "type": "string",
-                        "format": "date",
-                        "example": "2025-12-31"
-                    },
-                    "category": {
-                        "type": "string",
-                        "example": "Electronics"
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-09-15 12:30"
-                    }
-                },
-                "type": "object"
-            },
-            "WarehouseResource": {
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "pure_price": {
-                        "type": "number",
-                        "format": "float",
-                        "example": "100.50"
-                    },
-                    "amount": {
-                        "type": "number",
-                        "format": "integer",
-                        "example": "0"
-                    },
-                    "payment_date": {
-                        "type": "string",
-                        "format": "date",
-                        "example": "2024-09-15"
-                    },
-                    "settlement_date": {
-                        "type": "string",
-                        "format": "date",
-                        "example": "2024-09-30"
-                    },
-                    "expiry_date": {
-                        "type": "string",
-                        "format": "date",
-                        "example": "2025-12-31"
-                    },
-                    "product": {
-                        "properties": {
-                            "name": {
-                                "type": "string",
-                                "example": "Product A"
-                            },
-                            "price": {
-                                "type": "number",
-                                "format": "float",
-                                "example": "50.00"
-                            },
-                            "category": {
-                                "type": "string",
-                                "example": "Category Name"
-                            },
-                            "user": {
-                                "type": "string",
-                                "example": "John Doe"
-                            }
-                        },
-                        "type": "object"
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-09-15 12:30"
-                    }
-                },
-                "type": "object"
-            },
-            "Category": {
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "name": {
-                        "type": "string",
-                        "example": "Electronics"
-                    },
-                    "products": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/Product"
-                        }
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-09-15 12:30"
-                    }
-                },
-                "type": "object"
-            },
-            "Product": {
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "name": {
-                        "type": "string",
-                        "example": "Smartphone"
-                    },
-                    "image": {
-                        "type": "string",
-                        "example": "product_image.jpg"
-                    },
-                    "price": {
-                        "type": "number",
-                        "format": "float",
-                        "example": 499.99
-                    },
-                    "user": {
-                        "type": "string",
-                        "example": "John Doe"
-                    },
-                    "total_amount": {
-                        "type": "integer",
-                        "example": 100
-                    },
-                    "expiry_date": {
-                        "type": "string",
-                        "format": "date",
-                        "example": "2024-12-31"
-                    },
-                    "category": {
-                        "type": "string",
-                        "example": "Electronics"
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-09-15 12:30"
-                    }
-                },
-                "type": "object"
-            },
-            "Warehouse": {
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "pure_price": {
-                        "type": "number",
-                        "format": "float",
-                        "example": 300.5
-                    },
-                    "amount": {
-                        "type": "number",
-                        "format": "integer",
-                        "example": "100"
-                    },
-                    "payment_date": {
-                        "type": "string",
-                        "format": "date",
-                        "example": "2024-09-01"
-                    },
-                    "settlement_date": {
-                        "type": "string",
-                        "format": "date",
-                        "example": null
-                    },
-                    "expiry_date": {
-                        "type": "string",
-                        "format": "date",
-                        "example": "2024-12-01"
-                    },
-                    "products": {
-                        "properties": {
-                            "name": {
-                                "type": "string",
-                                "example": "Smartphone"
-                            },
-                            "price": {
-                                "type": "number",
-                                "format": "float",
-                                "example": 499.99
-                            },
-                            "category": {
-                                "type": "string",
-                                "example": "Electronics"
-                            },
-                            "user": {
-                                "type": "string",
-                                "example": "John Doe"
-                            }
-                        },
-                        "type": "object"
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-09-15 12:30"
-                    }
-                },
-                "type": "object"
-            }
-        }
-    }
-}
