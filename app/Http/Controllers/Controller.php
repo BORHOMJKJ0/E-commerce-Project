@@ -12,9 +12,11 @@ use OpenApi\Annotations as OA;
  *      version="1.0.0",
  *      title="E-commerce API",
  *      description="API documentation for the E-commerce project",
+ *
  *      @OA\Contact(
  *          email="support@yourapi.com"
  *      ),
+ *
  *      @OA\License(
  *          name="MIT",
  *          url="https://opensource.org/licenses/MIT"

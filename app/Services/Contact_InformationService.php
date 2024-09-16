@@ -12,6 +12,7 @@ class Contact_InformationService
     use ValidationTrait;
 
     protected $contactRepository;
+
     /**
      * @OA\SecurityScheme(
      *     securityScheme="bearerAuth",

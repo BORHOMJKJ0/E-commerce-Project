@@ -5,7 +5,6 @@ namespace App\Http\Controllers\contact;
 use App\Http\Controllers\Controller;
 use App\Models\contact_type;
 use App\Traits\ValidationTrait;
-use Illuminate\Http\Request;
 
 class ContactTypeController extends Controller
 {

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ContactRequest;
 use App\Services\Contact_InformationService;
-use Illuminate\Http\Request;
 
 class ContactInformationController extends Controller
 {

@@ -128,7 +128,7 @@ class EmailService
     public function sendEmailVerification($email): \Illuminate\Http\JsonResponse
     {
         $user = $this->userRepository->findByEmail($email);
-        if(!$user){
+        if (! $user) {
             return response()->json(['error' => 'User not found'], 404);
         }
         if ($user->email_verified_at) {

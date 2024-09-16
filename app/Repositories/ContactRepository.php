@@ -21,7 +21,7 @@ class ContactRepository
 
     public function findById($id)
     {
-        return DB::table('contact_informations')->where('id', $id)->select('id','link', 'user_id', 'contact_type_id')->first();
+        return DB::table('contact_informations')->where('id', $id)->select('id', 'link', 'user_id', 'contact_type_id')->first();
     }
 
     public function deleteById($id)

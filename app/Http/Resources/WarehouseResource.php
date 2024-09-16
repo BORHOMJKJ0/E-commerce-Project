@@ -10,6 +10,7 @@ use OpenApi\Annotations as OA;
  * @OA\Schema(
  *     schema="WarehouseResource",
  *     type="object",
+ *
  *     @OA\Property(property="id", type="integer", example=1),
  *     @OA\Property(property="pure_price", type="number", format="float", example="100.50"),
  *     @OA\Property(property="amount", type="number", format="integer", example="0"),
@@ -39,7 +40,7 @@ class WarehouseResource extends JsonResource
         return [
             'id' => $this->id,
             'pure_price' => $this->pure_price,
-            'amount'=>$this->amount,
+            'amount' => $this->amount,
             'payment_date' => $this->payment_date,
             'settlement_date' => $this->settlement_date,
             'expiry_date' => $this->expiry_date,

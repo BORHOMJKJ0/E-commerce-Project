@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\EmailVerificationRequest;
 use App\Services\EmailService;
 use App\Traits\ValidationTrait;
-use Illuminate\Http\Request;
 
 class EmailVerificationController extends Controller
 {

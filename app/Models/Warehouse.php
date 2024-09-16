@@ -10,6 +10,7 @@ use OpenApi\Annotations as OA;
  * @OA\Schema(
  *     schema="Warehouse",
  *     type="object",
+ *
  *     @OA\Property(property="id", type="integer", example=1),
  *     @OA\Property(property="pure_price", type="number", format="float", example=300.50),
  *     @OA\Property(property="amount", type="number", format="integer", example="100"),

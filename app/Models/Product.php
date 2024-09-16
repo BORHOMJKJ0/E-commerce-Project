@@ -10,6 +10,7 @@ use OpenApi\Annotations as OA;
  * @OA\Schema(
  *     schema="Product",
  *     type="object",
+ *
  *     @OA\Property(property="id", type="integer", example=1),
  *     @OA\Property(property="name", type="string", example="Smartphone"),
  *     @OA\Property(property="image", type="string", example="product_image.jpg"),

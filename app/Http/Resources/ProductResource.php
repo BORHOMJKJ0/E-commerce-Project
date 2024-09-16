@@ -11,6 +11,7 @@ use OpenApi\Annotations as OA;
  * @OA\Schema(
  *     schema="ProductResource",
  *     type="object",
+ *
  *     @OA\Property(property="id", type="integer", example=1),
  *     @OA\Property(property="name", type="string", example="Product A"),
  *     @OA\Property(property="image", type="string", example="https://example.com/product.jpg"),
