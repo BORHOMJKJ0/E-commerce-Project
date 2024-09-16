@@ -9,14 +9,8 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Repositories\UserRepository;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
-/**
- * @OA\Info(
- *     title="Your API Title",
- *     version="1.0.0"
- * ),
- *
- */
 class UserController extends Controller
 {
     protected $EmailVerificationController;
@@ -30,39 +24,35 @@ class UserController extends Controller
         $this->UserService = new UserService(new EmailVerificationController, new UserRepository);
     }
 
-    public function index(): JsonResponse
+    public function show_all_users()
     {
-        $users = $this->UserService->index();
+        $users = $this->UserService->show_all_users();
 
-        return response()->json(['users' => $users]);
+        return response()->json($users);
     }
-
 
     public function register(RegisterRequest $request): JsonResponse
     {
         return $this->UserService->register($request);
     }
 
-
     public function login(LoginRequest $request): JsonResponse
     {
         return $this->UserService->login($request);
     }
 
-
-    public function profile($user_id): JsonResponse
+    public function profile(Request $request): JsonResponse
     {
-        return $this->UserService->profile($user_id);
+        return $this->UserService->profile($request);
     }
-
 
     public function logout(): JsonResponse
     {
         return $this->UserService->logout();
     }
 
-    public function update(UpdateUserRequest $request): JsonResponse
+    public function updateUser(UpdateUserRequest $request): JsonResponse
     {
-        return $this->UserService->update($request);
+        return $this->UserService->updateUser($request);
     }
 }

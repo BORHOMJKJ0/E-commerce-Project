@@ -12,21 +12,16 @@ class UserRepository
         return User::where('email', $email)->first();
     }
 
-    public function get_user_contactById($id)
+    public function get_user_contact($id)
     {
         return User::where('id', $id)->select('id', 'name', 'email', 'mobile')->with(['contacts' => function ($query) {
             $query->select('id', 'user_id', 'contact_type_id');
         }])->get();
     }
 
-    public function get_userById($id)
-    {
-        return User::where('id', $id)->select('id', 'name', 'email', 'mobile')->get();
-    }
-
     public function get_users_contacts()
     {
-        return User::orderBy('id')->select('id', 'name', 'email', 'mobile')->with(['contacts' => function ($query) {
+        return User::select('id', 'name', 'email', 'mobile')->with(['contacts' => function ($query) {
             $query->select('id', 'user_id', 'contact_type_id');
         }])->get();
     }

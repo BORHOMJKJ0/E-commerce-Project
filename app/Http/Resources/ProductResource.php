@@ -5,7 +5,23 @@ namespace App\Http\Resources;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Schema(
+ *     schema="ProductResource",
+ *     type="object",
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="name", type="string", example="Product A"),
+ *     @OA\Property(property="image", type="string", example="https://example.com/product.jpg"),
+ *     @OA\Property(property="price", type="number", format="float", example="99.99"),
+ *     @OA\Property(property="user", type="string", example="John Doe"),
+ *     @OA\Property(property="total_amount", type="integer", example=500),
+ *     @OA\Property(property="expiry_date", type="string", format="date", example="2025-12-31"),
+ *     @OA\Property(property="category", type="string", example="Electronics"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", example="2024-09-15 12:30")
+ * )
+ */
 class ProductResource extends JsonResource
 {
     /**
