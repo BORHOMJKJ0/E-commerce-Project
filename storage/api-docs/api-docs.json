@@ -15,16 +15,11 @@
     "paths": {
         "/api/categories": {
             "get": {
-<<<<<<< HEAD
                 "tags": [
                     "Categories"
                 ],
                 "summary": "Get all categories",
                 "operationId": "6fba1dee4d21d4b5aefb654baaec9dc5",
-=======
-                "summary": "Get all categories",
-                "operationId": "3f5817a34833d0a1f4af4548dd3aeaba",
->>>>>>> 57ec657eba3ca860bfebedea4c54c349a230205d
                 "responses": {
                     "200": {
                         "description": "Successful response",
@@ -42,16 +37,11 @@
                 }
             },
             "post": {
-<<<<<<< HEAD
                 "tags": [
                     "Categories"
                 ],
                 "summary": "Create a category",
                 "operationId": "259bfe21770a62162e03fca3087a6309",
-=======
-                "summary": "Create a category",
-                "operationId": "71fcad552bb0eaba9fb191fd8d8dcab0",
->>>>>>> 57ec657eba3ca860bfebedea4c54c349a230205d
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -78,7 +68,6 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/CategoryResource"
-<<<<<<< HEAD
                                 }
                             }
                         }
@@ -390,744 +379,6 @@
                                         }
                                     },
                                     "type": "object"
-=======
->>>>>>> 57ec657eba3ca860bfebedea4c54c349a230205d
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-<<<<<<< HEAD
-                        "description": "Validation error",
-=======
-                        "description": "Invalid input"
-                    }
-                }
-            }
-        },
-        "/api/categories/{id}": {
-            "get": {
-                "summary": "Get a category by ID",
-                "operationId": "c68e76d323c008827a9e47398b1583de",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/CategoryResource"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Category not found"
-                    }
-                }
-            },
-            "delete": {
-                "summary": "Delete a category",
-                "operationId": "4c12e22a7f8c617bd83bfa1fdc05428d",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Category deleted successfully"
-                    },
-                    "404": {
-                        "description": "Category not found"
-                    }
-                }
-            },
-            "patch": {
-                "summary": "Update a category",
-                "operationId": "676afd4a424724819de3254bd9c74e57",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "example": "Updated Category Name"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Category updated successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/CategoryResource"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Category not found"
-                    }
-                }
-            }
-        },
-        "/api/categories/order/{column}/{direction}": {
-            "get": {
-                "summary": "Order categories by a specific column",
-                "operationId": "0125b76227665b7ec385a0906854d7e9",
-                "parameters": [
-                    {
-                        "name": "column",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "name",
-                                "created_at",
-                                "updated_at"
-                            ]
-                        }
-                    },
-                    {
-                        "name": "direction",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "asc",
-                                "desc"
-                            ]
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/CategoryResource"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid column or direction"
-                    }
-                }
-            }
-        },
-        "/api/products": {
-            "get": {
-                "summary": "Get all products",
-                "operationId": "1bfaa78d1c2c3848ab8165c5dadcad3e",
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/ProductResource"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "summary": "Create a product",
-                "operationId": "e8185e307706e2cd84bbcf5171e2f09d",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "name",
-                                    "image",
-                                    "price",
-                                    "category_id",
-                                    "user_id"
-                                ],
-                                "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "example": "Sample Product"
-                                    },
-                                    "image": {
-                                        "type": "string",
-                                        "example": "image_url.jpg"
-                                    },
-                                    "price": {
-                                        "type": "number",
-                                        "format": "float",
-                                        "example": 50.75
-                                    },
-                                    "category_id": {
-                                        "type": "integer",
-                                        "example": 1
-                                    },
-                                    "user_id": {
-                                        "type": "integer",
-                                        "example": 1
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Warehouse created successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProductResource"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid input"
-                    }
-                }
-            }
-        },
-        "/api/products/{id}": {
-            "get": {
-                "summary": "Get a single product by ID",
-                "operationId": "7ab21ddb713501f3d4c2914892c02a21",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProductResource"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Product not found"
-                    }
-                }
-            },
-            "delete": {
-                "summary": "Delete a product",
-                "operationId": "e80a6ca46716acee6b47ea1ac91663c0",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Product deleted successfully"
-                    },
-                    "404": {
-                        "description": "Product not found"
-                    }
-                }
-            },
-            "patch": {
-                "summary": "Update a product",
-                "operationId": "f0caf1fe47821e6aad5d0c767b7476eb",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "name",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "image",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "price",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "number",
-                            "format": "float"
-                        }
-                    },
-                    {
-                        "name": "user_id",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "category_id",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Product updated successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProductResource"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Product not found"
-                    }
-                }
-            }
-        },
-        "/api/products/order/{column}/{direction}": {
-            "get": {
-                "summary": "Order products by a specific column",
-                "operationId": "ff2d0500d82dd3adf82e38ec6191bb59",
-                "parameters": [
-                    {
-                        "name": "column",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "name",
-                                "price",
-                                "created_at",
-                                "updated_at"
-                            ]
-                        }
-                    },
-                    {
-                        "name": "direction",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "asc",
-                                "desc"
-                            ]
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/ProductResource"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid column or direction"
-                    }
-                }
-            }
-        },
-        "/api/warehouses": {
-            "get": {
-                "summary": "Get all warehouses",
-                "operationId": "cab30faea02ec476b845ce791e30635b",
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/WarehouseResource"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "summary": "Create a warehouse",
-                "operationId": "35cb07849f875859a84a1c37f93e8294",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "amount",
-                                    "pure_price",
-                                    "payment_date",
-                                    "settlement_date",
-                                    "expiry_date",
-                                    "product_id"
-                                ],
-                                "properties": {
-                                    "amount": {
-                                        "type": "number",
-                                        "example": 100
-                                    },
-                                    "pure_price": {
-                                        "type": "number",
-                                        "example": 50.75
-                                    },
-                                    "payment_date": {
-                                        "type": "string",
-                                        "format": "date",
-                                        "example": "2024-09-01"
-                                    },
-                                    "settlement_date": {
-                                        "type": "string",
-                                        "format": "date",
-                                        "example": "2024-09-15"
-                                    },
-                                    "expiry_date": {
-                                        "type": "string",
-                                        "format": "date",
-                                        "example": "2024-12-01"
-                                    },
-                                    "product_id": {
-                                        "type": "integer",
-                                        "example": 1
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Warehouse created successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/WarehouseResource"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid input"
-                    }
-                }
-            }
-        },
-        "/api/warehouses/{id}": {
-            "get": {
-                "summary": "Get a warehouse by ID",
-                "operationId": "50b188670a3ef5c41fd1cf4a699c41f0",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/WarehouseResource"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Warehouse not found"
-                    }
-                }
-            },
-            "delete": {
-                "summary": "Delete a warehouse",
-                "operationId": "b10a715b5257ca74f53c8407ac220de4",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Warehouse deleted successfully"
-                    },
-                    "404": {
-                        "description": "Warehouse not found"
-                    }
-                }
-            },
-            "patch": {
-                "summary": "Update a warehouse",
-                "operationId": "860ba4daf8c06a7d132352f5c5d178b2",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "amount",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "number",
-                            "format": "float"
-                        }
-                    },
-                    {
-                        "name": "pure_price",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "number",
-                            "format": "float"
-                        }
-                    },
-                    {
-                        "name": "payment_date",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "format": "date"
-                        }
-                    },
-                    {
-                        "name": "settlement_date",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "format": "date"
-                        }
-                    },
-                    {
-                        "name": "expiry_date",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "format": "date"
-                        }
-                    },
-                    {
-                        "name": "product_id",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Warehouse updated successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/WarehouseResource"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Warehouse not found"
-                    }
-                }
-            }
-        },
-        "/api/warehouses/order/{column}/{direction}": {
-            "get": {
-                "summary": "Order warehouses by a specific column",
-                "operationId": "61e2eb8e0b96e2d0f6085cdf419990cd",
-                "parameters": [
-                    {
-                        "name": "column",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "expiry_date",
-                                "created_at",
-                                "updated_at",
-                                "payment_date",
-                                "settlement_date",
-                                "pure_price"
-                            ]
-                        }
-                    },
-                    {
-                        "name": "direction",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "asc",
-                                "desc"
-                            ]
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/WarehouseResource"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid column or direction"
-                    }
-                }
-            }
-        },
-        "/api/users/contact/add": {
-            "post": {
-                "tags": [
-                    "Contacts"
-                ],
-                "summary": "Add contact information",
-                "operationId": "eefc784f4b0e661463509c265873402f",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "contact_type_id",
-                                    "link"
-                                ],
-                                "properties": {
-                                    "contact_type_id": {
-                                        "description": "Contact type ID",
-                                        "type": "integer",
-                                        "example": 1
-                                    },
-                                    "link": {
-                                        "description": "Contact information value (facebook_account, instagram_account, tiwtter_account)",
-                                        "type": "string",
-                                        "example": "your link"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Contact information added successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Contact information added successfully"
-                                        },
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": true
-                                        }
-                                    },
-                                    "type": "object"
                                 }
                             }
                         }
@@ -1427,901 +678,6 @@
                     }
                 }
             }
-        },
-        "/api/users/email-verification/{email}": {
-            "get": {
-                "tags": [
-                    "Email Verification"
-                ],
-                "summary": "Send an email verification code to the user",
-                "operationId": "9ebcfc912dc8f91e5126feb65db34b28",
-                "parameters": [
-                    {
-                        "name": "email",
-                        "in": "path",
-                        "description": "User's email to send the verification code to",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "format": "email",
-                            "example": "hzaeter04@gmail.com"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Verification code sent successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "The activation code has been sent to your email"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Email already verified",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Email already verified"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "User not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "User not found"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/users/all": {
-            "get": {
-                "tags": [
-                    "Users"
-                ],
-                "summary": "Get all users with their contact information",
-                "operationId": "459240e806f82161a7c114e9f7f1ede8",
-                "responses": {
-                    "200": {
-                        "description": "Successful retrieval of users and their contact details",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "properties": {
-                                            "id": {
-                                                "type": "integer",
-                                                "example": 1
-                                            },
-                                            "name": {
-                                                "type": "string",
-                                                "example": "Hasan"
-                                            },
-                                            "email": {
-                                                "type": "string",
-                                                "example": "hzaeter@gmail.com"
-                                            },
-                                            "mobile": {
-                                                "type": "string",
-                                                "example": "0935917557"
-                                            },
-                                            "contacts": {
-                                                "type": "array",
-                                                "items": {
-                                                    "properties": {
-                                                        "id": {
-                                                            "type": "integer",
-                                                            "example": 1
-                                                        },
-                                                        "user_id": {
-                                                            "type": "integer",
-                                                            "example": 3
-                                                        },
-                                                        "contact_type_id": {
-                                                            "type": "integer",
-                                                            "example": 5
-                                                        }
-                                                    },
-                                                    "type": "object"
-                                                }
-                                            }
-                                        },
-                                        "type": "object"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized, invalid or missing token",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Unauthorized"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/users/register": {
-            "post": {
-                "tags": [
-                    "Users"
-                ],
-                "summary": "Register a new user",
-                "operationId": "53f9ea9acbfec6d4b0ac7ee4c670bf76",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "name",
-                                    "email",
-                                    "mobile",
-                                    "gender",
-                                    "password",
-                                    "password_confirmation"
-                                ],
-                                "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "example": "hasan zaeter"
-                                    },
-                                    "email": {
-                                        "type": "string",
-                                        "example": "hzaeter@gmail.com"
-                                    },
-                                    "mobile": {
-                                        "type": "string",
-                                        "example": "0935917667"
-                                    },
-                                    "gender": {
-                                        "type": "string",
-                                        "example": "male or female"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "example": "password123"
-                                    },
-                                    "password_confirmation": {
-                                        "type": "string",
-                                        "example": "password123"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "User registered successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "User registered successfully"
-                                        },
-                                        "email-verification": {
-                                            "type": "string",
-                                            "example": "An activation code has been sent to your email"
-                                        },
-                                        "user": {
-                                            "properties": {
-                                                "id": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "name": {
-                                                    "type": "string",
-                                                    "example": "hasan zaeter"
-                                                },
-                                                "email": {
-                                                    "type": "string",
-                                                    "example": "hzaeter04@gmail.com"
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Validation error"
-                                        },
-                                        "errors": {
-                                            "type": "object",
-                                            "example": []
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    }
-                }
-            }
-        },
-        "/api/users/login": {
-            "post": {
-                "tags": [
-                    "Users"
-                ],
-                "summary": "User login",
-                "operationId": "43cef47c17b0d85b0e7f73c6701c0731",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "email",
-                                    "password"
-                                ],
-                                "properties": {
-                                    "email": {
-                                        "type": "string",
-                                        "example": "hzaeter04@gmail.com"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "example": "password123"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Login successful",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "token": {
-                                            "type": "string",
-                                            "example": "jwt-token"
-                                        },
-                                        "user": {
-                                            "properties": {
-                                                "id": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "name": {
-                                                    "type": "string",
-                                                    "example": "Hasan Zaeter"
-                                                },
-                                                "email": {
-                                                    "type": "string",
-                                                    "example": "hzaeter@gmail.com"
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Validation error or invalid password"
-                                        },
-                                        "errors": {
-                                            "type": "object",
-                                            "example": []
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Unauthorized"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/users/logout": {
-            "post": {
-                "tags": [
-                    "Users"
-                ],
-                "summary": "Logout the current user",
-                "operationId": "bde2325515b1a74518fee8bb0419304a",
-                "responses": {
-                    "200": {
-                        "description": "Logout successful",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Successfully logged out"
-                                        },
-                                        "user": {
-                                            "properties": {
-                                                "id": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "name": {
-                                                    "type": "string",
-                                                    "example": "hasan zaeter"
-                                                },
-                                                "email": {
-                                                    "type": "string",
-                                                    "example": "hzaeter04@gmail.com"
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/users/profile/{user_id}": {
-            "get": {
-                "tags": [
-                    "Users"
-                ],
-                "summary": "Get user profile by user ID",
-                "operationId": "73a449a806fd6c97a0ab1fde3d3bc753",
-                "parameters": [
-                    {
-                        "name": "user_id",
-                        "in": "path",
-                        "description": "The ID of the user to retrieve the profile for",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful retrieval of user profile and contact details",
->>>>>>> 57ec657eba3ca860bfebedea4c54c349a230205d
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-<<<<<<< HEAD
-                                            "example": "Validation error"
-                                        },
-                                        "error": {
-                                            "type": "object",
-                                            "example": []
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Unauthorized"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/users/contact/show/{user_id}": {
-            "get": {
-                "tags": [
-                    "Contacts"
-                ],
-                "summary": "Retrieve contact information by user ID",
-                "operationId": "113661d4af50e278a27106b8310bc57c",
-                "parameters": [
-                    {
-                        "name": "user_id",
-                        "in": "path",
-                        "description": "The ID of the user to retrieve contact information for",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful retrieval of contact information",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-=======
-                                            "example": "Hasan Zaeter"
-                                        },
-                                        "email": {
-                                            "type": "string",
-                                            "example": "hzaeter@gmail.com"
-                                        },
-                                        "mobile": {
-                                            "type": "string",
-                                            "example": "0935917667"
-                                        },
->>>>>>> 57ec657eba3ca860bfebedea4c54c349a230205d
-                                        "contacts": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "id": {
-                                                        "type": "integer",
-                                                        "example": 1
-                                                    },
-<<<<<<< HEAD
-                                                    "contact_type_id": {
-                                                        "type": "integer",
-                                                        "example": 1
-                                                    },
-                                                    "link": {
-                                                        "type": "string",
-                                                        "example": "your link"
-=======
-                                                    "user_id": {
-                                                        "type": "integer",
-                                                        "example": 1
-                                                    },
-                                                    "contact_type_id": {
-                                                        "type": "integer",
-                                                        "example": 2
->>>>>>> 57ec657eba3ca860bfebedea4c54c349a230205d
-                                                    }
-                                                },
-                                                "type": "object"
-                                            }
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-<<<<<<< HEAD
-                    "404": {
-                        "description": "Contact information not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Contact information not found"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-=======
-                    "400": {
-                        "description": "Bad Request"
-                    },
-                    "404": {
-                        "description": "User not found"
-                    },
-                    "401": {
-                        "description": "Unauthorized - Invalid or missing token"
->>>>>>> 57ec657eba3ca860bfebedea4c54c349a230205d
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-<<<<<<< HEAD
-        "/api/users/contact/remove/{contact_information_id}": {
-            "delete": {
-                "tags": [
-                    "Contacts"
-                ],
-                "summary": "Delete a contact by ID",
-                "operationId": "9052216afd52238534a0eee1dfac2315",
-                "parameters": [
-                    {
-                        "name": "contact_information_id",
-                        "in": "path",
-                        "description": "The ID of the contact information to delete",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Contact deleted successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Contact deleted successfully"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Contact not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Contact not found"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/users/contact/remove-all": {
-            "delete": {
-                "tags": [
-                    "Contacts"
-                ],
-                "summary": "Delete all contacts for the authenticated user",
-                "operationId": "3b679083ac2c3127f2e87dcc3d5c1eee",
-                "responses": {
-                    "200": {
-                        "description": "All contacts deleted successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "All Contacts deleted successfully"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Contacts not found for this user",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Contacts not found for this user"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/users/email-verification": {
-            "post": {
-                "tags": [
-                    "Email Verification"
-                ],
-                "summary": "Verify user's email using OTP",
-                "operationId": "cdbb59bcd9aecf6c2bdf9ee42f8b7fb5",
-=======
-        "/api/users/update": {
-            "put": {
-                "tags": [
-                    "Users"
-                ],
-                "summary": "Update user profile",
-                "operationId": "1d552b234ff2381d7fdc8a15df16f5c2",
->>>>>>> 57ec657eba3ca860bfebedea4c54c349a230205d
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-<<<<<<< HEAD
-                                "required": [
-                                    "email",
-                                    "otp"
-                                ],
-                                "properties": {
-                                    "email": {
-                                        "description": "User's email to verify",
-                                        "type": "string",
-                                        "format": "email",
-                                        "example": "hzaeter04@gmail.com"
-                                    },
-                                    "otp": {
-                                        "description": "OTP code for email verification",
-                                        "type": "string",
-                                        "example": "123456"
-=======
-                                "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "example": "Hasan Zaeter"
-                                    },
-                                    "mobile": {
-                                        "type": "string",
-                                        "example": "0935917667"
-                                    },
-                                    "old_password": {
-                                        "type": "string",
-                                        "example": "oldpassword123"
-                                    },
-                                    "new_password": {
-                                        "type": "string",
-                                        "example": "newpassword123"
-                                    },
-                                    "new_password_confirmation": {
-                                        "type": "string",
-                                        "example": "newpassword123"
->>>>>>> 57ec657eba3ca860bfebedea4c54c349a230205d
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-<<<<<<< HEAD
-                        "description": "Email verification successfully",
-=======
-                        "description": "Profile updated successfully",
->>>>>>> 57ec657eba3ca860bfebedea4c54c349a230205d
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-<<<<<<< HEAD
-                                        "success": {
-                                            "type": "string",
-                                            "example": "Email verification successfully"
-=======
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Profile updated successfully"
-                                        },
-                                        "user": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "id": {
-                                                        "type": "integer",
-                                                        "example": 1
-                                                    },
-                                                    "name": {
-                                                        "type": "string",
-                                                        "example": "Hasan Zaeter"
-                                                    },
-                                                    "email": {
-                                                        "type": "string",
-                                                        "example": "hzaeter@gmail.com"
-                                                    },
-                                                    "mobile": {
-                                                        "type": "string",
-                                                        "example": "0935917667"
-                                                    },
-                                                    "contacts": {
-                                                        "type": "array",
-                                                        "items": {
-                                                            "properties": {
-                                                                "id": {
-                                                                    "type": "integer",
-                                                                    "example": 1
-                                                                },
-                                                                "user_id": {
-                                                                    "type": "integer",
-                                                                    "example": 1
-                                                                },
-                                                                "contact_type_id": {
-                                                                    "type": "integer",
-                                                                    "example": 2
-                                                                }
-                                                            },
-                                                            "type": "object"
-                                                        }
-                                                    }
-                                                },
-                                                "type": "object"
-                                            }
-                                        },
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": true
->>>>>>> 57ec657eba3ca860bfebedea4c54c349a230205d
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-<<<<<<< HEAD
-                        "description": "Invalid email activation code",
-=======
-                        "description": "Bad Request",
->>>>>>> 57ec657eba3ca860bfebedea4c54c349a230205d
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-<<<<<<< HEAD
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Your email activation code is invalid"
-=======
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Validation error or incorrect old password"
-                                        },
-                                        "errors": {
-                                            "type": "object",
-                                            "example": []
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized, invalid old password",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Unauthorized"
->>>>>>> 57ec657eba3ca860bfebedea4c54c349a230205d
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-<<<<<<< HEAD
         },
         "/api/users/email-verification/{email}": {
             "get": {
@@ -2770,6 +1126,584 @@
                 }
             }
         },
+        "/api/users/all": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get all users with their contact information",
+                "operationId": "459240e806f82161a7c114e9f7f1ede8",
+                "responses": {
+                    "200": {
+                        "description": "Successful retrieval of users and their contact details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Hasan"
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "example": "hzaeter@gmail.com"
+                                            },
+                                            "mobile": {
+                                                "type": "string",
+                                                "example": "0935917557"
+                                            },
+                                            "contacts": {
+                                                "type": "array",
+                                                "items": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "user_id": {
+                                                            "type": "integer",
+                                                            "example": 3
+                                                        },
+                                                        "contact_type_id": {
+                                                            "type": "integer",
+                                                            "example": 5
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized, invalid or missing token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/users/register": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Register a new user",
+                "operationId": "53f9ea9acbfec6d4b0ac7ee4c670bf76",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "mobile",
+                                    "gender",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "hasan zaeter"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "hzaeter@gmail.com"
+                                    },
+                                    "mobile": {
+                                        "type": "string",
+                                        "example": "0935917667"
+                                    },
+                                    "gender": {
+                                        "type": "string",
+                                        "example": "male or female"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User registered successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User registered successfully"
+                                        },
+                                        "email-verification": {
+                                            "type": "string",
+                                            "example": "An activation code has been sent to your email"
+                                        },
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "hasan zaeter"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "hzaeter04@gmail.com"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation error"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/api/users/login": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "User login",
+                "operationId": "43cef47c17b0d85b0e7f73c6701c0731",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "hzaeter04@gmail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "example": "jwt-token"
+                                        },
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Hasan Zaeter"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "hzaeter@gmail.com"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation error or invalid password"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/logout": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Logout the current user",
+                "operationId": "bde2325515b1a74518fee8bb0419304a",
+                "responses": {
+                    "200": {
+                        "description": "Logout successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Successfully logged out"
+                                        },
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "hasan zaeter"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "hzaeter04@gmail.com"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/users/profile/{user_id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get user profile by user ID",
+                "operationId": "73a449a806fd6c97a0ab1fde3d3bc753",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "The ID of the user to retrieve the profile for",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful retrieval of user profile and contact details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Hasan Zaeter"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "hzaeter@gmail.com"
+                                        },
+                                        "mobile": {
+                                            "type": "string",
+                                            "example": "0935917667"
+                                        },
+                                        "contacts": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "user_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "contact_type_id": {
+                                                        "type": "integer",
+                                                        "example": 2
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "401": {
+                        "description": "Unauthorized - Invalid or missing token"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/users/update": {
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update user profile",
+                "operationId": "1d552b234ff2381d7fdc8a15df16f5c2",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Hasan Zaeter"
+                                    },
+                                    "mobile": {
+                                        "type": "string",
+                                        "example": "0935917667"
+                                    },
+                                    "old_password": {
+                                        "type": "string",
+                                        "example": "oldpassword123"
+                                    },
+                                    "new_password": {
+                                        "type": "string",
+                                        "example": "newpassword123"
+                                    },
+                                    "new_password_confirmation": {
+                                        "type": "string",
+                                        "example": "newpassword123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Profile updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Profile updated successfully"
+                                        },
+                                        "user": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Hasan Zaeter"
+                                                    },
+                                                    "email": {
+                                                        "type": "string",
+                                                        "example": "hzaeter@gmail.com"
+                                                    },
+                                                    "mobile": {
+                                                        "type": "string",
+                                                        "example": "0935917667"
+                                                    },
+                                                    "contacts": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "properties": {
+                                                                "id": {
+                                                                    "type": "integer",
+                                                                    "example": 1
+                                                                },
+                                                                "user_id": {
+                                                                    "type": "integer",
+                                                                    "example": 1
+                                                                },
+                                                                "contact_type_id": {
+                                                                    "type": "integer",
+                                                                    "example": 2
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation error or incorrect old password"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized, invalid old password",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/warehouses": {
             "get": {
                 "tags": [
@@ -3163,8 +2097,6 @@
                     }
                 }
             }
-=======
->>>>>>> 57ec657eba3ca860bfebedea4c54c349a230205d
         }
     },
     "components": {
@@ -3439,13 +2371,10 @@
     },
     "tags": [
         {
-<<<<<<< HEAD
             "name": "Categories",
             "description": "Categories"
         },
         {
-=======
->>>>>>> 57ec657eba3ca860bfebedea4c54c349a230205d
             "name": "Contacts",
             "description": "Contacts"
         },
@@ -3454,17 +2383,16 @@
             "description": "Email Verification"
         },
         {
-<<<<<<< HEAD
             "name": "Products",
             "description": "Products"
         },
         {
-            "name": "Warehouses",
-            "description": "Warehouses"
-=======
             "name": "Users",
             "description": "Users"
->>>>>>> 57ec657eba3ca860bfebedea4c54c349a230205d
+        },
+        {
+            "name": "Warehouses",
+            "description": "Warehouses"
         }
     ]
 }

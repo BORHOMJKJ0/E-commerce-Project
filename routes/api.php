@@ -34,23 +34,11 @@ Route::middleware('api')->group(function () {
     Route::prefix('warehouses')->controller(WarehouseController::class)->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');
     });
+});
     Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         return $request->user();
     });
-});
-<<<<<<< HEAD
-=======
-Route::prefix('categories')->controller(CategoryController::class)->group(function () {
-    Route::get('/order/{column}/{direction}', 'orderBy');
-});
-Route::prefix('warehouses')->controller(WarehouseController::class)->group(function () {
-    Route::get('/order/{column}/{direction}', 'orderBy');
-});
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
->>>>>>> 57ec657eba3ca860bfebedea4c54c349a230205d
 Route::middleware('api')->prefix('users')->group(function () {
 
     Route::controller(UserController::class)->group(function () {
