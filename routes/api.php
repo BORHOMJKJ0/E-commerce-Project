@@ -22,23 +22,23 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-Route::apiResource('products', ProductController::class);
-Route::apiResource('categories', CategoryController::class);
-Route::apiResource('warehouses', WarehouseController::class);
-Route::prefix('products')->controller(ProductController::class)->group(function () {
-    Route::get('/order/{column}/{direction}', 'orderBy');
+Route::middleware('api')->group(function () {
+    Route::apiResource('products', ProductController::class);
+    Route::apiResource('categories', CategoryController::class);
+    Route::apiResource('warehouses', WarehouseController::class);
+    Route::prefix('products')->controller(ProductController::class)->group(function () {
+        Route::get('/order/{column}/{direction}', 'orderBy');
+    });
+    Route::prefix('categories')->controller(CategoryController::class)->group(function () {
+        Route::get('/order/{column}/{direction}', 'orderBy');
+    });
+    Route::prefix('warehouses')->controller(WarehouseController::class)->group(function () {
+        Route::get('/order/{column}/{direction}', 'orderBy');
+    });
+    Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+        return $request->user();
+    });
 });
-Route::prefix('categories')->controller(CategoryController::class)->group(function () {
-    Route::get('/order/{column}/{direction}', 'orderBy');
-});
-Route::prefix('warehouses')->controller(WarehouseController::class)->group(function () {
-    Route::get('/order/{column}/{direction}', 'orderBy');
-});
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::middleware('api')->prefix('users')->group(function () {
 
     Route::get('all', [UserController::class, 'index']);
