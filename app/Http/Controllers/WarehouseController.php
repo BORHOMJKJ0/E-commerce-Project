@@ -19,6 +19,7 @@ class WarehouseController extends Controller
     {
         $this->middleware('auth:api');
         $this->warehouseService = $warehouseService;
+        $this->middleware('auth:api');
     }
 
     public function index(): JsonResponse

@@ -24,9 +24,9 @@ class UserController extends Controller
         $this->UserService = new UserService(new EmailVerificationController, new UserRepository);
     }
 
-    public function show_all_users()
+    public function index(): JsonResponse
     {
-        $users = $this->UserService->show_all_users();
+        $users = $this->UserService->index();
 
         return response()->json($users);
     }
@@ -41,9 +41,9 @@ class UserController extends Controller
         return $this->UserService->login($request);
     }
 
-    public function profile(Request $request): JsonResponse
+    public function profile($user_id): JsonResponse
     {
-        return $this->UserService->profile($request);
+        return $this->UserService->profile($user_id);
     }
 
     public function logout(): JsonResponse
@@ -51,8 +51,8 @@ class UserController extends Controller
         return $this->UserService->logout();
     }
 
-    public function updateUser(UpdateUserRequest $request): JsonResponse
+    public function update(UpdateUserRequest $request): JsonResponse
     {
-        return $this->UserService->updateUser($request);
+        return $this->UserService->update($request);
     }
 }

@@ -15,6 +15,7 @@ class CategoryController extends Controller
     {
         $this->middleware('auth:api');
         $this->categoryService = $categoryService;
+        $this->middleware('auth:api');
     }
 
     public function index(): JsonResponse

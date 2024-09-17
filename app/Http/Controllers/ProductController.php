@@ -19,6 +19,7 @@ class ProductController extends Controller
     {
         $this->middleware('auth:api');
         $this->productService = $productService;
+        $this->middleware('auth:api');
     }
 
     public function index(): JsonResponse
