@@ -5,7 +5,6 @@ use App\Http\Controllers\Auth\ForgetPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\contact\ContactInformationController;
 use App\Http\Controllers\contact\ContactTypeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\WarehouseController;
@@ -39,27 +38,34 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
 Route::middleware('api')->prefix('users')->group(function () {
 
-    Route::get('all', [UserController::class, 'index']);
-    Route::post('register', [UserController::class, 'register']);
-    Route::post('login', [UserController::class, 'login'])->middleware('verified.email');
-    Route::post('logout', [UserController::class, 'logout']);
-    Route::get('profile/{user_id}', [UserController::class, 'profile'])->whereNumber('user_id');
-    Route::put('update', [UserController::class, 'update']);
-    Route::get('email-verification/{email}', [EmailVerificationController::class, 'sendEmailVerification']);
-    Route::post('email-verification', [EmailVerificationController::class, 'email_verification']);
+    Route::controller(UserController::class)->group(function () {
+        Route::get('all', 'index');
+        Route::post('register', 'register');
+        Route::post('login', 'login')->middleware('verified.email');
+        Route::post('logout', 'logout');
+        Route::get('profile/{user_id}', 'profile')->whereNumber('user_id');
+        Route::patch('update', 'update');
+    });
+
+    Route::controller(EmailVerificationController::class)->group(function () {
+        Route::get('email-verification/{email}', 'sendEmailVerification');
+        Route::post('email-verification', 'email_verification');
+    });
+
     Route::post('password/forget-password', [ForgetPasswordController::class, 'forgetPassword']);
     Route::post('password/reset', [ResetPasswordController::class, 'resetPassword']);
 
-    Route::prefix('contact')->group(function () {
-        Route::post('add', [ContactInformationController::class, 'store']);
-        Route::get('show/{user_id}', [ContactInformationController::class, 'show'])->whereNumber('user_id');
-        Route::delete('remove/{contact_information_id}', [ContactInformationController::class, 'destroy'])->whereNumber('contact_information_id');
-        Route::delete('remove-all', [ContactInformationController::class, 'destroyAll']);
+    Route::controller('ContactInformationController')->prefix('contact')->group(function () {
+        Route::post('add', 'store');
+        Route::get('show/{user_id}', 'show')->whereNumber('user_id');
+        Route::delete('remove/{contact_information_id}', 'destroy')->whereNumber('contact_information_id');
+        Route::delete('remove-all', 'destroyAll');
     });
 
-    Route::get('contact-type-all', [ContactTypeController::class, 'index']);
-    Route::get('contact-type/{id}', [ContactTypeController::class, 'show'])->whereNumber('id');
+    Route::controller(ContactTypeController::class)->prefix('contact-type')->group(function () {
+        Route::get('contact-type-all', 'index');
+        Route::get('contact-type/{id}', 'show')->whereNumber('id');
+    });
 });

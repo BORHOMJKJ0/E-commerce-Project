@@ -18,6 +18,7 @@ class WarehouseController extends Controller
     public function __construct(WarehouseService $warehouseService)
     {
         $this->warehouseService = $warehouseService;
+        $this->middleware('auth:api');
     }
 
     /**
