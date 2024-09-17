@@ -49,7 +49,7 @@ class WarehouseService
      *         in="path",
      *         required=true,
      *
-     *         @OA\Schema(type="integer")
+     *        @OA\Schema(type="integer", example=1)
      *     ),
      *
      *     @OA\Response(
@@ -84,9 +84,10 @@ class WarehouseService
      *     @OA\RequestBody(
      *         required=true,
      *
-     *         @OA\JsonContent(
-     *             type="object",
-     *             required={"amount", "pure_price", "payment_date", "settlement_date", "expiry_date", "product_id"},
+     *      @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *             required={"amount", "pure_price", "payment_date", "expiry_date", "product_id"},
      *
      *             @OA\Property(property="amount", type="number", example=100),
      *             @OA\Property(property="pure_price", type="number", example=50.75),
@@ -94,6 +95,7 @@ class WarehouseService
      *             @OA\Property(property="settlement_date", type="string", format="date", example="2024-09-15"),
      *             @OA\Property(property="expiry_date", type="string", format="date", example="2024-12-01"),
      *             @OA\Property(property="product_id", type="integer", example=1)
+     *             )
      *         )
      *     ),
      *
@@ -197,58 +199,44 @@ class WarehouseService
      *         name="id",
      *         in="path",
      *         required=true,
-     *
-     *         @OA\Schema(type="integer")
+     *         @OA\Schema(type="integer", example=1)
      *     ),
-     *
      *     @OA\Parameter(
      *         name="amount",
      *         in="query",
      *         required=false,
-     *
-     *         @OA\Schema(type="number", format="float")
+     *         @OA\Schema(type="integer", example=100)
      *     ),
-     *
      *     @OA\Parameter(
      *         name="pure_price",
      *         in="query",
      *         required=false,
-     *
-     *         @OA\Schema(type="number", format="float")
+     *         @OA\Schema(type="number", format="float", example=225.5)
      *     ),
-     *
      *     @OA\Parameter(
      *         name="payment_date",
      *         in="query",
      *         required=false,
-     *
-     *         @OA\Schema(type="string", format="date")
+     *         @OA\Schema(type="string", format="date", example="2024-09-10")
      *     ),
-     *
      *     @OA\Parameter(
      *         name="settlement_date",
      *         in="query",
      *         required=false,
-     *
-     *         @OA\Schema(type="string", format="date")
+     *         @OA\Schema(type="string", format="date", example="2024-09-24")
      *     ),
-     *
      *     @OA\Parameter(
      *         name="expiry_date",
      *         in="query",
      *         required=false,
-     *
      *         @OA\Schema(type="string", format="date")
      *     ),
-     *
      *     @OA\Parameter(
      *         name="product_id",
      *         in="query",
      *         required=false,
-     *
-     *         @OA\Schema(type="integer")
+     *         @OA\Schema(type="integer", example=1)
      *     ),
-     *
      *      @OA\Header(
      *         header="Content-Type",
      *         description="Content-Type header",
@@ -315,7 +303,7 @@ class WarehouseService
      *         in="path",
      *         required=true,
      *
-     *         @OA\Schema(type="integer")
+     *         @OA\Schema(type="integer", example=1)
      *     ),
      *
      *     @OA\Response(
