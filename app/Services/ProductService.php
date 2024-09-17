@@ -80,13 +80,17 @@ class ProductService
      *     path="/api/products",
      *     summary="Create a product",
      *     tags={"Products"},
+     *
      *     @OA\RequestBody(
      *         required=true,
+     *
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
+     *
      *             @OA\Schema(
      *                 type="object",
      *                 required={"name", "image", "price", "category_id", "user_id"},
+     *
      *                 @OA\Property(property="name", type="string", example="Perform"),
      *                 @OA\Property(property="image", type="string", format="binary"),
      *                 @OA\Property(property="price", type="number", format="float", example=250.75),
@@ -95,25 +99,34 @@ class ProductService
      *             )
      *         )
      *     ),
+     *
      *     @OA\Header(
      *         header="Content-Type",
      *         description="Content-Type header",
+     *
      *         @OA\Schema(type="string", example="multipart/form-data")
      *     ),
+     *
      *     @OA\Header(
      *         header="Accept",
      *         description="Accept header",
+     *
      *         @OA\Schema(type="string", example="application/json")
      *     ),
+     *
      *     @OA\Response(
      *         response=201,
      *         description="Product created successfully",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/ProductResource")
      *     ),
+     *
      *     @OA\Response(
      *         response=422,
      *         description="Validation error",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="error", type="string", example="Invalid input data")
      *         )
      *     ),
@@ -180,68 +193,92 @@ class ProductService
      *     path="/api/products/{id}",
      *     summary="Update a product",
      *     tags={"Products"},
+     *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
+     *
      *         @OA\Schema(type="integer", example=1)
      *     ),
+     *
      *     @OA\Parameter(
      *         name="name",
      *         in="query",
      *         required=false,
+     *
      *         @OA\Schema(type="string", example="Perform")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="image",
      *         in="query",
      *         required=false,
+     *
      *         @OA\Schema(type="string", format="binary")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="price",
      *         in="query",
      *         required=false,
+     *
      *         @OA\Schema(type="number", format="float", example=50.75)
      *     ),
+     *
      *     @OA\Parameter(
      *         name="category_id",
      *         in="query",
      *         required=false,
+     *
      *         @OA\Schema(type="integer", example=1)
      *     ),
+     *
      *     @OA\Parameter(
      *         name="user_id",
      *         in="query",
      *         required=false,
+     *
      *         @OA\Schema(type="integer", example=1)
      *     ),
+     *
      *     @OA\Header(
      *         header="Content-Type",
      *         description="Content-Type header",
+     *
      *         @OA\Schema(type="string", example="application/json")
      *     ),
+     *
      *     @OA\Header(
      *         header="Accept",
      *         description="Accept header",
+     *
      *         @OA\Schema(type="string", example="application/json")
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Product updated successfully",
+     *
      *         @OA\JsonContent(ref="#/components/schemas/ProductResource")
      *     ),
+     *
      *     @OA\Response(
      *         response=422,
      *         description="Validation error",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="error", type="string", example="Invalid input data")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=404,
      *         description="Product not found",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="error", type="string", example="Product not found")
      *         )
      *     )

@@ -32,10 +32,10 @@ class Contact_typeSeeder extends Seeder
             'type_arabic' => 'حساب تويتر ',
             'type_english' => 'twitter_account',
         ]);
-//        contact_type::create([
-//            'id' => '5',
-//            'type-arabic' => 'حساب فيسبوك ',
-//            'type-english' => 'facebook_account',
-//        ]);
+        //        contact_type::create([
+        //            'id' => '5',
+        //            'type-arabic' => 'حساب فيسبوك ',
+        //            'type-english' => 'facebook_account',
+        //        ]);
     }
 }

@@ -86,13 +86,16 @@ class CategoryService
      *
      *      @OA\MediaType(
      *             mediaType="multipart/form-data",
+     *
      *             @OA\Schema(
      *                 type="object",
      *                 required={"name"},
+     *
      *                 @OA\Property(property="name", type="string", example="fruits"),
      *             )
      *         )
      *     ),
+     *
      *    @OA\Header(
      *         header="Content-Type",
      *         description="Content-Type header",
@@ -191,14 +194,18 @@ class CategoryService
      *         name="id",
      *         in="path",
      *         required=true,
+     *
      *         @OA\Schema(type="integer", example=1)
      *     ),
+     *
      *     @OA\Parameter(
      *         name="name",
      *         in="query",
      *         required=false,
+     *
      *         @OA\Schema(type="string", example="Vegetables")
      *     ),
+     *
      *      @OA\Header(
      *         header="Content-Type",
      *         description="Content-Type header",
@@ -273,6 +280,7 @@ class CategoryService
      *             @OA\Property(property="message", type="string", example="Category deleted successfully")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=404,
      *         description="Category not found",
