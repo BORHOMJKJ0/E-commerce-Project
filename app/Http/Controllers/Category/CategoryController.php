@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Category;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
 use App\Services\CategoryService;
 use Illuminate\Http\JsonResponse;
@@ -15,7 +16,6 @@ class CategoryController extends Controller
     {
         $this->middleware('auth:api');
         $this->categoryService = $categoryService;
-        $this->middleware('auth:api');
     }
 
     public function index(): JsonResponse

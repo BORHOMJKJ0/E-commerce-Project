@@ -12,6 +12,11 @@
         },
         "version": "1.0.0"
     },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000/api/documentation"
+        }
+    ],
     "paths": {
         "/api/categories": {
             "get": {
@@ -34,7 +39,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -88,7 +98,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/categories/{id}": {
@@ -136,66 +151,19 @@
                             }
                         }
                     }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "Categories"
-                ],
-                "summary": "Delete a category",
-                "operationId": "4cca46d3c0ef01421912854821ace435",
-                "parameters": [
+                },
+                "security": [
                     {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
+                        "bearerAuth": []
                     }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Category deleted successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Category deleted successfully"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Category not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Category not found"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
+                ]
             },
-            "patch": {
+            "put": {
                 "tags": [
                     "Categories"
                 ],
                 "summary": "Update a category",
-                "operationId": "31ac48cdbe5cde52526a4c909dc0c114",
+                "operationId": "e29156104f707c7946c7148a2c97fb49",
                 "parameters": [
                     {
                         "name": "id",
@@ -259,7 +227,69 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Delete a category",
+                "operationId": "4cca46d3c0ef01421912854821ace435",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Category deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Category deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Category not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Category not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/categories/order/{column}/{direction}": {
@@ -326,7 +356,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/users/contact/add": {
@@ -772,7 +807,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -789,6 +829,7 @@
                                     "name",
                                     "image",
                                     "price",
+                                    "description",
                                     "category_id",
                                     "user_id"
                                 ],
@@ -805,6 +846,10 @@
                                         "type": "number",
                                         "format": "float",
                                         "example": 250.75
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "This is a new Perform and it's cool Try it"
                                     },
                                     "category_id": {
                                         "type": "integer",
@@ -847,7 +892,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/products/{id}": {
@@ -895,66 +945,19 @@
                             }
                         }
                     }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "Products"
-                ],
-                "summary": "Delete a product",
-                "operationId": "28a5b7e282a2573b78b84d635084ebb7",
-                "parameters": [
+                },
+                "security": [
                     {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
+                        "bearerAuth": []
                     }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Product deleted successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Product deleted successfully"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Product not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Product not found"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
+                ]
             },
-            "patch": {
+            "put": {
                 "tags": [
                     "Products"
                 ],
                 "summary": "Update a product",
-                "operationId": "4949a22028787b1e3ea1c3f09bf7b8b4",
+                "operationId": "f0cfd09da130cb47a41a668ef2efd89a",
                 "parameters": [
                     {
                         "name": "id",
@@ -991,6 +994,15 @@
                             "type": "number",
                             "format": "float",
                             "example": 50.75
+                        }
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "This is a new Perform and it's cool Try it"
                         }
                     },
                     {
@@ -1055,7 +1067,69 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Delete a product",
+                "operationId": "28a5b7e282a2573b78b84d635084ebb7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Product deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Product not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/products/order/{column}/{direction}": {
@@ -1123,7 +1197,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/users/all": {
@@ -1707,7 +1786,7 @@
         "/api/warehouses": {
             "get": {
                 "tags": [
-                    "Warehouses"
+                    "Warehouse"
                 ],
                 "summary": "Get all warehouses",
                 "operationId": "a27c03c26cb3d146e614974c69b093ff",
@@ -1725,11 +1804,16 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
-                    "Warehouses"
+                    "Warehouse"
                 ],
                 "summary": "Create a warehouse",
                 "operationId": "f3631e1c064dc1c40caa0e38e5383bf6",
@@ -1806,13 +1890,18 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/warehouses/{id}": {
             "get": {
                 "tags": [
-                    "Warehouses"
+                    "Warehouse"
                 ],
                 "summary": "Get a warehouse by ID",
                 "operationId": "aad187157230e40d8ffa2c4423366f50",
@@ -1854,66 +1943,19 @@
                             }
                         }
                     }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "Warehouses"
-                ],
-                "summary": "Delete a warehouse",
-                "operationId": "e5f3e8c0cc0c5a47918d9c85f71f9d37",
-                "parameters": [
+                },
+                "security": [
                     {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
+                        "bearerAuth": []
                     }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Warehouse deleted successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Warehouse deleted successfully"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Warehouse not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "Warehouse not found"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                }
+                ]
             },
-            "patch": {
+            "put": {
                 "tags": [
-                    "Warehouses"
+                    "Warehouse"
                 ],
                 "summary": "Update a warehouse",
-                "operationId": "e81e4f1745e14e339d8d5fff87142a8b",
+                "operationId": "9807d87b2104bf235319f783a0c00d2d",
                 "parameters": [
                     {
                         "name": "id",
@@ -2025,13 +2067,75 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Warehouse"
+                ],
+                "summary": "Delete a warehouse",
+                "operationId": "e5f3e8c0cc0c5a47918d9c85f71f9d37",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Warehouse deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Warehouse deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Warehouse not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Warehouse not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/warehouses/order/{column}/{direction}": {
             "get": {
                 "tags": [
-                    "Warehouses"
+                    "Warehouse"
                 ],
                 "summary": "Order warehouses by a specific column",
                 "operationId": "9904bc7c266c0860dec9b93aca190ef3",
@@ -2095,7 +2199,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
     },
@@ -2116,11 +2225,6 @@
                         "items": {
                             "$ref": "#/components/schemas/ProductResource"
                         }
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-09-15 12:30"
                     }
                 },
                 "type": "object"
@@ -2144,6 +2248,10 @@
                         "format": "float",
                         "example": "99.99"
                     },
+                    "description": {
+                        "type": "string",
+                        "example": "it's a migical Product like from Random box"
+                    },
                     "user": {
                         "type": "string",
                         "example": "John Doe"
@@ -2160,11 +2268,6 @@
                     "category": {
                         "type": "string",
                         "example": "Electronics"
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-09-15 12:30"
                     }
                 },
                 "type": "object"
@@ -2221,11 +2324,6 @@
                             }
                         },
                         "type": "object"
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-09-15 12:30"
                     }
                 },
                 "type": "object"
@@ -2245,11 +2343,6 @@
                         "items": {
                             "$ref": "#/components/schemas/Product"
                         }
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-09-15 12:30"
                     }
                 },
                 "type": "object"
@@ -2273,6 +2366,10 @@
                         "format": "float",
                         "example": 499.99
                     },
+                    "description": {
+                        "type": "string",
+                        "example": "Samsung A30s white color 8Ram 128GB space"
+                    },
                     "user": {
                         "type": "string",
                         "example": "John Doe"
@@ -2289,11 +2386,6 @@
                     "category": {
                         "type": "string",
                         "example": "Electronics"
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-09-15 12:30"
                     }
                 },
                 "type": "object"
@@ -2350,11 +2442,6 @@
                             }
                         },
                         "type": "object"
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-09-15 12:30"
                     }
                 },
                 "type": "object"
@@ -2363,9 +2450,9 @@
         "securitySchemes": {
             "bearerAuth": {
                 "type": "http",
-                "description": "Enter JWT Bearer token in the format 'Bearer {token}'",
+                "scheme": "bearer",
                 "bearerFormat": "JWT",
-                "scheme": "bearer"
+                "description": "Enter JWT Bearer token in the format \"Bearer {token}\""
             }
         }
     },
@@ -2391,8 +2478,13 @@
             "description": "Users"
         },
         {
-            "name": "Warehouses",
-            "description": "Warehouses"
+            "name": "Warehouse",
+            "description": "Warehouse"
+        }
+    ],
+    "security": [
+        {
+            "bearerAuth": []
         }
     ]
 }

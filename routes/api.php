@@ -4,10 +4,11 @@ use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\ForgetPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\UserController;
-use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Category\CategoryController;
+use App\Http\Controllers\contact\ContactInformationController;
 use App\Http\Controllers\contact\ContactTypeController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\WarehouseController;
+use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\Warehouse\WarehouseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -58,7 +59,7 @@ Route::middleware('api')->prefix('users')->group(function () {
     Route::post('password/forget-password', [ForgetPasswordController::class, 'forgetPassword']);
     Route::post('password/reset', [ResetPasswordController::class, 'resetPassword']);
 
-    Route::controller('ContactInformationController')->prefix('contact')->group(function () {
+    Route::controller(ContactInformationController::class)->prefix('contact')->group(function () {
         Route::post('add', 'store');
         Route::get('show/{user_id}', 'show')->whereNumber('user_id');
         Route::delete('remove/{contact_information_id}', 'destroy')->whereNumber('contact_information_id');

@@ -13,15 +13,6 @@ class Contact_InformationService
 
     protected $contactRepository;
 
-    /**
-     * @OA\SecurityScheme(
-     *     securityScheme="bearerAuth",
-     *     type="http",
-     *     scheme="bearer",
-     *     bearerFormat="JWT",
-     *     description="Enter JWT Bearer token in the format 'Bearer {token}'"
-     * )
-     */
     public function __construct()
     {
         $this->contactRepository = new ContactRepository;

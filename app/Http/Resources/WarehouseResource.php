@@ -25,7 +25,6 @@ use OpenApi\Annotations as OA;
  *         @OA\Property(property="category", type="string", example="Category Name"),
  *         @OA\Property(property="user", type="string", example="John Doe")
  *     ),
- *     @OA\Property(property="created_at", type="string", format="date-time", example="2024-09-15 12:30")
  * )
  */
 class WarehouseResource extends JsonResource
