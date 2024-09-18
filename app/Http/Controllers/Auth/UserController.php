@@ -50,8 +50,8 @@ class UserController extends Controller
         return $this->UserService->logout();
     }
 
-    public function update(UpdateUserRequest $request): JsonResponse
+    public function update(UpdateUserRequest $request, $user_id): JsonResponse
     {
-        return $this->UserService->update($request);
+        return $this->UserService->update($request, $user_id);
     }
 }

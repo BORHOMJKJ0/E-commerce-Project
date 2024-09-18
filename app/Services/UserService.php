@@ -11,6 +11,7 @@ use App\Traits\ValidationTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use LaravelLang\Publisher\Concerns\Has;
 
 class UserService
 {
@@ -324,6 +325,7 @@ class UserService
         if (! $user) {
             return response()->json(['error' => 'User not found'], 404);
         }
+
         $user = $this->userRepository->get_user_contactById($user_id);
 
         return response()->json($user, 200);
@@ -401,22 +403,23 @@ class UserService
      *     )
      * )
      */
-    public function update(UpdateUserRequest $request): JsonResponse
+    public function update(UpdateUserRequest $request, $user_id): JsonResponse
     {
+
         $validationResponse = $this->validateRequest($request, $request->rules());
         if ($validationResponse) {
             return $validationResponse;
         }
+        if (auth()->user()->id != $user_id) {
+            return response()->json(['error' => "you can't modify "], 403);
+        }
 
-        $user_id = auth()->user()->id;
-        $newData = [
-            'name' => $request->name,
-            'password' => Hash::make($request->new_password),
-            'mobile' => $request->mobile,
-        ];
+        if ($request->filled('new_password')) {
+            $request->merge(['password' => Hash::make($request->new_password)]);
+        }
 
         $user = $this->userRepository->findById($user_id);
-        $this->userRepository->update($user, $newData);
+        $this->userRepository->update($user, $request->except(['old_password', 'new_password']));
 
         $user = $this->userRepository->get_user_contactById($user_id);
 

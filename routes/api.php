@@ -47,7 +47,7 @@ Route::middleware('api')->prefix('users')->group(function () {
         Route::post('login', 'login')->middleware('verified.email');
         Route::post('logout', 'logout');
         Route::get('profile/{user_id}', 'profile')->whereNumber('user_id');
-        Route::patch('update', 'update');
+        Route::put('update/{user_id}', 'update');
     });
 
     Route::controller(EmailVerificationController::class)->group(function () {

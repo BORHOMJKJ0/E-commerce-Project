@@ -73,7 +73,6 @@ class ProductResource extends JsonResource
             'total_amount' => $this->warehouses->sum('amount'),
             'expiry_date' => $minExpiryDate ?: null,
             'category' => $this->category->name,
-            'created_at' => $this->created_at->format('Y-m-d H:i'),
         ];
     }
 }

@@ -41,7 +41,6 @@ class CategoryResource extends JsonResource
                     'user' => $product->user->name,
                 ];
             }),
-            'created_at' => $this->created_at->format('Y-m-d H:i'),
         ];
     }
 }
