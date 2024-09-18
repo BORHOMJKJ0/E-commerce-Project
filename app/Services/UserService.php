@@ -71,6 +71,7 @@ class UserService
     {
         return $this->userRepository->get_users_contacts();
     }
+
     /**
      * @OA\Post(
      *     path="/api/users/register",
