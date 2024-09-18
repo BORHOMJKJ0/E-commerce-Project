@@ -10,10 +10,6 @@ use Illuminate\Http\Request;
 
 class WarehouseController extends Controller
 {
-    const VALID_COLUMNS = ['expiry_date', 'created_at', 'updated_at', 'payment_date', 'settlement_date', 'pure_price'];
-
-    const VALID_DIRECTIONS = ['asc', 'desc'];
-
     protected $warehouseService;
 
     public function __construct(WarehouseService $warehouseService)

@@ -17,7 +17,7 @@ use OpenApi\Annotations as OA;
  *         property="products",
  *         type="array",
  *
- *         @OA\Items(ref="#/components/schemas/Product")
+ *         @OA\Items(ref="#/components/schemas/Category")
  *     ),
  *
  * )

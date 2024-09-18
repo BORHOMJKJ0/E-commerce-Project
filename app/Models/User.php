@@ -72,6 +72,6 @@ class User extends Authenticatable implements JWTSubject
 
     public function contacts(): HasMany
     {
-        return $this->hasMany(contact_information::class);
+        return $this->hasMany(Contact_information::class);
     }
 }

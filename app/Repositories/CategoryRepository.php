@@ -8,7 +8,7 @@ class CategoryRepository
 {
     public function getAll()
     {
-        return Category::all();
+        return Category::paginate(5);
     }
 
     public function findById($id)
@@ -18,7 +18,7 @@ class CategoryRepository
 
     public function orderBy($column, $direction)
     {
-        return Category::orderBy($column, $direction)->get();
+        return Category::orderBy($column, $direction)->paginate(5);
     }
 
     public function create(array $data)

@@ -8,17 +8,17 @@ class WarehouseRepository
 {
     public function getAll()
     {
-        return Warehouse::all();
+        return Warehouse::with('product')->all();
     }
 
     public function findById($id)
     {
-        return Warehouse::findOrFail($id);
+        return Warehouse::with('product')->findOrFail($id);
     }
 
     public function orderBy($column, $direction)
     {
-        return Warehouse::orderBy($column, $direction)->get();
+        return Warehouse::with('product')->orderBy($column, $direction)->get();
     }
 
     public function create(array $data)

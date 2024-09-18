@@ -901,6 +901,352 @@
                 }
             }
         },
+        "/api/offers": {
+            "get": {
+                "tags": [
+                    "offers"
+                ],
+                "summary": "Get all offers",
+                "operationId": "82b2a3d767019d2805a70e2059bf7ed3",
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/OfferResource"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "offers"
+                ],
+                "summary": "Create a offer",
+                "operationId": "a6d9a7f4b923441a1072570cb7a787b2",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "fruits"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Offer created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OfferResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid input data"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/offers/{id}": {
+            "get": {
+                "tags": [
+                    "offers"
+                ],
+                "summary": "Get a offer by ID",
+                "operationId": "1bc75c9c6e634dee5d2b9ce660bfba5c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OfferResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Offer not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Offer not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "offers"
+                ],
+                "summary": "Update a offer",
+                "operationId": "9a896cb858c0c57d6113d978fd830605",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Vegetables"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Offer updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OfferResource"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid input data"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Offer not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Offer not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "offers"
+                ],
+                "summary": "Delete a offer",
+                "operationId": "bf32ad4c435d8f34475df60483a038b6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Offer deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Offer deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Offer not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Offer not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/offers/order/{column}/{direction}": {
+            "get": {
+                "tags": [
+                    "offers"
+                ],
+                "summary": "Order offers by a specific column",
+                "operationId": "6ead40a61d18d819cacf8537069a72be",
+                "parameters": [
+                    {
+                        "name": "column",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "name",
+                                "created_at",
+                                "updated_at"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "direction",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/OfferResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid column or direction",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid column or direction"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/products": {
             "get": {
                 "tags": [
@@ -2229,6 +2575,49 @@
                 },
                 "type": "object"
             },
+            "OfferResource": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Product A"
+                    },
+                    "image": {
+                        "type": "string",
+                        "example": "https://example.com/product.jpg"
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": "99.99"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "it's a migical Product like from Random box"
+                    },
+                    "user": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "total_amount": {
+                        "type": "integer",
+                        "example": 500
+                    },
+                    "expiry_date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2025-12-31"
+                    },
+                    "category": {
+                        "type": "string",
+                        "example": "Electronics"
+                    }
+                },
+                "type": "object"
+            },
             "ProductResource": {
                 "properties": {
                     "id": {
@@ -2341,8 +2730,51 @@
                     "products": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/Product"
+                            "$ref": "#/components/schemas/Category"
                         }
+                    }
+                },
+                "type": "object"
+            },
+            "Offer": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Smartphone"
+                    },
+                    "image": {
+                        "type": "string",
+                        "example": "product_image.jpg"
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 499.99
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Samsung A30s white color 8Ram 128GB space"
+                    },
+                    "user": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "total_amount": {
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "expiry_date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2024-12-31"
+                    },
+                    "category": {
+                        "type": "string",
+                        "example": "Electronics"
                     }
                 },
                 "type": "object"
@@ -2472,6 +2904,10 @@
         {
             "name": "Email Verification",
             "description": "Email Verification"
+        },
+        {
+            "name": "offers",
+            "description": "offers"
         },
         {
             "name": "Products",

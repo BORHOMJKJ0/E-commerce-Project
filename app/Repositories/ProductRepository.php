@@ -8,7 +8,7 @@ class ProductRepository
 {
     public function getAll()
     {
-        return Product::with(['category', 'user'])->get();
+        return Product::with(['category', 'user'])->paginate(5);
     }
 
     public function findById($id)
@@ -18,7 +18,7 @@ class ProductRepository
 
     public function orderBy($column, $direction)
     {
-        return Product::with(['category', 'user'])->orderBy($column, $direction)->get();
+        return Product::with(['category', 'user'])->orderBy($column, $direction)->paginate(5);
     }
 
     public function create(array $data)

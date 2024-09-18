@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class contact_information extends Model
+class Contact_information extends Model
 {
     use HasFactory;
 
@@ -20,6 +20,6 @@ class contact_information extends Model
 
     public function contact_type()
     {
-        return $this->hasOne(contact_type::class);
+        return $this->hasOne(Contact_type::class);
     }
 }

@@ -5,8 +5,9 @@ use App\Http\Controllers\Auth\ForgetPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Category\CategoryController;
-use App\Http\Controllers\contact\ContactInformationController;
-use App\Http\Controllers\contact\ContactTypeController;
+use App\Http\Controllers\Contact\ContactInformationController;
+use App\Http\Controllers\Contact\ContactTypeController;
+use App\Http\Controllers\Offer\OfferController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Warehouse\WarehouseController;
 use Illuminate\Http\Request;
@@ -26,6 +27,7 @@ Route::middleware('api')->group(function () {
     Route::apiResource('products', ProductController::class);
     Route::apiResource('categories', CategoryController::class);
     Route::apiResource('warehouses', WarehouseController::class);
+    Route::apiResource('offers', OfferController::class);
     Route::prefix('products')->controller(ProductController::class)->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');
     });
@@ -33,6 +35,9 @@ Route::middleware('api')->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');
     });
     Route::prefix('warehouses')->controller(WarehouseController::class)->group(function () {
+        Route::get('/order/{column}/{direction}', 'orderBy');
+    });
+    Route::prefix('offers')->controller(OfferController::class)->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');
     });
 });

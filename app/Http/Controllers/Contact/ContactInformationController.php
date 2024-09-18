@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\contact;
+namespace App\Http\Controllers\Contact;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ContactRequest;
