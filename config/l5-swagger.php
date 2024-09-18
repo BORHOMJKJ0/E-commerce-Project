@@ -86,7 +86,7 @@ return [
             /*
              * Edit to set the api's base path
              */
-            'base' => env('L5_SWAGGER_BASE_PATH', 'http://127.0.0.1:8000/api/documentation'), // Adjust if necessary
+            'base' => env('L5_SWAGGER_BASE_PATH', '/'), // Adjust if necessary
 
             /*
              * Edit to set path where swagger ui assets should be stored

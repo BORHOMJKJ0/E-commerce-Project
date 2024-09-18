@@ -56,7 +56,7 @@ Route::middleware('api')->prefix('users')->group(function () {
         Route::post('email-verification', 'email_verification');
     });
 
-    Route::post('password/forget-password', [ForgetPasswordController::class, 'forgetPassword']);
+    Route::get('password/forget-password/{email}', [ForgetPasswordController::class, 'forgetPassword']);
     Route::post('password/reset', [ResetPasswordController::class, 'resetPassword']);
 
     Route::controller(ContactInformationController::class)->prefix('contact')->group(function () {

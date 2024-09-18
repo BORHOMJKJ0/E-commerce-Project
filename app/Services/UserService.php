@@ -71,7 +71,6 @@ class UserService
     {
         return $this->userRepository->get_users_contacts();
     }
-
     /**
      * @OA\Post(
      *     path="/api/users/register",
@@ -215,7 +214,7 @@ class UserService
         $credentials = $request->only('email', 'password');
 
         if (! $token = Auth::guard('api')->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Email or Password is invalid'], 401);
         }
 
         $user = $this->userRepository->findByEmail($request->email);
