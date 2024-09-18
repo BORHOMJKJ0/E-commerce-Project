@@ -53,7 +53,7 @@ Route::middleware('api')->prefix('users')->group(function () {
         Route::post('login', 'login')->middleware('verified.email');
         Route::post('logout', 'logout');
         Route::get('profile/{user_id}', 'profile')->whereNumber('user_id');
-        Route::patch('update', 'update');
+        Route::put('update/{user_id}', 'update');
     });
 
     Route::controller(EmailVerificationController::class)->group(function () {
@@ -61,7 +61,7 @@ Route::middleware('api')->prefix('users')->group(function () {
         Route::post('email-verification', 'email_verification');
     });
 
-    Route::post('password/forget-password', [ForgetPasswordController::class, 'forgetPassword']);
+    Route::get('password/forget-password/{email}', [ForgetPasswordController::class, 'forgetPassword']);
     Route::post('password/reset', [ResetPasswordController::class, 'resetPassword']);
 
     Route::controller(ContactInformationController::class)->prefix('contact')->group(function () {

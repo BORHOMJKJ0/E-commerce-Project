@@ -19,8 +19,8 @@ class ForgetPasswordController extends Controller
         $this->PasswordService = new PasswordService;
     }
 
-    public function forgetPassword(ForgetPasswordRequest $request): JsonResponse
+    public function forgetPassword($email): JsonResponse
     {
-        return $this->PasswordService->forgetPassword($request);
+        return $this->PasswordService->forgetPassword($email);
     }
 }

@@ -2,12 +2,12 @@
 
 namespace App\Services;
 
-use App\Http\Requests\Auth\ForgetPasswordRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Jobs\ForgetPasswordJob;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Traits\ValidationTrait;
+use Ichtrojan\Otp\Otp;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 
@@ -16,26 +16,31 @@ class PasswordService
     use ValidationTrait;
 
     protected $userRepository;
+    protected $otp;
 
     public function __construct()
     {
         $this->userRepository = new UserRepository;
+        $this->otp = new Otp;
     }
 
-    public function forgetPassword(ForgetPasswordRequest $request): JsonResponse
+    public function forgetPassword($email): JsonResponse
     {
-        $validationResponse = $this->validateRequest($request, $request->rules());
-        if ($validationResponse) {
-            return $validationResponse;
+        if (! str_ends_with($email, '@gmail.com')) {
+            return response()->json(['message' => 'Email is not a valid email address, it must be end with a @gmail.com']);
         }
+        $user = $this->userRepository->findByEmail($email);
 
-        $data = $request->validated();
-        $user = $this->userRepository->findByEmail($data['email']);
-
+        if (! $user) {
+            return response()->json(['message' => 'User not found'], 403);
+        }
         ForgetPasswordJob::dispatch($user);
-        $success['success'] = true;
+        $message = [
+            'message' => 'The code has been successfully sent to your email',
+            'success' => true,
+        ];
 
-        return response()->json($success, 200);
+        return response()->json($message, 200);
     }
 
     public function resetPassword(ResetPasswordRequest $request): JsonResponse
