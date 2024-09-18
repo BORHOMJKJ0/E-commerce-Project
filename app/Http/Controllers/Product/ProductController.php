@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Product;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
 use App\Services\ProductService;
 use Illuminate\Http\JsonResponse;
@@ -9,7 +10,7 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    const VALID_COLUMNS = ['name', 'price', 'created_at', 'updated_at'];
+    const VALID_COLUMNS = ['name', 'price', 'description', 'created_at', 'updated_at'];
 
     const VALID_DIRECTIONS = ['asc', 'desc'];
 
@@ -19,7 +20,6 @@ class ProductController extends Controller
     {
         $this->middleware('auth:api');
         $this->productService = $productService;
-        $this->middleware('auth:api');
     }
 
     public function index(): JsonResponse

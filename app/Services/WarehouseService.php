@@ -19,7 +19,8 @@ class WarehouseService
      * @OA\Get(
      *     path="/api/warehouses",
      *     summary="Get all warehouses",
-     *     tags={"Warehouses"},
+     *     tags={"Warehouse"},
+     *     security={{"bearerAuth": {} }},
      *
      *     @OA\Response(
      *         response=200,
@@ -42,7 +43,8 @@ class WarehouseService
      * @OA\Get(
      *     path="/api/warehouses/{id}",
      *     summary="Get a warehouse by ID",
-     *     tags={"Warehouses"},
+     *     tags={"Warehouse"},
+     *     security={{"bearerAuth": {} }},
      *
      *     @OA\Parameter(
      *         name="id",
@@ -79,7 +81,8 @@ class WarehouseService
      * @OA\Post(
      *     path="/api/warehouses",
      *     summary="Create a warehouse",
-     *     tags={"Warehouses"},
+     *     tags={"Warehouse"},
+     *     security={{"bearerAuth": {} }},
      *
      *     @OA\RequestBody(
      *         required=true,
@@ -145,7 +148,8 @@ class WarehouseService
      * @OA\Get(
      *     path="/api/warehouses/order/{column}/{direction}",
      *     summary="Order warehouses by a specific column",
-     *     tags={"Warehouses"},
+     *     tags={"Warehouse"},
+     *     security={{"bearerAuth": {} }},
      *
      *     @OA\Parameter(
      *         name="column",
@@ -191,10 +195,11 @@ class WarehouseService
     }
 
     /**
-     * @OA\Patch(
+     * @OA\Put(
      *     path="/api/warehouses/{id}",
      *     summary="Update a warehouse",
-     *     tags={"Warehouses"},
+     *     tags={"Warehouse"},
+     *      security={{"bearerAuth": {} }},
      *
      *     @OA\Parameter(
      *         name="id",
@@ -311,7 +316,8 @@ class WarehouseService
      * @OA\Delete(
      *     path="/api/warehouses/{id}",
      *     summary="Delete a warehouse",
-     *     tags={"Warehouses"},
+     *     tags={"Warehouse"},
+     *     security={{"bearerAuth": {} }},
      *
      *     @OA\Parameter(
      *         name="id",

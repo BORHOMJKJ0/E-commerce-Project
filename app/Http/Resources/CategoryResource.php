@@ -20,7 +20,6 @@ use OpenApi\Annotations as OA;
  *         @OA\Items(ref="#/components/schemas/ProductResource")
  *     ),
  *
- *     @OA\Property(property="created_at", type="string", format="date-time", example="2024-09-15 12:30")
  * )
  */
 class CategoryResource extends JsonResource
@@ -41,7 +40,6 @@ class CategoryResource extends JsonResource
                     'user' => $product->user->name,
                 ];
             }),
-            'created_at' => $this->created_at->format('Y-m-d H:i'),
         ];
     }
 }

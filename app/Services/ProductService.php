@@ -20,6 +20,7 @@ class ProductService
      *     path="/api/products",
      *     summary="Get all products",
      *     tags={"Products"},
+     *     security={{"bearerAuth": {} }},
      *
      *     @OA\Response(
      *         response=200,
@@ -43,6 +44,7 @@ class ProductService
      *     path="/api/products/{id}",
      *     summary="Get a single product by ID",
      *     tags={"Products"},
+     *     security={{"bearerAuth": {} }},
      *
      *     @OA\Parameter(
      *         name="id",
@@ -80,6 +82,7 @@ class ProductService
      *     path="/api/products",
      *     summary="Create a product",
      *     tags={"Products"},
+     *     security={{"bearerAuth": {} }},
      *
      *     @OA\RequestBody(
      *         required=true,
@@ -89,11 +92,12 @@ class ProductService
      *
      *             @OA\Schema(
      *                 type="object",
-     *                 required={"name", "image", "price", "category_id", "user_id"},
+     *                 required={"name", "image", "price", "description", "category_id", "user_id"},
      *
      *                 @OA\Property(property="name", type="string", example="Perform"),
      *                 @OA\Property(property="image", type="string", format="binary"),
      *                 @OA\Property(property="price", type="number", format="float", example=250.75),
+     *                 @OA\Property(property="description", type="string", example="This is a new Perform and it's cool Try it"),
      *                 @OA\Property(property="category_id", type="integer", example=1),
      *                 @OA\Property(property="user_id", type="integer", example=1)
      *             )
@@ -144,6 +148,7 @@ class ProductService
      *     path="/api/products/order/{column}/{direction}",
      *     summary="Order products by a specific column",
      *     tags={"Products"},
+     *     security={{"bearerAuth": {} }},
      *
      *     @OA\Parameter(
      *         name="column",
@@ -189,10 +194,11 @@ class ProductService
     }
 
     /**
-     * @OA\Patch(
+     * @OA\Put(
      *     path="/api/products/{id}",
      *     summary="Update a product",
      *     tags={"Products"},
+     *      security={{"bearerAuth": {} }},
      *
      *     @OA\Parameter(
      *         name="id",
@@ -224,6 +230,14 @@ class ProductService
      *         required=false,
      *
      *         @OA\Schema(type="number", format="float", example=50.75)
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="description",
+     *         in="query",
+     *         required=false,
+     *
+     *         @OA\Schema(type="string", example="This is a new Perform and it's cool Try it")
      *     ),
      *
      *     @OA\Parameter(
@@ -298,6 +312,7 @@ class ProductService
      *     path="/api/products/{id}",
      *     summary="Delete a product",
      *     tags={"Products"},
+     *     security={{"bearerAuth": {} }},
      *
      *     @OA\Parameter(
      *         name="id",
@@ -339,6 +354,7 @@ class ProductService
             'name' => "$rule|string|max:255|unique:products,name",
             'image' => "$rule|image|max:5120",
             'price' => "$rule|numeric|min:0",
+            'description' => "$rule|string|max:1000",
             'category_id' => "$rule|exists:categories,id",
             'user_id' => "$rule|exists:users,id",
         ]);

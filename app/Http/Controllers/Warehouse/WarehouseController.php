@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Warehouse;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\WarehouseResource;
 use App\Services\WarehouseService;
 use Illuminate\Http\JsonResponse;
@@ -19,7 +20,6 @@ class WarehouseController extends Controller
     {
         $this->middleware('auth:api');
         $this->warehouseService = $warehouseService;
-        $this->middleware('auth:api');
     }
 
     public function index(): JsonResponse

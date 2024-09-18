@@ -16,10 +16,20 @@ class CategoryService
     }
 
     /**
+     * @OA\SecurityScheme(
+     *     securityScheme="bearerAuth",
+     *     type="http",
+     *     scheme="bearer",
+     *     bearerFormat="JWT",
+     *     description="Enter JWT Bearer token in the format 'Bearer {token}'"
+     * )
+     */
+    /**
      * @OA\Get(
      *     path="/api/categories",
      *     summary="Get all categories",
      *     tags={"Categories"},
+     *     security={{"bearerAuth": {} }},
      *
      *     @OA\Response(
      *         response=200,
@@ -43,6 +53,7 @@ class CategoryService
      *     path="/api/categories/{id}",
      *     summary="Get a category by ID",
      *     tags={"Categories"},
+     *     security={{"bearerAuth": {} }},
      *
      *     @OA\Parameter(
      *         name="id",
@@ -80,6 +91,7 @@ class CategoryService
      *     path="/api/categories",
      *     summary="Create a category",
      *     tags={"Categories"},
+     *     security={{"bearerAuth": {} }},
      *
      *     @OA\RequestBody(
      *         required=true,
@@ -140,6 +152,7 @@ class CategoryService
      *     path="/api/categories/order/{column}/{direction}",
      *     summary="Order categories by a specific column",
      *     tags={"Categories"},
+     *     security={{"bearerAuth": {} }},
      *
      *     @OA\Parameter(
      *         name="column",
@@ -185,10 +198,11 @@ class CategoryService
     }
 
     /**
-     * @OA\Patch(
+     * @OA\Put(
      *     path="/api/categories/{id}",
      *     summary="Update a category",
      *     tags={"Categories"},
+     *      security={{"bearerAuth": {} }},
      *
      *     @OA\Parameter(
      *         name="id",
@@ -252,7 +266,7 @@ class CategoryService
     {
         $category = $this->categoryRepository->findById($id);
 
-        $this->validateCategoryData($data);
+        $this->validateCategoryData($data, 'sometimes');
 
         return $this->categoryRepository->update($id, $data);
     }
@@ -262,6 +276,7 @@ class CategoryService
      *     path="/api/categories/{id}",
      *     summary="Delete a category",
      *     tags={"Categories"},
+     *     security={{"bearerAuth": {} }},
      *
      *     @OA\Parameter(
      *         name="id",
@@ -297,10 +312,10 @@ class CategoryService
         return $this->categoryRepository->delete($id);
     }
 
-    protected function validateCategoryData(array $data)
+    protected function validateCategoryData(array $data, $rule = 'required')
     {
         $validator = Validator::make($data, [
-            'name' => 'required|string|max:100|unique:categories,name',
+            'name' => "$rule|string|max:100|unique:categories,name",
         ]);
 
         if ($validator->fails()) {

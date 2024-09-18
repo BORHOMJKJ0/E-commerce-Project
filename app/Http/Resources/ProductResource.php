@@ -16,11 +16,11 @@ use OpenApi\Annotations as OA;
  *     @OA\Property(property="name", type="string", example="Product A"),
  *     @OA\Property(property="image", type="string", example="https://example.com/product.jpg"),
  *     @OA\Property(property="price", type="number", format="float", example="99.99"),
+ *     @OA\Property(property="description", type="string", example="it's a migical Product like from Random box"),
  *     @OA\Property(property="user", type="string", example="John Doe"),
  *     @OA\Property(property="total_amount", type="integer", example=500),
  *     @OA\Property(property="expiry_date", type="string", format="date", example="2025-12-31"),
  *     @OA\Property(property="category", type="string", example="Electronics"),
- *     @OA\Property(property="created_at", type="string", format="date-time", example="2024-09-15 12:30")
  * )
  */
 class ProductResource extends JsonResource
@@ -61,6 +61,7 @@ class ProductResource extends JsonResource
             'name' => $this->name,
             'image' => $this->image,
             'price' => $this->price,
+            'description' => $this->description,
             //            'current_price' => $currentPrice,
             'user' => $this->user->name,
             //            'offers' => $this->offers->map(function ($offer) {
@@ -73,7 +74,6 @@ class ProductResource extends JsonResource
             'total_amount' => $this->warehouses->sum('amount'),
             'expiry_date' => $minExpiryDate ?: null,
             'category' => $this->category->name,
-            'created_at' => $this->created_at->format('Y-m-d H:i'),
         ];
     }
 }

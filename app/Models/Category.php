@@ -20,7 +20,6 @@ use OpenApi\Annotations as OA;
  *         @OA\Items(ref="#/components/schemas/Product")
  *     ),
  *
- *     @OA\Property(property="created_at", type="string", format="date-time", example="2024-09-15 12:30")
  * )
  */
 class Category extends Model
