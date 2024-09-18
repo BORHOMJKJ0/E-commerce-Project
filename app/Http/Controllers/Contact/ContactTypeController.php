@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\contact;
+namespace App\Http\Controllers\Contact;
 
 use App\Http\Controllers\Controller;
-use App\Models\contact_type;
+use App\Models\Contact_type;
 use App\Traits\ValidationTrait;
 
 class ContactTypeController extends Controller
@@ -12,12 +12,12 @@ class ContactTypeController extends Controller
 
     public function index()
     {
-        return contact_type::all()->select('id', 'type_arabic', 'type_english');
+        return Contact_type::all()->select('id', 'type_arabic', 'type_english');
     }
 
     public function show($id)
     {
-        $contact_type = contact_type::find($id);
+        $contact_type = Contact_type::find($id);
         $data = [
             'id' => $contact_type->id,
             'type_arabic' => $contact_type->type_arabic,

@@ -4,11 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use OpenApi\Annotations as OA;
 
 /**
  * @OA\Schema(
- *     schema="Product",
+ *     schema="Offer",
  *     type="object",
  *
  *     @OA\Property(property="id", type="integer", example=1),
@@ -22,29 +21,14 @@ use OpenApi\Annotations as OA;
  *     @OA\Property(property="category", type="string", example="Electronics"),
  * )
  */
-class Product extends Model
+class Offer extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
 
-    public function category()
+    public function product()
     {
-        return $this->belongsTo(Category::class);
-    }
-
-    public function warehouses()
-    {
-        return $this->hasMany(Warehouse::class);
-    }
-
-    public function offers()
-    {
-        return $this->hasMany(Offer::class);
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Product::class);
     }
 }

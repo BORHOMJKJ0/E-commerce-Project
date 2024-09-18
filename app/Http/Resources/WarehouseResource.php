@@ -48,13 +48,6 @@ class WarehouseResource extends JsonResource
                 'price' => $this->Product->price,
                 'category' => $this->Product->Category ? $this->Product->Category->name : null,
                 'user' => $this->Product->User ? $this->Product->User->name : null,
-                //                'offers' => $this->Product->Offers->map(function ($offer) {
-                //                    return [
-                //                        'discount' => $offer->discount_percentage,
-                //                        'starting_at' => $offer->offer_start ? Carbon::parse($offer->offer_start)->format('Y-m-d H:i') : null,
-                //                        'ending_at' => $offer->offer_end ? Carbon::parse($offer->offer_end)->format('Y-m-d H:i') : null,
-                //                    ];
-                //                }),
             ] : null,
         ];
     }
