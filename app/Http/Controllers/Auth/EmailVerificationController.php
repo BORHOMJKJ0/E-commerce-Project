@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EmailVerificationRequest;
+use App\Models\User;
 use App\Services\EmailService;
 use App\Traits\ValidationTrait;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 
 class EmailVerificationController extends Controller

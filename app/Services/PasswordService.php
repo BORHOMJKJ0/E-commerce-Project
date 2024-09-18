@@ -16,6 +16,7 @@ class PasswordService
     use ValidationTrait;
 
     protected $userRepository;
+
     protected $otp;
 
     public function __construct()

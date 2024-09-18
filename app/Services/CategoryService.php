@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Category;
 use App\Repositories\CategoryRepository;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -81,9 +82,9 @@ class CategoryService
      *     )
      * )
      */
-    public function getCategoryById($id)
+    public function getCategoryById(Category $category)
     {
-        return $this->categoryRepository->findById($id);
+        return $category;
     }
 
     /**
@@ -262,13 +263,11 @@ class CategoryService
      *     )
      * )
      */
-    public function updateCategory($id, array $data)
+    public function updateCategory(Category $category, array $data)
     {
-        $category = $this->categoryRepository->findById($id);
-
         $this->validateCategoryData($data, 'sometimes');
 
-        return $this->categoryRepository->update($id, $data);
+        return $this->categoryRepository->update($category, $data);
     }
 
     /**
@@ -307,9 +306,9 @@ class CategoryService
      *     )
      * )
      */
-    public function deleteCategory($id)
+    public function deleteCategory(Category $category)
     {
-        return $this->categoryRepository->delete($id);
+        return $this->categoryRepository->delete($category);
     }
 
     protected function validateCategoryData(array $data, $rule = 'required')

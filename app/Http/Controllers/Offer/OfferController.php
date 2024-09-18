@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Offer;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OfferResource;
+use App\Models\Offer;
 use App\Services\OfferService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -35,9 +36,9 @@ class OfferController extends Controller
         ], 201);
     }
 
-    public function show($id): JsonResponse
+    public function show(Offer $offer): JsonResponse
     {
-        $offer = $this->offerService->getOfferById($id);
+        $offer = $this->offerService->getOfferById($offer);
 
         return response()->json(OfferResource::make($offer), 200);
     }
@@ -56,9 +57,9 @@ class OfferController extends Controller
         return response()->json(OfferResource::collection($offers), 200);
     }
 
-    public function update(Request $request, $id): JsonResponse
+    public function update(Request $request, Offer $offer): JsonResponse
     {
-        $offer = $this->offerService->updateOffer($id, $request->all());
+        $offer = $this->offerService->updateOffer($offer, $request->all());
 
         return response()->json([
             'message' => 'Offer updated successfully!',
@@ -66,9 +67,9 @@ class OfferController extends Controller
         ], 200);
     }
 
-    public function destroy($id): JsonResponse
+    public function destroy(Offer $offer): JsonResponse
     {
-        $this->offerService->deleteOffer($id);
+        $this->offerService->deleteOffer($offer);
 
         return response()->json(['message' => 'Offer deleted successfully!'], 200);
     }

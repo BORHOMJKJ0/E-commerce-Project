@@ -57,5 +57,4 @@ class UpdateUserRequest extends FormRequest
 
         throw new ValidationException($validator, response()->json($errors, 400));
     }
-
 }

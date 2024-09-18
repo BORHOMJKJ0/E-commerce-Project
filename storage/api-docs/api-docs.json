@@ -18,121 +18,6 @@
         }
     ],
     "paths": {
-        "/api/users/register": {
-            "post": {
-                "tags": [
-                    "Users"
-                ],
-                "summary": "Register a new user",
-                "operationId": "50898686ceeb165a76d02bd34edcbeeb",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "name",
-                                    "email",
-                                    "mobile",
-                                    "gender",
-                                    "password",
-                                    "password_confirmation"
-                                ],
-                                "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "example": "hasan zaeter"
-                                    },
-                                    "email": {
-                                        "type": "string",
-                                        "example": "hzaeter@gmail.com"
-                                    },
-                                    "mobile": {
-                                        "type": "string",
-                                        "example": "0935917667"
-                                    },
-                                    "gender": {
-                                        "type": "string",
-                                        "example": "male or female"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "example": "password123"
-                                    },
-                                    "password_confirmation": {
-                                        "type": "string",
-                                        "example": "password123"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "User registered successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "User registered successfully"
-                                        },
-                                        "email-verification": {
-                                            "type": "string",
-                                            "example": "An activation code has been sent to your email"
-                                        },
-                                        "user": {
-                                            "properties": {
-                                                "id": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "name": {
-                                                    "type": "string",
-                                                    "example": "hasan zaeter"
-                                                },
-                                                "email": {
-                                                    "type": "string",
-                                                    "example": "hzaeter04@gmail.com"
-                                                }
-                                            },
-                                            "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Validation error"
-                                        },
-                                        "errors": {
-                                            "type": "object",
-                                            "example": []
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized"
-                    }
-                }
-            }
-        },
         "/api/categories": {
             "get": {
                 "tags": [
@@ -1749,6 +1634,121 @@
                 ]
             }
         },
+        "/api/users/register": {
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Register a new user",
+                "operationId": "53f9ea9acbfec6d4b0ac7ee4c670bf76",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "mobile",
+                                    "gender",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "hasan zaeter"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "hzaeter@gmail.com"
+                                    },
+                                    "mobile": {
+                                        "type": "string",
+                                        "example": "0935917667"
+                                    },
+                                    "gender": {
+                                        "type": "string",
+                                        "example": "male or female"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User registered successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User registered successfully"
+                                        },
+                                        "email-verification": {
+                                            "type": "string",
+                                            "example": "An activation code has been sent to your email"
+                                        },
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "hasan zaeter"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "hzaeter04@gmail.com"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation error"
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
         "/api/users/login": {
             "post": {
                 "tags": [
@@ -2890,10 +2890,6 @@
     },
     "tags": [
         {
-            "name": "Users",
-            "description": "Users"
-        },
-        {
             "name": "Categories",
             "description": "Categories"
         },
@@ -2912,6 +2908,10 @@
         {
             "name": "Products",
             "description": "Products"
+        },
+        {
+            "name": "Users",
+            "description": "Users"
         },
         {
             "name": "Warehouse",

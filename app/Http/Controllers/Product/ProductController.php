@@ -4,16 +4,13 @@ namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
+use App\Models\Product;
 use App\Services\ProductService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    const VALID_COLUMNS = ['name', 'price', 'description', 'created_at', 'updated_at'];
-
-    const VALID_DIRECTIONS = ['asc', 'desc'];
-
     protected $productService;
 
     public function __construct(ProductService $productService)
@@ -39,9 +36,9 @@ class ProductController extends Controller
         ], 201);
     }
 
-    public function show($id): JsonResponse
+    public function show(Product $product): JsonResponse
     {
-        $product = $this->productService->getProductById($id);
+        $product = $this->productService->getProductById($product);
 
         return response()->json(ProductResource::make($product), 200);
     }
@@ -60,9 +57,9 @@ class ProductController extends Controller
         return response()->json(ProductResource::collection($products), 200);
     }
 
-    public function update(Request $request, $id): JsonResponse
+    public function update(Request $request, Product $product): JsonResponse
     {
-        $product = $this->productService->updateProduct($id, $request->all());
+        $product = $this->productService->updateProduct($product, $request->all());
 
         return response()->json([
             'message' => 'Product updated successfully!',
@@ -70,9 +67,9 @@ class ProductController extends Controller
         ], 200);
     }
 
-    public function destroy($id): JsonResponse
+    public function destroy(Product $product): JsonResponse
     {
-        $this->productService->deleteProduct($id);
+        $this->productService->deleteProduct($product);
 
         return response()->json(['message' => 'Product deleted successfully!'], 200);
     }
