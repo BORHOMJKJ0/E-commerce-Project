@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Traits\ValidationTrait;
 use Illuminate\Http\JsonResponse;
@@ -71,6 +72,7 @@ class UserService
     {
         return $this->userRepository->get_users_contacts();
     }
+
     /**
      * @OA\Post(
      *     path="/api/users/register",
@@ -318,14 +320,9 @@ class UserService
      *      )
      * )
      */
-    public function profile($user_id): JsonResponse
+    public function profile(User $user): JsonResponse
     {
-        $user = $this->userRepository->findById($user_id);
-        if (! $user) {
-            return response()->json(['error' => 'User not found'], 404);
-        }
-
-        $user = $this->userRepository->get_user_contactById($user_id);
+        $user = $this->userRepository->get_user_contactById($user->id);
 
         return response()->json($user, 200);
     }
@@ -402,25 +399,23 @@ class UserService
      *     )
      * )
      */
-    public function update(UpdateUserRequest $request, $user_id): JsonResponse
+    public function update(UpdateUserRequest $request, $user): JsonResponse
     {
 
         $validationResponse = $this->validateRequest($request, $request->rules());
         if ($validationResponse) {
             return $validationResponse;
         }
-        if (auth()->user()->id != $user_id) {
+        if (auth()->user()->id != $user->id) {
             return response()->json(['error' => "you can't modify "], 403);
         }
 
         if ($request->filled('new_password')) {
             $request->merge(['password' => Hash::make($request->new_password)]);
         }
-
-        $user = $this->userRepository->findById($user_id);
         $this->userRepository->update($user, $request->except(['old_password', 'new_password']));
 
-        $user = $this->userRepository->get_user_contactById($user_id);
+        $user = $this->userRepository->get_user_contactById($user->id);
 
         $message = [
             'message' => 'Profile updated successfully',

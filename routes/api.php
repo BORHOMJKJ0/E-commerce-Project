@@ -52,16 +52,25 @@ Route::middleware('api')->prefix('users')->group(function () {
         Route::post('register', 'register');
         Route::post('login', 'login')->middleware('verified.email');
         Route::post('logout', 'logout');
-        Route::get('profile/{user_id}', 'profile')->whereNumber('user_id');
-        Route::put('update/{user_id}', 'update');
+        Route::get('profile/{user}', 'profile')->whereNumber('user_id')
+            ->missing(function () {
+                return response()->json(['error' => 'User Not Found'], 404);
+            });
+        Route::put('update/{user}', 'update')
+            ->missing(function () {
+                return response()->json(['error' => 'User Not Found']);
+            });
     });
 
     Route::controller(EmailVerificationController::class)->group(function () {
-        Route::get('email-verification/{email}', 'sendEmailVerification');
+        Route::get('email-verification/{user:email}', 'sendEmailVerification');
         Route::post('email-verification', 'email_verification');
     });
 
-    Route::get('password/forget-password/{email}', [ForgetPasswordController::class, 'forgetPassword']);
+    Route::get('password/forget-password/{user:email}', [ForgetPasswordController::class, 'forgetPassword'])
+        ->missing(function () {
+            return response()->json(['error' => 'User Not Found']);
+        });
     Route::post('password/reset', [ResetPasswordController::class, 'resetPassword']);
 
     Route::controller(ContactInformationController::class)->prefix('contact')->group(function () {
