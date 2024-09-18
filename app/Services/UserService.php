@@ -139,7 +139,7 @@ class UserService
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $this->EmailVerificationController->sendEmailVerification($request->email);
+        $this->EmailVerificationController->sendEmailVerification($user);
 
         $user = $this->userRepository->get_userById($user->id);
 
