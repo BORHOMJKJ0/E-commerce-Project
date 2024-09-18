@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Offer;
 use App\Repositories\OfferRepository;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -81,9 +82,9 @@ class OfferService
      *     )
      * )
      */
-    public function getOfferById($id)
+    public function getOfferById(Offer $offer)
     {
-        return $this->offerRepository->findById($id);
+        return $offer;
     }
 
     /**
@@ -262,13 +263,11 @@ class OfferService
      *     )
      * )
      */
-    public function updateOffer($id, array $data)
+    public function updateOffer(Offer $offer, array $data)
     {
-        $offer = $this->offerRepository->findById($id);
-
         $this->validateOfferData($data, 'sometimes');
 
-        return $this->offerRepository->update($id, $data);
+        return $this->offerRepository->update($offer, $data);
     }
 
     /**
@@ -307,9 +306,9 @@ class OfferService
      *     )
      * )
      */
-    public function deleteOffer($id)
+    public function deleteOffer(Offer $offer)
     {
-        return $this->offerRepository->delete($id);
+        return $this->offerRepository->delete($offer);
     }
 
     protected function validateOfferData(array $data, $rule = 'required')

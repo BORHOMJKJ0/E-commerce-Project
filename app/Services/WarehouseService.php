@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Warehouse;
 use App\Repositories\WarehouseRepository;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -72,9 +73,9 @@ class WarehouseService
      *     )
      * )
      */
-    public function getWarehouseById($id)
+    public function getWarehouseById(Warehouse $warehouse)
     {
-        return $this->warehouseRepository->findById($id);
+        return $warehouse;
     }
 
     /**
@@ -299,9 +300,8 @@ class WarehouseService
      *     )
      * )
      */
-    public function updateWarehouse($id, array $data)
+    public function updateWarehouse(Warehouse $warehouse, array $data)
     {
-        $warehouse = $this->warehouseRepository->findById($id);
         if (isset($data['expiry_date'])) {
             throw ValidationException::withMessages([
                 'expiry_date' => 'You cannot update the expiry date once it has been set.',
@@ -309,7 +309,7 @@ class WarehouseService
         }
         $this->validateWarehouseData($data, $warehouse, 'sometimes');
 
-        return $this->warehouseRepository->update($id, $data);
+        return $this->warehouseRepository->update($warehouse, $data);
     }
 
     /**
@@ -348,9 +348,9 @@ class WarehouseService
      *     )
      * )
      */
-    public function deleteWarehouse($id)
+    public function deleteWarehouse(Warehouse $warehouse)
     {
-        return $this->warehouseRepository->delete($id);
+        return $this->warehouseRepository->delete($warehouse);
     }
 
     protected function validateWarehouseData(array $data, $warehouse = null, $rule = 'required')

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Product;
 use App\Repositories\ProductRepository;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -72,9 +73,9 @@ class ProductService
      *     )
      * )
      */
-    public function getProductById($id)
+    public function getProductById(Product $product)
     {
-        return $this->productRepository->findById($id);
+        return $product;
     }
 
     /**
@@ -298,13 +299,11 @@ class ProductService
      *     )
      * )
      */
-    public function updateProduct($id, array $data)
+    public function updateProduct(Product $product, array $data)
     {
-        $product = $this->productRepository->findById($id);
-
         $this->validateProductData($data, 'sometimes');
 
-        return $this->productRepository->update($id, $data);
+        return $this->productRepository->update($product, $data);
     }
 
     /**
@@ -343,9 +342,9 @@ class ProductService
      *     )
      * )
      */
-    public function deleteProduct($id)
+    public function deleteProduct(Product $product)
     {
-        return $this->productRepository->delete($id);
+        return $this->productRepository->delete($product);
     }
 
     protected function validateProductData(array $data, $rule = 'required')

@@ -8,17 +8,12 @@ class OfferRepository
 {
     public function getAll()
     {
-        return Offer::with('product')->paginate(5);
-    }
-
-    public function findById($id)
-    {
-        return Offer::with('product')->findOrFail($id);
+        return Offer::paginate(5);
     }
 
     public function orderBy($column, $direction)
     {
-        return Offer::with('product')->orderBy($column, $direction)->paginate(5);
+        return Offer::orderBy($column, $direction)->paginate(5);
     }
 
     public function create(array $data)
@@ -26,18 +21,15 @@ class OfferRepository
         return Offer::create($data);
     }
 
-    public function update($id, array $data)
+    public function update(Offer $offer, array $data)
     {
-        $offer = Offer::findOrFail($id);
         $offer->update($data);
 
         return $offer;
     }
 
-    public function delete($id)
+    public function delete(Offer $offer)
     {
-        $offer = Offer::findOrFail($id);
-
         return $offer->delete();
     }
 }

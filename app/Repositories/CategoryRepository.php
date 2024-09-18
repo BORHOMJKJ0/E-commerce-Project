@@ -11,11 +11,6 @@ class CategoryRepository
         return Category::paginate(5);
     }
 
-    public function findById($id)
-    {
-        return Category::findOrFail($id);
-    }
-
     public function orderBy($column, $direction)
     {
         return Category::orderBy($column, $direction)->paginate(5);
@@ -26,18 +21,15 @@ class CategoryRepository
         return Category::create($data);
     }
 
-    public function update($id, array $data)
+    public function update(Category $category, array $data)
     {
-        $category = Category::findOrFail($id);
         $category->update($data);
 
         return $category;
     }
 
-    public function delete($id)
+    public function delete(Category $category)
     {
-        $category = Category::findOrFail($id);
-
         return $category->delete();
     }
 }

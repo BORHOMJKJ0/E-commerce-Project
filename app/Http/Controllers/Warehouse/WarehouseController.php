@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Warehouse;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\WarehouseResource;
+use App\Models\Warehouse;
 use App\Services\WarehouseService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -35,9 +36,9 @@ class WarehouseController extends Controller
         ], 201);
     }
 
-    public function show($id): JsonResponse
+    public function show(Warehouse $warehouse): JsonResponse
     {
-        $warehouse = $this->warehouseService->getWarehouseById($id);
+        $warehouse = $this->warehouseService->getWarehouseById($warehouse);
 
         return response()->json(WarehouseResource::make($warehouse), 200);
     }
@@ -56,9 +57,9 @@ class WarehouseController extends Controller
         return response()->json(WarehouseResource::collection($warehouses), 200);
     }
 
-    public function update(Request $request, $id): JsonResponse
+    public function update(Request $request, Warehouse $warehouse): JsonResponse
     {
-        $warehouse = $this->warehouseService->updateWarehouse($id, $request->all());
+        $warehouse = $this->warehouseService->updateWarehouse($warehouse, $request->all());
 
         return response()->json([
             'message' => 'Warehouse updated successfully!',
@@ -66,9 +67,9 @@ class WarehouseController extends Controller
         ], 200);
     }
 
-    public function destroy($id): JsonResponse
+    public function destroy(Warehouse $warehouse): JsonResponse
     {
-        $this->warehouseService->deleteWarehouse($id);
+        $this->warehouseService->deleteWarehouse($warehouse);
 
         return response()->json(['message' => 'Warehouse deleted successfully!'], 200);
     }
