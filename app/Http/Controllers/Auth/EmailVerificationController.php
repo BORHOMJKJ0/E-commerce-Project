@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\EmailVerificationRequest;
 use App\Services\EmailService;
 use App\Traits\ValidationTrait;
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
 
 class EmailVerificationController extends Controller
 {
@@ -18,13 +20,13 @@ class EmailVerificationController extends Controller
         $this->EmailService = new EmailService;
     }
 
-    public function email_verification(EmailVerificationRequest $request): \Illuminate\Http\JsonResponse
+    public function email_verification(EmailVerificationRequest $request): JsonResponse
     {
         return $this->EmailService->email_verification($request);
     }
 
-    public function sendEmailVerification($email): \Illuminate\Http\JsonResponse
+    public function sendEmailVerification(User $user): JsonResponse
     {
-        return $this->EmailService->sendEmailVerification($email);
+        return $this->EmailService->sendEmailVerification($user);
     }
 }

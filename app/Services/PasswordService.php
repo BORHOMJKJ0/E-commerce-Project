@@ -25,15 +25,10 @@ class PasswordService
         $this->otp = new Otp;
     }
 
-    public function forgetPassword($email): JsonResponse
+    public function forgetPassword($user): JsonResponse
     {
-        if (! str_ends_with($email, '@gmail.com')) {
+        if (! str_ends_with($user->email, '@gmail.com')) {
             return response()->json(['message' => 'Email is not a valid email address, it must be end with a @gmail.com']);
-        }
-        $user = $this->userRepository->findByEmail($email);
-
-        if (! $user) {
-            return response()->json(['message' => 'User not found'], 403);
         }
         ForgetPasswordJob::dispatch($user);
         $message = [
@@ -55,7 +50,7 @@ class PasswordService
         $otp2 = $this->otp->validate($request->email, $request->otp);
 
         if (! $otp2->status) {
-            return response()->json(['error' => $otp2], 401);
+            return response()->json(['error' => 'resetting password code is invalid'], 401);
         }
         $user = User::where('email', $request->email)->first();
 

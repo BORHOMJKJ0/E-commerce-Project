@@ -7,6 +7,7 @@ use App\Jobs\EmailVerificationJob;
 use App\Repositories\UserRepository;
 use App\Traits\ValidationTrait;
 use Ichtrojan\Otp\Otp;
+use Illuminate\Http\JsonResponse;
 
 class EmailService
 {
@@ -125,12 +126,8 @@ class EmailService
      *     )
      * )
      */
-    public function sendEmailVerification($email): \Illuminate\Http\JsonResponse
+    public function sendEmailVerification($user): JsonResponse
     {
-        $user = $this->userRepository->findByEmail($email);
-        if (! $user) {
-            return response()->json(['error' => 'User not found'], 404);
-        }
         if ($user->email_verified_at) {
             return response()->json(['error' => 'Email already verified'], 400);
         } else {
