@@ -32,6 +32,24 @@ class CategoryService
      *     tags={"Categories"},
      *     security={{"bearerAuth": {} }},
      *
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         required=false,
+     *         description="Page number",
+     *
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="items",
+     *         in="query",
+     *         required=false,
+     *         description="Number of items per page",
+     *
+     *         @OA\Schema(type="integer", example=20)
+     *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Successful response",
@@ -41,12 +59,22 @@ class CategoryService
      *
      *             @OA\Items(ref="#/components/schemas/CategoryResource")
      *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=422,
+     *         description="Invalid parameters",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="error", type="string", example="Invalid parameters")
+     *         )
      *     )
      * )
      */
-    public function getAllCategories()
+    public function getAllCategories($page, $items)
     {
-        return $this->categoryRepository->getAll();
+        return $this->categoryRepository->getAll($items, $page);
     }
 
     /**
@@ -171,6 +199,24 @@ class CategoryService
      *         @OA\Schema(type="string", enum={"asc", "desc"})
      *     ),
      *
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         required=false,
+     *         description="Page number",
+     *
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="items",
+     *         in="query",
+     *         required=false,
+     *         description="Number of items per page ",
+     *
+     *         @OA\Schema(type="integer", example=20)
+     *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Successful response",
@@ -188,14 +234,14 @@ class CategoryService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid column or direction")
+     *             @OA\Property(property="error", type="string", example="Invalid column or direction or parameters")
      *         )
      *     )
      * )
      */
-    public function getCategoriesOrderedBy($column, $direction)
+    public function getCategoriesOrderedBy($column, $direction, $page, $items)
     {
-        return $this->categoryRepository->orderBy($column, $direction);
+        return $this->categoryRepository->orderBy($column, $direction, $page, $items);
     }
 
     /**

@@ -19,11 +19,18 @@ class CategoryController extends Controller
         $this->categoryService = $categoryService;
     }
 
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $categories = $this->categoryService->getAllCategories();
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
 
-        return response()->json(CategoryResource::collection($categories), 200);
+        $categories = $this->categoryService->getAllCategories($page, $items);
+        $hasMorePages = $categories->hasMorePages();
+
+        return response()->json([
+            'categories' => CategoryResource::collection($categories),
+            'hasMorePages' => $hasMorePages,
+        ], 200);
     }
 
     public function store(Request $request): JsonResponse
@@ -43,7 +50,7 @@ class CategoryController extends Controller
         return response()->json(CategoryResource::make($category), 200);
     }
 
-    public function orderBy($column, $direction): JsonResponse
+    public function orderBy($column, $direction, Request $request): JsonResponse
     {
         $validColumns = ['name', 'created_at', 'updated_at'];
         $validDirections = ['asc', 'desc'];
@@ -52,9 +59,17 @@ class CategoryController extends Controller
             return response()->json(['error' => 'Invalid column or direction'], 400);
         }
 
-        $categories = $this->categoryService->getCategoriesOrderedBy($column, $direction);
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
 
-        return response()->json(CategoryResource::collection($categories), 200);
+        $categories = $this->categoryService->getCategoriesOrderedBy($column, $direction, $page, $items);
+        $hasMorePages = $categories->hasMorePages();
+
+        return response()->json([
+            'categories' => CategoryResource::collection($categories),
+            'hasMorePages' => $hasMorePages,
+        ], 200);
+
     }
 
     public function update(Request $request, Category $category): JsonResponse

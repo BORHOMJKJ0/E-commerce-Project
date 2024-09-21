@@ -23,6 +23,24 @@ class ProductService
      *     tags={"Products"},
      *     security={{"bearerAuth": {} }},
      *
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         required=false,
+     *         description="Page number",
+     *
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="items",
+     *         in="query",
+     *         required=false,
+     *         description="Number of items per page",
+     *
+     *         @OA\Schema(type="integer", example=20)
+     *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Successful response",
@@ -32,12 +50,22 @@ class ProductService
      *
      *             @OA\Items(ref="#/components/schemas/ProductResource")
      *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=422,
+     *         description="Invalid parameters",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="error", type="string", example="Invalid parameters")
+     *         )
      *     )
      * )
      */
-    public function getAllProducts()
+    public function getAllProducts($page, $items)
     {
-        return $this->productRepository->getAll();
+        return $this->productRepository->getAll($items, $page);
     }
 
     /**
@@ -160,6 +188,24 @@ class ProductService
      *     ),
      *
      *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         required=false,
+     *         description="Page number",
+     *
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="items",
+     *         in="query",
+     *         required=false,
+     *         description="Number of items per page ",
+     *
+     *         @OA\Schema(type="integer", example=20)
+     *     ),
+     *
+     *     @OA\Parameter(
      *         name="direction",
      *         in="path",
      *         required=true,
@@ -184,14 +230,14 @@ class ProductService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid column or direction")
+     *             @OA\Property(property="error", type="string", example="Invalid column or direction or parameters")
      *         )
      *     )
      * )
      */
-    public function getProductsOrderedBy($column, $direction)
+    public function getProductsOrderedBy($column, $direction, $page, $items)
     {
-        return $this->productRepository->orderBy($column, $direction);
+        return $this->productRepository->orderBy($column, $direction, $page, $items);
     }
 
     /**

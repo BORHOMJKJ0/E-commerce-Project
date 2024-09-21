@@ -19,11 +19,18 @@ class OfferController extends Controller
         $this->offerService = $offerService;
     }
 
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $offers = $this->offerService->getAllOffers();
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
 
-        return response()->json(OfferResource::collection($offers), 200);
+        $offers = $this->offerService->getAllOffers($page, $items);
+        $hasMorePages = $offers->hasMorePages();
+
+        return response()->json([
+            'offers' => OfferResource::collection($offers),
+            'hasMorePages' => $hasMorePages,
+        ], 200);
     }
 
     public function store(Request $request): JsonResponse
@@ -43,7 +50,7 @@ class OfferController extends Controller
         return response()->json(OfferResource::make($offer), 200);
     }
 
-    public function orderBy($column, $direction): JsonResponse
+    public function orderBy($column, $direction, Request $request): JsonResponse
     {
         $validColumns = ['discount_percentage', 'start_date', 'end_date', 'created_at', 'updated_at'];
         $validDirections = ['asc', 'desc'];
@@ -52,9 +59,16 @@ class OfferController extends Controller
             return response()->json(['error' => 'Invalid column or direction'], 400);
         }
 
-        $offers = $this->offerService->getOffersOrderedBy($column, $direction);
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
 
-        return response()->json(OfferResource::collection($offers), 200);
+        $offers = $this->offerService->getOffersOrderedBy($column, $direction, $page, $items);
+        $hasMorePages = $offers->hasMorePages();
+
+        return response()->json([
+            'offers' => OfferResource::collection($offers),
+            'hasMorePages' => $hasMorePages,
+        ], 200);
     }
 
     public function update(Request $request, Offer $offer): JsonResponse

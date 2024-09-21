@@ -23,6 +23,24 @@ class WarehouseService
      *     tags={"Warehouse"},
      *     security={{"bearerAuth": {} }},
      *
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         required=false,
+     *         description="Page number",
+     *
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="items",
+     *         in="query",
+     *         required=false,
+     *         description="Number of items per page",
+     *
+     *         @OA\Schema(type="integer", example=20)
+     *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Successful response",
@@ -32,12 +50,22 @@ class WarehouseService
      *
      *             @OA\Items(ref="#/components/schemas/WarehouseResource")
      *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=422,
+     *         description="Invalid parameters",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="error", type="string", example="Invalid parameters")
+     *         )
      *     )
      * )
      */
-    public function getAllWarehouses()
+    public function getAllWarehouses($page, $items)
     {
-        return $this->warehouseRepository->getAll();
+        return $this->warehouseRepository->getAll($items, $page);
     }
 
     /**
@@ -168,6 +196,24 @@ class WarehouseService
      *         @OA\Schema(type="string", enum={"asc", "desc"})
      *     ),
      *
+     *    @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         required=false,
+     *         description="Page number",
+     *
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="items",
+     *         in="query",
+     *         required=false,
+     *         description="Number of items per page ",
+     *
+     *         @OA\Schema(type="integer", example=20)
+     *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Successful response",
@@ -185,14 +231,14 @@ class WarehouseService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid column or direction")
+     *             @OA\Property(property="error", type="string", example="Invalid column or direction or parameters")
      *         )
      *     )
      * )
      */
-    public function getWarehousesOrderedBy($column, $direction)
+    public function getWarehousesOrderedBy($column, $direction, $page, $items)
     {
-        return $this->warehouseRepository->orderBy($column, $direction);
+        return $this->warehouseRepository->orderBy($column, $direction, $page, $items);
     }
 
     /**

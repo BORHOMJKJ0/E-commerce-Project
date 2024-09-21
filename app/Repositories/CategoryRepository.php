@@ -6,14 +6,14 @@ use App\Models\Category;
 
 class CategoryRepository
 {
-    public function getAll()
+    public function getAll($items, $page)
     {
-        return Category::paginate(5);
+        return Category::paginate($items, ['*'], 'page', $page);
     }
 
-    public function orderBy($column, $direction)
+    public function orderBy($column, $direction, $page, $items)
     {
-        return Category::orderBy($column, $direction)->paginate(5);
+        return Category::orderBy($column, $direction)->paginate($items, ['*'], 'page', $page);
     }
 
     public function create(array $data)
