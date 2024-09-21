@@ -17,14 +17,7 @@ use OpenApi\Annotations as OA;
  *     @OA\Property(property="payment_date", type="string", format="date", example="2024-09-01"),
  *     @OA\Property(property="settlement_date", type="string", format="date", example=null),
  *     @OA\Property(property="expiry_date", type="string", format="date", example="2024-12-01"),
- *     @OA\Property(
- *         property="products",
- *         type="object",
- *         @OA\Property(property="name", type="string", example="Smartphone"),
- *         @OA\Property(property="price", type="number", format="float", example=499.99),
- *         @OA\Property(property="category", type="string", example="Electronics"),
- *         @OA\Property(property="user", type="string", example="John Doe")
- *     ),
+ *     @OA\Property(property="product_id",type="integer",example=1),
  * )
  */
 class Warehouse extends Model

@@ -2851,7 +2851,17 @@
                     "products": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/ProductResource"
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "example": "Smartphone"
+                                },
+                                "user": {
+                                    "type": "string",
+                                    "example": "John Doe"
+                                }
+                            },
+                            "type": "object"
                         }
                     }
                 },
@@ -2863,39 +2873,46 @@
                         "type": "integer",
                         "example": 1
                     },
-                    "name": {
-                        "type": "string",
-                        "example": "Product A"
-                    },
-                    "image": {
-                        "type": "string",
-                        "example": "https://example.com/product.jpg"
-                    },
-                    "price": {
+                    "discount_percentage": {
                         "type": "number",
                         "format": "float",
-                        "example": "99.99"
+                        "example": 15.5
                     },
-                    "description": {
-                        "type": "string",
-                        "example": "it's a migical Product like from Random box"
-                    },
-                    "user": {
-                        "type": "string",
-                        "example": "John Doe"
-                    },
-                    "total_amount": {
-                        "type": "integer",
-                        "example": 500
-                    },
-                    "expiry_date": {
+                    "start_date": {
                         "type": "string",
                         "format": "date",
-                        "example": "2025-12-31"
+                        "example": "2024-09-01"
                     },
-                    "category": {
+                    "end_date": {
                         "type": "string",
-                        "example": "Electronics"
+                        "format": "date",
+                        "example": "2024-12-31"
+                    },
+                    "product": {
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "example": "Smartphone"
+                            },
+                            "price": {
+                                "type": "number",
+                                "format": "float",
+                                "example": 499.99
+                            },
+                            "description": {
+                                "type": "string",
+                                "example": "Samsung A30s white color 8Ram 128GB space"
+                            },
+                            "category": {
+                                "type": "string",
+                                "example": "Electronics"
+                            },
+                            "user": {
+                                "type": "string",
+                                "example": "John Doe"
+                            }
+                        },
+                        "type": "object"
                     }
                 },
                 "type": "object"
@@ -2917,24 +2934,51 @@
                     "price": {
                         "type": "number",
                         "format": "float",
-                        "example": "99.99"
+                        "example": 99.99
                     },
                     "description": {
                         "type": "string",
-                        "example": "it's a migical Product like from Random box"
+                        "example": "It's a magical product from Random Box"
+                    },
+                    "current_price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 84.49
                     },
                     "user": {
                         "type": "string",
                         "example": "John Doe"
                     },
+                    "offers": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "discount": {
+                                    "type": "string",
+                                    "example": "15.50"
+                                },
+                                "starting_at": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2024-09-21 23:20"
+                                },
+                                "ending_at": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2024-09-21 23:20"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
                     "total_amount": {
                         "type": "integer",
-                        "example": 500
+                        "example": 100
                     },
                     "expiry_date": {
                         "type": "string",
                         "format": "date",
-                        "example": "2025-12-31"
+                        "example": "2024-12-01"
                     },
                     "category": {
                         "type": "string",
@@ -3012,7 +3056,17 @@
                     "products": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/Category"
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "example": "Smartphone"
+                                },
+                                "user_id": {
+                                    "type": "integer",
+                                    "example": 1
+                                }
+                            },
+                            "type": "object"
                         }
                     }
                 },
@@ -3024,39 +3078,24 @@
                         "type": "integer",
                         "example": 1
                     },
-                    "name": {
-                        "type": "string",
-                        "example": "Smartphone"
-                    },
-                    "image": {
-                        "type": "string",
-                        "example": "product_image.jpg"
-                    },
-                    "price": {
+                    "discount_percentage": {
                         "type": "number",
                         "format": "float",
-                        "example": 499.99
+                        "example": 15.5
                     },
-                    "description": {
+                    "start_date": {
                         "type": "string",
-                        "example": "Samsung A30s white color 8Ram 128GB space"
+                        "format": "date",
+                        "example": "2024-09-01"
                     },
-                    "user": {
-                        "type": "string",
-                        "example": "John Doe"
-                    },
-                    "total_amount": {
-                        "type": "integer",
-                        "example": 100
-                    },
-                    "expiry_date": {
+                    "end_date": {
                         "type": "string",
                         "format": "date",
                         "example": "2024-12-31"
                     },
-                    "category": {
-                        "type": "string",
-                        "example": "Electronics"
+                    "product_id": {
+                        "type": "integer",
+                        "example": 1
                     }
                 },
                 "type": "object"
@@ -3084,9 +3123,37 @@
                         "type": "string",
                         "example": "Samsung A30s white color 8Ram 128GB space"
                     },
-                    "user": {
-                        "type": "string",
-                        "example": "John Doe"
+                    "current_price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 422.49
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "offers": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "discount": {
+                                    "type": "number",
+                                    "format": "float",
+                                    "example": 15.5
+                                },
+                                "starting_at": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2024-09-21 23:20"
+                                },
+                                "ending_at": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2024-09-21 23:20"
+                                }
+                            },
+                            "type": "object"
+                        }
                     },
                     "total_amount": {
                         "type": "integer",
@@ -3095,11 +3162,11 @@
                     "expiry_date": {
                         "type": "string",
                         "format": "date",
-                        "example": "2024-12-31"
+                        "example": "2024-12-01"
                     },
-                    "category": {
-                        "type": "string",
-                        "example": "Electronics"
+                    "category_id": {
+                        "type": "integer",
+                        "example": 1
                     }
                 },
                 "type": "object"
@@ -3135,27 +3202,9 @@
                         "format": "date",
                         "example": "2024-12-01"
                     },
-                    "products": {
-                        "properties": {
-                            "name": {
-                                "type": "string",
-                                "example": "Smartphone"
-                            },
-                            "price": {
-                                "type": "number",
-                                "format": "float",
-                                "example": 499.99
-                            },
-                            "category": {
-                                "type": "string",
-                                "example": "Electronics"
-                            },
-                            "user": {
-                                "type": "string",
-                                "example": "John Doe"
-                            }
-                        },
-                        "type": "object"
+                    "product_id": {
+                        "type": "integer",
+                        "example": 1
                     }
                 },
                 "type": "object"
