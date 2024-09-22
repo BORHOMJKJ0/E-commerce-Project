@@ -14,9 +14,7 @@ class UserRepository
 
     public function get_user_contactById($id)
     {
-        return User::where('id', $id)->select('id', 'name', 'email', 'mobile')->with(['contacts' => function ($query) {
-            $query->select('id', 'user_id', 'contact_type_id');
-        }])->get();
+        return User::where('id', $id)->GetUserWithContacts();
     }
 
     public function get_userById($id)
@@ -26,9 +24,7 @@ class UserRepository
 
     public function get_users_contacts()
     {
-        return User::orderBy('id')->select('id', 'name', 'email', 'mobile')->with(['contacts' => function ($query) {
-            $query->select('id', 'user_id', 'contact_type_id');
-        }])->get();
+        return User::orderBy('id')->GetUserWithContacts();
     }
 
     public function findById($id)

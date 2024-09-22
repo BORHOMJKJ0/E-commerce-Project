@@ -74,4 +74,11 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Contact_information::class);
     }
+
+    public function scopeGetUserWithContacts($query)
+    {
+        return $query->select('id', 'name', 'email', 'mobile')->with(['contacts' => function ($query) {
+            $query->select('id', 'user_id', 'contact_type_id');
+        }])->get();
+    }
 }
