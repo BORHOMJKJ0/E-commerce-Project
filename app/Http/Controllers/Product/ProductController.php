@@ -19,11 +19,18 @@ class ProductController extends Controller
         $this->productService = $productService;
     }
 
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $products = $this->productService->getAllProducts();
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
 
-        return response()->json(ProductResource::collection($products), 200);
+        $products = $this->productService->getAllProducts($page, $items);
+        $hasMorePages = $products->hasMorePages();
+
+        return response()->json([
+            'Products' => ProductResource::collection($products),
+            'hasMorePages' => $hasMorePages,
+        ], 200);
     }
 
     public function store(Request $request): JsonResponse
@@ -43,7 +50,7 @@ class ProductController extends Controller
         return response()->json(ProductResource::make($product), 200);
     }
 
-    public function orderBy($column, $direction): JsonResponse
+    public function orderBy($column, $direction, Request $request): JsonResponse
     {
         $validColumns = ['name', 'price', 'created_at', 'updated_at'];
         $validDirections = ['asc', 'desc'];
@@ -52,9 +59,16 @@ class ProductController extends Controller
             return response()->json(['error' => 'Invalid column or direction'], 400);
         }
 
-        $products = $this->productService->getProductsOrderedBy($column, $direction);
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
 
-        return response()->json(ProductResource::collection($products), 200);
+        $products = $this->productService->getProductsOrderedBy($column, $direction, $page, $items);
+        $hasMorePages = $products->hasMorePages();
+
+        return response()->json([
+            'Products' => ProductResource::collection($products),
+            'hasMorePages' => $hasMorePages,
+        ], 200);
     }
 
     public function update(Request $request, Product $product): JsonResponse

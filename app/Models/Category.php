@@ -17,9 +17,13 @@ use OpenApi\Annotations as OA;
  *         property="products",
  *         type="array",
  *
- *         @OA\Items(ref="#/components/schemas/Category")
- *     ),
+ *         @OA\Items(
+ *             type="object",
  *
+ *             @OA\Property(property="name", type="string", example="Smartphone"),
+ *             @OA\Property(property="user_id", type="integer", example=1),
+ *         )
+ *     ),
  * )
  */
 class Category extends Model

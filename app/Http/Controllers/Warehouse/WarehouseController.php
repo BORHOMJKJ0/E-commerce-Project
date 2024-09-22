@@ -19,11 +19,18 @@ class WarehouseController extends Controller
         $this->warehouseService = $warehouseService;
     }
 
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $warehouses = $this->warehouseService->getAllWarehouses();
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
 
-        return response()->json(WarehouseResource::collection($warehouses), 200);
+        $warehouses = $this->warehouseService->getAllWarehouses($page, $items);
+        $hasMorePages = $warehouses->hasMorePages();
+
+        return response()->json([
+            'Warehouses' => WarehouseResource::collection($warehouses),
+            'hasMorePages' => $hasMorePages,
+        ], 200);
     }
 
     public function store(Request $request): JsonResponse
@@ -43,7 +50,7 @@ class WarehouseController extends Controller
         return response()->json(WarehouseResource::make($warehouse), 200);
     }
 
-    public function orderBy($column, $direction): JsonResponse
+    public function orderBy($column, $direction, Request $request): JsonResponse
     {
         $validColumns = ['expiry_date', 'created_at', 'updated_at', 'payment_date', 'settlement_date', 'pure_price'];
         $validDirections = ['asc', 'desc'];
@@ -52,9 +59,16 @@ class WarehouseController extends Controller
             return response()->json(['error' => 'Invalid column or direction'], 400);
         }
 
-        $warehouses = $this->warehouseService->getWarehousesOrderedBy($column, $direction);
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
 
-        return response()->json(WarehouseResource::collection($warehouses), 200);
+        $warehouses = $this->warehouseService->getWarehousesOrderedBy($column, $direction, $page, $items);
+        $hasMorePages = $warehouses->hasMorePages();
+
+        return response()->json([
+            'Warehouses' => WarehouseResource::collection($warehouses),
+            'hasMorePages' => $hasMorePages,
+        ], 200);
     }
 
     public function update(Request $request, Warehouse $warehouse): JsonResponse

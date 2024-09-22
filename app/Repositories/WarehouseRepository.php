@@ -6,14 +6,14 @@ use App\Models\Warehouse;
 
 class WarehouseRepository
 {
-    public function getAll()
+    public function getAll($items, $page)
     {
-        return Warehouse::paginate(5);
+        return Warehouse::paginate($items, ['*'], 'page', $page);
     }
 
-    public function orderBy($column, $direction)
+    public function orderBy($column, $direction, $page, $items)
     {
-        return Warehouse::orderBy($column, $direction)->get();
+        return Warehouse::orderBy($column, $direction)->paginate($items, ['*'], 'page', $page);
     }
 
     public function create(array $data)

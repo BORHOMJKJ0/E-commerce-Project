@@ -32,6 +32,24 @@ class OfferService
      *     tags={"offers"},
      *     security={{"bearerAuth": {} }},
      *
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         required=false,
+     *         description="Page number",
+     *
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="items",
+     *         in="query",
+     *         required=false,
+     *         description="Number of items per page",
+     *
+     *         @OA\Schema(type="integer", example=20)
+     *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Successful response",
@@ -41,12 +59,22 @@ class OfferService
      *
      *             @OA\Items(ref="#/components/schemas/OfferResource")
      *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=422,
+     *         description="Invalid parameters",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="error", type="string", example="Invalid parameters")
+     *         )
      *     )
      * )
      */
-    public function getAllOffers()
+    public function getAllOffers($page, $items)
     {
-        return $this->offerRepository->getAll();
+        return $this->offerRepository->getAll($items, $page);
     }
 
     /**
@@ -97,14 +125,17 @@ class OfferService
      *     @OA\RequestBody(
      *         required=true,
      *
-     *      @OA\MediaType(
+     *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *
      *             @OA\Schema(
      *                 type="object",
-     *                 required={"name"},
+     *                 required={"discount_percentage", "start_date", "end_date", "product_id"},
      *
-     *                 @OA\Property(property="name", type="string", example="fruits"),
+     *                 @OA\Property(property="discount_percentage", type="number", format="float", example="15.50"),
+     *                 @OA\Property(property="start_date", type="string", format="date", example="2024-10-01"),
+     *                 @OA\Property(property="end_date", type="string", format="date", example="2024-12-31"),
+     *                 @OA\Property(property="product_id", type="integer", example=1),
      *             )
      *         )
      *     ),
@@ -160,7 +191,7 @@ class OfferService
      *         in="path",
      *         required=true,
      *
-     *         @OA\Schema(type="string", enum={"name", "created_at", "updated_at"})
+     *         @OA\Schema(type="string", enum={"discount_percentage","start_date","end_date", "created_at", "updated_at"})
      *     ),
      *
      *     @OA\Parameter(
@@ -169,6 +200,24 @@ class OfferService
      *         required=true,
      *
      *         @OA\Schema(type="string", enum={"asc", "desc"})
+     *     ),
+     *
+     *      @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         required=false,
+     *         description="Page number",
+     *
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="items",
+     *         in="query",
+     *         required=false,
+     *         description="Number of items per page ",
+     *
+     *         @OA\Schema(type="integer", example=20)
      *     ),
      *
      *     @OA\Response(
@@ -188,14 +237,14 @@ class OfferService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid column or direction")
+     *             @OA\Property(property="error", type="string", example="Invalid column or direction or parameters")
      *         )
      *     )
      * )
      */
-    public function getOffersOrderedBy($column, $direction)
+    public function getOffersOrderedBy($column, $direction, $page, $items)
     {
-        return $this->offerRepository->orderBy($column, $direction);
+        return $this->offerRepository->orderBy($column, $direction, $page, $items);
     }
 
     /**
@@ -214,11 +263,35 @@ class OfferService
      *     ),
      *
      *     @OA\Parameter(
-     *         name="name",
+     *         name="discount_percentage",
      *         in="query",
      *         required=false,
      *
-     *         @OA\Schema(type="string", example="Vegetables")
+     *         @OA\Schema(type="number", format="float", example=20.5)
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="start_date",
+     *         in="query",
+     *         required=false,
+     *
+     *         @OA\Schema(type="string", format="date", example="2024-10-01")
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="end_date",
+     *         in="query",
+     *         required=false,
+     *
+     *         @OA\Schema(type="string", format="date", example="2024-12-31")
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="product_id",
+     *         in="query",
+     *         required=false,
+     *
+     *         @OA\Schema(type="integer", example=1)
      *     ),
      *
      *      @OA\Header(

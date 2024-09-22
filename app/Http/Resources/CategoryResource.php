@@ -17,9 +17,13 @@ use OpenApi\Annotations as OA;
  *         property="products",
  *         type="array",
  *
- *         @OA\Items(ref="#/components/schemas/ProductResource")
- *     ),
+ *         @OA\Items(
+ *             type="object",
  *
+ *             @OA\Property(property="name", type="string", example="Smartphone"),
+ *             @OA\Property(property="user", type="string", example="John Doe")
+ *         )
+ *     ),
  * )
  */
 class CategoryResource extends JsonResource

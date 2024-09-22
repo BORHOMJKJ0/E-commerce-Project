@@ -6,14 +6,14 @@ use App\Models\Product;
 
 class ProductRepository
 {
-    public function getAll()
+    public function getAll($items, $page)
     {
-        return Product::paginate(5);
+        return Product::paginate($items, ['*'], 'page', $page);
     }
 
-    public function orderBy($column, $direction)
+    public function orderBy($column, $direction, $page, $items)
     {
-        return Product::orderBy($column, $direction)->paginate(5);
+        return Product::orderBy($column, $direction)->paginate($items, ['*'], 'page', $page);
     }
 
     public function create(array $data)

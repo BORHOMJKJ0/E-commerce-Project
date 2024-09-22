@@ -25,6 +25,28 @@
                 ],
                 "summary": "Get all categories",
                 "operationId": "6fba1dee4d21d4b5aefb654baaec9dc5",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "items",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 20
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Successful response",
@@ -35,6 +57,22 @@
                                     "items": {
                                         "$ref": "#/components/schemas/CategoryResource"
                                     }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid parameters"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -324,6 +362,26 @@
                                 "desc"
                             ]
                         }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "items",
+                        "in": "query",
+                        "description": "Number of items per page ",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 20
+                        }
                     }
                 ],
                 "responses": {
@@ -348,7 +406,7 @@
                                     "properties": {
                                         "error": {
                                             "type": "string",
-                                            "example": "Invalid column or direction"
+                                            "example": "Invalid column or direction or parameters"
                                         }
                                     },
                                     "type": "object"
@@ -793,6 +851,28 @@
                 ],
                 "summary": "Get all offers",
                 "operationId": "82b2a3d767019d2805a70e2059bf7ed3",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "items",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 20
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Successful response",
@@ -803,6 +883,22 @@
                                     "items": {
                                         "$ref": "#/components/schemas/OfferResource"
                                     }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid parameters"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -826,12 +922,30 @@
                         "multipart/form-data": {
                             "schema": {
                                 "required": [
-                                    "name"
+                                    "discount_percentage",
+                                    "start_date",
+                                    "end_date",
+                                    "product_id"
                                 ],
                                 "properties": {
-                                    "name": {
+                                    "discount_percentage": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": "15.50"
+                                    },
+                                    "start_date": {
                                         "type": "string",
-                                        "example": "fruits"
+                                        "format": "date",
+                                        "example": "2024-10-01"
+                                    },
+                                    "end_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2024-12-31"
+                                    },
+                                    "product_id": {
+                                        "type": "integer",
+                                        "example": 1
                                     }
                                 },
                                 "type": "object"
@@ -943,12 +1057,42 @@
                         }
                     },
                     {
-                        "name": "name",
+                        "name": "discount_percentage",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "format": "float",
+                            "example": 20.5
+                        }
+                    },
+                    {
+                        "name": "start_date",
                         "in": "query",
                         "required": false,
                         "schema": {
                             "type": "string",
-                            "example": "Vegetables"
+                            "format": "date",
+                            "example": "2024-10-01"
+                        }
+                    },
+                    {
+                        "name": "end_date",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2024-12-31"
+                        }
+                    },
+                    {
+                        "name": "product_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
                         }
                     }
                 ],
@@ -1075,7 +1219,9 @@
                         "schema": {
                             "type": "string",
                             "enum": [
-                                "name",
+                                "discount_percentage",
+                                "start_date",
+                                "end_date",
                                 "created_at",
                                 "updated_at"
                             ]
@@ -1091,6 +1237,26 @@
                                 "asc",
                                 "desc"
                             ]
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "items",
+                        "in": "query",
+                        "description": "Number of items per page ",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 20
                         }
                     }
                 ],
@@ -1116,7 +1282,7 @@
                                     "properties": {
                                         "error": {
                                             "type": "string",
-                                            "example": "Invalid column or direction"
+                                            "example": "Invalid column or direction or parameters"
                                         }
                                     },
                                     "type": "object"
@@ -1139,6 +1305,28 @@
                 ],
                 "summary": "Get all products",
                 "operationId": "4d81f6edc16f046d4562af9b09258bbe",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "items",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 20
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Successful response",
@@ -1149,6 +1337,22 @@
                                     "items": {
                                         "$ref": "#/components/schemas/ProductResource"
                                     }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid parameters"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -1501,6 +1705,26 @@
                         }
                     },
                     {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "items",
+                        "in": "query",
+                        "description": "Number of items per page ",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 20
+                        }
+                    },
+                    {
                         "name": "direction",
                         "in": "path",
                         "required": true,
@@ -1535,7 +1759,7 @@
                                     "properties": {
                                         "error": {
                                             "type": "string",
-                                            "example": "Invalid column or direction"
+                                            "example": "Invalid column or direction or parameters"
                                         }
                                     },
                                     "type": "object"
@@ -2136,6 +2360,28 @@
                 ],
                 "summary": "Get all warehouses",
                 "operationId": "a27c03c26cb3d146e614974c69b093ff",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "items",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 20
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Successful response",
@@ -2146,6 +2392,22 @@
                                     "items": {
                                         "$ref": "#/components/schemas/WarehouseResource"
                                     }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid parameters"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -2513,6 +2775,26 @@
                                 "desc"
                             ]
                         }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "items",
+                        "in": "query",
+                        "description": "Number of items per page ",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 20
+                        }
                     }
                 ],
                 "responses": {
@@ -2537,7 +2819,7 @@
                                     "properties": {
                                         "error": {
                                             "type": "string",
-                                            "example": "Invalid column or direction"
+                                            "example": "Invalid column or direction or parameters"
                                         }
                                     },
                                     "type": "object"
@@ -2569,7 +2851,17 @@
                     "products": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/ProductResource"
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "example": "Smartphone"
+                                },
+                                "user": {
+                                    "type": "string",
+                                    "example": "John Doe"
+                                }
+                            },
+                            "type": "object"
                         }
                     }
                 },
@@ -2581,39 +2873,46 @@
                         "type": "integer",
                         "example": 1
                     },
-                    "name": {
-                        "type": "string",
-                        "example": "Product A"
-                    },
-                    "image": {
-                        "type": "string",
-                        "example": "https://example.com/product.jpg"
-                    },
-                    "price": {
+                    "discount_percentage": {
                         "type": "number",
                         "format": "float",
-                        "example": "99.99"
+                        "example": 15.5
                     },
-                    "description": {
-                        "type": "string",
-                        "example": "it's a migical Product like from Random box"
-                    },
-                    "user": {
-                        "type": "string",
-                        "example": "John Doe"
-                    },
-                    "total_amount": {
-                        "type": "integer",
-                        "example": 500
-                    },
-                    "expiry_date": {
+                    "start_date": {
                         "type": "string",
                         "format": "date",
-                        "example": "2025-12-31"
+                        "example": "2024-09-01"
                     },
-                    "category": {
+                    "end_date": {
                         "type": "string",
-                        "example": "Electronics"
+                        "format": "date",
+                        "example": "2024-12-31"
+                    },
+                    "product": {
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "example": "Smartphone"
+                            },
+                            "price": {
+                                "type": "number",
+                                "format": "float",
+                                "example": 499.99
+                            },
+                            "description": {
+                                "type": "string",
+                                "example": "Samsung A30s white color 8Ram 128GB space"
+                            },
+                            "category": {
+                                "type": "string",
+                                "example": "Electronics"
+                            },
+                            "user": {
+                                "type": "string",
+                                "example": "John Doe"
+                            }
+                        },
+                        "type": "object"
                     }
                 },
                 "type": "object"
@@ -2635,24 +2934,51 @@
                     "price": {
                         "type": "number",
                         "format": "float",
-                        "example": "99.99"
+                        "example": 99.99
                     },
                     "description": {
                         "type": "string",
-                        "example": "it's a migical Product like from Random box"
+                        "example": "It's a magical product from Random Box"
+                    },
+                    "current_price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 84.49
                     },
                     "user": {
                         "type": "string",
                         "example": "John Doe"
                     },
+                    "offers": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "discount": {
+                                    "type": "string",
+                                    "example": "15.50"
+                                },
+                                "starting_at": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2024-09-21 23:20"
+                                },
+                                "ending_at": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2024-09-21 23:20"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
                     "total_amount": {
                         "type": "integer",
-                        "example": 500
+                        "example": 100
                     },
                     "expiry_date": {
                         "type": "string",
                         "format": "date",
-                        "example": "2025-12-31"
+                        "example": "2024-12-01"
                     },
                     "category": {
                         "type": "string",
@@ -2730,7 +3056,17 @@
                     "products": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/Category"
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "example": "Smartphone"
+                                },
+                                "user_id": {
+                                    "type": "integer",
+                                    "example": 1
+                                }
+                            },
+                            "type": "object"
                         }
                     }
                 },
@@ -2742,39 +3078,24 @@
                         "type": "integer",
                         "example": 1
                     },
-                    "name": {
-                        "type": "string",
-                        "example": "Smartphone"
-                    },
-                    "image": {
-                        "type": "string",
-                        "example": "product_image.jpg"
-                    },
-                    "price": {
+                    "discount_percentage": {
                         "type": "number",
                         "format": "float",
-                        "example": 499.99
+                        "example": 15.5
                     },
-                    "description": {
+                    "start_date": {
                         "type": "string",
-                        "example": "Samsung A30s white color 8Ram 128GB space"
+                        "format": "date",
+                        "example": "2024-09-01"
                     },
-                    "user": {
-                        "type": "string",
-                        "example": "John Doe"
-                    },
-                    "total_amount": {
-                        "type": "integer",
-                        "example": 100
-                    },
-                    "expiry_date": {
+                    "end_date": {
                         "type": "string",
                         "format": "date",
                         "example": "2024-12-31"
                     },
-                    "category": {
-                        "type": "string",
-                        "example": "Electronics"
+                    "product_id": {
+                        "type": "integer",
+                        "example": 1
                     }
                 },
                 "type": "object"
@@ -2802,9 +3123,37 @@
                         "type": "string",
                         "example": "Samsung A30s white color 8Ram 128GB space"
                     },
-                    "user": {
-                        "type": "string",
-                        "example": "John Doe"
+                    "current_price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 422.49
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "offers": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "discount": {
+                                    "type": "number",
+                                    "format": "float",
+                                    "example": 15.5
+                                },
+                                "starting_at": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2024-09-21 23:20"
+                                },
+                                "ending_at": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2024-09-21 23:20"
+                                }
+                            },
+                            "type": "object"
+                        }
                     },
                     "total_amount": {
                         "type": "integer",
@@ -2813,11 +3162,11 @@
                     "expiry_date": {
                         "type": "string",
                         "format": "date",
-                        "example": "2024-12-31"
+                        "example": "2024-12-01"
                     },
-                    "category": {
-                        "type": "string",
-                        "example": "Electronics"
+                    "category_id": {
+                        "type": "integer",
+                        "example": 1
                     }
                 },
                 "type": "object"
@@ -2853,27 +3202,9 @@
                         "format": "date",
                         "example": "2024-12-01"
                     },
-                    "products": {
-                        "properties": {
-                            "name": {
-                                "type": "string",
-                                "example": "Smartphone"
-                            },
-                            "price": {
-                                "type": "number",
-                                "format": "float",
-                                "example": 499.99
-                            },
-                            "category": {
-                                "type": "string",
-                                "example": "Electronics"
-                            },
-                            "user": {
-                                "type": "string",
-                                "example": "John Doe"
-                            }
-                        },
-                        "type": "object"
+                    "product_id": {
+                        "type": "integer",
+                        "example": 1
                     }
                 },
                 "type": "object"

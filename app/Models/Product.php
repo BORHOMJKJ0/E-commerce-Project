@@ -16,10 +16,22 @@ use OpenApi\Annotations as OA;
  *     @OA\Property(property="image", type="string", example="product_image.jpg"),
  *     @OA\Property(property="price", type="number", format="float", example=499.99),
  *     @OA\Property(property="description", type="string", example="Samsung A30s white color 8Ram 128GB space"),
- *     @OA\Property(property="user", type="string", example="John Doe"),
+ *     @OA\Property(property="current_price", type="number", format="float", example=422.49),
+ *     @OA\Property(property="user_id", type="integer", example=1),
+ *     @OA\Property(
+ *         property="offers",
+ *         type="array",
+ *
+ *         @OA\Items(
+ *
+ *             @OA\Property(property="discount", type="number", format="float", example=15.50),
+ *             @OA\Property(property="starting_at", type="string", format="date-time", example="2024-09-21 23:20"),
+ *             @OA\Property(property="ending_at", type="string", format="date-time", example="2024-09-21 23:20")
+ *         )
+ *     ),
  *     @OA\Property(property="total_amount", type="integer", example=100),
- *     @OA\Property(property="expiry_date", type="string", format="date", example="2024-12-31"),
- *     @OA\Property(property="category", type="string", example="Electronics"),
+ *     @OA\Property(property="expiry_date", type="string", format="date", example="2024-12-01"),
+ *     @OA\Property(property="category_id", type="integer", example=1)
  * )
  */
 class Product extends Model
