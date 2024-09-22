@@ -2073,6 +2073,22 @@
                                 }
                             }
                         }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "your email address is not verified"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -2193,14 +2209,37 @@
                             }
                         }
                     },
-                    "400": {
-                        "description": "Bad Request"
-                    },
                     "404": {
-                        "description": "User not found"
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User Not Found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "401": {
-                        "description": "Unauthorized - Invalid or missing token"
+                        "description": "Unauthorized - Invalid or missing token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -2343,6 +2382,26 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "You are not authorized to modify this profile"
+                                        },
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
                                         }
                                     },
                                     "type": "object"
@@ -2876,7 +2935,7 @@
                     "discount_percentage": {
                         "type": "number",
                         "format": "float",
-                        "example": 15.5
+                        "example": 10
                     },
                     "start_date": {
                         "type": "string",
@@ -2892,7 +2951,7 @@
                         "properties": {
                             "name": {
                                 "type": "string",
-                                "example": "Smartphone"
+                                "example": "Iphone 15"
                             },
                             "price": {
                                 "type": "number",
@@ -2901,15 +2960,15 @@
                             },
                             "description": {
                                 "type": "string",
-                                "example": "Samsung A30s white color 8Ram 128GB space"
+                                "example": "A high-end smartphone with excellent features and a sleek design"
                             },
                             "category": {
                                 "type": "string",
-                                "example": "Electronics"
+                                "example": "Smartphone"
                             },
                             "user": {
                                 "type": "string",
-                                "example": "John Doe"
+                                "example": "Hasan Zaeter"
                             }
                         },
                         "type": "object"
@@ -2921,33 +2980,33 @@
                 "properties": {
                     "id": {
                         "type": "integer",
-                        "example": 1
+                        "example": 42
                     },
                     "name": {
                         "type": "string",
-                        "example": "Product A"
+                        "example": "Iphone 15"
                     },
                     "image": {
                         "type": "string",
-                        "example": "https://example.com/product.jpg"
+                        "example": "https://example.com/images/smartphone-xyz.jpg"
                     },
                     "price": {
                         "type": "number",
                         "format": "float",
-                        "example": 99.99
+                        "example": 499.99
                     },
                     "description": {
                         "type": "string",
-                        "example": "It's a magical product from Random Box"
+                        "example": "A high-end smartphone with excellent features and a sleek design."
                     },
                     "current_price": {
                         "type": "number",
                         "format": "float",
-                        "example": 84.49
+                        "example": 449.99
                     },
                     "user": {
                         "type": "string",
-                        "example": "John Doe"
+                        "example": "Hasan Zaeter"
                     },
                     "offers": {
                         "type": "array",
@@ -2955,17 +3014,17 @@
                             "properties": {
                                 "discount": {
                                     "type": "string",
-                                    "example": "15.50"
+                                    "example": "10.00"
                                 },
                                 "starting_at": {
                                     "type": "string",
                                     "format": "date-time",
-                                    "example": "2024-09-21 23:20"
+                                    "example": "2024-09-22 12:00"
                                 },
                                 "ending_at": {
                                     "type": "string",
                                     "format": "date-time",
-                                    "example": "2024-09-21 23:20"
+                                    "example": "2025-01-15 23:59"
                                 }
                             },
                             "type": "object"
@@ -2973,16 +3032,16 @@
                     },
                     "total_amount": {
                         "type": "integer",
-                        "example": 100
+                        "example": 250
                     },
                     "expiry_date": {
                         "type": "string",
                         "format": "date",
-                        "example": "2024-12-01"
+                        "example": "2025-01-15"
                     },
                     "category": {
                         "type": "string",
-                        "example": "Electronics"
+                        "example": "Smartphones"
                     }
                 },
                 "type": "object"
@@ -2996,12 +3055,12 @@
                     "pure_price": {
                         "type": "number",
                         "format": "float",
-                        "example": "100.50"
+                        "example": "350.50"
                     },
                     "amount": {
                         "type": "number",
                         "format": "integer",
-                        "example": "0"
+                        "example": "50"
                     },
                     "payment_date": {
                         "type": "string",
@@ -3022,20 +3081,20 @@
                         "properties": {
                             "name": {
                                 "type": "string",
-                                "example": "Product A"
+                                "example": "Iphone 15"
                             },
                             "price": {
                                 "type": "number",
                                 "format": "float",
-                                "example": "50.00"
+                                "example": "499.99"
                             },
                             "category": {
                                 "type": "string",
-                                "example": "Category Name"
+                                "example": "Smartphone"
                             },
                             "user": {
                                 "type": "string",
-                                "example": "John Doe"
+                                "example": "Hasan Zaeter"
                             }
                         },
                         "type": "object"

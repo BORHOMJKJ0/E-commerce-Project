@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Rules\MatchOldPassword;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\ValidationException;
 
 class UpdateUserRequest extends FormRequest
@@ -14,6 +15,11 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        $userIdFormRoute = $this->route('user_id');
+        if ($userIdFormRoute != auth()->user()->id) {
+            return false;
+        }
+
         return true;
     }
 
@@ -27,13 +33,21 @@ class UpdateUserRequest extends FormRequest
         return [
             'name' => 'sometimes|string',
             'mobile' => 'sometimes|string|size:10',
-            'old_password' => ['sometimes', 'string', new MatchOldPassword],
+            'old_password' => ['sometimes', 'string', new MatchOldPassword, 'required_with:new_password'],
             'new_password' => ['sometimes', 'string', 'min:8', 'confirmed', function ($attribute, $value, $fail) {
                 if ($this->filled('new_password') && ! $this->filled('old_password')) {
                     $fail('The old_password field is required ');
                 }
             }],
         ];
+    }
+
+    public function failedAuthorization()
+    {
+        throw new HttpResponseException(response()->json([
+            'message' => 'You are not authorized to modify this profile',
+            'success' => false,
+        ], 403));
     }
 
     public function failedValidation(Validator $validator)

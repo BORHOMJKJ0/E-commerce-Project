@@ -202,7 +202,17 @@ class UserService
      *
      *             @OA\Property(property="error", type="string", example="Unauthorized")
      *         )
-     *     )
+     *     ),
+     *
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden",
+     *
+     *          @OA\JsonContent(
+     *
+     *              @OA\Property(property="error", type="string", example="your email address is not verified")
+     *          )
+     *      )
      * )
      */
     public function login(LoginRequest $request): JsonResponse
@@ -307,16 +317,23 @@ class UserService
      *     ),
      *
      *     @OA\Response(
-     *         response=400,
-     *         description="Bad Request"
-     *     ),
-     *     @OA\Response(
      *         response=404,
-     *         description="User not found"
+     *         description="User not found",
+     *
+     *          @OA\JsonContent(
+     *
+     *               @OA\Property(property="message", type="string", example="User Not Found")
+     *           )
      *     ),
+     *
      *     @OA\Response(
      *          response=401,
-     *          description="Unauthorized - Invalid or missing token"
+     *          description="Unauthorized - Invalid or missing token",
+     *
+     *     @OA\JsonContent(
+     *
+     *               @OA\Property(property="message", type="string", example="Unauthenticated")
+     *           )
      *      )
      * )
      */
@@ -396,19 +413,29 @@ class UserService
      *
      *             @OA\Property(property="message", type="string", example="Unauthorized")
      *         )
-     *     )
+     *     ),
+     *
+     *     @OA\Response(
+     *          response=403,
+     *          description="Forbidden",
+     *
+     *          @OA\JsonContent(
+     *
+     *              @OA\Property(property="message", type="string", example="You are not authorized to modify this profile"),
+     *              @OA\Property(property="status",type="boolean",example=false)
+     *          )
+     *      )
      * )
      */
-    public function update(UpdateUserRequest $request, $user): JsonResponse
+    public function update(UpdateUserRequest $request, $user_id): JsonResponse
     {
 
         $validationResponse = $this->validateRequest($request, $request->rules());
         if ($validationResponse) {
             return $validationResponse;
         }
-        if (auth()->user()->id != $user->id) {
-            return response()->json(['error' => "you can't modify "], 403);
-        }
+
+        $user = $this->userRepository->findById($user_id);
 
         if ($request->filled('new_password')) {
             $request->merge(['password' => Hash::make($request->new_password)]);

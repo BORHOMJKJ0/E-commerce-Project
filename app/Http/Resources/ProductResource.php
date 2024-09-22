@@ -12,29 +12,30 @@ use OpenApi\Annotations as OA;
  *     schema="ProductResource",
  *     type="object",
  *
- *     @OA\Property(property="id", type="integer", example=1),
- *     @OA\Property(property="name", type="string", example="Product A"),
- *     @OA\Property(property="image", type="string", example="https://example.com/product.jpg"),
- *     @OA\Property(property="price", type="number", format="float", example=99.99),
- *     @OA\Property(property="description", type="string", example="It's a magical product from Random Box"),
- *     @OA\Property(property="current_price", type="number", format="float", example=84.49),
- *     @OA\Property(property="user", type="string", example="John Doe"),
+ *     @OA\Property(property="id", type="integer", example=42),
+ *     @OA\Property(property="name", type="string", example="Iphone 15"),
+ *     @OA\Property(property="image", type="string", example="https://example.com/images/smartphone-xyz.jpg"),
+ *     @OA\Property(property="price", type="number", format="float", example=499.99),
+ *     @OA\Property(property="description", type="string", example="A high-end smartphone with excellent features and a sleek design."),
+ *     @OA\Property(property="current_price", type="number", format="float", example=449.99),
+ *     @OA\Property(property="user", type="string", example="Hasan Zaeter"),
  *     @OA\Property(
  *         property="offers",
  *         type="array",
  *
  *         @OA\Items(
  *
- *             @OA\Property(property="discount", type="string", example="15.50"),
- *             @OA\Property(property="starting_at", type="string", format="date-time", example="2024-09-21 23:20"),
- *             @OA\Property(property="ending_at", type="string", format="date-time", example="2024-09-21 23:20")
+ *             @OA\Property(property="discount", type="string", example="10.00"),
+ *             @OA\Property(property="starting_at", type="string", format="date-time", example="2024-09-22 12:00"),
+ *             @OA\Property(property="ending_at", type="string", format="date-time", example="2025-01-15 23:59")
  *         )
  *     ),
- *     @OA\Property(property="total_amount", type="integer", example=100),
- *     @OA\Property(property="expiry_date", type="string", format="date", example="2024-12-01"),
- *     @OA\Property(property="category", type="string", example="Electronics"),
+ *     @OA\Property(property="total_amount", type="integer", example=250),
+ *     @OA\Property(property="expiry_date", type="string", format="date", example="2025-01-15"),
+ *     @OA\Property(property="category", type="string", example="Smartphones"),
  * )
  */
+
 class ProductResource extends JsonResource
 {
     /**

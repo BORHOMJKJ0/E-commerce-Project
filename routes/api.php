@@ -55,11 +55,8 @@ Route::middleware('api')->prefix('users')->group(function () {
         Route::get('profile/{user}', 'profile')->whereNumber('user_id')
             ->missing(function () {
                 return response()->json(['error' => 'User Not Found'], 404);
-            });
-        Route::put('update/{user}', 'update')
-            ->missing(function () {
-                return response()->json(['error' => 'User Not Found']);
-            });
+            })->whereNumber('user');
+        Route::put('update/{user_id}', 'update')->whereNumber('user');
     });
 
     Route::controller(EmailVerificationController::class)->group(function () {
