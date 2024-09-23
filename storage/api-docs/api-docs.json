@@ -115,7 +115,22 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/CategoryResource"
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Electronic devices"
+                                        },
+                                        "products": {
+                                            "type": "array",
+                                            "items": {},
+                                            "example": []
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -228,7 +243,33 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/CategoryResource"
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Electronic devices"
+                                        },
+                                        "products": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Smartphone"
+                                                    },
+                                                    "user": {
+                                                        "type": "string",
+                                                        "example": "Hasan Zaeter"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -1044,7 +1085,7 @@
                 "tags": [
                     "offers"
                 ],
-                "summary": "Update a offer",
+                "summary": "Update an offer",
                 "operationId": "9a896cb858c0c57d6113d978fd830605",
                 "parameters": [
                     {
@@ -1102,7 +1143,54 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/OfferResource"
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "discount_percentage": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": 80
+                                        },
+                                        "start_date": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2024-09-01"
+                                        },
+                                        "end_date": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2024-12-31"
+                                        },
+                                        "product": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Iphone 15"
+                                                },
+                                                "price": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 499.99
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "A high-end smartphone with excellent features and a sleek design"
+                                                },
+                                                "category": {
+                                                    "type": "string",
+                                                    "example": "Smartphone"
+                                                },
+                                                "user": {
+                                                    "type": "string",
+                                                    "example": "Hasan Zaeter"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -1421,7 +1509,57 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ProductResource"
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 42
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Iphone 15"
+                                        },
+                                        "image": {
+                                            "type": "string",
+                                            "example": "https://example.com/images/smartphone-xyz.jpg"
+                                        },
+                                        "price": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": 499.99
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "example": "A high-end smartphone with excellent features and a sleek design."
+                                        },
+                                        "current_price": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": 449.99
+                                        },
+                                        "user": {
+                                            "type": "string",
+                                            "example": "Hasan Zaeter"
+                                        },
+                                        "offers": {
+                                            "type": "array",
+                                            "items": {},
+                                            "example": []
+                                        },
+                                        "total_amount": {
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "expiry_date": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "null"
+                                        },
+                                        "category": {
+                                            "type": "string",
+                                            "example": "Smartphones"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -1580,7 +1718,74 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ProductResource"
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Iphone 14"
+                                        },
+                                        "image": {
+                                            "type": "string",
+                                            "example": "https://example.com/images/smartphone-xyz.jpg"
+                                        },
+                                        "price": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": 499.99
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "example": "A high-end smartphone with excellent features and a sleek design."
+                                        },
+                                        "current_price": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": 449.99
+                                        },
+                                        "user": {
+                                            "type": "string",
+                                            "example": "Hasan Zaeter"
+                                        },
+                                        "offers": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "discount": {
+                                                        "type": "string",
+                                                        "example": "10.00"
+                                                    },
+                                                    "starting_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2024-09-22 12:00"
+                                                    },
+                                                    "ending_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2025-01-15 23:59"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "total_amount": {
+                                            "type": "integer",
+                                            "example": 250
+                                        },
+                                        "expiry_date": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2025-01-15"
+                                        },
+                                        "category": {
+                                            "type": "string",
+                                            "example": "Smartphones"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -2697,7 +2902,59 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/WarehouseResource"
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "pure_price": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": 3500.5
+                                        },
+                                        "amount": {
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "payment_date": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2024-09-15"
+                                        },
+                                        "settlement_date": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2024-09-30"
+                                        },
+                                        "expiry_date": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2025-12-31"
+                                        },
+                                        "product": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Iphone 15"
+                                                },
+                                                "price": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": "499.99"
+                                                },
+                                                "category": {
+                                                    "type": "string",
+                                                    "example": "Smartphone"
+                                                },
+                                                "user": {
+                                                    "type": "string",
+                                                    "example": "Hasan Zaeter"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -2917,7 +3174,7 @@
                                 },
                                 "user": {
                                     "type": "string",
-                                    "example": "John Doe"
+                                    "example": "Hasan Zaeter"
                                 }
                             },
                             "type": "object"
@@ -3032,12 +3289,12 @@
                     },
                     "total_amount": {
                         "type": "integer",
-                        "example": 250
+                        "example": 50
                     },
                     "expiry_date": {
                         "type": "string",
                         "format": "date",
-                        "example": "2025-01-15"
+                        "example": "2025-12-31"
                     },
                     "category": {
                         "type": "string",
@@ -3060,7 +3317,7 @@
                     "amount": {
                         "type": "number",
                         "format": "integer",
-                        "example": "50"
+                        "example": "250"
                     },
                     "payment_date": {
                         "type": "string",
@@ -3070,7 +3327,7 @@
                     "settlement_date": {
                         "type": "string",
                         "format": "date",
-                        "example": "2024-09-30"
+                        "example": "null"
                     },
                     "expiry_date": {
                         "type": "string",

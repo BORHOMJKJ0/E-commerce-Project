@@ -21,7 +21,7 @@ use OpenApi\Annotations as OA;
  *             type="object",
  *
  *             @OA\Property(property="name", type="string", example="Smartphone"),
- *             @OA\Property(property="user", type="string", example="John Doe")
+ *             @OA\Property(property="user", type="string", example="Hasan Zaeter")
  *         )
  *     ),
  * )

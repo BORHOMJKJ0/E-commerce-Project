@@ -111,7 +111,7 @@ class ProductService
      *     path="/api/products",
      *     summary="Create a product",
      *     tags={"Products"},
-     *     security={{"bearerAuth": {} }},
+     *     security={{"bearerAuth": {}}},
      *
      *     @OA\RequestBody(
      *         required=true,
@@ -151,7 +151,28 @@ class ProductService
      *         response=201,
      *         description="Product created successfully",
      *
-     *         @OA\JsonContent(ref="#/components/schemas/ProductResource")
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="id", type="integer", example=42),
+     *             @OA\Property(property="name", type="string", example="Iphone 15"),
+     *             @OA\Property(property="image", type="string", example="https://example.com/images/smartphone-xyz.jpg"),
+     *             @OA\Property(property="price", type="number", format="float", example=499.99),
+     *             @OA\Property(property="description", type="string", example="A high-end smartphone with excellent features and a sleek design."),
+     *             @OA\Property(property="current_price", type="number", format="float", example=449.99),
+     *             @OA\Property(property="user", type="string", example="Hasan Zaeter"),
+     *             @OA\Property(
+     *                 property="offers",
+     *                 type="array",
+     *                 example={},
+     *
+     *                 @OA\Items()
+     *             ),
+     *
+     *             @OA\Property(property="total_amount", type="integer", example=0),
+     *             @OA\Property(property="expiry_date", type="string", format="date", example="null"),
+     *             @OA\Property(property="category", type="string", example="Smartphones")
+     *         )
      *     ),
      *
      *     @OA\Response(
@@ -162,7 +183,7 @@ class ProductService
      *
      *             @OA\Property(property="error", type="string", example="Invalid input data")
      *         )
-     *     ),
+     *     )
      * )
      */
     public function createProduct(array $data)
@@ -245,7 +266,7 @@ class ProductService
      *     path="/api/products/{id}",
      *     summary="Update a product",
      *     tags={"Products"},
-     *      security={{"bearerAuth": {} }},
+     *     security={{"bearerAuth": {}}},
      *
      *     @OA\Parameter(
      *         name="id",
@@ -321,7 +342,31 @@ class ProductService
      *         response=200,
      *         description="Product updated successfully",
      *
-     *         @OA\JsonContent(ref="#/components/schemas/ProductResource")
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="id", type="integer", example=1),
+     *             @OA\Property(property="name", type="string", example="Iphone 14"),
+     *             @OA\Property(property="image", type="string", example="https://example.com/images/smartphone-xyz.jpg"),
+     *             @OA\Property(property="price", type="number", format="float", example=499.99),
+     *             @OA\Property(property="description", type="string", example="A high-end smartphone with excellent features and a sleek design."),
+     *             @OA\Property(property="current_price", type="number", format="float", example=449.99),
+     *             @OA\Property(property="user", type="string", example="Hasan Zaeter"),
+     *             @OA\Property(
+     *                 property="offers",
+     *                 type="array",
+     *
+     *                 @OA\Items(
+     *
+     *                     @OA\Property(property="discount", type="string", example="10.00"),
+     *                     @OA\Property(property="starting_at", type="string", format="date-time", example="2024-09-22 12:00"),
+     *                     @OA\Property(property="ending_at", type="string", format="date-time", example="2025-01-15 23:59")
+     *                 )
+     *             ),
+     *             @OA\Property(property="total_amount", type="integer", example=250),
+     *             @OA\Property(property="expiry_date", type="string", format="date", example="2025-01-15"),
+     *             @OA\Property(property="category", type="string", example="Smartphones")
+     *         )
      *     ),
      *
      *     @OA\Response(

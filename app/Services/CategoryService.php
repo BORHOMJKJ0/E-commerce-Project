@@ -155,7 +155,19 @@ class CategoryService
      *         response=201,
      *         description="Category created successfully",
      *
-     *         @OA\JsonContent(ref="#/components/schemas/CategoryResource")
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="id", type="integer", example=1),
+     *             @OA\Property(property="name", type="string", example="Electronic devices"),
+     *             @OA\Property(
+     *                 property="products",
+     *                 type="array",
+     *                 example={},
+     *
+     *             @OA\Items()
+     *             )
+     *         )
      *     ),
      *
      *     @OA\Response(
@@ -249,7 +261,7 @@ class CategoryService
      *     path="/api/categories/{id}",
      *     summary="Update a category",
      *     tags={"Categories"},
-     *      security={{"bearerAuth": {} }},
+     *     security={{"bearerAuth": {}}},
      *
      *     @OA\Parameter(
      *         name="id",
@@ -267,7 +279,7 @@ class CategoryService
      *         @OA\Schema(type="string", example="Vegetables")
      *     ),
      *
-     *      @OA\Header(
+     *     @OA\Header(
      *         header="Content-Type",
      *         description="Content-Type header",
      *
@@ -285,7 +297,23 @@ class CategoryService
      *         response=200,
      *         description="Category updated successfully",
      *
-     *         @OA\JsonContent(ref="#/components/schemas/CategoryResource")
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="id", type="integer", example=1),
+     *             @OA\Property(property="name", type="string", example="Electronic devices"),
+     *             @OA\Property(
+     *                 property="products",
+     *                 type="array",
+     *
+     *                 @OA\Items(
+     *                     type="object",
+     *
+     *                     @OA\Property(property="name", type="string", example="Smartphone"),
+     *                     @OA\Property(property="user", type="string", example="Hasan Zaeter")
+     *                 )
+     *             )
+     *         )
      *     ),
      *
      *     @OA\Response(

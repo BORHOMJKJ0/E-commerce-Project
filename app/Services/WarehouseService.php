@@ -246,7 +246,7 @@ class WarehouseService
      *     path="/api/warehouses/{id}",
      *     summary="Update a warehouse",
      *     tags={"Warehouse"},
-     *      security={{"bearerAuth": {} }},
+     *     security={{"bearerAuth": {}}},
      *
      *     @OA\Parameter(
      *         name="id",
@@ -304,7 +304,7 @@ class WarehouseService
      *         @OA\Schema(type="integer", example=1)
      *     ),
      *
-     *      @OA\Header(
+     *     @OA\Header(
      *         header="Content-Type",
      *         description="Content-Type header",
      *
@@ -322,7 +322,24 @@ class WarehouseService
      *         response=200,
      *         description="Warehouse updated successfully",
      *
-     *         @OA\JsonContent(ref="#/components/schemas/WarehouseResource")
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="id", type="integer", example=1),
+     *             @OA\Property(property="pure_price", type="number", format="float", example=3500.5),
+     *             @OA\Property(property="amount", type="integer", example=0),
+     *             @OA\Property(property="payment_date", type="string", format="date", example="2024-09-15"),
+     *             @OA\Property(property="settlement_date", type="string", format="date", example="2024-09-30"),
+     *             @OA\Property(property="expiry_date", type="string", format="date", example="2025-12-31"),
+     *             @OA\Property(
+     *                 property="product",
+     *                 type="object",
+     *                 @OA\Property(property="name", type="string", example="Iphone 15"),
+     *                 @OA\Property(property="price", type="number", format="float", example="499.99"),
+     *                 @OA\Property(property="category", type="string", example="Smartphone"),
+     *                 @OA\Property(property="user", type="string", example="Hasan Zaeter")
+     *             )
+     *         )
      *     ),
      *
      *     @OA\Response(
@@ -353,7 +370,12 @@ class WarehouseService
                 'expiry_date' => 'You cannot update the expiry date once it has been set.',
             ]);
         }
-        $this->validateWarehouseData($data, $warehouse, 'sometimes');
+        if (isset($data['settlement_date'])) {
+            throw ValidationException::withMessages([
+                'settlement_date' => 'You cannot update the settlement date it updated automatically.',
+            ]);
+        }
+        $this->validateWarehouseData($data, $warehouse, 'sometimes', 0);
 
         return $this->warehouseRepository->update($warehouse, $data);
     }
@@ -399,11 +421,11 @@ class WarehouseService
         return $this->warehouseRepository->delete($warehouse);
     }
 
-    protected function validateWarehouseData(array $data, $warehouse = null, $rule = 'required')
+    protected function validateWarehouseData(array $data, $warehouse = null, $rule = 'required', $limit = 1)
     {
         $validator = Validator::make($data, [
             'pure_price' => "$rule|numeric|min:0",
-            'amount' => "$rule|numeric|min:0",
+            'amount' => "$rule|numeric|min:$limit",
             'payment_date' => "$rule|date",
             'settlement_date' => 'nullable|date|after_or_equal:payment_date',
             'expiry_date' => "$rule|date|after_or_equal:payment_date",

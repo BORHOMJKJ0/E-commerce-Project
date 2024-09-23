@@ -250,9 +250,9 @@ class OfferService
     /**
      * @OA\Put(
      *     path="/api/offers/{id}",
-     *     summary="Update a offer",
+     *     summary="Update an offer",
      *     tags={"offers"},
-     *      security={{"bearerAuth": {} }},
+     *     security={{"bearerAuth": {}}},
      *
      *     @OA\Parameter(
      *         name="id",
@@ -294,7 +294,7 @@ class OfferService
      *         @OA\Schema(type="integer", example=1)
      *     ),
      *
-     *      @OA\Header(
+     *     @OA\Header(
      *         header="Content-Type",
      *         description="Content-Type header",
      *
@@ -312,7 +312,21 @@ class OfferService
      *         response=200,
      *         description="Offer updated successfully",
      *
-     *         @OA\JsonContent(ref="#/components/schemas/OfferResource")
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="id", type="integer", example=1),
+     *             @OA\Property(property="discount_percentage", type="number", format="float", example=80.00),
+     *             @OA\Property(property="start_date", type="string", format="date", example="2024-09-01"),
+     *             @OA\Property(property="end_date", type="string", format="date", example="2024-12-31"),
+     *             @OA\Property(property="product", type="object",
+     *                 @OA\Property(property="name", type="string", example="Iphone 15"),
+     *                 @OA\Property(property="price", type="number", format="float", example=499.99),
+     *                 @OA\Property(property="description", type="string", example="A high-end smartphone with excellent features and a sleek design"),
+     *                 @OA\Property(property="category", type="string", example="Smartphone"),
+     *                 @OA\Property(property="user", type="string", example="Hasan Zaeter")
+     *             ),
+     *         )
      *     ),
      *
      *     @OA\Response(

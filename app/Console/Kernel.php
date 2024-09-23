@@ -14,7 +14,9 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('app:check-email-verification')->hourly();
+        $schedule->command('delete:expired-products-and-offers')->everyMinute();
         $schedule->command('queue:work')->everyMinute();
+
     }
 
     /**

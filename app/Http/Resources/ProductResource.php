@@ -30,12 +30,11 @@ use OpenApi\Annotations as OA;
  *             @OA\Property(property="ending_at", type="string", format="date-time", example="2025-01-15 23:59")
  *         )
  *     ),
- *     @OA\Property(property="total_amount", type="integer", example=250),
- *     @OA\Property(property="expiry_date", type="string", format="date", example="2025-01-15"),
+ *     @OA\Property(property="total_amount", type="integer", example=50),
+ *     @OA\Property(property="expiry_date", type="string", format="date", example="2025-12-31"),
  *     @OA\Property(property="category", type="string", example="Smartphones"),
  * )
  */
-
 class ProductResource extends JsonResource
 {
     /**
@@ -87,6 +86,7 @@ class ProductResource extends JsonResource
             'total_amount' => $this->warehouses->sum('amount'),
             'expiry_date' => $minExpiryDate ?: null,
             'category' => $this->category->name,
+            //            'created_at'=>$this->created_at->format('Y-m-d'),
         ];
     }
 }
