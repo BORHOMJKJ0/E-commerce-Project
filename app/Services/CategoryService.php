@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Exceptions\UnauthorizedActionException;
 use App\Models\Category;
+use App\Models\Product;
 use App\Repositories\CategoryRepository;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -75,6 +77,58 @@ class CategoryService
     public function getAllCategories($page, $items)
     {
         return $this->categoryRepository->getAll($items, $page);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/categories/my",
+     *     summary="Get My categories",
+     *     tags={"Categories"},
+     *     security={{"bearerAuth": {} }},
+     *
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         required=false,
+     *         description="Page number",
+     *
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="items",
+     *         in="query",
+     *         required=false,
+     *         description="Number of items per page",
+     *
+     *         @OA\Schema(type="integer", example=20)
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful response",
+     *
+     *         @OA\JsonContent(
+     *             type="array",
+     *
+     *             @OA\Items(ref="#/components/schemas/CategoryResource")
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=422,
+     *         description="Invalid parameters",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="error", type="string", example="Invalid parameters")
+     *         )
+     *     )
+     * )
+     */
+    public function getMyCategories($page, $items)
+    {
+        return $this->categoryRepository->getMy($items, $page);
     }
 
     /**
@@ -257,6 +311,74 @@ class CategoryService
     }
 
     /**
+     * @OA\Get(
+     *     path="/api/categories/my/order/{column}/{direction}",
+     *     summary="Order My categories by a specific column",
+     *     tags={"Categories"},
+     *     security={{"bearerAuth": {} }},
+     *
+     *     @OA\Parameter(
+     *         name="column",
+     *         in="path",
+     *         required=true,
+     *
+     *         @OA\Schema(type="string", enum={"name", "created_at", "updated_at"})
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="direction",
+     *         in="path",
+     *         required=true,
+     *
+     *         @OA\Schema(type="string", enum={"asc", "desc"})
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         required=false,
+     *         description="Page number",
+     *
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="items",
+     *         in="query",
+     *         required=false,
+     *         description="Number of items per page ",
+     *
+     *         @OA\Schema(type="integer", example=20)
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful response",
+     *
+     *         @OA\JsonContent(
+     *             type="array",
+     *
+     *             @OA\Items(ref="#/components/schemas/CategoryResource")
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=422,
+     *         description="Invalid column or direction",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="error", type="string", example="Invalid column or direction or parameters")
+     *         )
+     *     )
+     * )
+     */
+    public function getMyCategoriesOrderedBy($column, $direction, $page, $items)
+    {
+        return $this->categoryRepository->orderMyBy($column, $direction, $page, $items);
+    }
+
+    /**
      * @OA\Put(
      *     path="/api/categories/{id}",
      *     summary="Update a category",
@@ -326,6 +448,16 @@ class CategoryService
      *         )
      *     ),
      *
+     *    @OA\Response(
+     *         response=403,
+     *         description="forbidden error",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="error", type="string", example="You cannot update category with associated products.")
+     *         )
+     *     ),
+     *
      *     @OA\Response(
      *         response=404,
      *         description="Category not found",
@@ -339,6 +471,16 @@ class CategoryService
      */
     public function updateCategory(Category $category, array $data)
     {
+        if ($category->products()->exists()) {
+            throw new UnauthorizedActionException('You cannot update category with associated products.');
+        }
+        $userHasProductInCategory = Product::where('category_id', $category->id)
+            ->where('user_id', auth()->id())
+            ->exists();
+
+        if (! $userHasProductInCategory) {
+            throw new UnauthorizedActionException('You are not authorized to update this Category.');
+        }
         $this->validateCategoryData($data, 'sometimes');
 
         return $this->categoryRepository->update($category, $data);
@@ -369,6 +511,16 @@ class CategoryService
      *         )
      *     ),
      *
+     *    @OA\Response(
+     *         response=403,
+     *         description="forbidden error",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="error", type="string", example="You are not authorized to delete this Category.")
+     *         )
+     *     ),
+     *
      *     @OA\Response(
      *         response=404,
      *         description="Category not found",
@@ -382,6 +534,10 @@ class CategoryService
      */
     public function deleteCategory(Category $category)
     {
+        if ($category->products()->exists()) {
+            throw new UnauthorizedActionException('You are not authorized to delete this Category.');
+        }
+
         return $this->categoryRepository->delete($category);
     }
 

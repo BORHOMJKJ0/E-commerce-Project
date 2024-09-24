@@ -159,6 +159,73 @@
                 ]
             }
         },
+        "/api/categories/my": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Get My categories",
+                "operationId": "97de98d6dc132bd53483985d8f00dead",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "items",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 20
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CategoryResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid parameters"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/categories/{id}": {
             "get": {
                 "tags": [
@@ -290,6 +357,22 @@
                             }
                         }
                     },
+                    "403": {
+                        "description": "forbidden error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "You cannot update category with associated products."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "Category not found",
                         "content": {
@@ -347,6 +430,22 @@
                             }
                         }
                     },
+                    "403": {
+                        "description": "forbidden error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "You are not authorized to delete this Category."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "Category not found",
                         "content": {
@@ -378,6 +477,98 @@
                 ],
                 "summary": "Order categories by a specific column",
                 "operationId": "e0b9985a243e9b51fffe68fbfb21133d",
+                "parameters": [
+                    {
+                        "name": "column",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "name",
+                                "created_at",
+                                "updated_at"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "direction",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "items",
+                        "in": "query",
+                        "description": "Number of items per page ",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 20
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CategoryResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid column or direction",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid column or direction or parameters"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/categories/my/order/{column}/{direction}": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Order My categories by a specific column",
+                "operationId": "496cba0949339dd3c3bebc01adf43b3b",
                 "parameters": [
                     {
                         "name": "column",
@@ -1005,6 +1196,22 @@
                             }
                         }
                     },
+                    "403": {
+                        "description": "forbidden error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "You are not authorized to create this Offer."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
                     "422": {
                         "description": "Validation error",
                         "content": {
@@ -1014,6 +1221,73 @@
                                         "error": {
                                             "type": "string",
                                             "example": "Invalid input data"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/offers/my": {
+            "get": {
+                "tags": [
+                    "offers"
+                ],
+                "summary": "Get My offers",
+                "operationId": "5478b93fc7cf9bda6c93ded4c3b2f228",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "items",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 20
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/OfferResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid parameters"
                                         }
                                     },
                                     "type": "object"
@@ -1211,6 +1485,22 @@
                             }
                         }
                     },
+                    "403": {
+                        "description": "forbidden error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "You are not authorized to update this Offer."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "Offer not found",
                         "content": {
@@ -1268,6 +1558,22 @@
                             }
                         }
                     },
+                    "403": {
+                        "description": "forbidden error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "You are not authorized to delete this Offer."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "Offer not found",
                         "content": {
@@ -1299,6 +1605,100 @@
                 ],
                 "summary": "Order offers by a specific column",
                 "operationId": "6ead40a61d18d819cacf8537069a72be",
+                "parameters": [
+                    {
+                        "name": "column",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "discount_percentage",
+                                "start_date",
+                                "end_date",
+                                "created_at",
+                                "updated_at"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "direction",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "items",
+                        "in": "query",
+                        "description": "Number of items per page ",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 20
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/OfferResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid column or direction",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid column or direction or parameters"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/offers/my/order/{column}/{direction}": {
+            "get": {
+                "tags": [
+                    "offers"
+                ],
+                "summary": "Order My offers by a specific column",
+                "operationId": "8e8019bc9e99feab22bea5546f987873",
                 "parameters": [
                     {
                         "name": "column",
@@ -1468,8 +1868,7 @@
                                     "image",
                                     "price",
                                     "description",
-                                    "category_id",
-                                    "user_id"
+                                    "category_id"
                                 ],
                                 "properties": {
                                     "name": {
@@ -1490,10 +1889,6 @@
                                         "example": "This is a new Perform and it's cool Try it"
                                     },
                                     "category_id": {
-                                        "type": "integer",
-                                        "example": 1
-                                    },
-                                    "user_id": {
                                         "type": "integer",
                                         "example": 1
                                     }
@@ -1564,6 +1959,22 @@
                             }
                         }
                     },
+                    "403": {
+                        "description": "forbidden error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "You are not authorized to add this product."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
                     "422": {
                         "description": "Validation error",
                         "content": {
@@ -1573,6 +1984,73 @@
                                         "error": {
                                             "type": "string",
                                             "example": "Invalid input data"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/products/my": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Get My products",
+                "operationId": "1f5b1265a3347c4129b8ff0355754b89",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "items",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 20
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ProductResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid parameters"
                                         }
                                     },
                                     "type": "object"
@@ -1701,15 +2179,6 @@
                             "type": "integer",
                             "example": 1
                         }
-                    },
-                    {
-                        "name": "user_id",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
                     }
                 ],
                 "responses": {
@@ -1806,6 +2275,22 @@
                             }
                         }
                     },
+                    "403": {
+                        "description": "forbidden error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "You are not authorized to update this product."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "Product not found",
                         "content": {
@@ -1863,6 +2348,22 @@
                             }
                         }
                     },
+                    "403": {
+                        "description": "forbidden error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "You are not authorized to delete this product."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "Product not found",
                         "content": {
@@ -1894,6 +2395,99 @@
                 ],
                 "summary": "Order products by a specific column",
                 "operationId": "fd3f51a8b8a44a87a064005b898f546e",
+                "parameters": [
+                    {
+                        "name": "column",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "name",
+                                "price",
+                                "created_at",
+                                "updated_at"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "items",
+                        "in": "query",
+                        "description": "Number of items per page ",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 20
+                        }
+                    },
+                    {
+                        "name": "direction",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ProductResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid column or direction",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid column or direction or parameters"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/products/my/order/{column}/{direction}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Order My products by a specific column",
+                "operationId": "90db3aa6bc7ebce728349e61b123ef84",
                 "parameters": [
                     {
                         "name": "column",
@@ -2622,7 +3216,7 @@
                 "tags": [
                     "Warehouse"
                 ],
-                "summary": "Get all warehouses",
+                "summary": "Get my warehouses",
                 "operationId": "a27c03c26cb3d146e614974c69b093ff",
                 "parameters": [
                     {
@@ -2746,6 +3340,22 @@
                             }
                         }
                     },
+                    "403": {
+                        "description": "forbidden error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "You are not authorized to create this warehouse ."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
                     "422": {
                         "description": "Validation error",
                         "content": {
@@ -2795,6 +3405,22 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/WarehouseResource"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "forbidden error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "You are not authorized to view this warehouse."
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -2975,6 +3601,22 @@
                             }
                         }
                     },
+                    "403": {
+                        "description": "forbidden error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "You are not authorized to delete this warehouse ."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "Warehouse not found",
                         "content": {
@@ -3032,6 +3674,22 @@
                             }
                         }
                     },
+                    "403": {
+                        "description": "forbidden error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "You are not authorized to delete this warehouse ."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "Warehouse not found",
                         "content": {
@@ -3061,7 +3719,7 @@
                 "tags": [
                     "Warehouse"
                 ],
-                "summary": "Order warehouses by a specific column",
+                "summary": "Order My warehouses by a specific column",
                 "operationId": "9904bc7c266c0860dec9b93aca190ef3",
                 "parameters": [
                     {

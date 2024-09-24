@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Warehouse;
 
+use App\Exceptions\UnauthorizedActionException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\WarehouseResource;
 use App\Models\Warehouse;
@@ -35,19 +36,29 @@ class WarehouseController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        $warehouse = $this->warehouseService->createWarehouse($request->all());
+        try {
 
-        return response()->json([
-            'message' => 'Warehouse created successfully!',
-            'warehouse' => WarehouseResource::make($warehouse),
-        ], 201);
+            $warehouse = $this->warehouseService->createWarehouse($request->all());
+
+            return response()->json([
+                'message' => 'Warehouse created successfully!',
+                'warehouse' => WarehouseResource::make($warehouse),
+            ], 201);
+        } catch (UnauthorizedActionException $e) {
+            return response()->json(['message' => $e->getMessage()], 403);
+        }
     }
 
     public function show(Warehouse $warehouse): JsonResponse
     {
-        $warehouse = $this->warehouseService->getWarehouseById($warehouse);
+        try {
 
-        return response()->json(WarehouseResource::make($warehouse), 200);
+            $warehouse = $this->warehouseService->getWarehouseById($warehouse);
+
+            return response()->json(WarehouseResource::make($warehouse), 200);
+        } catch (UnauthorizedActionException $e) {
+            return response()->json(['message' => $e->getMessage()], 403);
+        }
     }
 
     public function orderBy($column, $direction, Request $request): JsonResponse
@@ -73,18 +84,28 @@ class WarehouseController extends Controller
 
     public function update(Request $request, Warehouse $warehouse): JsonResponse
     {
-        $warehouse = $this->warehouseService->updateWarehouse($warehouse, $request->all());
+        try {
 
-        return response()->json([
-            'message' => 'Warehouse updated successfully!',
-            'warehouse' => WarehouseResource::make($warehouse),
-        ], 200);
+            $warehouse = $this->warehouseService->updateWarehouse($warehouse, $request->all());
+
+            return response()->json([
+                'message' => 'Warehouse updated successfully!',
+                'warehouse' => WarehouseResource::make($warehouse),
+            ], 200);
+        } catch (UnauthorizedActionException $e) {
+            return response()->json(['message' => $e->getMessage()], 403);
+        }
     }
 
     public function destroy(Warehouse $warehouse): JsonResponse
     {
-        $this->warehouseService->deleteWarehouse($warehouse);
+        try {
 
-        return response()->json(['message' => 'Warehouse deleted successfully!'], 200);
+            $this->warehouseService->deleteWarehouse($warehouse);
+
+            return response()->json(['message' => 'Warehouse deleted successfully!'], 200);
+        } catch (UnauthorizedActionException $e) {
+            return response()->json(['message' => $e->getMessage()], 403);
+        }
     }
 }

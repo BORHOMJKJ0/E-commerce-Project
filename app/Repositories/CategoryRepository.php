@@ -11,6 +11,20 @@ class CategoryRepository
         return Category::paginate($items, ['*'], 'page', $page);
     }
 
+    public function getMy($items, $page)
+    {
+        return Category::whereHas('products', function ($query) {
+            $query->where('user_id', auth()->user()->id);
+        })->paginate($items, ['*'], 'page', $page);
+    }
+
+    public function orderMyBy($column, $direction, $page, $items)
+    {
+        return Category::whereHas('products', function ($query) {
+            $query->where('user_id', auth()->user()->id);
+        })->orderBy($column, $direction)->paginate($items, ['*'], 'page', $page);
+    }
+
     public function orderBy($column, $direction, $page, $items)
     {
         return Category::orderBy($column, $direction)->paginate($items, ['*'], 'page', $page);

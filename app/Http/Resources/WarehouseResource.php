@@ -38,14 +38,14 @@ class WarehouseResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'pure_price' => $this->pure_price,
-            'amount' => $this->amount,
-            'payment_date' => $this->payment_date,
-            'settlement_date' => $this->settlement_date,
-            'expiry_date' => $this->expiry_date,
+            'pure_price' => (float) $this->pure_price,
+            'amount' => (int) $this->amount,
+            'payment_date' => $this->payment_date ? $this->payment_date->format('Y-n-j') : null,
+            'settlement_date' => $this->settlement_date ? $this->settlement_date->format('Y-n-j') : null,
+            'expiry_date' => $this->expiry_date ? $this->expiry_date->format('Y-n-j') : null,
             'product' => $this->Product ? [
                 'name' => $this->Product->name,
-                'price' => $this->Product->price,
+                'price' => (float) $this->Product->price,
                 'category' => $this->Product->Category ? $this->Product->Category->name : null,
                 'user' => $this->Product->User ? $this->Product->User->name : null,
             ] : null,

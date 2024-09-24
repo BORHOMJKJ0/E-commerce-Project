@@ -11,9 +11,21 @@ class ProductRepository
         return Product::paginate($items, ['*'], 'page', $page);
     }
 
+    public function getMy($items, $page)
+    {
+        return Product::where('user_id', auth()->user()->id)
+            ->paginate($items, ['*'], 'page', $page);
+    }
+
     public function orderBy($column, $direction, $page, $items)
     {
         return Product::orderBy($column, $direction)->paginate($items, ['*'], 'page', $page);
+    }
+
+    public function orderMyBy($column, $direction, $page, $items)
+    {
+        return Product::where('user_id', auth()->user()->id)
+            ->orderBy($column, $direction)->paginate($items, ['*'], 'page', $page);
     }
 
     public function create(array $data)

@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Exceptions\UnauthorizedActionException;
 use App\Models\Offer;
+use App\Models\Product;
 use App\Repositories\OfferRepository;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -75,6 +77,58 @@ class OfferService
     public function getAllOffers($page, $items)
     {
         return $this->offerRepository->getAll($items, $page);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/offers/my",
+     *     summary="Get My offers",
+     *     tags={"offers"},
+     *     security={{"bearerAuth": {} }},
+     *
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         required=false,
+     *         description="Page number",
+     *
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="items",
+     *         in="query",
+     *         required=false,
+     *         description="Number of items per page",
+     *
+     *         @OA\Schema(type="integer", example=20)
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful response",
+     *
+     *         @OA\JsonContent(
+     *             type="array",
+     *
+     *             @OA\Items(ref="#/components/schemas/OfferResource")
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=422,
+     *         description="Invalid parameters",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="error", type="string", example="Invalid parameters")
+     *         )
+     *     )
+     * )
+     */
+    public function getMyOffers($page, $items)
+    {
+        return $this->offerRepository->getMy($items, $page);
     }
 
     /**
@@ -161,6 +215,16 @@ class OfferService
      *         @OA\JsonContent(ref="#/components/schemas/OfferResource")
      *     ),
      *
+     *      @OA\Response(
+     *         response=403,
+     *         description="forbidden error",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="error", type="string", example="You are not authorized to create this Offer.")
+     *         )
+     *     ),
+     *
      *     @OA\Response(
      *         response=422,
      *         description="Validation error",
@@ -174,6 +238,11 @@ class OfferService
      */
     public function createOffer(array $data)
     {
+        $product = Product::findOrFail($data['product_id']);
+
+        if ($product->user_id !== auth()->user()->id) {
+            throw new UnauthorizedActionException('You are not authorized to create this Offer.');
+        }
         $this->validateOfferData($data);
 
         return $this->offerRepository->create($data);
@@ -245,6 +314,74 @@ class OfferService
     public function getOffersOrderedBy($column, $direction, $page, $items)
     {
         return $this->offerRepository->orderBy($column, $direction, $page, $items);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/offers/my/order/{column}/{direction}",
+     *     summary="Order My offers by a specific column",
+     *     tags={"offers"},
+     *     security={{"bearerAuth": {} }},
+     *
+     *     @OA\Parameter(
+     *         name="column",
+     *         in="path",
+     *         required=true,
+     *
+     *         @OA\Schema(type="string", enum={"discount_percentage","start_date","end_date", "created_at", "updated_at"})
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="direction",
+     *         in="path",
+     *         required=true,
+     *
+     *         @OA\Schema(type="string", enum={"asc", "desc"})
+     *     ),
+     *
+     *      @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         required=false,
+     *         description="Page number",
+     *
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="items",
+     *         in="query",
+     *         required=false,
+     *         description="Number of items per page ",
+     *
+     *         @OA\Schema(type="integer", example=20)
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful response",
+     *
+     *         @OA\JsonContent(
+     *             type="array",
+     *
+     *             @OA\Items(ref="#/components/schemas/OfferResource")
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=422,
+     *         description="Invalid column or direction",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="error", type="string", example="Invalid column or direction or parameters")
+     *         )
+     *     )
+     * )
+     */
+    public function getMyOffersOrderedBy($column, $direction, $page, $items)
+    {
+        return $this->offerRepository->orderMyBy($column, $direction, $page, $items);
     }
 
     /**
@@ -339,6 +476,16 @@ class OfferService
      *         )
      *     ),
      *
+     *      @OA\Response(
+     *         response=403,
+     *         description="forbidden error",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="error", type="string", example="You are not authorized to update this Offer.")
+     *         )
+     *     ),
+     *
      *     @OA\Response(
      *         response=404,
      *         description="Offer not found",
@@ -352,6 +499,10 @@ class OfferService
      */
     public function updateOffer(Offer $offer, array $data)
     {
+        $product = $offer->product;
+        if ($product->user_id !== auth()->user()->id) {
+            throw new UnauthorizedActionException('You are not authorized to update this Offer.');
+        }
         $this->validateOfferData($data, 'sometimes');
 
         return $this->offerRepository->update($offer, $data);
@@ -382,6 +533,16 @@ class OfferService
      *         )
      *     ),
      *
+     *    @OA\Response(
+     *         response=403,
+     *         description="forbidden error",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="error", type="string", example="You are not authorized to delete this Offer.")
+     *         )
+     *     ),
+     *
      *     @OA\Response(
      *         response=404,
      *         description="Offer not found",
@@ -395,13 +556,18 @@ class OfferService
      */
     public function deleteOffer(Offer $offer)
     {
+        $product = $offer->product;
+        if ($product->user_id !== auth()->user()->id) {
+            throw new UnauthorizedActionException('You are not authorized to delete this Offer.');
+        }
+
         return $this->offerRepository->delete($offer);
     }
 
     protected function validateOfferData(array $data, $rule = 'required')
     {
         $validator = Validator::make($data, [
-            'discount_percentage' => "$rule|numeric|between:0,99.99",
+            'discount_percentage' => "$rule|numeric|between:0,100",
             'start_date' => "$rule|date",
             'end_date' => "$rule|date|after_or_equal:start_date",
         ]);

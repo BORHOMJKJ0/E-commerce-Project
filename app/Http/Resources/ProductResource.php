@@ -72,19 +72,19 @@ class ProductResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'image' => $this->image,
-            'price' => $this->price,
+            'price' => (float) $this->price,
             'description' => $this->description,
-            'current_price' => $currentPrice,
+            'current_price' => (float) $currentPrice,
             'user' => $this->user->name,
             'offers' => $this->offers->map(function ($offer) {
                 return [
-                    'discount' => $offer->discount_percentage,
-                    'starting_at' => Carbon::parse($offer->offer_start)->format('Y-m-d H:i'),
-                    'ending_at' => Carbon::parse($offer->offer_end)->format('Y-m-d H:i'),
+                    'discount' => number_format($offer->discount_percentage, 2, '.', '').' %',
+                    'starting_at' => Carbon::parse($offer->offer_start)->format('Y-n-j'),
+                    'ending_at' => Carbon::parse($offer->offer_end)->format('Y-n-j'),
                 ];
             }),
-            'total_amount' => $this->warehouses->sum('amount'),
-            'expiry_date' => $minExpiryDate ?: null,
+            'total_amount' => (float) $this->warehouses->sum('amount'),
+            'expiry_date' => $this->$minExpiryDate ? $this->$minExpiryDate->format('Y-n-j') : null,
             'category' => $this->category->name,
             //            'created_at'=>$this->created_at->format('Y-m-d'),
         ];

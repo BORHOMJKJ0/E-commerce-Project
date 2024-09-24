@@ -11,6 +11,20 @@ class OfferRepository
         return Offer::paginate($items, ['*'], 'page', $page);
     }
 
+    public function getMy($items, $page)
+    {
+        return Offer::whereHas('product', function ($query) {
+            $query->where('user_id', auth()->user()->id);
+        })->paginate($items, ['*'], 'page', $page);
+    }
+
+    public function orderMyBy($column, $direction, $page, $items)
+    {
+        return Offer::whereHas('product', function ($query) {
+            $query->where('user_id', auth()->user()->id);
+        })->orderBy($column, $direction)->paginate($items, ['*'], 'page', $page);
+    }
+
     public function orderBy($column, $direction, $page, $items)
     {
         return Offer::orderBy($column, $direction)->paginate($items, ['*'], 'page', $page);

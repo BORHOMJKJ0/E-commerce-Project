@@ -30,15 +30,21 @@ Route::middleware('api')->group(function () {
     Route::apiResource('offers', OfferController::class);
     Route::prefix('products')->controller(ProductController::class)->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');
+        Route::get('/my/order/{column}/{direction}', 'MyProductsOrderBy');
+        Route::get('/my', 'MyProducts');
     });
     Route::prefix('categories')->controller(CategoryController::class)->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');
+        Route::get('/my/order/{column}/{direction}', 'MyCategoriesOrderBy');
+        Route::get('/my', 'MyCategories');
     });
     Route::prefix('warehouses')->controller(WarehouseController::class)->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');
     });
     Route::prefix('offers')->controller(OfferController::class)->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');
+        Route::get('/my/order/{column}/{direction}', 'MyOffersOrderBy');
+        Route::get('/my', 'MyOffers');
     });
 });
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
