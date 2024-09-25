@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Category\CategoryController;
 use App\Http\Controllers\Contact\ContactInformationController;
 use App\Http\Controllers\Contact\ContactTypeController;
+use App\Http\Controllers\ExpressionController;
 use App\Http\Controllers\Offer\OfferController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Warehouse\WarehouseController;
@@ -60,25 +61,42 @@ Route::middleware('api')->prefix('users')->group(function () {
     });
 
     Route::controller(EmailVerificationController::class)->group(function () {
-        Route::get('email-verification/{user:email}', 'sendEmailVerification');
+        Route::get('email-verification/{user:email}', 'sendEmailVerification')
+            ->missing(function () {
+                return response()->json(['error'=>'Email Not Found'], 404);
+            });
         Route::post('email-verification', 'email_verification');
     });
 
     Route::get('password/forget-password/{user:email}', [ForgetPasswordController::class, 'forgetPassword'])
         ->missing(function () {
-            return response()->json(['error' => 'User Not Found']);
+            return response()->json(['error' => 'User Not Found'], 404);
         });
     Route::post('password/reset', [ResetPasswordController::class, 'resetPassword']);
 
     Route::controller(ContactInformationController::class)->prefix('contact')->group(function () {
         Route::post('add', 'store');
-        Route::get('show/{user_id}', 'show')->whereNumber('user_id');
+        Route::get('show/{user}', 'show')->missing(function () {
+            return response()->json(['error' => 'User Not Found'], 404);
+        });
         Route::delete('remove/{contact_information_id}', 'destroy')->whereNumber('contact_information_id');
         Route::delete('remove-all', 'destroyAll');
     });
 
-    Route::controller(ContactTypeController::class)->prefix('contact-type')->group(function () {
+    Route::controller(ContactTypeController::class)->group(function () {
         Route::get('contact-type-all', 'index');
         Route::get('contact-type/{id}', 'show')->whereNumber('id');
+    });
+
+    Route::controller(ExpressionController::class)->prefix('expression')->group(function () {
+        Route::post('add', 'create');
+        Route::get('show/{product}', 'show')
+            ->missing(function () {
+                return response()->json(['error' => 'Product Not Found'], 404);
+            });
+        Route::put('update/{product}', 'update')
+            ->missing(function () {
+                return response()->json(['error' => 'Product Not Found'], 404);
+            });
     });
 });

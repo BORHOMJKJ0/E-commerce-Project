@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ContactRequest;
 use App\Services\Contact_InformationService;
+use App\Models\User;
 
 class ContactInformationController extends Controller
 {
@@ -21,9 +22,9 @@ class ContactInformationController extends Controller
         return $this->contact_informationService->addContact($request);
     }
 
-    public function show($user_id)
+    public function show(User $user)
     {
-        return $this->contact_informationService->show($user_id);
+        return $this->contact_informationService->show($user->id);
     }
 
     public function destroy($contact_information_id)

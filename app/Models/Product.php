@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use OpenApi\Annotations as OA;
 
 /**
@@ -40,23 +42,28 @@ class Product extends Model
 
     protected $guarded = [];
 
-    public function category()
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
 
-    public function warehouses()
+    public function warehouses(): HasMany
     {
         return $this->hasMany(Warehouse::class);
     }
 
-    public function offers()
+    public function offers(): HasMany
     {
         return $this->hasMany(Offer::class);
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
+    public function expressions(): HasMany
+    {
+        return $this->hasMany(Expression::class);
+    }
+
 }

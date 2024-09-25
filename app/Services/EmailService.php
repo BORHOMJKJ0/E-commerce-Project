@@ -69,7 +69,7 @@ class EmailService
         }
 
         $user = $this->userRepository->findByEmail($request->email);
-        $otp2 = $this->otp->validate($user->email, $request->otp);
+        $otp2 = $this->otp->validate($user->email, $request->code);
 
         if (! $otp2->status) {
             return response()->json(['error' => 'Your email activation code is invalid'], 400);

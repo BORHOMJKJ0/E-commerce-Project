@@ -47,7 +47,7 @@ class PasswordService
             return $validationResponse;
         }
 
-        $otp2 = $this->otp->validate($request->email, $request->otp);
+        $otp2 = $this->otp->validate($request->email, $request->code);
 
         if (! $otp2->status) {
             return response()->json(['error' => 'resetting password code is invalid'], 401);
