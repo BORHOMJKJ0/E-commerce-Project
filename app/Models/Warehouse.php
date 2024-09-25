@@ -26,6 +26,12 @@ class Warehouse extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'payment_date' => 'date',
+        'settlement_date' => 'date',
+        'expiry_date' => 'date',
+    ];
+
     public function product()
     {
         return $this->belongsTo(Product::class);

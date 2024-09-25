@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\UnauthorizedActionException;
 use App\Models\Product;
 use App\Repositories\ProductRepository;
 use Illuminate\Support\Facades\Validator;
@@ -70,6 +71,58 @@ class ProductService
 
     /**
      * @OA\Get(
+     *     path="/api/products/my",
+     *     summary="Get My products",
+     *     tags={"Products"},
+     *     security={{"bearerAuth": {} }},
+     *
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         required=false,
+     *         description="Page number",
+     *
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="items",
+     *         in="query",
+     *         required=false,
+     *         description="Number of items per page",
+     *
+     *         @OA\Schema(type="integer", example=20)
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful response",
+     *
+     *         @OA\JsonContent(
+     *             type="array",
+     *
+     *             @OA\Items(ref="#/components/schemas/ProductResource")
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=422,
+     *         description="Invalid parameters",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="error", type="string", example="Invalid parameters")
+     *         )
+     *     )
+     * )
+     */
+    public function getMyProducts($page, $items)
+    {
+        return $this->productRepository->getMy($items, $page);
+    }
+
+    /**
+     * @OA\Get(
      *     path="/api/products/{id}",
      *     summary="Get a single product by ID",
      *     tags={"Products"},
@@ -121,14 +174,13 @@ class ProductService
      *
      *             @OA\Schema(
      *                 type="object",
-     *                 required={"name", "image", "price", "description", "category_id", "user_id"},
+     *                 required={"name", "image", "price", "description", "category_id"},
      *
      *                 @OA\Property(property="name", type="string", example="Perform"),
      *                 @OA\Property(property="image", type="string", format="binary"),
      *                 @OA\Property(property="price", type="number", format="float", example=250.75),
      *                 @OA\Property(property="description", type="string", example="This is a new Perform and it's cool Try it"),
      *                 @OA\Property(property="category_id", type="integer", example=1),
-     *                 @OA\Property(property="user_id", type="integer", example=1)
      *             )
      *         )
      *     ),
@@ -175,6 +227,16 @@ class ProductService
      *         )
      *     ),
      *
+     *    @OA\Response(
+     *         response=403,
+     *         description="forbidden error",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="error", type="string", example="You are not authorized to add this product.")
+     *         )
+     *     ),
+     *
      *     @OA\Response(
      *         response=422,
      *         description="Validation error",
@@ -188,6 +250,10 @@ class ProductService
      */
     public function createProduct(array $data)
     {
+        if (isset($data['user_id']) && $data['user_id'] !== auth()->user()->id) {
+            throw new UnauthorizedActionException('You are not authorized to add this product.');
+        }
+        $data['user_id'] = auth()->user()->id;
         $this->validateProductData($data);
 
         return $this->productRepository->create($data);
@@ -262,6 +328,74 @@ class ProductService
     }
 
     /**
+     * @OA\Get(
+     *     path="/api/products/my/order/{column}/{direction}",
+     *     summary="Order My products by a specific column",
+     *     tags={"Products"},
+     *     security={{"bearerAuth": {} }},
+     *
+     *     @OA\Parameter(
+     *         name="column",
+     *         in="path",
+     *         required=true,
+     *
+     *         @OA\Schema(type="string", enum={"name", "price", "created_at", "updated_at"})
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         required=false,
+     *         description="Page number",
+     *
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="items",
+     *         in="query",
+     *         required=false,
+     *         description="Number of items per page ",
+     *
+     *         @OA\Schema(type="integer", example=20)
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="direction",
+     *         in="path",
+     *         required=true,
+     *
+     *         @OA\Schema(type="string", enum={"asc", "desc"})
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful response",
+     *
+     *         @OA\JsonContent(
+     *             type="array",
+     *
+     *             @OA\Items(ref="#/components/schemas/ProductResource")
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=422,
+     *         description="Invalid column or direction",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="error", type="string", example="Invalid column or direction or parameters")
+     *         )
+     *     )
+     * )
+     */
+    public function getMyProductsOrderedBy($column, $direction, $page, $items)
+    {
+        return $this->productRepository->orderMyBy($column, $direction, $page, $items);
+    }
+
+    /**
      * @OA\Put(
      *     path="/api/products/{id}",
      *     summary="Update a product",
@@ -310,14 +444,6 @@ class ProductService
      *
      *     @OA\Parameter(
      *         name="category_id",
-     *         in="query",
-     *         required=false,
-     *
-     *         @OA\Schema(type="integer", example=1)
-     *     ),
-     *
-     *     @OA\Parameter(
-     *         name="user_id",
      *         in="query",
      *         required=false,
      *
@@ -379,6 +505,16 @@ class ProductService
      *         )
      *     ),
      *
+     *      @OA\Response(
+     *         response=403,
+     *         description="forbidden error",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="error", type="string", example="You are not authorized to update this product.")
+     *         )
+     *     ),
+     *
      *     @OA\Response(
      *         response=404,
      *         description="Product not found",
@@ -392,6 +528,9 @@ class ProductService
      */
     public function updateProduct(Product $product, array $data)
     {
+        if ($product->user_id !== auth()->user()->id) {
+            throw new UnauthorizedActionException('You are not authorized to update this product.');
+        }
         $this->validateProductData($data, 'sometimes');
 
         return $this->productRepository->update($product, $data);
@@ -423,6 +562,16 @@ class ProductService
      *     ),
      *
      *     @OA\Response(
+     *         response=403,
+     *         description="forbidden error",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="error", type="string", example="You are not authorized to delete this product.")
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
      *         response=404,
      *         description="Product not found",
      *
@@ -435,6 +584,10 @@ class ProductService
      */
     public function deleteProduct(Product $product)
     {
+        if ($product->user_id !== auth()->user()->id) {
+            throw new UnauthorizedActionException('You are not authorized to delete this product.');
+        }
+
         return $this->productRepository->delete($product);
     }
 
@@ -446,7 +599,6 @@ class ProductService
             'price' => "$rule|numeric|min:0",
             'description' => "$rule|string|max:1000",
             'category_id' => "$rule|exists:categories,id",
-            'user_id' => "$rule|exists:users,id",
         ]);
 
         if ($validator->fails()) {

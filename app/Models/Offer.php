@@ -23,6 +23,11 @@ class Offer extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'start_date' => 'date',
+        'end_date' => 'date',
+    ];
+
     public function product()
     {
         return $this->belongsTo(Product::class);

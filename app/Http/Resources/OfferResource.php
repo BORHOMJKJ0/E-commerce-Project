@@ -34,12 +34,12 @@ class OfferResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'discount_percentage' => $this->discount_percentage,
-            'start_date' => $this->start_date,
-            'end_date' => $this->end_date,
+            'discount_percentage' => number_format($this->discount_percentage, 2, '.', '').' %',
+            'start_date' => $this->start_date ? $this->start_date->format('Y-n-j') : null,
+            'end_date' => $this->end_date ? $this->end_date->format('Y-n-j') : null,
             'product' => $this->Product ? [
                 'name' => $this->Product->name,
-                'price' => $this->Product->price,
+                'price' => (float) $this->Product->price,
                 'description' => $this->Product->description,
                 'category' => $this->Product->Category ? $this->Product->Category->name : null,
                 'user' => $this->Product->User ? $this->Product->User->name : null,

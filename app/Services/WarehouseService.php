@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Exceptions\UnauthorizedActionException;
+use App\Models\Product;
 use App\Models\Warehouse;
 use App\Repositories\WarehouseRepository;
 use Illuminate\Support\Facades\Validator;
@@ -19,7 +21,7 @@ class WarehouseService
     /**
      * @OA\Get(
      *     path="/api/warehouses",
-     *     summary="Get all warehouses",
+     *     summary="Get my warehouses",
      *     tags={"Warehouse"},
      *     security={{"bearerAuth": {} }},
      *
@@ -90,6 +92,16 @@ class WarehouseService
      *         @OA\JsonContent(ref="#/components/schemas/WarehouseResource")
      *     ),
      *
+     *    @OA\Response(
+     *         response=403,
+     *         description="forbidden error",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="error", type="string", example="You are not authorized to view this warehouse.")
+     *         )
+     *     ),
+     *
      *     @OA\Response(
      *         response=404,
      *         description="Product not found",
@@ -103,6 +115,12 @@ class WarehouseService
      */
     public function getWarehouseById(Warehouse $warehouse)
     {
+        $product = $warehouse->product;
+
+        if ($product->user_id !== auth()->user()->id) {
+            throw new UnauthorizedActionException('You are not authorized to view this warehouse.');
+        }
+
         return $warehouse;
     }
 
@@ -153,6 +171,16 @@ class WarehouseService
      *         @OA\JsonContent(ref="#/components/schemas/WarehouseResource")
      *     ),
      *
+     *    @OA\Response(
+     *         response=403,
+     *         description="forbidden error",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="error", type="string", example="You are not authorized to create this warehouse .")
+     *         )
+     *     ),
+     *
      *     @OA\Response(
      *         response=422,
      *         description="Validation error",
@@ -166,6 +194,11 @@ class WarehouseService
      */
     public function createWarehouse(array $data)
     {
+        $product = Product::findOrFail($data['product_id']);
+
+        if ($product->user_id !== auth()->user()->id) {
+            throw new UnauthorizedActionException('You are not authorized to create this warehouse .');
+        }
         $data['settlement_date'] = null;
 
         $this->validateWarehouseData($data);
@@ -176,7 +209,7 @@ class WarehouseService
     /**
      * @OA\Get(
      *     path="/api/warehouses/order/{column}/{direction}",
-     *     summary="Order warehouses by a specific column",
+     *     summary="Order My warehouses by a specific column",
      *     tags={"Warehouse"},
      *     security={{"bearerAuth": {} }},
      *
@@ -352,6 +385,16 @@ class WarehouseService
      *         )
      *     ),
      *
+     *  @OA\Response(
+     *         response=403,
+     *         description="forbidden error",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="error", type="string", example="You are not authorized to delete this warehouse .")
+     *         )
+     *     ),
+     *
      *     @OA\Response(
      *         response=404,
      *         description="Warehouse not found",
@@ -374,6 +417,10 @@ class WarehouseService
             throw ValidationException::withMessages([
                 'settlement_date' => 'You cannot update the settlement date it updated automatically.',
             ]);
+        }
+        $product = $warehouse->product;
+        if ($product->user_id !== auth()->user()->id) {
+            throw new UnauthorizedActionException('You are not authorized to update this warehouse .');
         }
         $this->validateWarehouseData($data, $warehouse, 'sometimes', 0);
 
@@ -405,6 +452,16 @@ class WarehouseService
      *         )
      *     ),
      *
+     *    @OA\Response(
+     *         response=403,
+     *         description="forbidden error",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="error", type="string", example="You are not authorized to delete this warehouse .")
+     *         )
+     *     ),
+     *
      *     @OA\Response(
      *         response=404,
      *         description="Warehouse not found",
@@ -418,6 +475,11 @@ class WarehouseService
      */
     public function deleteWarehouse(Warehouse $warehouse)
     {
+        $product = $warehouse->product;
+        if ($product->user_id !== auth()->user()->id) {
+            throw new UnauthorizedActionException('You are not authorized to delete this warehouse .');
+        }
+
         return $this->warehouseRepository->delete($warehouse);
     }
 
