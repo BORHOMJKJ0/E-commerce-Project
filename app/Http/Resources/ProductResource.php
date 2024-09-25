@@ -83,6 +83,11 @@ class ProductResource extends JsonResource
                     'ending_at' => Carbon::parse($offer->offer_end)->format('Y-n-j'),
                 ];
             }),
+            'expressions'=>[
+                'views'=>$this->expressions()->where('product_id',$this->id)->count(),
+                'likes'=>$this->expressions()->where('action','like')->count(),
+                'dislikes'=>$this->expressions()->where('action','dislike')->count(),
+            ],
             'total_amount' => (float) $this->warehouses->sum('amount'),
             'expiry_date' => $this->$minExpiryDate ? $this->$minExpiryDate->format('Y-n-j') : null,
             'category' => $this->category->name,

@@ -19,7 +19,7 @@ class ExpressionController extends Controller
 
     public function index()
     {
-        //
+        return $this->expressionService->index();
     }
 
     public function create(ExpressionRequest $request): JsonResponse
@@ -37,7 +37,8 @@ class ExpressionController extends Controller
         return $this->expressionService->update($request, $product);
     }
 
-    public function delete(Product $product): JsonResponse{
+    public function delete(Product $product): JsonResponse
+    {
         //
     }
 }

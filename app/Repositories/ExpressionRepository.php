@@ -6,6 +6,7 @@ use App\Http\Requests\ExpressionRequest;
 use App\Models\Expression;
 use App\Models\Product;
 use App\Traits\ValidationTrait;
+use Illuminate\Support\Facades\DB;
 
 class ExpressionRepository
 {
@@ -30,9 +31,10 @@ class ExpressionRepository
 
     public function Expressions_Product($product_id)
     {
-        $views = Expression::all()->count();
-        $likes = Expression::where('action', 'like')->count();
-        $disLikes = Expression::where('action', 'dislike')->count();
+        $product = Product::find($product_id);
+        $views = DB::table('expressions')->where('product_id',$product_id)->count();
+        $likes = $this->getNumberOfExpression('like', $product_id);
+        $disLikes = $this->getNumberOfExpression('dislike', $product_id);
 
         $data = [
             'views' => [
@@ -40,16 +42,28 @@ class ExpressionRepository
                 'users' => $this->usersWhoViewProduct($product_id),
             ],
             'likes' => [
-                'number' => (int) $likes,
+                'number' => (int)$likes,
                 'users' => $this->usersWhoAddExpression($product_id, 'like'),
             ],
             'disLikes' => [
-                'number' => (int) $disLikes,
+                'number' => (int)$disLikes,
                 'users' => $this->usersWhoAddExpression($product_id, 'dislike'),
             ],
         ];
+        $message = [
+            'product' => $product->name,
+            'expression' => $data,
+        ];
 
-        return response()->json(['expressions' => $data], 200);
+        return $message;
+    }
+
+    public function getNumberOfExpression($expression, $product_id): int
+    {
+        return DB::table('expressions')
+            ->where('product_id', $product_id)
+            ->where('action', $expression)
+            ->count();
     }
 
     public function usersWhoViewProduct($product_id)

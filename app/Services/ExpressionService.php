@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Http\Requests\ExpressionRequest;
 use App\Models\Expression;
 use App\Models\Product;
+use App\Models\User;
 use App\Repositories\ExpressionRepository;
 use App\Traits\ValidationTrait;
 use Illuminate\Http\Request;
@@ -18,6 +19,19 @@ class ExpressionService
     public function __construct(ExpressionRepository $expressionRepository)
     {
         $this->expressionRepository = $expressionRepository;
+    }
+
+    public function index()
+    {
+        $products = Product::all();
+        $all_Product = [];
+
+        foreach ($products as $product) {
+            $message = $this->expressionRepository->Expressions_Product($product->id);
+            $all_Product[] = $message;
+        }
+
+        return response($all_Product, 200);
     }
 
     public function create(ExpressionRequest $request)
@@ -34,6 +48,7 @@ class ExpressionService
                 'expression_id' => $expression->id,
                 'product_id' => (int) $expression->product_id,
                 'user_id' => $expression->user_id,
+                'action' => $expression->action ?? 'No Action',
             ],
         ];
 
@@ -42,7 +57,9 @@ class ExpressionService
 
     public function show(Product $product)
     {
-        return $this->expressionRepository->Expressions_Product($product->id);
+        $message = $this->expressionRepository->Expressions_Product($product->id);
+
+        return response()->json($message, 200);
     }
 
     public function update(Request $request, $product)
@@ -55,7 +72,7 @@ class ExpressionService
             return $responseValidation;
         }
 
-        $user = \App\Models\User::find(auth()->id());
+        $user = User::find(auth()->id());
         $expression = Expression::where('user_id', auth()->id())->where('product_id', $product->id)->first();
         if (! $expression) {
             return response()->json(['message' => 'User not expressed for this product'], 404);
@@ -75,7 +92,7 @@ class ExpressionService
                 'name' => $user->name,
             ],
             'expression' => [
-                'action' => $request->action,
+                'action' => $request->action ?? 'No Action',
             ],
         ];
 
