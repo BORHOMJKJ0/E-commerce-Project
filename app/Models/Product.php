@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use OpenApi\Annotations as OA;
@@ -38,7 +40,7 @@ use OpenApi\Annotations as OA;
  */
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory,Prunable;
 
     protected $guarded = [];
 
@@ -61,9 +63,25 @@ class Product extends Model
     {
         return $this->belongsTo(User::class);
     }
+
     public function expressions(): HasMany
     {
         return $this->hasMany(Expression::class);
     }
 
+    public function prunable()
+    {
+        $warehouseProductIds = Warehouse::pluck('product_id')->toArray();
+
+        return static::whereNotIn('id', $warehouseProductIds)
+            ->where(function ($query) {
+                $query->where('created_at', '<', Carbon::now()->subHour())
+                    ->orWhereHas('warehouses', function ($warehouseQuery) {
+                        $warehouseQuery->havingRaw('SUM(amount) = 0');
+                    })
+                    ->orWhereDoesntHave('warehouses', function ($warehouseQuery) {
+                        $warehouseQuery->where('expiry_date', '>=', Carbon::now());
+                    });
+            });
+    }
 }

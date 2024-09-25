@@ -37,7 +37,8 @@ class ExpressionController extends Controller
         return $this->expressionService->update($request, $product);
     }
 
-    public function delete(Product $product): JsonResponse{
+    public function delete(Product $product): JsonResponse
+    {
         //
     }
 }

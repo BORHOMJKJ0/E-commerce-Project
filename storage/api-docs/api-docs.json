@@ -101,7 +101,7 @@
                                 "properties": {
                                     "name": {
                                         "type": "string",
-                                        "example": "fruits"
+                                        "example": "Fruits"
                                     }
                                 },
                                 "type": "object"
@@ -957,7 +957,7 @@
                                         "format": "email",
                                         "example": "hzaeter04@gmail.com"
                                     },
-                                    "otp": {
+                                    "code": {
                                         "description": "OTP code for email verification",
                                         "type": "string",
                                         "example": "123456"

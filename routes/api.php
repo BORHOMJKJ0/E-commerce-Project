@@ -69,7 +69,7 @@ Route::middleware('api')->prefix('users')->group(function () {
     Route::controller(EmailVerificationController::class)->group(function () {
         Route::get('email-verification/{user:email}', 'sendEmailVerification')
             ->missing(function () {
-                return response()->json(['error'=>'Email Not Found'], 404);
+                return response()->json(['error' => 'Email Not Found'], 404);
             });
         Route::post('email-verification', 'email_verification');
     });

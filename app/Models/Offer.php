@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Prunable;
 
 /**
  * @OA\Schema(
@@ -19,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Offer extends Model
 {
-    use HasFactory;
+    use HasFactory,Prunable;
 
     protected $guarded = [];
 
@@ -31,5 +33,10 @@ class Offer extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function prunable()
+    {
+        return static::where('end_date', '<', Carbon::now());
     }
 }

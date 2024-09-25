@@ -15,17 +15,11 @@ class ForgetPasswordJob implements ShouldQueue
 
     protected $user;
 
-    /**
-     * Create a new job instance.
-     */
     public function __construct($user)
     {
         $this->user = $user;
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(): void
     {
         $this->user->notify(new ResetPasswordVerificationNotifiaction);

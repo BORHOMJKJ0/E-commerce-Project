@@ -79,14 +79,14 @@ class ProductResource extends JsonResource
             'offers' => $this->offers->map(function ($offer) {
                 return [
                     'discount' => number_format($offer->discount_percentage, 2, '.', '').' %',
-                    'starting_at' => Carbon::parse($offer->offer_start)->format('Y-n-j'),
-                    'ending_at' => Carbon::parse($offer->offer_end)->format('Y-n-j'),
+                    'starting_at' => Carbon::parse($offer->start_date)->format('Y-n-j'),
+                    'ending_at' => Carbon::parse($offer->end_date)->format('Y-n-j'),
                 ];
             }),
             'total_amount' => (float) $this->warehouses->sum('amount'),
-            'expiry_date' => $this->$minExpiryDate ? $this->$minExpiryDate->format('Y-n-j') : null,
+            'expiry_date' => $minExpiryDate ? $minExpiryDate->format('Y-n-j') : null,
             'category' => $this->category->name,
-            //            'created_at'=>$this->created_at->format('Y-m-d'),
+            //            'created_at' => $this->created_at->format('Y-m-d'),
         ];
     }
 }

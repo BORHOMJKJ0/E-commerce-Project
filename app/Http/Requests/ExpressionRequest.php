@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Repositories\ExpressionRepository;
-use App\Rules\CheckLikeDislike;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -68,5 +67,4 @@ class ExpressionRequest extends FormRequest
             'errors' => $validator->errors(),
         ], 400);
     }
-
 }
