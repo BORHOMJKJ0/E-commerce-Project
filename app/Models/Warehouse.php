@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Prunable;
 use OpenApi\Annotations as OA;
 
 /**
@@ -22,7 +24,7 @@ use OpenApi\Annotations as OA;
  */
 class Warehouse extends Model
 {
-    use HasFactory;
+    use HasFactory,Prunable;
 
     protected $guarded = [];
 
@@ -35,5 +37,11 @@ class Warehouse extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function prunable()
+    {
+        return static::where('expiry_date', '<', Carbon::now())
+            ->orWhere('amount', '=', 0);
     }
 }

@@ -16,17 +16,11 @@ class EmailVerificationJob implements ShouldQueue
 
     protected $user;
 
-    /**
-     * Create a new job instance.
-     */
     public function __construct(User $user)
     {
         $this->user = $user;
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(): void
     {
         $this->user->notify(new EmailVerificationNotification);

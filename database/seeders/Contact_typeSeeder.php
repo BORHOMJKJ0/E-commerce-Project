@@ -7,9 +7,6 @@ use Illuminate\Database\Seeder;
 
 class Contact_typeSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         Contact_type::create([

@@ -10,9 +10,6 @@ use Illuminate\Validation\ValidationException;
 
 class UpdateUserRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         $userIdFormRoute = $this->route('user_id');

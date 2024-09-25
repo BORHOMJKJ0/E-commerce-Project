@@ -2,6 +2,9 @@
 
 namespace App\Console;
 
+use App\Models\Offer;
+use App\Models\Product;
+use App\Models\Warehouse;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -14,7 +17,9 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('app:check-email-verification')->hourly();
-        $schedule->command('delete:expired-products-and-offers')->everyMinute();
+        $schedule->command('model:prune', [
+            '--model' => [Offer::class, Product::class, Warehouse::class],
+        ])->hourly();
         $schedule->command('queue:work')->everyMinute();
 
     }

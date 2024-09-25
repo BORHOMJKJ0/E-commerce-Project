@@ -250,9 +250,12 @@ class ProductService
      */
     public function createProduct(array $data)
     {
+<<<<<<< HEAD
         //        if (isset($data['user_id']) && $data['user_id'] !== auth()->user()->id) {
         //            throw new UnauthorizedActionException('You are not authorized to add this product.');
         //        }
+=======
+>>>>>>> a36b63c413a8c4542da413d4d846e131835cdf32
         $data['user_id'] = auth()->user()->id;
         $this->validateProductData($data);
 

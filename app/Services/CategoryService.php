@@ -186,7 +186,7 @@ class CategoryService
      *                 type="object",
      *                 required={"name"},
      *
-     *                 @OA\Property(property="name", type="string", example="fruits"),
+     *                 @OA\Property(property="name", type="string", example="Fruits"),
      *             )
      *         )
      *     ),

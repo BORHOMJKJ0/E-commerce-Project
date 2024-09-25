@@ -36,7 +36,7 @@ class EmailService
      *             required={"email", "otp"},
      *
      *             @OA\Property(property="email", type="string", format="email", example="hzaeter04@gmail.com", description="User's email to verify"),
-     *             @OA\Property(property="otp", type="string", example="123456", description="OTP code for email verification")
+     *             @OA\Property(property="code", type="string", example="123456", description="OTP code for email verification")
      *         )
      *     ),
      *

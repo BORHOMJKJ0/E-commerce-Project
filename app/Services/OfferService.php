@@ -244,6 +244,7 @@ class OfferService
             throw new UnauthorizedActionException('You are not authorized to create this Offer.');
         }
         $this->validateOfferData($data);
+        $this->checkOfferOverlap($product->id, $data['start_date'], $data['end_date']);
 
         return $this->offerRepository->create($data);
     }
@@ -505,6 +506,12 @@ class OfferService
         }
         $this->validateOfferData($data, 'sometimes');
 
+        $startDate = $data['start_date'] ?? $offer->start_date;
+        $endDate = $data['end_date'] ?? $offer->end_date;
+        $productId = $data['product_id'] ?? $offer->product_id;
+
+        $this->checkOfferOverlap($productId, $startDate, $endDate, $offer->id);
+
         return $this->offerRepository->update($offer, $data);
     }
 
@@ -574,6 +581,25 @@ class OfferService
 
         if ($validator->fails()) {
             throw new ValidationException($validator);
+        }
+    }
+
+    protected function checkOfferOverlap($productId, $startDate, $endDate, $ignoreOfferId = null)
+    {
+        $existingOffers = Offer::where('product_id', $productId)
+            ->when($ignoreOfferId, function ($query, $ignoreOfferId) {
+                return $query->where('id', '!=', $ignoreOfferId);
+            })
+            ->get();
+
+        foreach ($existingOffers as $offer) {
+            if (
+                ($startDate >= $offer->start_date && $startDate <= $offer->end_date) ||
+                ($endDate >= $offer->start_date && $endDate <= $offer->end_date) ||
+                ($startDate <= $offer->start_date && $endDate >= $offer->end_date)
+            ) {
+                throw new UnauthorizedActionException("This offer overlaps with an existing offer from {$offer->start_date} to {$offer->end_date}. in this product {$offer->product->name}");
+            }
         }
     }
 }
