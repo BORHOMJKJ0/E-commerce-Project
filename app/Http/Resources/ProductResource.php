@@ -30,6 +30,13 @@ use OpenApi\Annotations as OA;
  *             @OA\Property(property="ending_at", type="string", format="date-time", example="2025-01-15 23:59")
  *         )
  *     ),
+ *     @OA\Property(
+ *          property="expressions",
+ *          type="object",
+ *          @OA\Property(property="views", type="integer", example=120),
+ *          @OA\Property(property="likes", type="integer", example=45),
+ *          @OA\Property(property="dislikes", type="integer", example=5)
+ *      ),
  *     @OA\Property(property="total_amount", type="integer", example=50),
  *     @OA\Property(property="expiry_date", type="string", format="date", example="2025-12-31"),
  *     @OA\Property(property="category", type="string", example="Smartphones"),
@@ -83,10 +90,10 @@ class ProductResource extends JsonResource
                     'ending_at' => Carbon::parse($offer->end_date)->format('Y-n-j'),
                 ];
             }),
-            'expressions'=>[
-                'views'=>$this->expressions()->where('product_id',$this->id)->count(),
-                'likes'=>$this->expressions()->where('action','like')->count(),
-                'dislikes'=>$this->expressions()->where('action','dislike')->count(),
+            'expressions' => [
+                'views' => $this->expressions()->where('product_id', $this->id)->count(),
+                'likes' => $this->expressions()->where('action', 'like')->count(),
+                'dislikes' => $this->expressions()->where('action', 'dislike')->count(),
             ],
             'total_amount' => (float) $this->warehouses->sum('amount'),
             'expiry_date' => $minExpiryDate ? $minExpiryDate->format('Y-n-j') : null,

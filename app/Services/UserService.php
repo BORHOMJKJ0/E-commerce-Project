@@ -6,6 +6,8 @@ use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\UserContactsResource;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Traits\ValidationTrait;
@@ -70,7 +72,10 @@ class UserService
      */
     public function index()
     {
-        return $this->userRepository->get_users_contacts();
+        $users = $this->userRepository->GetAllUsers();
+
+        return response()->json(['users' => UserContactsResource::collection($users)], 200);
+
     }
 
     /**
@@ -141,14 +146,13 @@ class UserService
 
         $this->EmailVerificationController->sendEmailVerification($user);
 
-        $user = $this->userRepository->get_userById($user->id);
-
-        return response()->json([
+        $data = [
             'message' => 'User registered successfully',
             'email-verification' => 'An activation code has been sent to your email',
-            'user' => $user,
-        ], 201);
+            'user' => new UserResource($user),
+        ];
 
+        return response()->json($data, 201);
     }
 
     /**
@@ -225,20 +229,16 @@ class UserService
 
         $credentials = $request->only('email', 'password');
 
+        $user = $this->userRepository->findByEmail($request->email);
+
         if (! $token = Auth::guard('api')->attempt($credentials)) {
             return response()->json(['error' => 'Email or Password is invalid'], 401);
         }
 
-        $user = $this->userRepository->findByEmail($request->email);
-
         return response()->json([
             'token' => $token,
             'token_type' => 'bearer',
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-            ],
+            'user' => new UserResource($user),
         ], 200);
     }
 
@@ -267,16 +267,11 @@ class UserService
      */
     public function logout(): JsonResponse
     {
-        $user = [
-            'id' => auth()->user()->id,
-            'name' => auth()->user()->name,
-            'email' => auth()->user()->email,
-        ];
-
+        $user = $this->userRepository->findById(auth()->user()->id);
         auth()->logout();
         $message = [
             'message' => 'Successfully logged out',
-            'user' => $user,
+            'user' => new UserResource($user),
         ];
 
         return response()->json($message, 200);
@@ -339,9 +334,7 @@ class UserService
      */
     public function profile(User $user): JsonResponse
     {
-        $user = $this->userRepository->get_user_contactById($user->id);
-
-        return response()->json($user, 200);
+        return response()->json(new UserContactsResource($user), 200);
     }
 
     //    public function respondWithToken($token): JsonResponse
@@ -442,11 +435,9 @@ class UserService
         }
         $this->userRepository->update($user, $request->except(['old_password', 'new_password']));
 
-        $user = $this->userRepository->get_user_contactById($user->id);
-
         $message = [
             'message' => 'Profile updated successfully',
-            'user' => $user,
+            'user' => new UserContactsResource($user),
             'success' => true,
         ];
 

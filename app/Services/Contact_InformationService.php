@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Http\Requests\ContactRequest;
+use App\Http\Resources\ContactResource;
 use App\Repositories\ContactRepository;
 use App\Traits\ValidationTrait;
 use Illuminate\Http\JsonResponse;
@@ -135,7 +136,11 @@ class Contact_InformationService
             return response()->json(['message' => 'Contact information not found'], 404);
         }
 
-        return response()->json(['contacts' => $contacts]);
+        //        if ($contacts->count() == 0) {
+        //            return response()->json(['message' => 'there is no contact information']);
+        //        }
+
+        return response()->json(['contacts' => ContactResource::collection($contacts)], 200);
     }
 
     /**
@@ -177,12 +182,13 @@ class Contact_InformationService
      */
     public function destroy($contact_information_id): JsonResponse
     {
+
         $contact = $this->contactRepository->deleteById($contact_information_id);
         if (! $contact) {
             return response()->json(['message' => 'Contact not found'], 404);
         }
 
-        return response()->json(['contact' => $contact, 'message' => 'Contact deleted successfully']);
+        return response()->json(['contact' => new ContactResource($contact), 'message' => 'Contact deleted successfully']);
     }
 
     /**
@@ -220,6 +226,6 @@ class Contact_InformationService
             return response()->json(['message' => 'Contacts not found for this user'], 400);
         }
 
-        return response()->json(['contacts' => $contacts, 'message' => 'All Contacts deleted successfully']);
+        return response()->json(['contacts' => ContactResource::collection($contacts), 'message' => 'All Contacts deleted successfully']);
     }
 }

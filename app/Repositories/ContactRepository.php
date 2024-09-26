@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use App\Models\Contact_information;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -16,7 +18,9 @@ class ContactRepository
 
     public function findByUserId($id)
     {
-        return DB::table('contact_informations')->where('user_id', $id)->select('id', 'link', 'user_id', 'contact_type_id')->get();
+        $user = User::findOrFail($id);
+
+        return $user->contacts;
     }
 
     public function findById($id)
@@ -27,8 +31,7 @@ class ContactRepository
     public function deleteById($id)
     {
         $contact = $this->findById($id);
-        DB::table('contact_informations')->where('id', $id)->delete();
-
+        Contact_information::where('id', $id)->delete();
         return $contact;
     }
 

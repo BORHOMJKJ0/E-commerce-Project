@@ -7,24 +7,14 @@ use Illuminate\Support\Facades\Hash;
 
 class UserRepository
 {
+    public function GetAllUsers()
+    {
+        return User::all();
+    }
+
     public function findByEmail(string $email)
     {
         return User::where('email', $email)->first();
-    }
-
-    public function get_user_contactById($id)
-    {
-        return User::where('id', $id)->GetUserWithContacts();
-    }
-
-    public function get_userById($id)
-    {
-        return User::where('id', $id)->select('id', 'name', 'email', 'mobile')->get();
-    }
-
-    public function get_users_contacts()
-    {
-        return User::orderBy('id')->GetUserWithContacts();
     }
 
     public function findById($id)

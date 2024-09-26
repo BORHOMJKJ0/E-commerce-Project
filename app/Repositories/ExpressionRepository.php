@@ -32,7 +32,7 @@ class ExpressionRepository
     public function Expressions_Product($product_id)
     {
         $product = Product::find($product_id);
-        $views = DB::table('expressions')->where('product_id',$product_id)->count();
+        $views = DB::table('expressions')->where('product_id', $product_id)->count();
         $likes = $this->getNumberOfExpression('like', $product_id);
         $disLikes = $this->getNumberOfExpression('dislike', $product_id);
 
@@ -42,11 +42,11 @@ class ExpressionRepository
                 'users' => $this->usersWhoViewProduct($product_id),
             ],
             'likes' => [
-                'number' => (int)$likes,
+                'number' => (int) $likes,
                 'users' => $this->usersWhoAddExpression($product_id, 'like'),
             ],
             'disLikes' => [
-                'number' => (int)$disLikes,
+                'number' => (int) $disLikes,
                 'users' => $this->usersWhoAddExpression($product_id, 'dislike'),
             ],
         ];

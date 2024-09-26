@@ -1076,6 +1076,381 @@
                 }
             }
         },
+        "/api/users/expression/add": {
+            "post": {
+                "tags": [
+                    "Expressions"
+                ],
+                "summary": "Create an Expression",
+                "description": "Create a new expression with product_id,id for auth user, and an optional action",
+                "operationId": "81055745914e6988e7968d50962b1d37",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "product_id",
+                                    "user_id"
+                                ],
+                                "properties": {
+                                    "product_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "action": {
+                                        "type": "enum",
+                                        "example": "like"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Expression created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "expression": {
+                                            "properties": {
+                                                "expression_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "product_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "action": {
+                                                    "description": "The expression action, either 'like' or 'dislike'.",
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "like",
+                                                        "dislike"
+                                                    ],
+                                                    "example": "like"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "action input is invalid"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Prodcut Not Found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/expression/show/{product_id}": {
+            "get": {
+                "tags": [
+                    "Expressions"
+                ],
+                "summary": "Get product expressions including views, likes, and dislikes",
+                "description": "Returns the number of views, likes, dislikes, and the list of users who interacted with the product.",
+                "operationId": "Expressions_Product",
+                "parameters": [
+                    {
+                        "name": "product_id",
+                        "in": "path",
+                        "description": "ID of the product",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "product": {
+                                            "description": "Name of the product",
+                                            "type": "string"
+                                        },
+                                        "expression": {
+                                            "properties": {
+                                                "views": {
+                                                    "properties": {
+                                                        "number": {
+                                                            "description": "Number of views",
+                                                            "type": "integer",
+                                                            "example": 3
+                                                        },
+                                                        "users": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "integer",
+                                                                        "example": 1
+                                                                    },
+                                                                    "name": {
+                                                                        "type": "string",
+                                                                        "example": "Hasan"
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            },
+                                                            "example": [
+                                                                {
+                                                                    "id": 1,
+                                                                    "name": "Hasan"
+                                                                },
+                                                                {
+                                                                    "id": 2,
+                                                                    "name": "Hadi"
+                                                                },
+                                                                {
+                                                                    "id": 3,
+                                                                    "name": "Anas"
+                                                                }
+                                                            ]
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "likes": {
+                                                    "properties": {
+                                                        "number": {
+                                                            "description": "Number of likes",
+                                                            "type": "integer",
+                                                            "example": 2
+                                                        },
+                                                        "users": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "integer",
+                                                                        "example": 1
+                                                                    },
+                                                                    "name": {
+                                                                        "type": "string",
+                                                                        "example": "Hasan"
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            },
+                                                            "example": [
+                                                                {
+                                                                    "id": 1,
+                                                                    "name": "Hasan"
+                                                                },
+                                                                {
+                                                                    "id": 3,
+                                                                    "name": "Anas"
+                                                                }
+                                                            ]
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "disLikes": {
+                                                    "properties": {
+                                                        "number": {
+                                                            "description": "Number of dislikes",
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "users": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "properties": {
+                                                                    "id": {
+                                                                        "type": "integer",
+                                                                        "example": 1
+                                                                    },
+                                                                    "name": {
+                                                                        "type": "string",
+                                                                        "example": "Hasan"
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            },
+                                                            "example": [
+                                                                {
+                                                                    "id": 1,
+                                                                    "name": "Hasan"
+                                                                }
+                                                            ]
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found"
+                    }
+                }
+            }
+        },
+        "/api/users/expression/update/{product_id}": {
+            "put": {
+                "tags": [
+                    "Expressions"
+                ],
+                "summary": "Update user expression for a product",
+                "description": "Allows a user to update their expression (like or dislike) for a specific product.",
+                "operationId": "updateExpression",
+                "parameters": [
+                    {
+                        "name": "product",
+                        "in": "path",
+                        "description": "ID of the product",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "action": {
+                                        "description": "The expression action, either 'like' or 'dislike'.",
+                                        "type": "string",
+                                        "enum": [
+                                            "like",
+                                            "dislike"
+                                        ],
+                                        "example": "like"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Expression updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "updated successfully"
+                                        },
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Hasan"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "expression": {
+                                            "properties": {
+                                                "action": {
+                                                    "type": "string",
+                                                    "example": "like"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User has not expressed for this product",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not expressed for this product"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "action input is invalid"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/offers": {
             "get": {
                 "tags": [
@@ -3945,6 +4320,23 @@
                             "type": "object"
                         }
                     },
+                    "expressions": {
+                        "properties": {
+                            "views": {
+                                "type": "integer",
+                                "example": 120
+                            },
+                            "likes": {
+                                "type": "integer",
+                                "example": 45
+                            },
+                            "dislikes": {
+                                "type": "integer",
+                                "example": 5
+                            }
+                        },
+                        "type": "object"
+                    },
                     "total_amount": {
                         "type": "integer",
                         "example": 50
@@ -4205,6 +4597,10 @@
         {
             "name": "Email Verification",
             "description": "Email Verification"
+        },
+        {
+            "name": "Expressions",
+            "description": "Expressions"
         },
         {
             "name": "offers",
