@@ -12,7 +12,7 @@ class EnsureEmailIsVerified
     public function handle(Request $request, Closure $next): Response
     {
         $user = User::where('email', $request->email)->first();
-        if(!$user){
+        if (! $user) {
             return response()->json(['error' => 'Email is Invalid'], Response::HTTP_NOT_FOUND);
         }
         if ($user->email_verified_at === null) {

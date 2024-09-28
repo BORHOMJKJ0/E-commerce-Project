@@ -11,7 +11,7 @@ class Contact_type extends Model
 
     protected $table = 'contact_types';
 
-    protected $fillable = ['type_english', 'type_arabic'];
+    protected $guarded = [];
 
     public function contact_information()
     {

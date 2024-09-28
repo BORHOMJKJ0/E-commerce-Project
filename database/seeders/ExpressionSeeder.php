@@ -2,13 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\Contact_type;
+use App\Models\Expression;
 use Illuminate\Database\Seeder;
 
-class Contact_typeSeeder extends Seeder
+class ExpressionSeeder extends Seeder
 {
     public function run(): void
     {
-        Contact_type::factory(10)->create();
+        Expression::factory(10)->create();
     }
 }

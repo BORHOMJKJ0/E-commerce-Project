@@ -11,7 +11,7 @@ class Contact_information extends Model
 
     protected $table = 'contact_informations';
 
-    protected $fillable = ['user_id', 'contact_type_id', 'link'];
+    protected $guarded = [];
 
     public function user()
     {

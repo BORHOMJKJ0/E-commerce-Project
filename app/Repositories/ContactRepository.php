@@ -32,6 +32,7 @@ class ContactRepository
     {
         $contact = $this->findById($id);
         Contact_information::where('id', $id)->delete();
+
         return $contact;
     }
 

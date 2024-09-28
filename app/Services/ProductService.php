@@ -526,7 +526,6 @@ class ProductService
      *     )
      * )
      */
-
     public function updateProduct(Product $product, array $data)
     {
         if ($product->user_id !== auth()->user()->id) {
