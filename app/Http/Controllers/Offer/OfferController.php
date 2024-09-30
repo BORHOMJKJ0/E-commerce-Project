@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Offer;
 
-use App\Exceptions\UnauthorizedActionException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OfferResource;
 use App\Models\Offer;
@@ -58,7 +57,7 @@ class OfferController extends Controller
                 'message' => 'Offer created successfully!',
                 'offer' => OfferResource::make($offer),
             ], 201);
-        } catch (UnauthorizedActionException $e) {
+        } catch (HttpResponseException $e) {
             return response()->json(['message' => $e->getMessage()], 403);
         }
     }
@@ -122,7 +121,7 @@ class OfferController extends Controller
                 'message' => 'Offer updated successfully!',
                 'offer' => OfferResource::make($offer),
             ], 200);
-        } catch (UnauthorizedActionException $e) {
+        } catch (HttpResponseException $e) {
             return response()->json(['message' => $e->getMessage()], 403);
         }
     }
@@ -134,7 +133,7 @@ class OfferController extends Controller
             $this->offerService->deleteOffer($offer);
 
             return response()->json(['message' => 'Offer deleted successfully!'], 200);
-        } catch (UnauthorizedActionException $e) {
+        } catch (HttpResponseException $e) {
             return response()->json(['message' => $e->getMessage()], 403);
         }
     }

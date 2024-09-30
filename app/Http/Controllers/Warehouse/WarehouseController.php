@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Warehouse;
 
-use App\Exceptions\UnauthorizedActionException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\WarehouseResource;
 use App\Models\Warehouse;
 use App\Services\WarehouseService;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -44,7 +44,7 @@ class WarehouseController extends Controller
                 'message' => 'Warehouse created successfully!',
                 'warehouse' => WarehouseResource::make($warehouse),
             ], 201);
-        } catch (UnauthorizedActionException $e) {
+        } catch (HttpResponseException $e) {
             return response()->json(['message' => $e->getMessage()], 403);
         }
     }
@@ -56,7 +56,7 @@ class WarehouseController extends Controller
             $warehouse = $this->warehouseService->getWarehouseById($warehouse);
 
             return response()->json(WarehouseResource::make($warehouse), 200);
-        } catch (UnauthorizedActionException $e) {
+        } catch (HttpResponseException $e) {
             return response()->json(['message' => $e->getMessage()], 403);
         }
     }
@@ -92,7 +92,7 @@ class WarehouseController extends Controller
                 'message' => 'Warehouse updated successfully!',
                 'warehouse' => WarehouseResource::make($warehouse),
             ], 200);
-        } catch (UnauthorizedActionException $e) {
+        } catch (HttpResponseException $e) {
             return response()->json(['message' => $e->getMessage()], 403);
         }
     }
@@ -104,7 +104,7 @@ class WarehouseController extends Controller
             $this->warehouseService->deleteWarehouse($warehouse);
 
             return response()->json(['message' => 'Warehouse deleted successfully!'], 200);
-        } catch (UnauthorizedActionException $e) {
+        } catch (HttpResponseException $e) {
             return response()->json(['message' => $e->getMessage()], 403);
         }
     }

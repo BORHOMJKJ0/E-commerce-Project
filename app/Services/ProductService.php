@@ -2,14 +2,16 @@
 
 namespace App\Services;
 
-use App\Exceptions\UnauthorizedActionException;
 use App\Models\Product;
 use App\Repositories\ProductRepository;
+use App\Traits\AuthTrait;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class ProductService
 {
+    use AuthTrait;
+
     protected $productRepository;
 
     public function __construct(ProductRepository $productRepository)
@@ -250,10 +252,7 @@ class ProductService
      */
     public function createProduct(array $data)
     {
-        //        if (isset($data['user_id']) && $data['user_id'] !== auth()->user()->id) {
-        //            throw new UnauthorizedActionException('You are not authorized to add this product.');
-        //        }
-        $data['user_id'] = auth()->user()->id;
+        $data['user_id'] = auth()->id();
         $this->validateProductData($data);
 
         return $this->productRepository->create($data);
@@ -528,9 +527,7 @@ class ProductService
      */
     public function updateProduct(Product $product, array $data)
     {
-        if ($product->user_id !== auth()->user()->id) {
-            throw new UnauthorizedActionException('You are not authorized to update this product.');
-        }
+        $this->checkOwnership($product, 'Product', 'update');
         $this->validateProductData($data, 'sometimes');
 
         return $this->productRepository->update($product, $data);
@@ -584,9 +581,7 @@ class ProductService
      */
     public function deleteProduct(Product $product)
     {
-        if ($product->user_id !== auth()->user()->id) {
-            throw new UnauthorizedActionException('You are not authorized to delete this product.');
-        }
+        $this->checkOwnership($product, 'Product', 'delete');
 
         return $this->productRepository->delete($product);
     }

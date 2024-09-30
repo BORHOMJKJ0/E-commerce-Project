@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
@@ -35,9 +36,6 @@ class Handler extends ExceptionHandler
             ], Response::HTTP_BAD_REQUEST);
         });
 
-        $this->reportable(function (Throwable $e) {
-            //
-        });
     }
 
     public function render($request, Throwable $exception)
@@ -69,7 +67,7 @@ class Handler extends ExceptionHandler
             }
         }
 
-        if ($exception instanceof UnauthorizedActionException) {
+        if ($exception instanceof HttpResponseException) {
             return response()->json(['message' => $exception->getMessage()], $exception->getCode());
         }
 

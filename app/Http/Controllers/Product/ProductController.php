@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Product;
 
-use App\Exceptions\UnauthorizedActionException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
@@ -57,7 +56,7 @@ class ProductController extends Controller
                 'message' => 'Product created successfully!',
                 'product' => ProductResource::make($product),
             ], 201);
-        } catch (UnauthorizedActionException $e) {
+        } catch (HttpResponseException $e) {
             return response()->json(['message' => $e->getMessage()], 403);
         }
     }
@@ -120,7 +119,7 @@ class ProductController extends Controller
                 'message' => 'Product updated successfully!',
                 'product' => ProductResource::make($product),
             ], 200);
-        } catch (UnauthorizedActionException $e) {
+        } catch (HttpResponseException $e) {
             return response()->json(['message' => $e->getMessage()], 403);
         }
     }
@@ -131,7 +130,7 @@ class ProductController extends Controller
             $this->productService->deleteProduct($product);
 
             return response()->json(['message' => 'Product deleted successfully!'], 200);
-        } catch (UnauthorizedActionException $e) {
+        } catch (HttpResponseException $e) {
             return response()->json(['message' => $e->getMessage()], 403);
         }
     }

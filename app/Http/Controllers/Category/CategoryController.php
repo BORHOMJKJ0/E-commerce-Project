@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Category;
 
-use App\Exceptions\UnauthorizedActionException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
@@ -119,7 +118,7 @@ class CategoryController extends Controller
                 'message' => 'Category updated successfully!',
                 'category' => CategoryResource::make($category),
             ], 200);
-        } catch (UnauthorizedActionException $e) {
+        } catch (HttpResponseException $e) {
             return response()->json(['message' => $e->getMessage()], 403);
         }
     }
@@ -131,7 +130,7 @@ class CategoryController extends Controller
             $this->categoryService->deleteCategory($category);
 
             return response()->json(['message' => 'Category deleted successfully!'], 200);
-        } catch (UnauthorizedActionException $e) {
+        } catch (HttpResponseException $e) {
             return response()->json(['message' => $e->getMessage()], 403);
         }
 

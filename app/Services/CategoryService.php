@@ -2,15 +2,16 @@
 
 namespace App\Services;
 
-use App\Exceptions\UnauthorizedActionException;
 use App\Models\Category;
-use App\Models\Product;
 use App\Repositories\CategoryRepository;
+use App\Traits\AuthTrait;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class CategoryService
 {
+    use AuthTrait;
+
     protected $categoryRepository;
 
     public function __construct(CategoryRepository $categoryRepository)
@@ -471,16 +472,8 @@ class CategoryService
      */
     public function updateCategory(Category $category, array $data)
     {
-        if ($category->products()->exists()) {
-            throw new UnauthorizedActionException('You cannot update category with associated products.');
-        }
-        $userHasProductInCategory = Product::where('category_id', $category->id)
-            ->where('user_id', auth()->id())
-            ->exists();
+        $this->checkOwnership($category, 'Category', 'update', 'products', 'Products');
 
-        if (! $userHasProductInCategory) {
-            throw new UnauthorizedActionException('You are not authorized to update this Category.');
-        }
         $this->validateCategoryData($data, 'sometimes');
 
         return $this->categoryRepository->update($category, $data);
@@ -534,9 +527,7 @@ class CategoryService
      */
     public function deleteCategory(Category $category)
     {
-        if ($category->products()->exists()) {
-            throw new UnauthorizedActionException('You are not authorized to delete this Category.');
-        }
+        $this->checkOwnership($category, 'Category', 'delete', 'products', 'Products');
 
         return $this->categoryRepository->delete($category);
     }
