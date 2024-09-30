@@ -24,9 +24,11 @@ class UserRepository
 
     public function create(array $data)
     {
-        $data['password'] = Hash::make($data['password']);
+        return DB::transaction(function () use ($data) {
+            $data['password'] = Hash::make($data['password']);
 
-        return User::create($data);
+            return User::create($data);
+        });
     }
 
     public function update(User $user, array $data): User

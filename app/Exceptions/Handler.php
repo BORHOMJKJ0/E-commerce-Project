@@ -33,6 +33,7 @@ class Handler extends ExceptionHandler
             return response()->json([
                 'message' => $summaryMessage,
                 'errors' => $errors,
+                'successful' => false,
             ], Response::HTTP_BAD_REQUEST);
         });
 
@@ -47,28 +48,33 @@ class Handler extends ExceptionHandler
                 case 'App\\Models\\Product':
                     return response()->json([
                         'message' => 'Product not found',
+                        'successful' => false,
                     ], 404);
                 case 'App\\Models\\Category':
                     return response()->json([
                         'message' => 'Category not found',
+                        'successful' => false,
                     ], 404);
                 case 'App\\Models\\Offer':
                     return response()->json([
                         'message' => 'Offer not found',
+                        'successful' => false,
                     ], 404);
                 case 'App\\Models\\Warehouse':
                     return response()->json([
                         'message' => 'Warehouse not found',
+                        'successful' => false,
                     ], 404);
                 default:
                     return response()->json([
                         'message' => 'Resource not found',
+                        'successful' => false,
                     ], 404);
             }
         }
 
         if ($exception instanceof HttpResponseException) {
-            return response()->json(['message' => $exception->getMessage()], $exception->getCode());
+            return response()->json(['message' => $exception->getMessage(), 'successful' => false], $exception->getCode());
         }
 
         return parent::render($request, $exception);

@@ -473,7 +473,7 @@ class CategoryService
     public function updateCategory(Category $category, array $data)
     {
         $this->checkOwnership($category, 'Category', 'update', 'products', 'Products');
-
+        $this->checkProduct($category, 'Category', 'update', 'products', 'Products');
         $this->validateCategoryData($data, 'sometimes');
 
         return $this->categoryRepository->update($category, $data);

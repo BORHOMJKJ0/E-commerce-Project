@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Services\ProductService;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -30,6 +31,7 @@ class ProductController extends Controller
         return response()->json([
             'Products' => ProductResource::collection($products),
             'hasMorePages' => $hasMorePages,
+            'successful' => true,
         ], 200);
     }
 
@@ -44,6 +46,7 @@ class ProductController extends Controller
         return response()->json([
             'Products' => ProductResource::collection($products),
             'hasMorePages' => $hasMorePages,
+            'successful' => true,
         ], 200);
     }
 
@@ -55,9 +58,10 @@ class ProductController extends Controller
             return response()->json([
                 'message' => 'Product created successfully!',
                 'product' => ProductResource::make($product),
+                'successful' => true,
             ], 201);
         } catch (HttpResponseException $e) {
-            return response()->json(['message' => $e->getMessage()], 403);
+            return response()->json($e->getResponse()->getData(), 403);
         }
     }
 
@@ -65,7 +69,11 @@ class ProductController extends Controller
     {
         $product = $this->productService->getProductById($product);
 
-        return response()->json(ProductResource::make($product), 200);
+        return response()->json([
+            'message' => 'Product performed successfully!',
+            'product' => ProductResource::make($product),
+            'successful' => true,
+        ], 200);
     }
 
     public function orderBy($column, $direction, Request $request): JsonResponse
@@ -74,7 +82,7 @@ class ProductController extends Controller
         $validDirections = ['asc', 'desc'];
 
         if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
-            return response()->json(['error' => 'Invalid column or direction'], 400);
+            return response()->json(['error' => 'Invalid column or direction', 'successful' => false], 400);
         }
 
         $page = $request->query('page', 1);
@@ -86,6 +94,7 @@ class ProductController extends Controller
         return response()->json([
             'Products' => ProductResource::collection($products),
             'hasMorePages' => $hasMorePages,
+            'successful' => true,
         ], 200);
     }
 
@@ -95,7 +104,7 @@ class ProductController extends Controller
         $validDirections = ['asc', 'desc'];
 
         if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
-            return response()->json(['error' => 'Invalid column or direction'], 400);
+            return response()->json(['error' => 'Invalid column or direction', 'successful' => false], 400);
         }
 
         $page = $request->query('page', 1);
@@ -107,6 +116,7 @@ class ProductController extends Controller
         return response()->json([
             'Products' => ProductResource::collection($products),
             'hasMorePages' => $hasMorePages,
+            'successful' => true,
         ], 200);
     }
 
@@ -118,9 +128,10 @@ class ProductController extends Controller
             return response()->json([
                 'message' => 'Product updated successfully!',
                 'product' => ProductResource::make($product),
+                'successful' => true,
             ], 200);
         } catch (HttpResponseException $e) {
-            return response()->json(['message' => $e->getMessage()], 403);
+            return response()->json($e->getResponse()->getData(), 403);
         }
     }
 
@@ -129,9 +140,9 @@ class ProductController extends Controller
         try {
             $this->productService->deleteProduct($product);
 
-            return response()->json(['message' => 'Product deleted successfully!'], 200);
+            return response()->json(['message' => 'Product deleted successfully!', 'successful' => true], 200);
         } catch (HttpResponseException $e) {
-            return response()->json(['message' => $e->getMessage()], 403);
+            return response()->json($e->getResponse()->getData(), 403);
         }
     }
 }
