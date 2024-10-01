@@ -25,12 +25,12 @@ class Handler extends ExceptionHandler
             $firstError = $errorMessages[0];
             $additionalErrorsCount = count($errorMessages) - 1;
 
-            $summaryMessage = $additionalErrorsCount > 0
-                ? "$firstError (and $additionalErrorsCount more error".($additionalErrorsCount > 1 ? 's' : '').')'
-                : $firstError;
+            // $summaryMessage = $additionalErrorsCount > 0
+            //     ? "$firstError (and $additionalErrorsCount more error".($additionalErrorsCount > 1 ? 's' : '').')'
+            //     : $firstError;
 
             return response()->json([
-                'message' => $summaryMessage,
+                // 'message' => $summaryMessage,
                 'errors' => $errors,
             ], Response::HTTP_BAD_REQUEST);
         });
@@ -61,6 +61,10 @@ class Handler extends ExceptionHandler
                 case 'App\\Models\\Warehouse':
                     return response()->json([
                         'message' => 'Warehouse not found',
+                    ], 404);
+                case 'App\\Models\\User':
+                    return response()->json([
+                        'message' => 'User not found',
                     ], 404);
                 default:
                     return response()->json([

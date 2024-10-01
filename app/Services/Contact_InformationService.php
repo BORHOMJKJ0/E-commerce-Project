@@ -3,8 +3,12 @@
 namespace App\Services;
 
 use App\Http\Requests\ContactRequest;
+use App\Http\Requests\UpdateContactRequest;
 use App\Http\Resources\ContactResource;
+use App\Http\Resources\UserContactsResource;
+use App\Models\Contact_information;
 use App\Repositories\ContactRepository;
+use App\Repositories\UserRepository;
 use App\Traits\ValidationTrait;
 use Illuminate\Http\JsonResponse;
 
@@ -13,10 +17,12 @@ class Contact_InformationService
     use ValidationTrait;
 
     protected $contactRepository;
+    protected $userRepository;
 
-    public function __construct()
+    public function __construct(UserRepository $userRepository, ContactRepository $contactRepository)
     {
-        $this->contactRepository = new ContactRepository;
+        $this->contactRepository = $contactRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -84,7 +90,7 @@ class Contact_InformationService
 
         return response()->json([
             'message' => 'Contact information added successfully',
-            'success' => true,
+            'successful' => true,
         ], 201);
     }
 
@@ -133,14 +139,43 @@ class Contact_InformationService
     {
         $contacts = $this->contactRepository->findByUserId($user_id);
         if (! $contacts) {
-            return response()->json(['message' => 'Contact information not found'], 404);
+            return response()->json([
+                'message' => 'Contact information not found',
+                'successful'=>false,
+            ], 404);
         }
 
         //        if ($contacts->count() == 0) {
         //            return response()->json(['message' => 'there is no contact information']);
         //        }
 
-        return response()->json(['contacts' => ContactResource::collection($contacts)], 200);
+        return response()->json([
+            'contacts' => ContactResource::collection($contacts),
+            'successful' => true,
+        ], 200);
+    }
+
+    public function update(UpdateContactRequest $request, $user_id, $contact_id)
+    {
+        $validationResponse = $this->validateRequest($request, $request->rules());
+        if ($validationResponse) {
+            return $validationResponse;
+        }
+
+        $contact_information =  $this->contactRepository->findContactById($contact_id);
+        if (!$contact_information) {
+            return response()->json(['message' => 'There is no Contact Information With this id'], 404);
+        }
+
+        $user = $this->userRepository->findById($user_id);
+
+        $this->contactRepository->update($user, $request->validated());
+
+        return response()->json([
+            'message' => 'Contact Information updated successfully',
+            'user' => new UserContactsResource($user),
+            'successful' => true,
+        ]);
     }
 
     /**

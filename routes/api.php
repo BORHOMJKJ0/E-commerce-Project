@@ -11,6 +11,7 @@ use App\Http\Controllers\ExpressionController;
 use App\Http\Controllers\Offer\OfferController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Warehouse\WarehouseController;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
 Route::middleware('api')->group(function () {
     Route::apiResource('products', ProductController::class);
     Route::apiResource('categories', CategoryController::class);
@@ -59,11 +61,9 @@ Route::middleware('api')->prefix('users')->group(function () {
         Route::post('register', 'register');
         Route::post('login', 'login')->middleware('verified.email');
         Route::post('logout', 'logout');
-        Route::get('profile/{user}', 'profile')->whereNumber('user_id')
-            ->missing(function () {
-                return response()->json(['error' => 'User Not Found'], 404);
-            })->whereNumber('user');
+        Route::get('profile/{user}', 'profile')->whereNumber('user');
         Route::put('update/{user_id}', 'update')->whereNumber('user');
+        Route::delete('destroy', 'destroy');
     });
 
     Route::controller(EmailVerificationController::class)->group(function () {
@@ -85,6 +85,7 @@ Route::middleware('api')->prefix('users')->group(function () {
         Route::get('show/{user}', 'show')->missing(function () {
             return response()->json(['error' => 'User Not Found'], 404);
         });
+        Route::put('update/{user_id}/{contact_id}', 'update');
         Route::delete('remove/{contact_information_id}', 'destroy')->whereNumber('contact_information_id');
         Route::delete('remove-all', 'destroyAll');
     });

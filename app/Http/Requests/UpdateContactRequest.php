@@ -2,14 +2,14 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\MatchOldPassword;
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Validation\ValidationException;
 
-class UpdateUserRequest extends FormRequest
+class UpdateContactRequest extends FormRequest
 {
+    /**
+     * Determine if the user is authorized to make this request.
+     */
     public function authorize(): bool
     {
         $userIdFormRoute = $this->route('user_id');
@@ -28,16 +28,8 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'sometimes|string',
-            'mobile' => 'sometimes|string|size:10',
-            'gender' => 'somtimes|enum|in:male,female',
-            'old_password' => ['sometimes', 'string', new MatchOldPassword, 'required_with:new_password'],
-            'new_password' => ['sometimes', 'string', 'min:8', 'confirmed', function ($attribute, $value, $fail) {
-                if ($this->filled('new_password') && ! $this->filled('old_password')) {
-                    $validator = $this->getValidatorInstance();
-                    $validator->errors()->add('old_password', 'The old_password field is required.');
-                }
-            }],
+            'link' => 'sometimes|string',
+            'contact_type_id' => 'sometimes|exists:contact_types,id',
         ];
     }
 
@@ -48,4 +40,5 @@ class UpdateUserRequest extends FormRequest
             'success' => false,
         ], 403));
     }
+    
 }

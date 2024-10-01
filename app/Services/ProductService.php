@@ -529,6 +529,7 @@ class ProductService
 
     public function updateProduct(Product $product, array $data)
     {
+        
         if ($product->user_id !== auth()->user()->id) {
             throw new UnauthorizedActionException('You are not authorized to update this product.');
         }

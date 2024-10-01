@@ -56,7 +56,7 @@ class ExpressionRequest extends FormRequest
     {
         return [
             'product_id' => 'required|integer|exists:products,id',
-            'action' => 'sometimes|in:like,dislike',
+            'action' => 'required|in:like,dislike',
         ];
     }
 

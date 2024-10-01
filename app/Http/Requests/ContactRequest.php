@@ -16,7 +16,7 @@ class ContactRequest extends FormRequest
     {
         return [
             'link' => 'required|string',
-            'contact_type_id' => 'required|integer',
+            'contact_type_id' => 'required|integer|exists:contact_types,id',
         ];
     }
 

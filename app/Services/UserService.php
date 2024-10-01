@@ -63,7 +63,7 @@ class UserService
      *         response=401,
      *         description="Unauthorized, invalid or missing token",
      *
-     *         @OA\JsonContent(
+     *        @OA\JsonContent(
      *
      *             @OA\Property(property="message", type="string", example="Unauthorized")
      *         )
@@ -75,7 +75,6 @@ class UserService
         $users = $this->userRepository->GetAllUsers();
 
         return response()->json(['users' => UserContactsResource::collection($users)], 200);
-
     }
 
     /**
@@ -138,18 +137,13 @@ class UserService
 
         $user = $this->userRepository->create($request->validated());
 
-        $credentials = $request->only('email', 'password');
-
-        if (! $token = Auth::guard('api')->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-
         $this->EmailVerificationController->sendEmailVerification($user);
 
         $data = [
             'message' => 'User registered successfully',
             'email-verification' => 'An activation code has been sent to your email',
             'user' => new UserResource($user),
+            'successful' => true,
         ];
 
         return response()->json($data, 201);
@@ -232,13 +226,17 @@ class UserService
         $user = $this->userRepository->findByEmail($request->email);
 
         if (! $token = Auth::guard('api')->attempt($credentials)) {
-            return response()->json(['error' => 'Email or Password is invalid'], 401);
+            return response()->json([
+                'message' => 'Email or Password is invalid',
+                'successful' => false,
+            ], 401);
         }
 
         return response()->json([
             'token' => $token,
             'token_type' => 'bearer',
             'user' => new UserResource($user),
+            'successful' => true,
         ], 200);
     }
 
@@ -272,6 +270,7 @@ class UserService
         $message = [
             'message' => 'Successfully logged out',
             'user' => new UserResource($user),
+            'successful' => true
         ];
 
         return response()->json($message, 200);
@@ -332,19 +331,13 @@ class UserService
      *      )
      * )
      */
-    public function profile(User $user): JsonResponse
+    public function profile(User $user)
     {
-        return response()->json(new UserContactsResource($user), 200);
+        return response()->json(new UserContactsResource($user->loadCount('contacts')), 200);
     }
 
-    //    public function respondWithToken($token): JsonResponse
-    //    {
-    //        return response()->json([
-    //            'access_token' => $token,
-    //            'token_type' => 'bearer',
-    //            //'expires_in' => auth()->factory()->getTTL() * 60
-    //        ]);
-    //    }
+    // to show when token will expire
+    //'expires_in' => auth()->factory()->getTTL() * 60
 
     /**
      * @OA\Put(
@@ -422,7 +415,9 @@ class UserService
      */
     public function update(UpdateUserRequest $request, $user_id): JsonResponse
     {
-
+        if (empty($request->all())) {
+            return response()->json(['message' => 'there is no data to update'], 200);
+        }
         $validationResponse = $this->validateRequest($request, $request->rules());
         if ($validationResponse) {
             return $validationResponse;
@@ -442,6 +437,16 @@ class UserService
         ];
 
         return response()->json($message, 200);
+    }
 
+    public function destroy()
+    {
+        $user = $this->userRepository->destroy();
+
+        return response()->json([
+            'message' => 'deleted Account successfully',
+            'user' => new UserContactsResource($user),
+            'successful' => true,
+        ], 200);
     }
 }

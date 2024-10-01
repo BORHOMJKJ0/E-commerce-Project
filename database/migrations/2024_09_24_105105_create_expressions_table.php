@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::create('expressions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained('products');
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('product_id')->constrained('products')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->enum('action', ['like', 'dislike'])->nullable();
             $table->timestamps();
         });

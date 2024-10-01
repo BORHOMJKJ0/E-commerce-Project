@@ -13,7 +13,9 @@ class Expression extends Model
     protected $table = 'expressions';
 
     protected $fillable = [
-        'view', 'dislike', 'like', 'user_id', 'product_id',
+        'action',
+        'user_id',
+        'product_id',
     ];
 
     public function user(): BelongsTo
