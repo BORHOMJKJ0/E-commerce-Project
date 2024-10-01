@@ -2,15 +2,18 @@
 
 namespace App\Services;
 
-use App\Exceptions\UnauthorizedActionException;
 use App\Models\Offer;
 use App\Models\Product;
 use App\Repositories\OfferRepository;
+use App\Traits\AuthTrait;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class OfferService
 {
+    use AuthTrait;
+
     protected $offerRepository;
 
     public function __construct(OfferRepository $offerRepository)
@@ -240,9 +243,7 @@ class OfferService
     {
         $product = Product::findOrFail($data['product_id']);
 
-        if ($product->user_id !== auth()->user()->id) {
-            throw new UnauthorizedActionException('You are not authorized to create this Offer.');
-        }
+        $this->checkOwnership($product, 'Offer', 'create');
         $this->validateOfferData($data);
         $this->checkOfferOverlap($product->id, $data['start_date'], $data['end_date']);
 
@@ -501,9 +502,7 @@ class OfferService
     public function updateOffer(Offer $offer, array $data)
     {
         $product = $offer->product;
-        if ($product->user_id !== auth()->user()->id) {
-            throw new UnauthorizedActionException('You are not authorized to update this Offer.');
-        }
+        $this->checkOwnership($product, 'Offer', 'update');
         $this->validateOfferData($data, 'sometimes');
 
         $startDate = $data['start_date'] ?? $offer->start_date;
@@ -564,9 +563,7 @@ class OfferService
     public function deleteOffer(Offer $offer)
     {
         $product = $offer->product;
-        if ($product->user_id !== auth()->user()->id) {
-            throw new UnauthorizedActionException('You are not authorized to delete this Offer.');
-        }
+        $this->checkOwnership($product, 'Offer', 'delete');
 
         return $this->offerRepository->delete($offer);
     }
@@ -598,7 +595,10 @@ class OfferService
                 ($endDate >= $offer->start_date && $endDate <= $offer->end_date) ||
                 ($startDate <= $offer->start_date && $endDate >= $offer->end_date)
             ) {
-                throw new UnauthorizedActionException("This offer overlaps with an existing offer from {$offer->start_date} to {$offer->end_date}. in this product {$offer->product->name}");
+                throw new HttpResponseException(response()->json([
+                    'Message' => "This offer overlaps with an existing offer from {$offer->start_date} to {$offer->end_date} for this product: {$offer->product->name}.",
+                    'Success' => false,
+                ], 403));
             }
         }
     }

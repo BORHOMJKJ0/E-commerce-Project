@@ -2,15 +2,17 @@
 
 namespace App\Services;
 
-use App\Exceptions\UnauthorizedActionException;
 use App\Models\Product;
 use App\Models\Warehouse;
 use App\Repositories\WarehouseRepository;
+use App\Traits\AuthTrait;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class WarehouseService
 {
+    use AuthTrait;
+
     protected $warehouseRepository;
 
     public function __construct(WarehouseRepository $warehouseRepository)
@@ -117,9 +119,7 @@ class WarehouseService
     {
         $product = $warehouse->product;
 
-        if ($product->user_id !== auth()->user()->id) {
-            throw new UnauthorizedActionException('You are not authorized to view this warehouse.');
-        }
+        $this->checkOwnership($product, 'Warehouse', 'perform');
 
         return $warehouse;
     }
@@ -196,9 +196,7 @@ class WarehouseService
     {
         $product = Product::findOrFail($data['product_id']);
 
-        if ($product->user_id !== auth()->user()->id) {
-            throw new UnauthorizedActionException('You are not authorized to create this warehouse .');
-        }
+        $this->checkOwnership($product, 'Warehouse', 'create');
         $data['settlement_date'] = null;
 
         $this->validateWarehouseData($data);
@@ -419,9 +417,8 @@ class WarehouseService
             ]);
         }
         $product = $warehouse->product;
-        if ($product->user_id !== auth()->user()->id) {
-            throw new UnauthorizedActionException('You are not authorized to update this warehouse .');
-        }
+        $this->checkOwnership($product, 'Warehouse', 'update');
+
         $this->validateWarehouseData($data, $warehouse, 'sometimes', 0);
 
         return $this->warehouseRepository->update($warehouse, $data);
@@ -476,9 +473,7 @@ class WarehouseService
     public function deleteWarehouse(Warehouse $warehouse)
     {
         $product = $warehouse->product;
-        if ($product->user_id !== auth()->user()->id) {
-            throw new UnauthorizedActionException('You are not authorized to delete this warehouse .');
-        }
+        $this->checkOwnership($product, 'Warehouse', 'delete');
 
         return $this->warehouseRepository->delete($warehouse);
     }

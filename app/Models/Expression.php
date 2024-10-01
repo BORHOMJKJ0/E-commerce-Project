@@ -17,6 +17,7 @@ class Expression extends Model
         'user_id',
         'product_id',
     ];
+    protected $guarded = [];
 
     public function user(): BelongsTo
     {

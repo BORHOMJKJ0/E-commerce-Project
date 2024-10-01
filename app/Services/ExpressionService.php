@@ -14,11 +14,11 @@ class ExpressionService
 {
     use ValidationTrait;
 
-//    private $expressionRepository;
+    private $expressionRepository;
 
-    public function __construct(private ExpressionRepository $expressionRepository)
+    public function __construct(ExpressionRepository $expressionRepository)
     {
-//        $this->expressionRepository = $expressionRepository;
+        //        $this->expressionRepository = $expressionRepository;
     }
 
     public function index()

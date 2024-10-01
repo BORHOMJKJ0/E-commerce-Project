@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
@@ -32,12 +33,10 @@ class Handler extends ExceptionHandler
             return response()->json([
                 // 'message' => $summaryMessage,
                 'errors' => $errors,
+                'successful' => false,
             ], Response::HTTP_BAD_REQUEST);
         });
 
-        $this->reportable(function (Throwable $e) {
-            //
-        });
     }
 
     public function render($request, Throwable $exception)
@@ -49,18 +48,22 @@ class Handler extends ExceptionHandler
                 case 'App\\Models\\Product':
                     return response()->json([
                         'message' => 'Product not found',
+                        'successful' => false,
                     ], 404);
                 case 'App\\Models\\Category':
                     return response()->json([
                         'message' => 'Category not found',
+                        'successful' => false,
                     ], 404);
                 case 'App\\Models\\Offer':
                     return response()->json([
                         'message' => 'Offer not found',
+                        'successful' => false,
                     ], 404);
                 case 'App\\Models\\Warehouse':
                     return response()->json([
                         'message' => 'Warehouse not found',
+                        'successful' => false,
                     ], 404);
                 case 'App\\Models\\User':
                     return response()->json([
@@ -69,12 +72,13 @@ class Handler extends ExceptionHandler
                 default:
                     return response()->json([
                         'message' => 'Resource not found',
+                        'successful' => false,
                     ], 404);
             }
         }
 
-        if ($exception instanceof UnauthorizedActionException) {
-            return response()->json(['message' => $exception->getMessage()], $exception->getCode());
+        if ($exception instanceof HttpResponseException) {
+            return response()->json(['message' => $exception->getMessage(), 'successful' => false], $exception->getCode());
         }
 
         return parent::render($request, $exception);

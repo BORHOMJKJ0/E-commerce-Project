@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Warehouse;
 
-use App\Exceptions\UnauthorizedActionException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\WarehouseResource;
 use App\Models\Warehouse;
 use App\Services\WarehouseService;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -31,6 +31,7 @@ class WarehouseController extends Controller
         return response()->json([
             'Warehouses' => WarehouseResource::collection($warehouses),
             'hasMorePages' => $hasMorePages,
+            'successful' => true,
         ], 200);
     }
 
@@ -43,9 +44,10 @@ class WarehouseController extends Controller
             return response()->json([
                 'message' => 'Warehouse created successfully!',
                 'warehouse' => WarehouseResource::make($warehouse),
+                'successful' => true,
             ], 201);
-        } catch (UnauthorizedActionException $e) {
-            return response()->json(['message' => $e->getMessage()], 403);
+        } catch (HttpResponseException $e) {
+            return response()->json($e->getResponse()->getData(), 403);
         }
     }
 
@@ -55,9 +57,13 @@ class WarehouseController extends Controller
 
             $warehouse = $this->warehouseService->getWarehouseById($warehouse);
 
-            return response()->json(WarehouseResource::make($warehouse), 200);
-        } catch (UnauthorizedActionException $e) {
-            return response()->json(['message' => $e->getMessage()], 403);
+            return response()->json([
+                'message' => 'Warehouse performed successfully!',
+                'warehouse' => WarehouseResource::make($warehouse),
+                'successful' => true,
+            ], 200);
+        } catch (HttpResponseException $e) {
+            return response()->json($e->getResponse()->getData(), 403);
         }
     }
 
@@ -67,7 +73,7 @@ class WarehouseController extends Controller
         $validDirections = ['asc', 'desc'];
 
         if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
-            return response()->json(['error' => 'Invalid column or direction'], 400);
+            return response()->json(['error' => 'Invalid column or direction', 'successful' => false], 400);
         }
 
         $page = $request->query('page', 1);
@@ -79,6 +85,7 @@ class WarehouseController extends Controller
         return response()->json([
             'Warehouses' => WarehouseResource::collection($warehouses),
             'hasMorePages' => $hasMorePages,
+            'successful' => true,
         ], 200);
     }
 
@@ -91,9 +98,10 @@ class WarehouseController extends Controller
             return response()->json([
                 'message' => 'Warehouse updated successfully!',
                 'warehouse' => WarehouseResource::make($warehouse),
+                'successful' => true,
             ], 200);
-        } catch (UnauthorizedActionException $e) {
-            return response()->json(['message' => $e->getMessage()], 403);
+        } catch (HttpResponseException $e) {
+            return response()->json($e->getResponse()->getData(), 403);
         }
     }
 
@@ -103,9 +111,9 @@ class WarehouseController extends Controller
 
             $this->warehouseService->deleteWarehouse($warehouse);
 
-            return response()->json(['message' => 'Warehouse deleted successfully!'], 200);
-        } catch (UnauthorizedActionException $e) {
-            return response()->json(['message' => $e->getMessage()], 403);
+            return response()->json(['message' => 'Warehouse deleted successfully!', 'successful' => true], 200);
+        } catch (HttpResponseException $e) {
+            return response()->json($e->getResponse()->getData(), 403);
         }
     }
 }

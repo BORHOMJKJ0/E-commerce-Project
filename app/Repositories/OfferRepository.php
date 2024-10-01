@@ -3,9 +3,12 @@
 namespace App\Repositories;
 
 use App\Models\Offer;
+use App\Traits\Lockable;
 
 class OfferRepository
 {
+    use Lockable;
+
     public function getAll($items, $page)
     {
         return Offer::paginate($items, ['*'], 'page', $page);
@@ -14,14 +17,14 @@ class OfferRepository
     public function getMy($items, $page)
     {
         return Offer::whereHas('product', function ($query) {
-            $query->where('user_id', auth()->user()->id);
+            $query->where('user_id', auth()->id());
         })->paginate($items, ['*'], 'page', $page);
     }
 
     public function orderMyBy($column, $direction, $page, $items)
     {
         return Offer::whereHas('product', function ($query) {
-            $query->where('user_id', auth()->user()->id);
+            $query->where('user_id', auth()->id());
         })->orderBy($column, $direction)->paginate($items, ['*'], 'page', $page);
     }
 
@@ -32,18 +35,24 @@ class OfferRepository
 
     public function create(array $data)
     {
-        return Offer::create($data);
+        return $this->lockForCreate(function () use ($data) {
+            return Offer::create($data);
+        });
     }
 
     public function update(Offer $offer, array $data)
     {
-        $offer->update($data);
+        return $this->lockForUpdate(Offer::class, $offer->id, function ($lockedOffer) use ($data) {
+            $lockedOffer->update($data);
 
-        return $offer;
+            return $lockedOffer;
+        });
     }
 
     public function delete(Offer $offer)
     {
-        return $offer->delete();
+        return $this->lockForDelete(Offer::class, $offer->id, function ($lockedOffer) {
+            return $lockedOffer->delete();
+        });
     }
 }

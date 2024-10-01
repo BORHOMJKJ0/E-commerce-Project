@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Offer;
 
-use App\Exceptions\UnauthorizedActionException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OfferResource;
 use App\Models\Offer;
 use App\Services\OfferService;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -31,6 +31,7 @@ class OfferController extends Controller
         return response()->json([
             'offers' => OfferResource::collection($offers),
             'hasMorePages' => $hasMorePages,
+            'successful' => true,
         ], 200);
     }
 
@@ -45,6 +46,7 @@ class OfferController extends Controller
         return response()->json([
             'offers' => OfferResource::collection($offers),
             'hasMorePages' => $hasMorePages,
+            'successful' => true,
         ], 200);
     }
 
@@ -57,9 +59,10 @@ class OfferController extends Controller
             return response()->json([
                 'message' => 'Offer created successfully!',
                 'offer' => OfferResource::make($offer),
+                'successful' => true,
             ], 201);
-        } catch (UnauthorizedActionException $e) {
-            return response()->json(['message' => $e->getMessage()], 403);
+        } catch (HttpResponseException $e) {
+            return response()->json($e->getResponse()->getData(), 403);
         }
     }
 
@@ -67,7 +70,11 @@ class OfferController extends Controller
     {
         $offer = $this->offerService->getOfferById($offer);
 
-        return response()->json(OfferResource::make($offer), 200);
+        return response()->json([
+            'message' => 'Offer performed successfully!',
+            'offer' => OfferResource::make($offer),
+            'successful' => true,
+        ], 200);
     }
 
     public function orderBy($column, $direction, Request $request): JsonResponse
@@ -76,7 +83,7 @@ class OfferController extends Controller
         $validDirections = ['asc', 'desc'];
 
         if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
-            return response()->json(['error' => 'Invalid column or direction'], 400);
+            return response()->json(['error' => 'Invalid column or direction', 'successful' => false], 400);
         }
 
         $page = $request->query('page', 1);
@@ -88,6 +95,7 @@ class OfferController extends Controller
         return response()->json([
             'offers' => OfferResource::collection($offers),
             'hasMorePages' => $hasMorePages,
+            'successful' => true,
         ], 200);
     }
 
@@ -97,7 +105,7 @@ class OfferController extends Controller
         $validDirections = ['asc', 'desc'];
 
         if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
-            return response()->json(['error' => 'Invalid column or direction'], 400);
+            return response()->json(['error' => 'Invalid column or direction', 'successful' => false], 400);
         }
 
         $page = $request->query('page', 1);
@@ -109,6 +117,7 @@ class OfferController extends Controller
         return response()->json([
             'offers' => OfferResource::collection($offers),
             'hasMorePages' => $hasMorePages,
+            'successful' => true,
         ], 200);
     }
 
@@ -121,9 +130,10 @@ class OfferController extends Controller
             return response()->json([
                 'message' => 'Offer updated successfully!',
                 'offer' => OfferResource::make($offer),
+                'successful' => true,
             ], 200);
-        } catch (UnauthorizedActionException $e) {
-            return response()->json(['message' => $e->getMessage()], 403);
+        } catch (HttpResponseException $e) {
+            return response()->json($e->getResponse()->getData(), 403);
         }
     }
 
@@ -133,9 +143,9 @@ class OfferController extends Controller
 
             $this->offerService->deleteOffer($offer);
 
-            return response()->json(['message' => 'Offer deleted successfully!'], 200);
-        } catch (UnauthorizedActionException $e) {
-            return response()->json(['message' => $e->getMessage()], 403);
+            return response()->json(['message' => 'Offer deleted successfully!', 'successful' => true], 200);
+        } catch (HttpResponseException $e) {
+            return response()->json($e->getResponse()->getData(), 403);
         }
     }
 }

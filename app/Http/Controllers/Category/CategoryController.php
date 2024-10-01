@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Category;
 
-use App\Exceptions\UnauthorizedActionException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use App\Services\CategoryService;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -31,6 +31,7 @@ class CategoryController extends Controller
         return response()->json([
             'categories' => CategoryResource::collection($categories),
             'hasMorePages' => $hasMorePages,
+            'successful' => true,
         ], 200);
     }
 
@@ -45,6 +46,7 @@ class CategoryController extends Controller
         return response()->json([
             'categories' => CategoryResource::collection($categories),
             'hasMorePages' => $hasMorePages,
+            'successful' => true,
         ], 200);
     }
 
@@ -55,6 +57,7 @@ class CategoryController extends Controller
         return response()->json([
             'message' => 'Category created successfully!',
             'category' => CategoryResource::make($category),
+            'successful' => true,
         ], 201);
     }
 
@@ -62,7 +65,11 @@ class CategoryController extends Controller
     {
         $category = $this->categoryService->getCategoryById($category);
 
-        return response()->json(CategoryResource::make($category), 200);
+        return response()->json([
+            'message' => 'Category performed successfully!',
+            'category' => CategoryResource::make($category),
+            'successful' => true,
+        ], 200);
     }
 
     public function orderBy($column, $direction, Request $request): JsonResponse
@@ -71,7 +78,7 @@ class CategoryController extends Controller
         $validDirections = ['asc', 'desc'];
 
         if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
-            return response()->json(['error' => 'Invalid column or direction'], 400);
+            return response()->json(['error' => 'Invalid column or direction', 'successful' => false], 400);
         }
 
         $page = $request->query('page', 1);
@@ -83,6 +90,7 @@ class CategoryController extends Controller
         return response()->json([
             'categories' => CategoryResource::collection($categories),
             'hasMorePages' => $hasMorePages,
+            'successful' => true,
         ], 200);
 
     }
@@ -93,7 +101,7 @@ class CategoryController extends Controller
         $validDirections = ['asc', 'desc'];
 
         if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
-            return response()->json(['error' => 'Invalid column or direction'], 400);
+            return response()->json(['error' => 'Invalid column or direction', 'successful' => false], 400);
         }
 
         $page = $request->query('page', 1);
@@ -105,6 +113,7 @@ class CategoryController extends Controller
         return response()->json([
             'categories' => CategoryResource::collection($categories),
             'hasMorePages' => $hasMorePages,
+            'successful' => true,
         ], 200);
 
     }
@@ -118,9 +127,10 @@ class CategoryController extends Controller
             return response()->json([
                 'message' => 'Category updated successfully!',
                 'category' => CategoryResource::make($category),
+                'successful' => true,
             ], 200);
-        } catch (UnauthorizedActionException $e) {
-            return response()->json(['message' => $e->getMessage()], 403);
+        } catch (HttpResponseException $e) {
+            return response()->json($e->getResponse()->getData(), 403);
         }
     }
 
@@ -130,9 +140,9 @@ class CategoryController extends Controller
 
             $this->categoryService->deleteCategory($category);
 
-            return response()->json(['message' => 'Category deleted successfully!'], 200);
-        } catch (UnauthorizedActionException $e) {
-            return response()->json(['message' => $e->getMessage()], 403);
+            return response()->json(['message' => 'Category deleted successfully!', 'successful' => true], 200);
+        } catch (HttpResponseException $e) {
+            return response()->json($e->getResponse()->getData(), 403);
         }
 
     }

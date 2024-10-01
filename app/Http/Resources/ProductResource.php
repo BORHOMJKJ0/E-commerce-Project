@@ -44,16 +44,12 @@ use OpenApi\Annotations as OA;
  */
 class ProductResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
 
         $currentDate = Carbon::now();
-
+        $likes = $this->expressions->where('action', 'like')->count();
+        $dislikes = $this->expressions->where('action', 'dislike')->count();
         $currentPrice = $this->price;
         $activeOffer = null;
         if ($this->offers) {
@@ -91,9 +87,10 @@ class ProductResource extends JsonResource
                 ];
             }),
             'expressions' => [
-                'views' => $this->expressions()->where('product_id', $this->id)->count(),
-                'likes' => $this->expressions()->where('action', 'like')->count(),
-                'dislikes' => $this->expressions()->where('action', 'dislike')->count(),
+                'views' => (int) $this->expressions->where('product_id', $this->id)->count(),
+                'likes' => (int) $likes,
+                'dislikes' => (int) $dislikes,
+                'total_expressions' => (int) $likes + $dislikes,
             ],
             'total_amount' => (float) $this->warehouses->sum('amount'),
             'expiry_date' => $minExpiryDate ? $minExpiryDate->format('Y-n-j') : null,
