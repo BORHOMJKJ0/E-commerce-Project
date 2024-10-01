@@ -7,7 +7,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class ExpressionRequest extends FormRequest
+class ExpressionRequest extends BaseRequest
 {
     private $expressionRepository;
 
@@ -58,13 +58,5 @@ class ExpressionRequest extends FormRequest
             'product_id' => 'required|integer|exists:products,id',
             'action' => 'required|in:like,dislike',
         ];
-    }
-
-    public function failedValidation(Validator $validator): void
-    {
-        response()->json([
-            'message' => 'Validation failed',
-            'errors' => $validator->errors(),
-        ], 400);
     }
 }

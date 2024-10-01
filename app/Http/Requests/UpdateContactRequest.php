@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class UpdateContactRequest extends FormRequest
+class UpdateContactRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -32,13 +32,4 @@ class UpdateContactRequest extends FormRequest
             'contact_type_id' => 'sometimes|exists:contact_types,id',
         ];
     }
-
-    public function failedAuthorization()
-    {
-        throw new HttpResponseException(response: response()->json([
-            'message' => 'You are not authorized to modify this profile',
-            'success' => false,
-        ], 403));
-    }
-    
 }

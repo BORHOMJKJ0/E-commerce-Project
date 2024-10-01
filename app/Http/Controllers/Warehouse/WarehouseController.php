@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Warehouse;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\WarehouseResource;
 use App\Models\Warehouse;
@@ -28,11 +29,11 @@ class WarehouseController extends Controller
         $warehouses = $this->warehouseService->getAllWarehouses($page, $items);
         $hasMorePages = $warehouses->hasMorePages();
 
-        return response()->json([
+        $data = [
             'Warehouses' => WarehouseResource::collection($warehouses),
             'hasMorePages' => $hasMorePages,
-            'successful' => true,
-        ], 200);
+        ];
+        return ResponseHelper::jsonRespones($data);
     }
 
     public function store(Request $request): JsonResponse
@@ -41,13 +42,12 @@ class WarehouseController extends Controller
 
             $warehouse = $this->warehouseService->createWarehouse($request->all());
 
-            return response()->json([
-                'message' => 'Warehouse created successfully!',
-                'warehouse' => WarehouseResource::make($warehouse),
-                'successful' => true,
-            ], 201);
+            $data = ['warehouse' => WarehouseResource::make($warehouse)];
+            return ResponseHelper::jsonRespones($data, 'Warehouse created successfully!', 201);
         } catch (HttpResponseException $e) {
-            return response()->json($e->getResponse()->getData(), 403);
+            $message = $e->getResponse()->getData();
+
+            return ResponseHelper::jsonRespones([], $message, 403, false);
         }
     }
 
@@ -57,13 +57,12 @@ class WarehouseController extends Controller
 
             $warehouse = $this->warehouseService->getWarehouseById($warehouse);
 
-            return response()->json([
-                'message' => 'Warehouse performed successfully!',
-                'warehouse' => WarehouseResource::make($warehouse),
-                'successful' => true,
-            ], 200);
+            $data = ['warehouse' => WarehouseResource::make($warehouse)];
+            return ResponseHelper::jsonRespones($data, 'Warehouse performed successfully!');
         } catch (HttpResponseException $e) {
-            return response()->json($e->getResponse()->getData(), 403);
+            $message = $e->getResponse()->getData();
+
+            return ResponseHelper::jsonRespones([], $message, 403, false);
         }
     }
 
@@ -82,11 +81,11 @@ class WarehouseController extends Controller
         $warehouses = $this->warehouseService->getWarehousesOrderedBy($column, $direction, $page, $items);
         $hasMorePages = $warehouses->hasMorePages();
 
-        return response()->json([
+        $data = [
             'Warehouses' => WarehouseResource::collection($warehouses),
             'hasMorePages' => $hasMorePages,
-            'successful' => true,
-        ], 200);
+        ];
+        return ResponseHelper::jsonRespones($data, 'Warehouses ordered successfully');
     }
 
     public function update(Request $request, Warehouse $warehouse): JsonResponse
@@ -95,13 +94,12 @@ class WarehouseController extends Controller
 
             $warehouse = $this->warehouseService->updateWarehouse($warehouse, $request->all());
 
-            return response()->json([
-                'message' => 'Warehouse updated successfully!',
-                'warehouse' => WarehouseResource::make($warehouse),
-                'successful' => true,
-            ], 200);
+            $data = ['warehouse' => WarehouseResource::make($warehouse)];
+            return ResponseHelper::jsonRespones($data, 'Warehouse updated successfully!');
         } catch (HttpResponseException $e) {
-            return response()->json($e->getResponse()->getData(), 403);
+            $message = $e->getResponse()->getData();
+
+            return ResponseHelper::jsonRespones([], $message, 403, false);
         }
     }
 
@@ -110,10 +108,11 @@ class WarehouseController extends Controller
         try {
 
             $this->warehouseService->deleteWarehouse($warehouse);
-
-            return response()->json(['message' => 'Warehouse deleted successfully!', 'successful' => true], 200);
+            return ResponseHelper::jsonRespones([], 'Warehouse deleted successfully!');
         } catch (HttpResponseException $e) {
-            return response()->json($e->getResponse()->getData(), 403);
+            $message = $e->getResponse()->getData();
+
+            return ResponseHelper::jsonRespones([], $message, 403, false);
         }
     }
 }

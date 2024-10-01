@@ -36,7 +36,6 @@ class Handler extends ExceptionHandler
                 'successful' => false,
             ], Response::HTTP_BAD_REQUEST);
         });
-
     }
 
     public function render($request, Throwable $exception)
@@ -68,6 +67,7 @@ class Handler extends ExceptionHandler
                 case 'App\\Models\\User':
                     return response()->json([
                         'message' => 'User not found',
+                        'successful' => false,
                     ], 404);
                 default:
                     return response()->json([

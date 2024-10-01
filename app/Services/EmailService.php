@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Requests\EmailVerificationRequest;
 use App\Jobs\EmailVerificationJob;
 use App\Repositories\UserRepository;
@@ -61,22 +62,17 @@ class EmailService
      *     )
      * )
      */
-    public function email_verification(EmailVerificationRequest $request): \Illuminate\Http\JsonResponse
+    public function email_verification(EmailVerificationRequest $request): JsonResponse
     {
-        $validationResponse = $this->validateRequest($request, $request->rules());
-        if ($validationResponse) {
-            return $validationResponse;
-        }
-
         $user = $this->userRepository->findByEmail($request->email);
         $otp2 = $this->otp->validate($user->email, $request->code);
 
         if (! $otp2->status) {
-            return response()->json(['error' => 'Your email activation code is invalid'], 400);
+            return ResponseHelper::jsonRespones([], 'Your email activation code is invalid', 400, false);
         } else {
             $this->userRepository->VerifyEmail($user);
 
-            return response()->json(['success' => 'Email verification successfully'], 200);
+            return ResponseHelper::jsonRespones([], 'Email verification successfully');
         }
     }
 
@@ -129,12 +125,11 @@ class EmailService
     public function sendEmailVerification($user): JsonResponse
     {
         if ($user->email_verified_at) {
-            return response()->json(['error' => 'Email already verified'], 400);
+            return ResponseHelper::jsonRespones([], 'Email already verified', 401, false);
         } else {
             EmailVerificationJob::dispatch($user);
 
-            return response()->json(['message' => 'The activation code has been sent to your email']);
+            return ResponseHelper::jsonRespones([],'The activation code has been sent to your email');
         }
-
     }
 }

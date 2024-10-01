@@ -2,11 +2,14 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Helpers\ResponseHelper;
+use App\Http\Requests\BaseRequest;
 use App\Rules\EmailAddress;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
-class ForgetPasswordRequest extends FormRequest
+class ForgetPasswordRequest extends BaseRequest
 {
     public function authorize(): bool
     {
@@ -18,13 +21,5 @@ class ForgetPasswordRequest extends FormRequest
         return [
             'email' => ['required', 'email', 'exists:users,email', new EmailAddress],
         ];
-    }
-
-    public function failedValidation(Validator $validator)
-    {
-        response()->json([
-            'message' => 'Validation failed',
-            'errors' => $validator->errors(),
-        ], 400);
     }
 }

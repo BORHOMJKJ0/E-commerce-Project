@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
@@ -74,7 +75,9 @@ class UserService
     {
         $users = $this->userRepository->GetAllUsers();
 
-        return response()->json(['users' => UserContactsResource::collection($users)], 200);
+        $data = ['users' => UserContactsResource::collection($users)];
+        return ResponseHelper::jsonRespones($data, 'Users retrieved successfully');
+        // return response()->json(['users' =>], 200);
     }
 
     /**
@@ -130,23 +133,14 @@ class UserService
      */
     public function register(RegisterRequest $request)
     {
-        $validationResponse = $this->validateRequest($request, $request->rules());
-        if ($validationResponse) {
-            return $validationResponse;
-        }
 
         $user = $this->userRepository->create($request->validated());
 
         $this->EmailVerificationController->sendEmailVerification($user);
 
-        $data = [
-            'message' => 'User registered successfully',
-            'email-verification' => 'An activation code has been sent to your email',
-            'user' => new UserResource($user),
-            'successful' => true,
-        ];
+        $data = ['user' => new UserResource($user)];
 
-        return response()->json($data, 201);
+        return ResponseHelper::jsonRespones($data, 'User registered successfully', 201);
     }
 
     /**
@@ -215,29 +209,20 @@ class UserService
      */
     public function login(LoginRequest $request): JsonResponse
     {
-        $validationResponse = $this->validateRequest($request, $request->rules());
-
-        if ($validationResponse) {
-            return $validationResponse;
-        }
-
         $credentials = $request->only('email', 'password');
 
-        $user = $this->userRepository->findByEmail($request->email);
-
-        if (! $token = Auth::guard('api')->attempt($credentials)) {
-            return response()->json([
-                'message' => 'Email or Password is invalid',
-                'successful' => false,
-            ], 401);
+        if (! $token = Auth::attempt($credentials)) {
+            return ResponseHelper::jsonRespones([], 'Invalid credentials. Please check your email and password', 401, false);
         }
 
-        return response()->json([
+        $user = $this->userRepository->findByEmail($request->email);
+        $data = [
             'token' => $token,
             'token_type' => 'bearer',
             'user' => new UserResource($user),
-            'successful' => true,
-        ], 200);
+        ];
+
+        return ResponseHelper::jsonRespones($data, 'Login successful');
     }
 
     /**
@@ -267,13 +252,9 @@ class UserService
     {
         $user = $this->userRepository->findById(auth()->user()->id);
         auth()->logout();
-        $message = [
-            'message' => 'Successfully logged out',
-            'user' => new UserResource($user),
-            'successful' => true
-        ];
+        $data = ['user' => new UserResource($user)];
 
-        return response()->json($message, 200);
+        return ResponseHelper::jsonRespones($data, 'Successfully logged out');
     }
 
     /**
@@ -333,7 +314,9 @@ class UserService
      */
     public function profile(User $user)
     {
-        return response()->json(new UserContactsResource($user->loadCount('contacts')), 200);
+
+        $data = ['user' =>  new UserContactsResource($user->loadCount('contacts'))];
+        return ResponseHelper::jsonRespones($data, 'Profile retrieved successfully');
     }
 
     // to show when token will expire
@@ -430,23 +413,16 @@ class UserService
         }
         $this->userRepository->update($user, $request->except(['old_password', 'new_password']));
 
-        $message = [
-            'message' => 'Profile updated successfully',
-            'user' => new UserContactsResource($user),
-            'success' => true,
-        ];
+        $data = ['user' => new UserContactsResource($user)];
 
-        return response()->json($message, 200);
+        return ResponseHelper::jsonRespones($data, 'Profile updated successfully');
     }
 
     public function destroy()
     {
         $user = $this->userRepository->destroy();
 
-        return response()->json([
-            'message' => 'deleted Account successfully',
-            'user' => new UserContactsResource($user),
-            'successful' => true,
-        ], 200);
+        $data = ['user' => new UserContactsResource($user)];
+        return ResponseHelper::jsonRespones($data, 'deleted Account successfully');
     }
 }

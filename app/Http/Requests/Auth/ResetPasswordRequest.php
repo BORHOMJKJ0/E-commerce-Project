@@ -2,11 +2,14 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Helpers\ResponseHelper;
+use App\Http\Requests\BaseRequest;
 use App\Rules\EmailAddress;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
-class ResetPasswordRequest extends FormRequest
+class ResetPasswordRequest extends BaseRequest
 {
     public function authorize(): bool
     {
@@ -20,13 +23,5 @@ class ResetPasswordRequest extends FormRequest
             'password' => 'required|min:8|confirmed',
             'code' => 'required|max:6',
         ];
-    }
-
-    public function failedValidation(Validator $validator): void
-    {
-        response()->json([
-            'message' => 'Validation failed',
-            'errors' => $validator->errors(),
-        ], 400);
     }
 }

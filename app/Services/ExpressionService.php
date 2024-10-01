@@ -2,13 +2,16 @@
 
 namespace App\Services;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Requests\ExpressionRequest;
 use App\Models\Expression;
 use App\Models\Product;
 use App\Models\User;
 use App\Repositories\ExpressionRepository;
 use App\Traits\ValidationTrait;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class ExpressionService
 {
@@ -21,7 +24,7 @@ class ExpressionService
         //        $this->expressionRepository = $expressionRepository;
     }
 
-    public function index()
+    public function index(): JsonResponse
     {
         $products = Product::all();
         $all_Product = [];
@@ -31,7 +34,8 @@ class ExpressionService
             $all_Product[] = $message;
         }
 
-        return response($all_Product, 200);
+        $data = ['products' => $all_Product];
+        return ResponseHelper::jsonRespones([], 'Expressions for all products is retrieved successfully');
     }
 
     /**
@@ -94,16 +98,10 @@ class ExpressionService
      *      )
      * )
      */
-    public function create(ExpressionRequest $request)
+    public function create(ExpressionRequest $request): JsonResponse
     {
-
-        $responseValidation = $this->validateRequest($request, $request->rules());
-        if ($responseValidation) {
-            return $responseValidation;
-        }
-
         $expression = $this->expressionRepository->create($request);
-        $message = [
+        $data = [
             'expression' => [
                 'expression_id' => $expression->id,
                 'product_id' => (int) $expression->product_id,
@@ -112,7 +110,7 @@ class ExpressionService
             ],
         ];
 
-        return response()->json($message, 201);
+        return ResponseHelper::jsonRespones($data, 'Expression created successfully', 201);
     }
 
     /**
@@ -219,9 +217,9 @@ class ExpressionService
      */
     public function show(Product $product)
     {
-        $message = $this->expressionRepository->Expressions_Product($product->id);
+        $data = $this->expressionRepository->Expressions_Product($product->id);
 
-        return response()->json($message, 200);
+        return ResponseHelper::jsonRespones( $data,'Expressions for product retrieved  successfully');
     }
 
     /**
@@ -315,7 +313,7 @@ class ExpressionService
         $user = User::find(auth()->id());
         $expression = Expression::where('user_id', auth()->id())->where('product_id', $product->id)->first();
         if (! $expression) {
-            return response()->json(['message' => 'User not expressed for this product'], 404);
+            return ResponseHelper::jsonRespones([], 'User not expressed for this product', 404, false);
         }
 
         if ($request->filled('action')) {
@@ -336,6 +334,6 @@ class ExpressionService
             ],
         ];
 
-        return response()->json($message, 200);
+        return ResponseHelper::jsonRespones($message, 'Expression For Product updated successfully');
     }
 }

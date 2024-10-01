@@ -2,10 +2,12 @@
 
 namespace App\Http\Requests;
 
+use App\Helpers\ResponseHelper;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
-class ContactRequest extends FormRequest
+class ContactRequest extends BaseRequest
 {
     public function authorize(): bool
     {
@@ -20,11 +22,4 @@ class ContactRequest extends FormRequest
         ];
     }
 
-    public function failedValidation(Validator $validator)
-    {
-        response()->json([
-            'message' => 'Validation failed',
-            'errors' => $validator->errors(),
-        ], 400);
-    }
 }

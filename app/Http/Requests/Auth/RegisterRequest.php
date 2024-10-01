@@ -2,11 +2,14 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Helpers\ResponseHelper;
+use App\Http\Requests\BaseRequest;
 use App\Rules\EmailAddress;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
-class RegisterRequest extends FormRequest
+class RegisterRequest extends BaseRequest
 {
     public function authorize(): bool
     {
@@ -24,15 +27,6 @@ class RegisterRequest extends FormRequest
             'mobile' => 'required|string|size:10',
         ];
     }
-
-    public function failedValidation(Validator $validator): void
-    {
-        response()->json([
-            'message' => 'Validation failed',
-            'errors' => $validator->errors(),
-        ], 400);
-    }
-
     //    public function attributes(): array{
     //        return [
     //            'name'=>__('main.name'),

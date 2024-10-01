@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Requests\ContactRequest;
 use App\Http\Requests\UpdateContactRequest;
 use App\Http\Resources\ContactResource;
@@ -78,20 +79,10 @@ class Contact_InformationService
      */
     public function addContact(ContactRequest $request): JsonResponse
     {
-
-        $validationResponse = $this->validateRequest($request, $request->rules());
-
-        if ($validationResponse) {
-            return $validationResponse;
-        }
-
         $data = $request->validated();
-        $this->contactRepository->create(auth()->user(), $data);
+        $contact = $this->contactRepository->create(auth()->user(), $data);
 
-        return response()->json([
-            'message' => 'Contact information added successfully',
-            'successful' => true,
-        ], 201);
+        return ResponseHelper::jsonRespones(['contact' => $contact], 'Contact information added successfully', 201);
     }
 
     /**
@@ -139,43 +130,31 @@ class Contact_InformationService
     {
         $contacts = $this->contactRepository->findByUserId($user_id);
         if (! $contacts) {
-            return response()->json([
-                'message' => 'Contact information not found',
-                'successful'=>false,
-            ], 404);
+            return ResponseHelper::jsonRespones([], 'Contact information not found', 404, false);
         }
 
-        //        if ($contacts->count() == 0) {
-        //            return response()->json(['message' => 'there is no contact information']);
-        //        }
-
-        return response()->json([
+        $data = [
             'contacts' => ContactResource::collection($contacts),
-            'successful' => true,
-        ], 200);
+        ];
+
+        return ResponseHelper::jsonRespones($data, 'Contact Information retrieved successfully');
     }
 
     public function update(UpdateContactRequest $request, $user_id, $contact_id)
     {
-        $validationResponse = $this->validateRequest($request, $request->rules());
-        if ($validationResponse) {
-            return $validationResponse;
-        }
-
         $contact_information =  $this->contactRepository->findContactById($contact_id);
         if (!$contact_information) {
-            return response()->json(['message' => 'There is no Contact Information With this id'], 404);
+            return ResponseHelper::jsonRespones([], 'There is no Contact Information With this id', 404, false);
         }
 
         $user = $this->userRepository->findById($user_id);
 
         $this->contactRepository->update($user, $request->validated());
 
-        return response()->json([
-            'message' => 'Contact Information updated successfully',
+        $data = [
             'user' => new UserContactsResource($user),
-            'successful' => true,
-        ]);
+        ];
+        return ResponseHelper::jsonRespones($data, 'Contact Information updated successfully');
     }
 
     /**
@@ -220,10 +199,11 @@ class Contact_InformationService
 
         $contact = $this->contactRepository->deleteById($contact_information_id);
         if (! $contact) {
-            return response()->json(['message' => 'Contact not found'], 404);
+            return ResponseHelper::jsonRespones([], 'Contact not found', 404, false);
         }
-
-        return response()->json(['contact' => new ContactResource($contact), 'message' => 'Contact deleted successfully']);
+ 
+        $data = ['contact' => new ContactResource($contact)];
+        return ResponseHelper::jsonRespones($data,'Contact deleted successfully');
     }
 
     /**
@@ -258,9 +238,10 @@ class Contact_InformationService
     {
         $contacts = $this->contactRepository->deleteByUser(auth()->user());
         if (! $contacts) {
-            return response()->json(['message' => 'Contacts not found for this user'], 400);
+            return ResponseHelper::jsonRespones([], 'Contacts not found for this user', 404, false);
         }
 
-        return response()->json(['contacts' => ContactResource::collection($contacts), 'message' => 'All Contacts deleted successfully']);
+        $data = ['contacts' => ContactResource::collection($contacts)];
+        return ResponseHelper::jsonRespones($data,'All Contacts deleted successfully');
     }
 }
