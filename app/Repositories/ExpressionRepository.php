@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Http\Requests\ExpressionRequest;
 use App\Models\Expression;
 use App\Models\Product;
+use App\Models\User;
 use App\Traits\ValidationTrait;
 use Illuminate\Support\Facades\DB;
 
@@ -19,14 +20,14 @@ class ExpressionRepository
         $this->userRepository = $userRepository;
     }
 
-    public function create(ExpressionRequest $request)
+    public function create(array $data)
     {
 
         $user = $this->userRepository->findById(auth()->user()->id);
 
-        $request->merge(['user_id' => $user->id]);
+        $data['user_id'] = $user->id;
 
-        return $user->expressions()->create($request->all());
+        return $user->expressions()->create($data);
     }
 
     public function Expressions_Product($product_id)
@@ -58,6 +59,17 @@ class ExpressionRepository
         return $message;
     }
 
+    public function getExpressionForProduct($product_id)
+    {
+        return Expression::where('user_id', auth()->user()->id)->where('product_id', $product_id)->first();
+    }
+    public function updateExpression(array $data)
+    {
+        $user = $this->userRepository->findById(auth()->user()->id);
+
+        $user->expressions()->update($data);
+        return $user;
+    }
     public function getNumberOfExpression($expression, $product_id): int
     {
         return DB::table('expressions')

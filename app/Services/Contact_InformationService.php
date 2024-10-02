@@ -82,7 +82,7 @@ class Contact_InformationService
         $data = $request->validated();
         $contact = $this->contactRepository->create(auth()->user(), $data);
 
-        return ResponseHelper::jsonRespones(['contact' => $contact], 'Contact information added successfully', 201);
+        return ResponseHelper::jsonRespones(['contact' => new ContactResource($contact)], 'Contact information added successfully', 201);
     }
 
     /**

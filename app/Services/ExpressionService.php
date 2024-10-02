@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Helpers\ResponseHelper;
 use App\Http\Requests\ExpressionRequest;
+use App\Http\Requests\UpdateExpressionRequest;
 use App\Models\Expression;
 use App\Models\Product;
 use App\Models\User;
@@ -21,7 +22,7 @@ class ExpressionService
 
     public function __construct(ExpressionRepository $expressionRepository)
     {
-        //        $this->expressionRepository = $expressionRepository;
+        $this->expressionRepository = $expressionRepository;
     }
 
     public function index(): JsonResponse
@@ -100,7 +101,8 @@ class ExpressionService
      */
     public function create(ExpressionRequest $request): JsonResponse
     {
-        $expression = $this->expressionRepository->create($request);
+        // return response()->json($request->all());
+        $expression = $this->expressionRepository->create($request->only('action', 'product_id'));
         $data = [
             'expression' => [
                 'expression_id' => $expression->id,
@@ -219,7 +221,7 @@ class ExpressionService
     {
         $data = $this->expressionRepository->Expressions_Product($product->id);
 
-        return ResponseHelper::jsonRespones( $data,'Expressions for product retrieved  successfully');
+        return ResponseHelper::jsonRespones($data, 'Expressions for product retrieved  successfully');
     }
 
     /**
@@ -300,19 +302,11 @@ class ExpressionService
      *     ),
      * )
      */
-    public function update(Request $request, $product)
+    public function update(UpdateExpressionRequest $request, Product $product)
     {
-        $responseValidation = $this->validateRequest($request, [
-            'action' => 'sometimes|in:like,dislike',
-        ]);
+        $expression = $this->expressionRepository->getExpressionForProduct($product->id);
 
-        if ($responseValidation) {
-            return $responseValidation;
-        }
-
-        $user = User::find(auth()->id());
-        $expression = Expression::where('user_id', auth()->id())->where('product_id', $product->id)->first();
-        if (! $expression) {
+        if (!$expression) {
             return ResponseHelper::jsonRespones([], 'User not expressed for this product', 404, false);
         }
 
@@ -322,7 +316,8 @@ class ExpressionService
             $data['action'] = null;
         }
 
-        $user->expressions()->update($data);
+        $user = $this->expressionRepository->updateExpression($data);
+        
         $message = [
             'message' => 'updated successfully',
             'user' => [

@@ -56,7 +56,7 @@ class ExpressionRequest extends BaseRequest
     {
         return [
             'product_id' => 'required|integer|exists:products,id',
-            'action' => 'required|in:like,dislike',
+            'action' => 'sometimes|in:like,dislike',
         ];
     }
 }

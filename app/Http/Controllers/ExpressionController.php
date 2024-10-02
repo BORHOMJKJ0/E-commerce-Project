@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ExpressionRequest;
+use App\Http\Requests\UpdateExpressionRequest;
 use App\Models\Product;
 use App\Services\ExpressionService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class ExpressionController extends Controller
 {
@@ -32,13 +34,13 @@ class ExpressionController extends Controller
         return $this->expressionService->show($product);
     }
 
-    public function update(ExpressionRequest $request, Product $product): JsonResponse
+    public function update(UpdateExpressionRequest $request, Product $product): JsonResponse
     {
         return $this->expressionService->update($request, $product);
     }
 
-    public function delete(Product $product): JsonResponse
-    {
-        //
-    }
+    // public function delete(Product $product): JsonResponse
+    // {
+    //     //
+    // }
 }
