@@ -43,9 +43,11 @@ class UpdateUserRequest extends BaseRequest
 
     public function failedAuthorization()
     {
-        throw new HttpResponseException(response: response()->json([
-            'message' => 'You are not authorized to modify this profile',
-            'success' => false,
-        ], 403));
+        throw new HttpResponseException(
+            response: response()->json([
+                'message' => 'You are not authorized to modify this profile',
+                'successful' => false,
+            ], 403)
+        );
     }
 }
