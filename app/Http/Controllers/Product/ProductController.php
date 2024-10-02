@@ -52,7 +52,6 @@ class ProductController extends Controller
 
         return ResponseHelper::jsonRespones($data, 'Products retrieved successfully');
     }
-
     public function store(Request $request): JsonResponse
     {
         try {
