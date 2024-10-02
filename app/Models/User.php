@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -16,15 +14,7 @@ class User extends Authenticatable implements JWTSubject
 
     protected $dateFormat = 'Y-m-d H:i:s';
 
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'mobile',
-        'email_code',
-        'forget_password_code',
-        'gender',
-    ];
+    protected $guarded = [];
 
     protected $hidden = [
         'password',
@@ -45,13 +35,24 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    public function contacts(): HasMany
+    public function contacts()
     {
         return $this->hasMany(Contact_information::class);
     }
 
-    public function expressions(): HasMany
+    public function expressions()
     {
         return $this->hasMany(Expression::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function reviewedProducts()
+    {
+        return $this->belongsToMany(Product::class, 'reviews')
+            ->withPivot('rating');
     }
 }

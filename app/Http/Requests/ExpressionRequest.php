@@ -17,12 +17,9 @@ class ExpressionRequest extends FormRequest
         $this->expressionRepository = $expressionRepository;
     }
 
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
-        if ($this->isAddExpression(auth()->user()->id, $this->request->get('product_id'))) {
+        if ($this->isAddExpression(auth()->id(), $this->request->get('product_id'))) {
             return false;
         }
 
@@ -47,11 +44,6 @@ class ExpressionRequest extends FormRequest
         return false;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [

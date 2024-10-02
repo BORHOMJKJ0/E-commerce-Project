@@ -19,7 +19,7 @@ class WarehouseFactory extends Factory
             'payment_date' => $paymentDate,
             'settlement_date' => $amount > 0 ? null : fake()->dateTimeBetween($paymentDate, $expiryDate),
             'expiry_date' => $expiryDate,
-            'product_id' => Product::factory(),
+            'product_id' => Product::all()->random()->id,
         ];
     }
 }

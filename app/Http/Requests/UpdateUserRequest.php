@@ -20,11 +20,6 @@ class UpdateUserRequest extends FormRequest
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
@@ -60,7 +55,6 @@ class UpdateUserRequest extends FormRequest
                 }
             }
 
-            // Reset the new_password array if it's empty
             if (empty($errors['new_password'])) {
                 unset($errors['new_password']);
             }

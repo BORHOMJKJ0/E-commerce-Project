@@ -6,8 +6,6 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Prunable;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use OpenApi\Annotations as OA;
 
 /**
@@ -44,29 +42,45 @@ class Product extends Model
 
     protected $guarded = [];
 
-    public function category(): BelongsTo
+    public function category()
     {
         return $this->belongsTo(Category::class);
     }
 
-    public function warehouses(): HasMany
+    public function warehouses()
     {
         return $this->hasMany(Warehouse::class);
     }
 
-    public function offers(): HasMany
+    public function offers()
     {
         return $this->hasMany(Offer::class);
     }
 
-    public function user(): BelongsTo
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function expressions(): HasMany
+    public function expressions()
     {
         return $this->hasMany(Expression::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasManyThrough(Comment::class, Review::class);
+    }
+
+    public function reviewers()
+    {
+        return $this->belongsToMany(User::class, 'reviews')
+            ->withPivot('rating');
     }
 
     public function prunable()

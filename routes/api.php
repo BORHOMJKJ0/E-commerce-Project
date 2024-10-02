@@ -5,11 +5,13 @@ use App\Http\Controllers\Auth\ForgetPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Category\CategoryController;
+use App\Http\Controllers\Comment\CommentController;
 use App\Http\Controllers\Contact\ContactInformationController;
 use App\Http\Controllers\Contact\ContactTypeController;
 use App\Http\Controllers\ExpressionController;
 use App\Http\Controllers\Offer\OfferController;
 use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\Review\ReviewController;
 use App\Http\Controllers\Warehouse\WarehouseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +31,8 @@ Route::middleware('api')->group(function () {
     Route::apiResource('categories', CategoryController::class);
     Route::apiResource('warehouses', WarehouseController::class);
     Route::apiResource('offers', OfferController::class);
+    Route::apiResource('reviews', ReviewController::class);
+    Route::apiResource('comments', CommentController::class);
     Route::prefix('products')->controller(ProductController::class)->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');
         Route::get('/my/order/{column}/{direction}', 'MyProductsOrderBy');
@@ -46,6 +50,16 @@ Route::middleware('api')->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');
         Route::get('/my/order/{column}/{direction}', 'MyOffersOrderBy');
         Route::get('/my/random', 'MyOffers');
+    });
+    Route::prefix('reviews')->controller(ReviewController::class)->group(function () {
+        Route::get('/order/{column}/{direction}', 'orderBy');
+        Route::get('/my/order/{column}/{direction}', 'MyReviewsOrderBy');
+        Route::get('/my/random', 'MyReviews');
+    });
+    Route::prefix('comments')->controller(CommentController::class)->group(function () {
+        Route::get('/order/{column}/{direction}', 'orderBy');
+        Route::get('/my/order/{column}/{direction}', 'MyCommentsOrderBy');
+        Route::get('/my/random', 'MyComments');
     });
 });
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

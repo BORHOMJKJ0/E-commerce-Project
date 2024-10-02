@@ -9,8 +9,6 @@ class Contact_information extends Model
 {
     use HasFactory;
 
-    protected $table = 'contact_informations';
-
     protected $guarded = [];
 
     public function user()

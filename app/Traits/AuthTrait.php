@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\Product;
+use App\Models\Review;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 trait AuthTrait
@@ -33,6 +34,17 @@ trait AuthTrait
         if (! $userHasProductInCategory) {
             throw new HttpResponseException(response()->json([
                 'message' => "You are not authorized to {$action} this {$modelType}. You must have products in this category.",
+                'successful' => false,
+            ], 403));
+        }
+    }
+    public function checkReviewOwnership($reviewId)
+    {
+        $review = Review::findOrFail($reviewId);
+
+        if ($review->user_id !== auth()->id()) {
+            throw new HttpResponseException(response()->json([
+                'message' => "You are not authorized to comment on this review. It does not belong to you.",
                 'successful' => false,
             ], 403));
         }
