@@ -6,14 +6,14 @@ use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ExpressionFactory extends Factory
+class ReviewFactory extends Factory
 {
     public function definition(): array
     {
         return [
-            'action' => $this->faker->randomElement(['like', 'dislike']),
-            'user_id' => User::all()->random()->id,
             'product_id' => Product::all()->random()->id,
+            'user_id' => User::all()->random()->id,
+            'rating' => $this->faker->numberBetween(1, 5),
         ];
     }
 }

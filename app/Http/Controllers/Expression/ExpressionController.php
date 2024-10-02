@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Expression;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\ExpressionRequest;
 use App\Http\Requests\UpdateExpressionRequest;
 use App\Models\Product;

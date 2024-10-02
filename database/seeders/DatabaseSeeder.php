@@ -12,16 +12,13 @@ class DatabaseSeeder extends Seeder
             Contact_typeSeeder::class,
             UserSeeder::class,
             CategorySeeder::class,
-            OfferSeeder::class,
             ProductSeeder::class,
+            OfferSeeder::class,
             WarehouseSeeder::class,
             ExpressionSeeder::class,
-        ]);
-        // \App\Models\User::factory(10)->create();
+            ReviewSeeder::class,
+            CommentSeeder::class,
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        ]);
     }
 }

@@ -16,7 +16,7 @@ class OfferFactory extends Factory
             'discount_percentage' => fake()->randomFloat(2, 0, 99.99),
             'start_date' => $startDate,
             'end_date' => $endDate,
-            'product_id' => Product::factory(),
+            'product_id' => Product::all()->random()->id,
         ];
     }
 }

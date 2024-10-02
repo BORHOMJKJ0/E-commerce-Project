@@ -74,7 +74,7 @@ class ProductController extends Controller
         return ResponseHelper::jsonRespones($data, 'Product retrieved successfully!');
     }
 
-    public function orderBy($column, $direction, Request $request): JsonResponse
+    public function ProductOrderBy($column, $direction, Request $request, bool $isMyProduct = false)
     {
         $validColumns = ['name', 'price', 'created_at', 'updated_at'];
         $validDirections = ['asc', 'desc'];
@@ -86,7 +86,10 @@ class ProductController extends Controller
         $page = $request->query('page', 1);
         $items = $request->query('items', 20);
 
-        $products = $this->productService->getProductsOrderedBy($column, $direction, $page, $items);
+        $products = $isMyProduct
+            ? $this->productService->getMyProductsOrderedBy($column, $direction, $page, $items)
+            : $this->productService->getProductsOrderedBy($column, $direction, $page, $items);
+
         $hasMorePages = $products->hasMorePages();
 
         $data = [
@@ -95,28 +98,14 @@ class ProductController extends Controller
         ];
         return ResponseHelper::jsonRespones($data, 'Products ordered successfully!');
     }
+    public function orderBy($column, $direction, Request $request): JsonResponse
+    {
+        return $this->ProductOrderBy($column, $direction, $request);
+    }
 
     public function MyProductsOrderBy($column, $direction, Request $request): JsonResponse
     {
-        $validColumns = ['name', 'price', 'created_at', 'updated_at'];
-        $validDirections = ['asc', 'desc'];
-
-        if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
-            return ResponseHelper::jsonRespones([], 'Invalid column or direction', 400, false);
-        }
-
-        $page = $request->query('page', 1);
-        $items = $request->query('items', 20);
-
-        $products = $this->productService->getMyProductsOrderedBy($column, $direction, $page, $items);
-        $hasMorePages = $products->hasMorePages();
-
-        $data = [
-            'Products' => ProductResource::collection($products),
-            'hasMorePages' => $hasMorePages,
-        ];
-
-        return ResponseHelper::jsonRespones($data, 'Products ordered successfully!');
+        return $this->ProductOrderBy($column, $direction, $request, true);
     }
 
     public function update(Request $request, Product $product): JsonResponse

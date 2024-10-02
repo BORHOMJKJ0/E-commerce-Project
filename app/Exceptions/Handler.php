@@ -64,11 +64,6 @@ class Handler extends ExceptionHandler
                         'message' => 'Warehouse not found',
                         'successful' => false,
                     ], 404);
-                case 'App\\Models\\User':
-                    return response()->json([
-                        'message' => 'User not found',
-                        'successful' => false,
-                    ], 404);
                 default:
                     return response()->json([
                         'message' => 'Resource not found',

@@ -2,13 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\offer;
+use App\Models\Comment;
 use Illuminate\Database\Seeder;
 
-class OfferSeeder extends Seeder
+class CommentSeeder extends Seeder
 {
     public function run(): void
     {
-        offer::factory(10)->create();
+        Comment::factory(10)->create();
     }
 }
