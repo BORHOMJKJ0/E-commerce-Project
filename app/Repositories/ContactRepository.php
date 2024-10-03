@@ -16,11 +16,23 @@ class ContactRepository
         return $user->contacts()->create($data);
     }
 
+    public function update(User $user, array $data)
+    {
+        $data['user_id'] = $user->id;
+
+        return $user->contacts()->update($data);
+    }
+
     public function findByUserId($id)
     {
         $user = User::findOrFail($id);
 
         return $user->contacts;
+    }
+
+    public function findContactById($id)
+    {
+        return Contact_information::find($id);
     }
 
     public function findById($id)

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Product;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
@@ -28,11 +29,12 @@ class ProductController extends Controller
         $products = $this->productService->getAllProducts($page, $items);
         $hasMorePages = $products->hasMorePages();
 
-        return response()->json([
+        $data = [
             'Products' => ProductResource::collection($products),
             'hasMorePages' => $hasMorePages,
-            'successful' => true,
-        ], 200);
+        ];
+
+        return ResponseHelper::jsonRespones($data, 'Products retrieved successfully');
     }
 
     public function MyProducts(Request $request): JsonResponse
@@ -43,11 +45,12 @@ class ProductController extends Controller
         $products = $this->productService->getMyProducts($page, $items);
         $hasMorePages = $products->hasMorePages();
 
-        return response()->json([
+        $data = [
             'Products' => ProductResource::collection($products),
             'hasMorePages' => $hasMorePages,
-            'successful' => true,
-        ], 200);
+        ];
+
+        return ResponseHelper::jsonRespones($data, 'Products retrieved successfully');
     }
 
     public function store(Request $request): JsonResponse
@@ -55,13 +58,13 @@ class ProductController extends Controller
         try {
             $product = $this->productService->createProduct($request->all());
 
-            return response()->json([
-                'message' => 'Product created successfully!',
-                'product' => ProductResource::make($product),
-                'successful' => true,
-            ], 201);
+            $data = ['product' => ProductResource::make($product)];
+
+            return ResponseHelper::jsonRespones($data, 'Product created successfully!', 201);
         } catch (HttpResponseException $e) {
-            return response()->json($e->getResponse()->getData(), 403);
+            $message = $e->getResponse()->getData();
+
+            return ResponseHelper::jsonRespones([], $message, 403, false);
         }
     }
 
@@ -69,11 +72,9 @@ class ProductController extends Controller
     {
         $product = $this->productService->getProductById($product);
 
-        return response()->json([
-            'message' => 'Product performed successfully!',
-            'product' => ProductResource::make($product),
-            'successful' => true,
-        ], 200);
+        $data = ['product' => ProductResource::make($product)];
+
+        return ResponseHelper::jsonRespones($data, 'Product retrieved successfully!');
     }
 
     public function orderBy($column, $direction, Request $request): JsonResponse
@@ -82,7 +83,7 @@ class ProductController extends Controller
         $validDirections = ['asc', 'desc'];
 
         if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
-            return response()->json(['error' => 'Invalid column or direction', 'successful' => false], 400);
+            return ResponseHelper::jsonRespones([], 'Invalid column or direction', 400, false);
         }
 
         $page = $request->query('page', 1);
@@ -91,11 +92,12 @@ class ProductController extends Controller
         $products = $this->productService->getProductsOrderedBy($column, $direction, $page, $items);
         $hasMorePages = $products->hasMorePages();
 
-        return response()->json([
+        $data = [
             'Products' => ProductResource::collection($products),
             'hasMorePages' => $hasMorePages,
-            'successful' => true,
-        ], 200);
+        ];
+
+        return ResponseHelper::jsonRespones($data, 'Products ordered successfully!');
     }
 
     public function MyProductsOrderBy($column, $direction, Request $request): JsonResponse
@@ -104,7 +106,7 @@ class ProductController extends Controller
         $validDirections = ['asc', 'desc'];
 
         if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
-            return response()->json(['error' => 'Invalid column or direction', 'successful' => false], 400);
+            return ResponseHelper::jsonRespones([], 'Invalid column or direction', 400, false);
         }
 
         $page = $request->query('page', 1);
@@ -113,11 +115,12 @@ class ProductController extends Controller
         $products = $this->productService->getMyProductsOrderedBy($column, $direction, $page, $items);
         $hasMorePages = $products->hasMorePages();
 
-        return response()->json([
+        $data = [
             'Products' => ProductResource::collection($products),
             'hasMorePages' => $hasMorePages,
-            'successful' => true,
-        ], 200);
+        ];
+
+        return ResponseHelper::jsonRespones($data, 'Products ordered successfully!');
     }
 
     public function update(Request $request, Product $product): JsonResponse
@@ -125,13 +128,13 @@ class ProductController extends Controller
         try {
             $product = $this->productService->updateProduct($product, $request->all());
 
-            return response()->json([
-                'message' => 'Product updated successfully!',
-                'product' => ProductResource::make($product),
-                'successful' => true,
-            ], 200);
+            $data = ['product' => ProductResource::make($product)];
+
+            return ResponseHelper::jsonRespones($data, 'Product updated successfully!');
         } catch (HttpResponseException $e) {
-            return response()->json($e->getResponse()->getData(), 403);
+            $message = $e->getResponse()->getData();
+
+            return ResponseHelper::jsonRespones([], $message, 403, false);
         }
     }
 
@@ -140,9 +143,11 @@ class ProductController extends Controller
         try {
             $this->productService->deleteProduct($product);
 
-            return response()->json(['message' => 'Product deleted successfully!', 'successful' => true], 200);
+            return ResponseHelper::jsonRespones([], 'Product deleted successfully!');
         } catch (HttpResponseException $e) {
-            return response()->json($e->getResponse()->getData(), 403);
+            $message = $e->getResponse()->getData();
+
+            return ResponseHelper::jsonRespones([], $message, 403, false);
         }
     }
 }

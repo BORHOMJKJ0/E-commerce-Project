@@ -14,12 +14,9 @@ class UserContactsResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'mobile' => $this->mobile,
-            'contacts' => $this->contacts->map(function ($contact) {
-                return [
-                    'id' => $contact->id,
-                    'contact_type_id' => $contact->contact_type_id,
-                ];
-            }),
+            'gender' => $this->gender,
+            'contact_count' => $this->whenCounted('contacts'),
+            'contacts' => $this->when($this->contacts->isNotEmpty(), ContactResource::collection($this->contacts)),
         ];
     }
 }

@@ -41,12 +41,6 @@ class PasswordService
 
     public function resetPassword(ResetPasswordRequest $request): JsonResponse
     {
-        $validationResponse = $this->validateRequest($request, $request->rules());
-
-        if ($validationResponse) {
-            return $validationResponse;
-        }
-
         $otp2 = $this->otp->validate($request->email, $request->code);
 
         if (! $otp2->status) {

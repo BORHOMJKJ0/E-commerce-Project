@@ -38,13 +38,14 @@ trait AuthTrait
             ], 403));
         }
     }
+
     public function checkReviewOwnership($reviewId)
     {
         $review = Review::findOrFail($reviewId);
 
         if ($review->user_id !== auth()->id()) {
             throw new HttpResponseException(response()->json([
-                'message' => "You are not authorized to comment on this review. It does not belong to you.",
+                'message' => 'You are not authorized to comment on this review. It does not belong to you.',
                 'successful' => false,
             ], 403));
         }

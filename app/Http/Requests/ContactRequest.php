@@ -2,10 +2,7 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Foundation\Http\FormRequest;
-
-class ContactRequest extends FormRequest
+class ContactRequest extends BaseRequest
 {
     public function authorize(): bool
     {
@@ -16,15 +13,7 @@ class ContactRequest extends FormRequest
     {
         return [
             'link' => 'required|string',
-            'contact_type_id' => 'required|integer',
+            'contact_type_id' => 'required|integer|exists:contact_types,id',
         ];
-    }
-
-    public function failedValidation(Validator $validator)
-    {
-        response()->json([
-            'message' => 'Validation failed',
-            'errors' => $validator->errors(),
-        ], 400);
     }
 }

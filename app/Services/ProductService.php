@@ -527,7 +527,13 @@ class ProductService
      */
     public function updateProduct(Product $product, array $data)
     {
+
+        if ($product->user_id !== auth()->user()->id) {
+            throw new UnauthorizedActionException('You are not authorized to update this product.');
+        }
+
         $this->checkOwnership($product, 'Product', 'update');
+
         $this->validateProductData($data, 'sometimes');
 
         return $this->productRepository->update($product, $data);

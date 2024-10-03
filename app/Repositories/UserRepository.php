@@ -46,4 +46,12 @@ class UserRepository
 
         return $user;
     }
+
+    public function destroy(): User
+    {
+        $user = User::findOrFail(auth()->user()->id);
+        $user->delete();
+
+        return $user;
+    }
 }

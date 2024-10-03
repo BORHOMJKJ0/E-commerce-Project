@@ -13,7 +13,6 @@ class ContactResource extends JsonResource
             'id' => $this->id,
             'link' => $this->link,
             'contact_type_id' => $this->contact_type_id,
-            'user_id' => $this->user_id,
         ];
     }
 }

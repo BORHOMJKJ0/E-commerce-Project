@@ -240,6 +240,7 @@ class CommentService
     {
         $this->validateCommentData($data);
         $this->checkReviewOwnership($data['review_id']);
+
         return $this->commentRepository->create($data);
     }
 

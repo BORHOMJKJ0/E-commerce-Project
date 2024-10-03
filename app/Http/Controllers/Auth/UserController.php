@@ -39,7 +39,7 @@ class UserController extends Controller
         return $this->UserService->login($request);
     }
 
-    public function profile(User $user): JsonResponse
+    public function profile(User $user)
     {
         return $this->UserService->profile($user);
     }
@@ -52,5 +52,10 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, $user_id): JsonResponse
     {
         return $this->UserService->update($request, $user_id);
+    }
+
+    public function destroy()
+    {
+        return $this->UserService->destroy();
     }
 }
