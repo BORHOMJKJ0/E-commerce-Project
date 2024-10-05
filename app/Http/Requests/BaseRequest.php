@@ -12,7 +12,7 @@ class BaseRequest extends FormRequest
     protected function failedValidation(Validator $validator): void
     {
         throw new HttpResponseException(
-            ResponseHelper::jsonRespones(
+            ResponseHelper::jsonResponse(
                 $validator->errors()->toArray(),
                 'Validation failed',
                 400,

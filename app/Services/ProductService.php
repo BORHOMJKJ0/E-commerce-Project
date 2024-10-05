@@ -2,9 +2,13 @@
 
 namespace App\Services;
 
+use App\Helpers\ResponseHelper;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Repositories\ProductRepository;
 use App\Traits\AuthTrait;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -66,9 +70,20 @@ class ProductService
      *     )
      * )
      */
-    public function getAllProducts($page, $items)
+    public function getAllProducts(Request $request)
     {
-        return $this->productRepository->getAll($items, $page);
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
+        $products = $this->productRepository->getAll($items, $page);
+
+        $hasMorePages = $products->hasMorePages();
+
+        $data = [
+            'Products' => ProductResource::collection($products),
+            'hasMorePages' => $hasMorePages,
+        ];
+
+        return ResponseHelper::jsonResponse($data, 'Products retrieved successfully');
     }
 
     /**
@@ -118,9 +133,19 @@ class ProductService
      *     )
      * )
      */
-    public function getMyProducts($page, $items)
+    public function getMyProducts(Request $request)
     {
-        return $this->productRepository->getMy($items, $page);
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
+        $products = $this->productRepository->getMy($items, $page);
+        $hasMorePages = $products->hasMorePages();
+
+        $data = [
+            'Products' => ProductResource::collection($products),
+            'hasMorePages' => $hasMorePages,
+        ];
+
+        return ResponseHelper::jsonResponse($data, 'Products retrieved successfully');
     }
 
     /**
@@ -158,7 +183,10 @@ class ProductService
      */
     public function getProductById(Product $product)
     {
-        return $product;
+        $data = ['product' => ProductResource::make($product)];
+
+        return ResponseHelper::jsonResponse($data, 'Product retrieved successfully!');
+
     }
 
     /**
@@ -254,8 +282,12 @@ class ProductService
     {
         $data['user_id'] = auth()->id();
         $this->validateProductData($data);
+        $product = $this->productRepository->create($data);
+        $data = [
+            'Product' => ProductResource::make($product),
+        ];
 
-        return $this->productRepository->create($data);
+        return ResponseHelper::jsonResponse($data, 'Product created successfully!', 201);
     }
 
     /**
@@ -321,9 +353,25 @@ class ProductService
      *     )
      * )
      */
-    public function getProductsOrderedBy($column, $direction, $page, $items)
+    public function getProductsOrderedBy($column, $direction, Request $request)
     {
-        return $this->productRepository->orderBy($column, $direction, $page, $items);
+        $validColumns = ['name', 'price', 'created_at', 'updated_at'];
+        $validDirections = ['asc', 'desc'];
+
+        if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
+            return ResponseHelper::jsonResponse([], 'Invalid column or direction', 400, false);
+        }
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
+
+        $products = $this->productRepository->orderBy($column, $direction, $page, $items);
+        $hasMorePages = $products->hasMorePages();
+        $data = [
+            'Products' => ProductResource::collection($products),
+            'hasMorePages' => $hasMorePages,
+        ];
+
+        return ResponseHelper::jsonResponse($data, 'Products ordered successfully!');
     }
 
     /**
@@ -389,9 +437,25 @@ class ProductService
      *     )
      * )
      */
-    public function getMyProductsOrderedBy($column, $direction, $page, $items)
+    public function getMyProductsOrderedBy($column, $direction, Request $request)
     {
-        return $this->productRepository->orderMyBy($column, $direction, $page, $items);
+        $validColumns = ['name', 'price', 'created_at', 'updated_at'];
+        $validDirections = ['asc', 'desc'];
+
+        if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
+            return ResponseHelper::jsonResponse([], 'Invalid column or direction', 400, false);
+        }
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
+
+        $products = $this->productRepository->orderMyBy($column, $direction, $page, $items);
+        $hasMorePages = $products->hasMorePages();
+        $data = [
+            'Products' => ProductResource::collection($products),
+            'hasMorePages' => $hasMorePages,
+        ];
+
+        return ResponseHelper::jsonResponse($data, 'Products ordered successfully!');
     }
 
     /**
@@ -527,16 +591,21 @@ class ProductService
      */
     public function updateProduct(Product $product, array $data)
     {
+        try {
+            $this->checkOwnership($product, 'Product', 'update');
 
-        if ($product->user_id !== auth()->user()->id) {
-            throw new UnauthorizedActionException('You are not authorized to update this product.');
+            $this->validateProductData($data, 'sometimes');
+            $product = $this->productRepository->update($product, $data);
+            $data = [
+                'Product' => ProductResource::make($product),
+            ];
+
+            $response = ResponseHelper::jsonResponse($data, 'Product updated successfully!');
+        } catch (HttpResponseException $e) {
+            $response = $e->getResponse();
         }
 
-        $this->checkOwnership($product, 'Product', 'update');
-
-        $this->validateProductData($data, 'sometimes');
-
-        return $this->productRepository->update($product, $data);
+        return $response;
     }
 
     /**
@@ -587,9 +656,16 @@ class ProductService
      */
     public function deleteProduct(Product $product)
     {
-        $this->checkOwnership($product, 'Product', 'delete');
+        try {
+            $this->checkOwnership($product, 'Product', 'delete');
+            $this->checkProduct($product, 'Products', 'delete');
+            $this->productRepository->delete($product);
+            $response = ResponseHelper::jsonResponse([], 'Product deleted successfully!');
+        } catch (HttpResponseException $e) {
+            $response = $e->getResponse();
+        }
 
-        return $this->productRepository->delete($product);
+        return $response;
     }
 
     protected function validateProductData(array $data, $rule = 'required')

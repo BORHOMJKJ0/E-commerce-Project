@@ -77,7 +77,7 @@ class UserService
 
         $data = ['users' => UserContactsResource::collection($users)];
 
-        return ResponseHelper::jsonRespones($data, 'Users retrieved successfully');
+        return ResponseHelper::jsonResponse($data, 'Users retrieved successfully');
         // return response()->json(['users' =>], 200);
     }
 
@@ -141,7 +141,7 @@ class UserService
 
         $data = ['user' => new UserResource($user)];
 
-        return ResponseHelper::jsonRespones($data, 'User registered successfully', 201);
+        return ResponseHelper::jsonResponse($data, 'User registered successfully', 201);
     }
 
     /**
@@ -213,7 +213,7 @@ class UserService
         $credentials = $request->only('email', 'password');
 
         if (! $token = Auth::attempt($credentials)) {
-            return ResponseHelper::jsonRespones([], 'Invalid credentials. Please check your email and password', 401, false);
+            return ResponseHelper::jsonResponse([], 'Invalid credentials. Please check your email and password', 401, false);
         }
 
         $user = $this->userRepository->findByEmail($request->email);
@@ -223,7 +223,7 @@ class UserService
             'user' => new UserResource($user),
         ];
 
-        return ResponseHelper::jsonRespones($data, 'Login successful');
+        return ResponseHelper::jsonResponse($data, 'Login successful');
     }
 
     /**
@@ -255,7 +255,7 @@ class UserService
         auth()->logout();
         $data = ['user' => new UserResource($user)];
 
-        return ResponseHelper::jsonRespones($data, 'Successfully logged out');
+        return ResponseHelper::jsonResponse($data, 'Successfully logged out');
     }
 
     /**
@@ -318,7 +318,7 @@ class UserService
 
         $data = ['user' => new UserContactsResource($user->loadCount('contacts'))];
 
-        return ResponseHelper::jsonRespones($data, 'Profile retrieved successfully');
+        return ResponseHelper::jsonResponse($data, 'Profile retrieved successfully');
     }
 
     // to show when token will expire
@@ -417,7 +417,7 @@ class UserService
 
         $data = ['user' => new UserContactsResource($user)];
 
-        return ResponseHelper::jsonRespones($data, 'Profile updated successfully');
+        return ResponseHelper::jsonResponse($data, 'Profile updated successfully');
     }
 
     public function destroy()
@@ -426,6 +426,6 @@ class UserService
 
         $data = ['user' => new UserContactsResource($user)];
 
-        return ResponseHelper::jsonRespones($data, 'deleted Account successfully');
+        return ResponseHelper::jsonResponse($data, 'deleted Account successfully');
     }
 }

@@ -9,7 +9,7 @@ use App\Http\Controllers\Category\CategoryController;
 use App\Http\Controllers\Comment\CommentController;
 use App\Http\Controllers\Contact\ContactInformationController;
 use App\Http\Controllers\Contact\ContactTypeController;
-use App\Http\Controllers\ExpressionController;
+use App\Http\Controllers\Expression\ExpressionController;
 use App\Http\Controllers\Offer\OfferController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Review\ReviewController;
@@ -83,21 +83,21 @@ Route::middleware('api')->prefix('users')->group(function () {
     Route::controller(EmailVerificationController::class)->group(function () {
         Route::get('email-verification/{user:email}', 'sendEmailVerification')
             ->missing(function () {
-                return ResponseHelper::jsonRespones([], 'Email Not Found', 404, false);
+                return ResponseHelper::jsonResponse([], 'Email Not Found', 404, false);
             });
         Route::post('email-verification', 'email_verification');
     });
 
     Route::get('password/forget-password/{user:email}', [ForgetPasswordController::class, 'forgetPassword'])
         ->missing(function () {
-            return ResponseHelper::jsonRespones([], 'Email Not Found', 404, false);
+            return ResponseHelper::jsonResponse([], 'Email Not Found', 404, false);
         });
     Route::post('password/reset', [ResetPasswordController::class, 'resetPassword']);
 
     Route::controller(ContactInformationController::class)->prefix('contact')->group(function () {
         Route::post('add', 'store');
         Route::get('show/{user}', 'show')->missing(function () {
-            return ResponseHelper::jsonRespones([], 'User Not Found', 404, false);
+            return ResponseHelper::jsonResponse([], 'User Not Found', 404, false);
         });
         Route::put('update/{user_id}/{contact_id}', 'update');
         Route::delete('remove/{contact_information_id}', 'destroy')->whereNumber('contact_information_id');
@@ -114,11 +114,11 @@ Route::middleware('api')->prefix('users')->group(function () {
         Route::get('all', 'index');
         Route::get('show/{product}', 'show')
             ->missing(function () {
-                return ResponseHelper::jsonRespones([], 'Product Not Found', 404, false);
+                return ResponseHelper::jsonResponse([], 'Product Not Found', 404, false);
             });
         Route::put('update/{product}', 'update')
             ->missing(function () {
-                return ResponseHelper::jsonRespones([], 'Product Not Found', 404, false);
+                return ResponseHelper::jsonResponse([], 'Product Not Found', 404, false);
             });
     });
 });

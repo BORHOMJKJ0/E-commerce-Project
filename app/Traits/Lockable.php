@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Helpers\ResponseHelper;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\DB;
 
@@ -37,10 +38,9 @@ trait Lockable
         $model = $modelClass::where('id', $id)->lockForUpdate()->first();
 
         if (! $model) {
-            throw new HttpResponseException(response()->json([
-                'message' => 'Model not found or could not be locked.',
-                'successful' => false,
-            ], 404));
+            throw new HttpResponseException(ResponseHelper::jsonResponse([],
+                'Model not found or could not be locked.',
+                404, false));
         }
 
         return $model;

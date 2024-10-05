@@ -2,9 +2,13 @@
 
 namespace App\Services;
 
+use App\Helpers\ResponseHelper;
+use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 use App\Repositories\CommentRepository;
 use App\Traits\AuthTrait;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -75,9 +79,20 @@ class CommentService
      *     )
      * )
      */
-    public function getAllComments($page, $items)
+    public function getAllComments(Request $request)
     {
-        return $this->commentRepository->getAll($items, $page);
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
+
+        $comments = $this->commentRepository->getAll($items, $page);
+        $hasMorePages = $comments->hasMorePages();
+
+        $data = [
+            'Comments' => CommentResource::collection($comments),
+            'hasMorePages' => $hasMorePages,
+        ];
+
+        return ResponseHelper::jsonResponse($data, 'Comments retrieved successfully!');
     }
 
     /**
@@ -127,9 +142,20 @@ class CommentService
      *     )
      * )
      */
-    public function getMyComments($page, $items)
+    public function getMyComments(Request $request)
     {
-        return $this->commentRepository->getMy($items, $page);
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
+
+        $comments = $this->commentRepository->getMy($items, $page);
+        $hasMorePages = $comments->hasMorePages();
+
+        $data = [
+            'Comments' => CommentResource::collection($comments),
+            'hasMorePages' => $hasMorePages,
+        ];
+
+        return ResponseHelper::jsonResponse($data, 'Comments retrieved successfully!');
     }
 
     /**
@@ -167,7 +193,9 @@ class CommentService
      */
     public function getCommentById(Comment $comment)
     {
-        return $comment;
+        $data = ['comment' => CommentResource::make($comment)];
+
+        return ResponseHelper::jsonResponse($data, 'Comments retrieved successfully!');
     }
 
     /**
@@ -241,7 +269,10 @@ class CommentService
         $this->validateCommentData($data);
         $this->checkReviewOwnership($data['review_id']);
 
-        return $this->commentRepository->create($data);
+        $comment = $this->commentRepository->create($data);
+        $data = ['Comment' => CommentResource::make($comment)];
+
+        return ResponseHelper::jsonResponse($data, 'Comment created successfully!', 201);
     }
 
     /**
@@ -307,9 +338,26 @@ class CommentService
      *     )
      * )
      */
-    public function getCommentsOrderedBy($column, $direction, $page, $items)
+    public function getCommentsOrderedBy($column, $direction, Request $request)
     {
-        return $this->commentRepository->orderBy($column, $direction, $page, $items);
+        $validColumns = ['created_at', 'updated_at'];
+        $validDirections = ['asc', 'desc'];
+
+        if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
+            return ResponseHelper::jsonResponse([], 'Invalid column or direction', 400, false);
+        }
+
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
+        $comments = $this->commentRepository->orderBy($column, $direction, $page, $items);
+        $hasMorePages = $comments->hasMorePages();
+
+        $data = [
+            'Comments' => CommentResource::collection($comments),
+            'hasMorePages' => $hasMorePages,
+        ];
+
+        return ResponseHelper::jsonResponse($data, 'Comments ordered successfully');
     }
 
     /**
@@ -375,9 +423,26 @@ class CommentService
      *     )
      * )
      */
-    public function getMyCommentsOrderedBy($column, $direction, $page, $items)
+    public function getMyCommentsOrderedBy($column, $direction, Request $request)
     {
-        return $this->commentRepository->orderMyBy($column, $direction, $page, $items);
+        $validColumns = ['created_at', 'updated_at'];
+        $validDirections = ['asc', 'desc'];
+
+        if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
+            return ResponseHelper::jsonResponse([], 'Invalid column or direction', 400, false);
+        }
+
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
+        $comments = $this->commentRepository->orderMyBy($column, $direction, $page, $items);
+        $hasMorePages = $comments->hasMorePages();
+
+        $data = [
+            'Comments' => CommentResource::collection($comments),
+            'hasMorePages' => $hasMorePages,
+        ];
+
+        return ResponseHelper::jsonResponse($data, 'Comments ordered successfully');
     }
 
     /**
@@ -473,11 +538,21 @@ class CommentService
      */
     public function updateComment(Comment $comment, array $data)
     {
-        $this->checkOwnership($comment, 'Comment', 'update');
+        try {
 
-        $this->validateCommentData($data, 'sometimes');
+            $this->checkComment($comment, 'Comment', 'update');
 
-        return $this->commentRepository->update($comment, $data);
+            $this->validateCommentData($data, 'sometimes');
+
+            $comment = $this->commentRepository->update($comment, $data);
+
+            $data = ['comment' => CommentResource::make($comment)];
+            $response = ResponseHelper::jsonResponse($data, 'Comment updated successfully!');
+        } catch (HttpResponseException $e) {
+            $response = $e->getResponse();
+        }
+
+        return $response;
     }
 
     /**
@@ -528,9 +603,15 @@ class CommentService
      */
     public function deleteComment(Comment $comment)
     {
-        $this->checkOwnership($comment, 'Comment', 'delete');
+        try {
+            $this->checkComment($comment, 'Comment', 'delete');
+            $this->commentRepository->delete($comment);
+            $response = ResponseHelper::jsonResponse([], 'Comment deleted successfully!');
+        } catch (HttpResponseException $e) {
+            $response = $e->getResponse();
+        }
 
-        return $this->commentRepository->delete($comment);
+        return $response;
     }
 
     protected function validateCommentData(array $data, $rule = 'required')

@@ -78,7 +78,9 @@ class ProductResource extends JsonResource
             'description' => $this->description,
             'current_price' => (float) $currentPrice,
             'user' => $this->user->name,
-            'offers' => $this->offers->map(function ($offer) {
+            'offers' => $this->offers->filter(function ($offer) {
+                return Carbon::parse($offer->end_date)->isFuture() || Carbon::parse($offer->end_date)->isToday();
+            })->map(function ($offer) {
                 return [
                     'discount' => number_format($offer->discount_percentage, 2, '.', '').' %',
                     'starting_at' => Carbon::parse($offer->start_date)->format('Y-n-j'),
