@@ -31,6 +31,15 @@ class ProductRepository
             ->orderBy($column, $direction)->paginate($items, ['*'], 'page', $page);
     }
 
+    public function getProductsByName(string $name)
+    {
+        return Product::where('name', 'like', '%' . $name . '%')->get();
+    }
+
+    public function getProductsByPriceRange(float $price)
+    {
+        Product::where('price', '<=', $price)->get();
+    }
     public function create(array $data)
     {
         return $this->lockForCreate(function () use ($data) {

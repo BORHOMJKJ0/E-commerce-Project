@@ -33,7 +33,7 @@ class OfferController extends Controller
             'offers' => OfferResource::collection($offers),
             'hasMorePages' => $hasMorePages,
         ];
-        return ResponseHelper::jsonRespones($data, message: 'Offers retrieved successfully');
+        return ResponseHelper::jsonResponse($data, message: 'Offers retrieved successfully');
     }
 
     public function MyOffers(Request $request): JsonResponse
@@ -49,7 +49,7 @@ class OfferController extends Controller
             'offers' => OfferResource::collection($offers),
             'hasMorePages' => $hasMorePages,
         ];
-        return ResponseHelper::jsonRespones($data, message: 'Offers retrieved successfully');
+        return ResponseHelper::jsonResponse($data, message: 'Offers retrieved successfully');
     }
 
     public function store(Request $request): JsonResponse
@@ -59,11 +59,11 @@ class OfferController extends Controller
             $offer = $this->offerService->createOffer($request->all());
 
             $data = ['offer' => OfferResource::make($offer)];
-            return ResponseHelper::jsonRespones($data, 'Offer created successfully!', 201);
+            return ResponseHelper::jsonResponse($data, 'Offer created successfully!', 201);
         } catch (HttpResponseException $e) {
             $message = $e->getResponse()->getData();
 
-            return ResponseHelper::jsonRespones([], $message, 403, false);
+            return ResponseHelper::jsonResponse([], $message, 403, false);
         }
     }
 
@@ -72,7 +72,7 @@ class OfferController extends Controller
         $offer = $this->offerService->getOfferById($offer);
 
         $data = ['offer' => OfferResource::make($offer)];
-        return ResponseHelper::jsonRespones($data, 'Offer performed successfully!');
+        return ResponseHelper::jsonResponse($data, 'Offer performed successfully!');
     }
 
     public function orderBy($column, $direction, Request $request): JsonResponse
@@ -94,7 +94,7 @@ class OfferController extends Controller
             'offers' => OfferResource::collection($offers),
             'hasMorePages' => $hasMorePages,
         ];
-        return ResponseHelper::jsonRespones($data, 'Offers ordered successfully!');
+        return ResponseHelper::jsonResponse($data, 'Offers ordered successfully!');
     }
 
     public function MyOffersOrderBy($column, $direction, Request $request): JsonResponse
@@ -116,7 +116,7 @@ class OfferController extends Controller
             'offers' => OfferResource::collection($offers),
             'hasMorePages' => $hasMorePages,
         ];
-        return ResponseHelper::jsonRespones($data, 'Offers ordered successfully!');
+        return ResponseHelper::jsonResponse($data, 'Offers ordered successfully!');
     }
 
     public function update(Request $request, Offer $offer): JsonResponse
@@ -126,11 +126,11 @@ class OfferController extends Controller
             $offer = $this->offerService->updateOffer($offer, $request->all());
 
             $data = ['offer' => OfferResource::make($offer)];
-            return ResponseHelper::jsonRespones($data, 'Offer updated successfully!');
+            return ResponseHelper::jsonResponse($data, 'Offer updated successfully!');
         } catch (HttpResponseException $e) {
             $message = $e->getResponse()->getData();
 
-            return ResponseHelper::jsonRespones([], $message, 403, false);
+            return ResponseHelper::jsonResponse([], $message, 403, false);
         }
     }
 
@@ -140,11 +140,11 @@ class OfferController extends Controller
 
             $this->offerService->deleteOffer($offer);
 
-            return ResponseHelper::jsonRespones([], 'Offer deleted successfully!');
+            return ResponseHelper::jsonResponse([], 'Offer deleted successfully!');
         } catch (HttpResponseException $e) {
             $message = $e->getResponse()->getData();
 
-            return ResponseHelper::jsonRespones([], $message, 403, false);
+            return ResponseHelper::jsonResponse([], $message, 403, false);
         }
     }
 }

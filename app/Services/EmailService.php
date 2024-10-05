@@ -68,11 +68,11 @@ class EmailService
         $otp2 = $this->otp->validate($user->email, $request->code);
 
         if (! $otp2->status) {
-            return ResponseHelper::jsonRespones([], 'Your email activation code is invalid', 400, false);
+            return ResponseHelper::jsonResponse([], 'Your email activation code is invalid', 400, false);
         } else {
             $this->userRepository->VerifyEmail($user);
 
-            return ResponseHelper::jsonRespones([], 'Email verification successfully');
+            return ResponseHelper::jsonResponse([], 'Email verification successfully');
         }
     }
 
@@ -125,11 +125,11 @@ class EmailService
     public function sendEmailVerification($user): JsonResponse
     {
         if ($user->email_verified_at) {
-            return ResponseHelper::jsonRespones([], 'Email already verified', 401, false);
+            return ResponseHelper::jsonResponse([], 'Email already verified', 401, false);
         } else {
             EmailVerificationJob::dispatch($user);
 
-            return ResponseHelper::jsonRespones([],'The activation code has been sent to your email');
+            return ResponseHelper::jsonResponse([],'The activation code has been sent to your email');
         }
     }
 }

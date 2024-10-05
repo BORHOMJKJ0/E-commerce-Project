@@ -34,7 +34,7 @@ class ProductController extends Controller
             'hasMorePages' => $hasMorePages,
         ];
 
-        return ResponseHelper::jsonRespones($data, 'Products retrieved successfully');
+        return ResponseHelper::jsonResponse($data, 'Products retrieved successfully');
     }
 
     public function MyProducts(Request $request): JsonResponse
@@ -50,7 +50,7 @@ class ProductController extends Controller
             'hasMorePages' => $hasMorePages,
         ];
 
-        return ResponseHelper::jsonRespones($data, 'Products retrieved successfully');
+        return ResponseHelper::jsonResponse($data, 'Products retrieved successfully');
     }
     public function store(Request $request): JsonResponse
     {
@@ -58,11 +58,11 @@ class ProductController extends Controller
             $product = $this->productService->createProduct($request->all());
 
             $data = ['product' => ProductResource::make($product)];
-            return ResponseHelper::jsonRespones($data, 'Product created successfully!', 201);
+            return ResponseHelper::jsonResponse($data, 'Product created successfully!', 201);
         } catch (HttpResponseException $e) {
             $message = $e->getResponse()->getData();
 
-            return ResponseHelper::jsonRespones([], $message, 403, false);
+            return ResponseHelper::jsonResponse([], $message, 403, false);
         }
     }
 
@@ -71,7 +71,7 @@ class ProductController extends Controller
         $product = $this->productService->getProductById($product);
 
         $data = ['product' => ProductResource::make($product)];
-        return ResponseHelper::jsonRespones($data, 'Product retrieved successfully!');
+        return ResponseHelper::jsonResponse($data, 'Product retrieved successfully!');
     }
 
     public function ProductOrderBy($column, $direction, Request $request, bool $isMyProduct = false)
@@ -80,7 +80,7 @@ class ProductController extends Controller
         $validDirections = ['asc', 'desc'];
 
         if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
-            return ResponseHelper::jsonRespones([], 'Invalid column or direction', 400, false);
+            return ResponseHelper::jsonResponse([], 'Invalid column or direction', 400, false);
         }
 
         $page = $request->query('page', 1);
@@ -96,7 +96,7 @@ class ProductController extends Controller
             'Products' => ProductResource::collection($products),
             'hasMorePages' => $hasMorePages,
         ];
-        return ResponseHelper::jsonRespones($data, 'Products ordered successfully!');
+        return ResponseHelper::jsonResponse($data, 'Products ordered successfully!');
     }
     public function orderBy($column, $direction, Request $request): JsonResponse
     {
@@ -114,11 +114,11 @@ class ProductController extends Controller
             $product = $this->productService->updateProduct($product, $request->all());
 
             $data = ['product' => ProductResource::make($product)];
-            return ResponseHelper::jsonRespones($data, 'Product updated successfully!');
+            return ResponseHelper::jsonResponse($data, 'Product updated successfully!');
         } catch (HttpResponseException $e) {
             $message = $e->getResponse()->getData();
 
-            return ResponseHelper::jsonRespones([], $message, 403, false);
+            return ResponseHelper::jsonResponse([], $message, 403, false);
         }
     }
 
@@ -127,11 +127,11 @@ class ProductController extends Controller
         try {
             $this->productService->deleteProduct($product);
 
-            return ResponseHelper::jsonRespones([], 'Product deleted successfully!');
+            return ResponseHelper::jsonResponse([], 'Product deleted successfully!');
         } catch (HttpResponseException $e) {
             $message = $e->getResponse()->getData();
 
-            return ResponseHelper::jsonRespones([], $message, 403, false);
+            return ResponseHelper::jsonResponse([], $message, 403, false);
         }
     }
 }

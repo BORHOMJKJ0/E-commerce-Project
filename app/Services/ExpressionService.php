@@ -36,7 +36,7 @@ class ExpressionService
         }
 
         $data = ['products' => $all_Product];
-        return ResponseHelper::jsonRespones([], 'Expressions for all products is retrieved successfully');
+        return ResponseHelper::jsonResponse([], 'Expressions for all products is retrieved successfully');
     }
 
     /**
@@ -112,7 +112,7 @@ class ExpressionService
             ],
         ];
 
-        return ResponseHelper::jsonRespones($data, 'Expression created successfully', 201);
+        return ResponseHelper::jsonResponse($data, 'Expression created successfully', 201);
     }
 
     /**
@@ -221,7 +221,7 @@ class ExpressionService
     {
         $data = $this->expressionRepository->Expressions_Product($product->id);
 
-        return ResponseHelper::jsonRespones($data, 'Expressions for product retrieved  successfully');
+        return ResponseHelper::jsonResponse($data, 'Expressions for product retrieved  successfully');
     }
 
     /**
@@ -307,7 +307,7 @@ class ExpressionService
         $expression = $this->expressionRepository->getExpressionForProduct($product->id);
 
         if (!$expression) {
-            return ResponseHelper::jsonRespones([], 'User not expressed for this product', 404, false);
+            return ResponseHelper::jsonResponse([], 'User not expressed for this product', 404, false);
         }
 
         if ($request->filled('action')) {
@@ -329,6 +329,6 @@ class ExpressionService
             ],
         ];
 
-        return ResponseHelper::jsonRespones($message, 'Expression For Product updated successfully');
+        return ResponseHelper::jsonResponse($message, 'Expression For Product updated successfully');
     }
 }

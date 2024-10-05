@@ -28,6 +28,11 @@ class CategoryRepository
         })->orderBy($column, $direction)->paginate($items, ['*'], 'page', $page);
     }
 
+    public function getCategoyByname(string $name)
+    {
+        return Category::where('name', 'like', '%' . $name . '%')->get();
+    }
+
     public function orderBy($column, $direction, $page, $items)
     {
         return Category::orderBy($column, $direction)->paginate($items, ['*'], 'page', $page);
@@ -44,7 +49,7 @@ class CategoryRepository
     {
         return $this->lockForUpdate(Category::class, $category->id, function ($lockedCategory) use ($data) {
             $lockedCategory->update($data);
-
+            
             return $lockedCategory;
         });
     }

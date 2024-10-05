@@ -82,7 +82,7 @@ class Contact_InformationService
         $data = $request->validated();
         $contact = $this->contactRepository->create(auth()->user(), $data);
 
-        return ResponseHelper::jsonRespones(['contact' => new ContactResource($contact)], 'Contact information added successfully', 201);
+        return ResponseHelper::jsonResponse(['contact' => new ContactResource($contact)], 'Contact information added successfully', 201);
     }
 
     /**
@@ -130,21 +130,21 @@ class Contact_InformationService
     {
         $contacts = $this->contactRepository->findByUserId($user_id);
         if (! $contacts) {
-            return ResponseHelper::jsonRespones([], 'Contact information not found', 404, false);
+            return ResponseHelper::jsonResponse([], 'Contact information not found', 404, false);
         }
 
         $data = [
             'contacts' => ContactResource::collection($contacts),
         ];
 
-        return ResponseHelper::jsonRespones($data, 'Contact Information retrieved successfully');
+        return ResponseHelper::jsonResponse($data, 'Contact Information retrieved successfully');
     }
 
     public function update(UpdateContactRequest $request, $user_id, $contact_id)
     {
         $contact_information =  $this->contactRepository->findContactById($contact_id);
         if (!$contact_information) {
-            return ResponseHelper::jsonRespones([], 'There is no Contact Information With this id', 404, false);
+            return ResponseHelper::jsonResponse([], 'There is no Contact Information With this id', 404, false);
         }
 
         $user = $this->userRepository->findById($user_id);
@@ -154,7 +154,7 @@ class Contact_InformationService
         $data = [
             'user' => new UserContactsResource($user),
         ];
-        return ResponseHelper::jsonRespones($data, 'Contact Information updated successfully');
+        return ResponseHelper::jsonResponse($data, 'Contact Information updated successfully');
     }
 
     /**
@@ -199,11 +199,11 @@ class Contact_InformationService
 
         $contact = $this->contactRepository->deleteById($contact_information_id);
         if (! $contact) {
-            return ResponseHelper::jsonRespones([], 'Contact not found', 404, false);
+            return ResponseHelper::jsonResponse([], 'Contact not found', 404, false);
         }
  
         $data = ['contact' => new ContactResource($contact)];
-        return ResponseHelper::jsonRespones($data,'Contact deleted successfully');
+        return ResponseHelper::jsonResponse($data,'Contact deleted successfully');
     }
 
     /**
@@ -238,10 +238,10 @@ class Contact_InformationService
     {
         $contacts = $this->contactRepository->deleteByUser(auth()->user());
         if (! $contacts) {
-            return ResponseHelper::jsonRespones([], 'Contacts not found for this user', 404, false);
+            return ResponseHelper::jsonResponse([], 'Contacts not found for this user', 404, false);
         }
 
         $data = ['contacts' => ContactResource::collection($contacts)];
-        return ResponseHelper::jsonRespones($data,'All Contacts deleted successfully');
+        return ResponseHelper::jsonResponse($data,'All Contacts deleted successfully');
     }
 }

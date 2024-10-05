@@ -33,7 +33,7 @@ class WarehouseController extends Controller
             'Warehouses' => WarehouseResource::collection($warehouses),
             'hasMorePages' => $hasMorePages,
         ];
-        return ResponseHelper::jsonRespones($data);
+        return ResponseHelper::jsonResponse($data);
     }
 
     public function store(Request $request): JsonResponse
@@ -43,11 +43,11 @@ class WarehouseController extends Controller
             $warehouse = $this->warehouseService->createWarehouse($request->all());
 
             $data = ['warehouse' => WarehouseResource::make($warehouse)];
-            return ResponseHelper::jsonRespones($data, 'Warehouse created successfully!', 201);
+            return ResponseHelper::jsonResponse($data, 'Warehouse created successfully!', 201);
         } catch (HttpResponseException $e) {
             $message = $e->getResponse()->getData();
 
-            return ResponseHelper::jsonRespones([], $message, 403, false);
+            return ResponseHelper::jsonResponse([], $message, 403, false);
         }
     }
 
@@ -58,11 +58,11 @@ class WarehouseController extends Controller
             $warehouse = $this->warehouseService->getWarehouseById($warehouse);
 
             $data = ['warehouse' => WarehouseResource::make($warehouse)];
-            return ResponseHelper::jsonRespones($data, 'Warehouse performed successfully!');
+            return ResponseHelper::jsonResponse($data, 'Warehouse performed successfully!');
         } catch (HttpResponseException $e) {
             $message = $e->getResponse()->getData();
 
-            return ResponseHelper::jsonRespones([], $message, 403, false);
+            return ResponseHelper::jsonResponse([], $message, 403, false);
         }
     }
 
@@ -85,7 +85,7 @@ class WarehouseController extends Controller
             'Warehouses' => WarehouseResource::collection($warehouses),
             'hasMorePages' => $hasMorePages,
         ];
-        return ResponseHelper::jsonRespones($data, 'Warehouses ordered successfully');
+        return ResponseHelper::jsonResponse($data, 'Warehouses ordered successfully');
     }
 
     public function update(Request $request, Warehouse $warehouse): JsonResponse
@@ -95,11 +95,11 @@ class WarehouseController extends Controller
             $warehouse = $this->warehouseService->updateWarehouse($warehouse, $request->all());
 
             $data = ['warehouse' => WarehouseResource::make($warehouse)];
-            return ResponseHelper::jsonRespones($data, 'Warehouse updated successfully!');
+            return ResponseHelper::jsonResponse($data, 'Warehouse updated successfully!');
         } catch (HttpResponseException $e) {
             $message = $e->getResponse()->getData();
 
-            return ResponseHelper::jsonRespones([], $message, 403, false);
+            return ResponseHelper::jsonResponse([], $message, 403, false);
         }
     }
 
@@ -108,11 +108,11 @@ class WarehouseController extends Controller
         try {
 
             $this->warehouseService->deleteWarehouse($warehouse);
-            return ResponseHelper::jsonRespones([], 'Warehouse deleted successfully!');
+            return ResponseHelper::jsonResponse([], 'Warehouse deleted successfully!');
         } catch (HttpResponseException $e) {
             $message = $e->getResponse()->getData();
 
-            return ResponseHelper::jsonRespones([], $message, 403, false);
+            return ResponseHelper::jsonResponse([], $message, 403, false);
         }
     }
 }

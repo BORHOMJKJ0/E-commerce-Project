@@ -34,7 +34,7 @@ class ReviewController extends Controller
             'hasMorePages' => $hasMorePages,
         ];
 
-        return ResponseHelper::jsonRespones($data, 'All reviews retrieved successfully');
+        return ResponseHelper::jsonResponse($data, 'All reviews retrieved successfully');
     }
 
     public function MyReviews(Request $request): JsonResponse
@@ -50,7 +50,7 @@ class ReviewController extends Controller
             'hasMorePages' => $hasMorePages,
         ];
 
-        return ResponseHelper::jsonRespones($data, 'All reviews retrieved successfully');
+        return ResponseHelper::jsonResponse($data, 'All reviews retrieved successfully');
     }
 
     public function store(Request $request): JsonResponse
@@ -58,7 +58,7 @@ class ReviewController extends Controller
         $review = $this->reviewService->createReview($request->all());
 
         $data = ['review' => ReviewResource::make($review)];
-        return ResponseHelper::jsonRespones($data, 'Review created successfully!', 201);
+        return ResponseHelper::jsonResponse($data, 'Review created successfully!', 201);
     }
 
     public function show(Review $review): JsonResponse
@@ -66,7 +66,7 @@ class ReviewController extends Controller
         $review = $this->reviewService->getReviewById($review);
 
         $data = ['review' => ReviewResource::make($review)];
-        return ResponseHelper::jsonRespones($data, 'Review retrieved successfully!');
+        return ResponseHelper::jsonResponse($data, 'Review retrieved successfully!');
     }
 
     public function ReviewOrderBy($column, $direction, Request $request, bool $isMyReviews = false)
@@ -75,7 +75,7 @@ class ReviewController extends Controller
         $validDirections = ['asc', 'desc'];
 
         if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
-            return ResponseHelper::jsonRespones([], 'Invalid column or direction', 400, false);
+            return ResponseHelper::jsonResponse([], 'Invalid column or direction', 400, false);
         }
 
         $page = $request->query('page', 1);
@@ -91,7 +91,7 @@ class ReviewController extends Controller
             'reviews' => ReviewResource::collection($reviews),
             'hasMorePages' => $hasMorePages
         ];
-        return ResponseHelper::jsonRespones($data, 'Reviews ordered successfully');
+        return ResponseHelper::jsonResponse($data, 'Reviews ordered successfully');
     }
     public function orderBy($column, $direction, Request $request): JsonResponse
     {
