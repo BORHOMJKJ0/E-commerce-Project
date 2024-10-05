@@ -9,7 +9,6 @@ class Expression extends Model
 {
     use HasFactory;
 
-    protected $table = 'expressions';
     protected $guarded = [];
 
     public function user()

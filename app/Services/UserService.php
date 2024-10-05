@@ -76,6 +76,7 @@ class UserService
         $users = $this->userRepository->GetAllUsers();
 
         $data = ['users' => UserContactsResource::collection($users)];
+
         return ResponseHelper::jsonResponse($data, 'Users retrieved successfully');
         // return response()->json(['users' =>], 200);
     }
@@ -315,7 +316,8 @@ class UserService
     public function profile(User $user)
     {
 
-        $data = ['user' =>  new UserContactsResource($user->loadCount('contacts'))];
+        $data = ['user' => new UserContactsResource($user->loadCount('contacts'))];
+
         return ResponseHelper::jsonResponse($data, 'Profile retrieved successfully');
     }
 
@@ -423,6 +425,7 @@ class UserService
         $user = $this->userRepository->destroy();
 
         $data = ['user' => new UserContactsResource($user)];
+
         return ResponseHelper::jsonResponse($data, 'deleted Account successfully');
     }
 }

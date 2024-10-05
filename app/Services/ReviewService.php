@@ -2,9 +2,13 @@
 
 namespace App\Services;
 
+use App\Helpers\ResponseHelper;
+use App\Http\Resources\ReviewResource;
 use App\Models\Review;
 use App\Repositories\ReviewRepository;
 use App\Traits\AuthTrait;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -75,9 +79,19 @@ class ReviewService
      *     )
      * )
      */
-    public function getAllReviews($page, $items)
+    public function getAllReviews(Request $request)
     {
-        return $this->reviewRepository->getAll($items, $page);
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
+        $reviews = $this->reviewRepository->getAll($items, $page);
+        $hasMorePages = $reviews->hasMorePages();
+
+        $data = [
+            'reviews' => ReviewResource::collection($reviews),
+            'hasMorePages' => $hasMorePages,
+        ];
+
+        return ResponseHelper::jsonResponse($data, 'Reviews retrieved successfully');
     }
 
     /**
@@ -127,9 +141,19 @@ class ReviewService
      *     )
      * )
      */
-    public function getMyReviews($page, $items)
+    public function getMyReviews(Request $request)
     {
-        return $this->reviewRepository->getMy($items, $page);
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
+        $reviews = $this->reviewRepository->getMy($items, $page);
+        $hasMorePages = $reviews->hasMorePages();
+
+        $data = [
+            'reviews' => ReviewResource::collection($reviews),
+            'hasMorePages' => $hasMorePages,
+        ];
+
+        return ResponseHelper::jsonResponse($data, 'Reviews retrieved successfully');
     }
 
     /**
@@ -167,7 +191,10 @@ class ReviewService
      */
     public function getReviewById(Review $review)
     {
-        return $review;
+        $data = ['review' => ReviewResource::make($review)];
+
+        return ResponseHelper::jsonResponse($data, 'Review created successfully!', 201);
+
     }
 
     /**
@@ -240,8 +267,10 @@ class ReviewService
     {
         $data['user_id'] = auth()->id();
         $this->validateReviewData($data);
+        $review = $this->reviewRepository->create($data);
+        $data = ['review' => ReviewResource::make($review)];
 
-        return $this->reviewRepository->create($data);
+        return ResponseHelper::jsonResponse($data, 'Review retrieved successfully!');
     }
 
     /**
@@ -307,9 +336,27 @@ class ReviewService
      *     )
      * )
      */
-    public function getReviewsOrderedBy($column, $direction, $page, $items)
+    public function getReviewsOrderedBy($column, $direction, Request $request)
     {
-        return $this->reviewRepository->orderBy($column, $direction, $page, $items);
+        $validColumns = ['rating', 'created_at', 'updated_at'];
+        $validDirections = ['asc', 'desc'];
+
+        if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
+            return ResponseHelper::jsonResponse([], 'Invalid column or direction', 400, false);
+        }
+
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
+
+        $reviews = $this->reviewRepository->orderBy($column, $direction, $page, $items);
+        $hasMorePages = $reviews->hasMorePages();
+
+        $data = [
+            'reviews' => ReviewResource::collection($reviews),
+            'hasMorePages' => $hasMorePages,
+        ];
+
+        return ResponseHelper::jsonResponse($data, 'Reviews ordered successfully');
     }
 
     /**
@@ -375,9 +422,27 @@ class ReviewService
      *     )
      * )
      */
-    public function getMyReviewsOrderedBy($column, $direction, $page, $items)
+    public function getMyReviewsOrderedBy($column, $direction, Request $request)
     {
-        return $this->reviewRepository->orderMyBy($column, $direction, $page, $items);
+        $validColumns = ['rating', 'created_at', 'updated_at'];
+        $validDirections = ['asc', 'desc'];
+
+        if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
+            return ResponseHelper::jsonResponse([], 'Invalid column or direction', 400, false);
+        }
+
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
+
+        $reviews = $this->reviewRepository->orderMyBy($column, $direction, $page, $items);
+        $hasMorePages = $reviews->hasMorePages();
+
+        $data = [
+            'reviews' => ReviewResource::collection($reviews),
+            'hasMorePages' => $hasMorePages,
+        ];
+
+        return ResponseHelper::jsonResponse($data, 'Reviews ordered successfully');
     }
 
     /**
@@ -463,11 +528,19 @@ class ReviewService
      */
     public function updateReview(Review $review, array $data)
     {
-        $this->checkOwnership($review, 'Review', 'update');
+        try {
+            $this->checkOwnership($review, 'Review', 'update');
 
-        $this->validateReviewData($data, 'sometimes');
+            $this->validateReviewData($data, 'sometimes');
 
-        return $this->reviewRepository->update($review, $data);
+            $review = $this->reviewRepository->update($review, $data);
+            $data = ['review' => ReviewResource::make($review)];
+            $response = ResponseHelper::jsonResponse($data, 'Review updated successfully!');
+        } catch (HttpResponseException $e) {
+            $response = $e->getResponse();
+        }
+
+        return $response;
     }
 
     /**
@@ -518,9 +591,15 @@ class ReviewService
      */
     public function deleteReview(Review $review)
     {
-        $this->checkOwnership($review, 'Review', 'delete');
+        try {
+            $this->checkOwnership($review, 'Review', 'delete');
+            $this->reviewRepository->delete($review);
+            $response = ResponseHelper::jsonResponse([], 'Review deleted successfully!');
+        } catch (HttpResponseException $e) {
+            $response = $e->getResponse();
+        }
 
-        return $this->reviewRepository->delete($review);
+        return $response;
     }
 
     protected function validateReviewData(array $data, $rule = 'required')

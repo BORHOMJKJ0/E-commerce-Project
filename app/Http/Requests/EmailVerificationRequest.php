@@ -2,9 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Foundation\Http\FormRequest;
-
 class EmailVerificationRequest extends BaseRequest
 {
     public function authorize(): bool
@@ -19,5 +16,4 @@ class EmailVerificationRequest extends BaseRequest
             'email' => 'required|email|exists:users,email',
         ];
     }
-    
 }

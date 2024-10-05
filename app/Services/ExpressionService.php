@@ -12,7 +12,6 @@ use App\Repositories\ExpressionRepository;
 use App\Traits\ValidationTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 
 class ExpressionService
 {
@@ -36,6 +35,7 @@ class ExpressionService
         }
 
         $data = ['products' => $all_Product];
+
         return ResponseHelper::jsonResponse([], 'Expressions for all products is retrieved successfully');
     }
 
@@ -306,7 +306,7 @@ class ExpressionService
     {
         $expression = $this->expressionRepository->getExpressionForProduct($product->id);
 
-        if (!$expression) {
+        if (! $expression) {
             return ResponseHelper::jsonResponse([], 'User not expressed for this product', 404, false);
         }
 
@@ -317,7 +317,7 @@ class ExpressionService
         }
 
         $user = $this->expressionRepository->updateExpression($data);
-        
+
         $message = [
             'message' => 'updated successfully',
             'user' => [

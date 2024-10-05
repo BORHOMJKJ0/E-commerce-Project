@@ -6,12 +6,18 @@ use Illuminate\Http\JsonResponse;
 
 class ResponseHelper
 {
-    public static function jsonResponse(array $data = [], string $message = '', int $statusCode = 200, bool $successful = true): JsonResponse
+    public static function jsonResponse($data = null, string $message = '', int $statusCode = 200, bool $successful = true): JsonResponse
     {
-        return response()->json([
+        $responseData = [
             'successful' => $successful,
             'message' => $message,
             'data' => $data,
-        ], $statusCode);
+        ];
+
+        if (is_null($data) || (is_array($data) && empty($data))) {
+            unset($responseData['data']);
+        }
+
+        return response()->json($responseData, $statusCode);
     }
 }

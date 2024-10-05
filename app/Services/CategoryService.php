@@ -2,9 +2,13 @@
 
 namespace App\Services;
 
+use App\Helpers\ResponseHelper;
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use App\Repositories\CategoryRepository;
 use App\Traits\AuthTrait;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -75,9 +79,19 @@ class CategoryService
      *     )
      * )
      */
-    public function getAllCategories($page, $items)
+    public function getAllCategories(Request $request)
     {
-        return $this->categoryRepository->getAll($items, $page);
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
+        $categories = $this->categoryRepository->getAll($items, $page);
+        $hasMorePages = $categories->hasMorePages();
+
+        $data = [
+            'Categories' => CategoryResource::collection($categories),
+            'hasMorePages' => $hasMorePages,
+        ];
+
+        return ResponseHelper::jsonResponse($data, 'Categories retrieved successfully');
     }
 
     /**
@@ -127,9 +141,19 @@ class CategoryService
      *     )
      * )
      */
-    public function getMyCategories($page, $items)
+    public function getMyCategories(Request $request)
     {
-        return $this->categoryRepository->getMy($items, $page);
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
+        $categories = $this->categoryRepository->getMy($items, $page);
+        $hasMorePages = $categories->hasMorePages();
+
+        $data = [
+            'Categories' => CategoryResource::collection($categories),
+            'hasMorePages' => $hasMorePages,
+        ];
+
+        return ResponseHelper::jsonResponse($data, 'Categories retrieved successfully');
     }
 
     /**
@@ -167,7 +191,9 @@ class CategoryService
      */
     public function getCategoryById(Category $category)
     {
-        return $category;
+        $data = ['category' => CategoryResource::make($category)];
+
+        return ResponseHelper::jsonResponse($data, 'Category retrieved successfully!');
     }
 
     /**
@@ -239,8 +265,12 @@ class CategoryService
     public function createCategory(array $data)
     {
         $this->validateCategoryData($data);
+        $category = $this->categoryRepository->create($data);
+        $data = [
+            'Category' => CategoryResource::make($category),
+        ];
 
-        return $this->categoryRepository->create($data);
+        return ResponseHelper::jsonResponse($data, 'Category created successfully!', 201);
     }
 
     /**
@@ -306,9 +336,24 @@ class CategoryService
      *     )
      * )
      */
-    public function getCategoriesOrderedBy($column, $direction, $page, $items)
+    public function getCategoriesOrderedBy($column, $direction, Request $request)
     {
-        return $this->categoryRepository->orderBy($column, $direction, $page, $items);
+        $validColumns = ['name', 'created_at', 'updated_at'];
+        $validDirections = ['asc', 'desc'];
+        if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
+            return ResponseHelper::jsonResponse([], 'Invalid column or direction', 400, false);
+        }
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
+
+        $products = $this->categoryRepository->orderBy($column, $direction, $page, $items);
+        $hasMorePages = $products->hasMorePages();
+        $data = [
+            'Categories' => CategoryResource::collection($products),
+            'hasMorePages' => $hasMorePages,
+        ];
+
+        return ResponseHelper::jsonResponse($data, 'Categories ordered successfully!');
     }
 
     /**
@@ -374,9 +419,24 @@ class CategoryService
      *     )
      * )
      */
-    public function getMyCategoriesOrderedBy($column, $direction, $page, $items)
+    public function getMyCategoriesOrderedBy($column, $direction, Request $request)
     {
-        return $this->categoryRepository->orderMyBy($column, $direction, $page, $items);
+        $validColumns = ['name', 'created_at', 'updated_at'];
+        $validDirections = ['asc', 'desc'];
+        if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
+            return ResponseHelper::jsonResponse([], 'Invalid column or direction', 400, false);
+        }
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
+
+        $products = $this->categoryRepository->orderMyBy($column, $direction, $page, $items);
+        $hasMorePages = $products->hasMorePages();
+        $data = [
+            'Categories' => CategoryResource::collection($products),
+            'hasMorePages' => $hasMorePages,
+        ];
+
+        return ResponseHelper::jsonResponse($data, 'Categories ordered successfully!');
     }
 
     /**
@@ -472,11 +532,21 @@ class CategoryService
      */
     public function updateCategory(Category $category, array $data)
     {
-        $this->checkOwnership($category, 'Category', 'update', 'products', 'Products');
-        $this->checkProduct($category, 'Category', 'update', 'products', 'Products');
-        $this->validateCategoryData($data, 'sometimes');
+        try {
+            $this->checkOwnership($category, 'Category', 'update', 'products', 'Products');
+            $this->checkProduct($category, 'Category', 'update', 'products', 'Products');
+            $this->validateCategoryData($data, 'sometimes');
+            $category = $this->categoryRepository->update($category, $data);
+            $data = [
+                'Category' => CategoryResource::make($category),
+            ];
 
-        return $this->categoryRepository->update($category, $data);
+            $response = ResponseHelper::jsonResponse($data, 'Category updated successfully!');
+        } catch (HttpResponseException $e) {
+            $response = $e->getResponse();
+        }
+
+        return $response;
     }
 
     /**
@@ -527,9 +597,15 @@ class CategoryService
      */
     public function deleteCategory(Category $category)
     {
-        $this->checkOwnership($category, 'Category', 'delete', 'products', 'Products');
+        try {
+            $this->checkOwnership($category, 'Category', 'delete', 'products', 'Products');
+            $this->categoryRepository->delete($category);
+            $response = ResponseHelper::jsonResponse([], 'Category deleted successfully!');
+        } catch (HttpResponseException $e) {
+            $response = $e->getResponse();
+        }
 
-        return $this->categoryRepository->delete($category);
+        return $response;
     }
 
     protected function validateCategoryData(array $data, $rule = 'required')

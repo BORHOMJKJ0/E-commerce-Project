@@ -129,7 +129,7 @@ class EmailService
         } else {
             EmailVerificationJob::dispatch($user);
 
-            return ResponseHelper::jsonResponse([],'The activation code has been sent to your email');
+            return ResponseHelper::jsonResponse([], 'The activation code has been sent to your email');
         }
     }
 }

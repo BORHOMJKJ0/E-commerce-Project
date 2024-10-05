@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
 class UpdateExpressionRequest extends BaseRequest
 {
     /**
@@ -22,7 +20,7 @@ class UpdateExpressionRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'action'=>'sometimes|in:like,dislike',
+            'action' => 'sometimes|in:like,dislike',
         ];
     }
 }

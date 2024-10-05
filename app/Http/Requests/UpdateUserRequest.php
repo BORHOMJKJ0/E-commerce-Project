@@ -3,10 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Rules\MatchOldPassword;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Validation\ValidationException;
 
 class UpdateUserRequest extends BaseRequest
 {
@@ -25,7 +22,7 @@ class UpdateUserRequest extends BaseRequest
         return [
             'name' => 'sometimes|string',
             'mobile' => 'sometimes|string|size:10',
-            'gender' => 'somtimes|enum|in:male,female',
+            'gender' => 'sometimes|enum|in:male,female',
             'old_password' => ['sometimes', 'string', new MatchOldPassword, 'required_with:new_password'],
             'new_password' => ['sometimes', 'string', 'min:8', 'confirmed', function ($attribute, $value, $fail) {
                 if ($this->filled('new_password') && ! $this->filled('old_password')) {
@@ -39,7 +36,7 @@ class UpdateUserRequest extends BaseRequest
     public function failedAuthorization()
     {
         throw new HttpResponseException(
-            response: response()->json([
+            response()->json([
                 'message' => 'You are not authorized to modify this profile',
                 'successful' => false,
             ], 403)

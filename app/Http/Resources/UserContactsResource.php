@@ -14,9 +14,9 @@ class UserContactsResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'mobile' => $this->mobile,
-            'gender'=>$this->gender,
-            'contact_count'=>$this->whenCounted('contacts'),
-            'contacts' =>$this->when($this->contacts->isNotEmpty(),ContactResource::collection($this->contacts)),
+            'gender' => $this->gender,
+            'contact_count' => $this->whenCounted('contacts'),
+            'contacts' => $this->when($this->contacts->isNotEmpty(), ContactResource::collection($this->contacts)),
         ];
     }
 }

@@ -2,12 +2,8 @@
 
 namespace App\Http\Requests\Auth;
 
-use App\Helpers\ResponseHelper;
 use App\Http\Requests\BaseRequest;
 use App\Rules\EmailAddress;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 class RegisterRequest extends BaseRequest
 {

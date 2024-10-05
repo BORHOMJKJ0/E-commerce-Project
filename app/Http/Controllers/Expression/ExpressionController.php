@@ -8,7 +8,6 @@ use App\Http\Requests\UpdateExpressionRequest;
 use App\Models\Product;
 use App\Services\ExpressionService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class ExpressionController extends Controller
 {

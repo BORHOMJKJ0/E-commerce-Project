@@ -12,6 +12,13 @@ class ReviewResource extends JsonResource
         return [
             'id' => $this->id,
             'rating' => $this->rating,
+            'comment' => $this->comments->map(function ($comment) {
+                return [
+                    'id' => $comment->id,
+                    'text' => $comment->text,
+                    'image' => $comment->image,
+                ];
+            }),
             'product' => [
                 'id' => $this->product->id,
                 'name' => $this->product->name,

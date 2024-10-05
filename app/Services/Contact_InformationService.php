@@ -18,6 +18,7 @@ class Contact_InformationService
     use ValidationTrait;
 
     protected $contactRepository;
+
     protected $userRepository;
 
     public function __construct(UserRepository $userRepository, ContactRepository $contactRepository)
@@ -142,8 +143,8 @@ class Contact_InformationService
 
     public function update(UpdateContactRequest $request, $user_id, $contact_id)
     {
-        $contact_information =  $this->contactRepository->findContactById($contact_id);
-        if (!$contact_information) {
+        $contact_information = $this->contactRepository->findContactById($contact_id);
+        if (! $contact_information) {
             return ResponseHelper::jsonResponse([], 'There is no Contact Information With this id', 404, false);
         }
 
@@ -154,6 +155,7 @@ class Contact_InformationService
         $data = [
             'user' => new UserContactsResource($user),
         ];
+
         return ResponseHelper::jsonResponse($data, 'Contact Information updated successfully');
     }
 
@@ -201,9 +203,10 @@ class Contact_InformationService
         if (! $contact) {
             return ResponseHelper::jsonResponse([], 'Contact not found', 404, false);
         }
- 
+
         $data = ['contact' => new ContactResource($contact)];
-        return ResponseHelper::jsonResponse($data,'Contact deleted successfully');
+
+        return ResponseHelper::jsonResponse($data, 'Contact deleted successfully');
     }
 
     /**
@@ -242,6 +245,7 @@ class Contact_InformationService
         }
 
         $data = ['contacts' => ContactResource::collection($contacts)];
-        return ResponseHelper::jsonResponse($data,'All Contacts deleted successfully');
+
+        return ResponseHelper::jsonResponse($data, 'All Contacts deleted successfully');
     }
 }

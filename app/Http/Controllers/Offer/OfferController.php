@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers\Offer;
 
-use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\OfferResource;
 use App\Models\Offer;
 use App\Services\OfferService;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -23,128 +20,41 @@ class OfferController extends Controller
 
     public function index(Request $request): JsonResponse
     {
-        $page = $request->query('page', 1);
-        $items = $request->query('items', 20);
-
-        $offers = $this->offerService->getAllOffers($page, $items);
-        $hasMorePages = $offers->hasMorePages();
-
-        $data = [
-            'offers' => OfferResource::collection($offers),
-            'hasMorePages' => $hasMorePages,
-        ];
-        return ResponseHelper::jsonResponse($data, message: 'Offers retrieved successfully');
+        return $this->offerService->getAllOffers($request);
     }
 
     public function MyOffers(Request $request): JsonResponse
     {
-        $page = $request->query('page', 1);
-        $items = $request->query('items', 20);
-
-        $offers = $this->offerService->getMyOffers($page, $items);
-        $hasMorePages = $offers->hasMorePages();
-
-
-        $data = [
-            'offers' => OfferResource::collection($offers),
-            'hasMorePages' => $hasMorePages,
-        ];
-        return ResponseHelper::jsonResponse($data, message: 'Offers retrieved successfully');
+        return $this->offerService->getMyOffers($request);
     }
 
     public function store(Request $request): JsonResponse
     {
-
-        try {
-            $offer = $this->offerService->createOffer($request->all());
-
-            $data = ['offer' => OfferResource::make($offer)];
-            return ResponseHelper::jsonResponse($data, 'Offer created successfully!', 201);
-        } catch (HttpResponseException $e) {
-            $message = $e->getResponse()->getData();
-
-            return ResponseHelper::jsonResponse([], $message, 403, false);
-        }
+        return $this->offerService->createOffer($request->all());
     }
 
     public function show(Offer $offer): JsonResponse
     {
-        $offer = $this->offerService->getOfferById($offer);
-
-        $data = ['offer' => OfferResource::make($offer)];
-        return ResponseHelper::jsonResponse($data, 'Offer performed successfully!');
+        return $this->offerService->getOfferById($offer);
     }
 
     public function orderBy($column, $direction, Request $request): JsonResponse
     {
-        $validColumns = ['discount_percentage', 'start_date', 'end_date', 'created_at', 'updated_at'];
-        $validDirections = ['asc', 'desc'];
-
-        if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
-            return response()->json(['error' => 'Invalid column or direction', 'successful' => false], 400);
-        }
-
-        $page = $request->query('page', 1);
-        $items = $request->query('items', 20);
-
-        $offers = $this->offerService->getOffersOrderedBy($column, $direction, $page, $items);
-        $hasMorePages = $offers->hasMorePages();
-
-        $data = [
-            'offers' => OfferResource::collection($offers),
-            'hasMorePages' => $hasMorePages,
-        ];
-        return ResponseHelper::jsonResponse($data, 'Offers ordered successfully!');
+        return $this->offerService->getOffersOrderedBy($column, $direction, $request);
     }
 
     public function MyOffersOrderBy($column, $direction, Request $request): JsonResponse
     {
-        $validColumns = ['discount_percentage', 'start_date', 'end_date', 'created_at', 'updated_at'];
-        $validDirections = ['asc', 'desc'];
-
-        if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
-            return response()->json(['error' => 'Invalid column or direction', 'successful' => false], 400);
-        }
-
-        $page = $request->query('page', 1);
-        $items = $request->query('items', 20);
-
-        $offers = $this->offerService->getMyOffersOrderedBy($column, $direction, $page, $items);
-        $hasMorePages = $offers->hasMorePages();
-
-        $data = [
-            'offers' => OfferResource::collection($offers),
-            'hasMorePages' => $hasMorePages,
-        ];
-        return ResponseHelper::jsonResponse($data, 'Offers ordered successfully!');
+        return $this->offerService->getMyOffersOrderedBy($column, $direction, $request);
     }
 
     public function update(Request $request, Offer $offer): JsonResponse
     {
-        try {
-
-            $offer = $this->offerService->updateOffer($offer, $request->all());
-
-            $data = ['offer' => OfferResource::make($offer)];
-            return ResponseHelper::jsonResponse($data, 'Offer updated successfully!');
-        } catch (HttpResponseException $e) {
-            $message = $e->getResponse()->getData();
-
-            return ResponseHelper::jsonResponse([], $message, 403, false);
-        }
+        return $this->offerService->updateOffer($offer, $request->all());
     }
 
     public function destroy(Offer $offer): JsonResponse
     {
-        try {
-
-            $this->offerService->deleteOffer($offer);
-
-            return ResponseHelper::jsonResponse([], 'Offer deleted successfully!');
-        } catch (HttpResponseException $e) {
-            $message = $e->getResponse()->getData();
-
-            return ResponseHelper::jsonResponse([], $message, 403, false);
-        }
+        return $this->offerService->deleteOffer($offer);
     }
 }

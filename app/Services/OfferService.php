@@ -2,17 +2,21 @@
 
 namespace App\Services;
 
+use App\Helpers\ResponseHelper;
+use App\Http\Resources\OfferResource;
 use App\Models\Offer;
 use App\Models\Product;
 use App\Repositories\OfferRepository;
 use App\Traits\AuthTrait;
+use App\Traits\ValidationTrait;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class OfferService
 {
-    use AuthTrait;
+    use AuthTrait,ValidationTrait;
 
     protected $offerRepository;
 
@@ -77,9 +81,20 @@ class OfferService
      *     )
      * )
      */
-    public function getAllOffers($page, $items)
+    public function getAllOffers(Request $request)
     {
-        return $this->offerRepository->getAll($items, $page);
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
+
+        $offers = $this->offerRepository->getAll($items, $page);
+        $hasMorePages = $offers->hasMorePages();
+
+        $data = [
+            'Offers' => OfferResource::collection($offers),
+            'hasMorePages' => $hasMorePages,
+        ];
+
+        return ResponseHelper::jsonResponse($data, 'Offers retrieved successfully');
     }
 
     /**
@@ -129,9 +144,20 @@ class OfferService
      *     )
      * )
      */
-    public function getMyOffers($page, $items)
+    public function getMyOffers(Request $request)
     {
-        return $this->offerRepository->getMy($items, $page);
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
+
+        $offers = $this->offerRepository->getMy($items, $page);
+        $hasMorePages = $offers->hasMorePages();
+
+        $data = [
+            'offers' => OfferResource::collection($offers),
+            'hasMorePages' => $hasMorePages,
+        ];
+
+        return ResponseHelper::jsonResponse($data, 'Offers retrieved successfully');
     }
 
     /**
@@ -169,7 +195,9 @@ class OfferService
      */
     public function getOfferById(Offer $offer)
     {
-        return $offer;
+        $data = ['offer' => OfferResource::make($offer)];
+
+        return ResponseHelper::jsonResponse($data, 'Offer performed successfully!');
     }
 
     /**
@@ -241,13 +269,21 @@ class OfferService
      */
     public function createOffer(array $data)
     {
-        $product = Product::findOrFail($data['product_id']);
+        try {
+            $product = Product::findOrFail($data['product_id']);
+            $this->checkOwnership($product, 'Offer', 'create');
+            $this->validateOfferData($data);
+            $this->checkOfferOverlap($product->id, $data['start_date'], $data['end_date']);
+            $this->checkDate($data, 'start_date', 'now');
+            $offer = $this->offerRepository->create($data);
+            $data = ['offer' => OfferResource::make($offer)];
 
-        $this->checkOwnership($product, 'Offer', 'create');
-        $this->validateOfferData($data);
-        $this->checkOfferOverlap($product->id, $data['start_date'], $data['end_date']);
+            $response = ResponseHelper::jsonResponse($data, 'Offer created successfully!', 201);
+        } catch (HttpResponseException $e) {
+            $response = $e->getResponse();
+        }
 
-        return $this->offerRepository->create($data);
+        return $response;
     }
 
     /**
@@ -313,9 +349,27 @@ class OfferService
      *     )
      * )
      */
-    public function getOffersOrderedBy($column, $direction, $page, $items)
+    public function getOffersOrderedBy($column, $direction, Request $request)
     {
-        return $this->offerRepository->orderBy($column, $direction, $page, $items);
+        $validColumns = ['discount_percentage', 'start_date', 'end_date', 'created_at', 'updated_at'];
+        $validDirections = ['asc', 'desc'];
+
+        if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
+            return ResponseHelper::jsonResponse([], 'Invalid column or direction', 400, false);
+        }
+
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
+
+        $offers = $this->offerRepository->orderBy($column, $direction, $page, $items);
+        $hasMorePages = $offers->hasMorePages();
+
+        $data = [
+            'offers' => OfferResource::collection($offers),
+            'hasMorePages' => $hasMorePages,
+        ];
+
+        return ResponseHelper::jsonResponse($data, 'Offers ordered successfully!');
     }
 
     /**
@@ -381,9 +435,27 @@ class OfferService
      *     )
      * )
      */
-    public function getMyOffersOrderedBy($column, $direction, $page, $items)
+    public function getMyOffersOrderedBy($column, $direction, Request $request)
     {
-        return $this->offerRepository->orderMyBy($column, $direction, $page, $items);
+        $validColumns = ['discount_percentage', 'start_date', 'end_date', 'created_at', 'updated_at'];
+        $validDirections = ['asc', 'desc'];
+
+        if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
+            return ResponseHelper::jsonResponse([], 'Invalid column or direction', 400, false);
+        }
+
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
+
+        $offers = $this->offerRepository->orderMyBy($column, $direction, $page, $items);
+        $hasMorePages = $offers->hasMorePages();
+
+        $data = [
+            'offers' => OfferResource::collection($offers),
+            'hasMorePages' => $hasMorePages,
+        ];
+
+        return ResponseHelper::jsonResponse($data, 'Offers ordered successfully!');
     }
 
     /**
@@ -501,17 +573,26 @@ class OfferService
      */
     public function updateOffer(Offer $offer, array $data)
     {
-        $product = $offer->product;
-        $this->checkOwnership($product, 'Offer', 'update');
-        $this->validateOfferData($data, 'sometimes');
+        try {
+            $product = $offer->product;
+            $this->checkOwnership($product, 'Offer', 'update');
+            $this->validateOfferData($data, 'sometimes');
 
-        $startDate = $data['start_date'] ?? $offer->start_date;
-        $endDate = $data['end_date'] ?? $offer->end_date;
-        $productId = $data['product_id'] ?? $offer->product_id;
+            $startDate = $data['start_date'] ?? $offer->start_date;
+            $endDate = $data['end_date'] ?? $offer->end_date;
+            $productId = $data['product_id'] ?? $offer->product_id;
 
-        $this->checkOfferOverlap($productId, $startDate, $endDate, $offer->id);
+            $this->checkOfferOverlap($productId, $startDate, $endDate, $offer->id);
+            $this->checkOfferDates($offer, 'update');
+            $offer = $this->offerRepository->update($offer, $data);
+            $data = ['offer' => OfferResource::make($offer)];
 
-        return $this->offerRepository->update($offer, $data);
+            $response = ResponseHelper::jsonResponse($data, 'Offer updated successfully!');
+        } catch (HttpResponseException $e) {
+            $response = $e->getResponse();
+        }
+
+        return $response;
     }
 
     /**
@@ -562,10 +643,18 @@ class OfferService
      */
     public function deleteOffer(Offer $offer)
     {
-        $product = $offer->product;
-        $this->checkOwnership($product, 'Offer', 'delete');
+        try {
 
-        return $this->offerRepository->delete($offer);
+            $product = $offer->product;
+            $this->checkOwnership($product, 'Offer', 'delete');
+            $this->checkOfferDates($offer, 'delete');
+            $this->offerRepository->delete($offer);
+            $response = ResponseHelper::jsonResponse([], 'Offer deleted successfully!');
+        } catch (HttpResponseException $e) {
+            $response = $e->getResponse();
+        }
+
+        return $response;
     }
 
     protected function validateOfferData(array $data, $rule = 'required')
@@ -595,10 +684,9 @@ class OfferService
                 ($endDate >= $offer->start_date && $endDate <= $offer->end_date) ||
                 ($startDate <= $offer->start_date && $endDate >= $offer->end_date)
             ) {
-                throw new HttpResponseException(response()->json([
-                    'Message' => "This offer overlaps with an existing offer from {$offer->start_date} to {$offer->end_date} for this product: {$offer->product->name}.",
-                    'Success' => false,
-                ], 403));
+                throw new HttpResponseException(ResponseHelper::jsonResponse([],
+                    "This offer overlaps with an existing offer from {$offer->start_date} to {$offer->end_date} for this product: {$offer->product->name}.",
+                    403, false));
             }
         }
     }

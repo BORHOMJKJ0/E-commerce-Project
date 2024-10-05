@@ -2,16 +2,21 @@
 
 namespace App\Services;
 
+use App\Helpers\ResponseHelper;
+use App\Http\Resources\WarehouseResource;
 use App\Models\Product;
 use App\Models\Warehouse;
 use App\Repositories\WarehouseRepository;
 use App\Traits\AuthTrait;
+use App\Traits\ValidationTrait;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class WarehouseService
 {
-    use AuthTrait;
+    use AuthTrait,ValidationTrait;
 
     protected $warehouseRepository;
 
@@ -67,9 +72,20 @@ class WarehouseService
      *     )
      * )
      */
-    public function getAllWarehouses($page, $items)
+    public function getAllWarehouses(Request $request)
     {
-        return $this->warehouseRepository->getAll($items, $page);
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
+
+        $warehouses = $this->warehouseRepository->getAll($items, $page);
+        $hasMorePages = $warehouses->hasMorePages();
+
+        $data = [
+            'Warehouses' => WarehouseResource::collection($warehouses),
+            'hasMorePages' => $hasMorePages,
+        ];
+
+        return ResponseHelper::jsonResponse($data, 'Warehouses retrieved successfully!');
     }
 
     /**
@@ -117,11 +133,16 @@ class WarehouseService
      */
     public function getWarehouseById(Warehouse $warehouse)
     {
-        $product = $warehouse->product;
+        try {
+            $product = $warehouse->product;
+            $this->checkOwnership($product, 'Warehouse', 'perform');
+            $data = ['warehouse' => WarehouseResource::make($warehouse)];
+            $response = ResponseHelper::jsonResponse($data, 'Warehouse retrieved successfully!');
+        } catch (HttpResponseException $e) {
+            $response = $e->getResponse();
+        }
 
-        $this->checkOwnership($product, 'Warehouse', 'perform');
-
-        return $warehouse;
+        return $response;
     }
 
     /**
@@ -194,14 +215,25 @@ class WarehouseService
      */
     public function createWarehouse(array $data)
     {
-        $product = Product::findOrFail($data['product_id']);
+        try {
 
-        $this->checkOwnership($product, 'Warehouse', 'create');
-        $data['settlement_date'] = null;
+            $product = Product::findOrFail($data['product_id']);
 
-        $this->validateWarehouseData($data);
+            $this->checkOwnership($product, 'Warehouse', 'create');
+            $this->validateWarehouseData($data);
+            $this->checkDate($data, 'payment_date', 'now');
+            $this->checkDate($data, 'expiry_date', 'future');
 
-        return $this->warehouseRepository->create($data);
+            $data['settlement_date'] = null;
+
+            $warehouse = $this->warehouseRepository->create($data);
+            $data = ['warehouse' => WarehouseResource::make($warehouse)];
+            $response = ResponseHelper::jsonResponse($data, 'Warehouse created successfully!', 201);
+        } catch (HttpResponseException $e) {
+            $response = $e->getResponse();
+        }
+
+        return $response;
     }
 
     /**
@@ -267,9 +299,27 @@ class WarehouseService
      *     )
      * )
      */
-    public function getWarehousesOrderedBy($column, $direction, $page, $items)
+    public function getWarehousesOrderedBy($column, $direction, Request $request)
     {
-        return $this->warehouseRepository->orderBy($column, $direction, $page, $items);
+        $validColumns = ['expiry_date', 'created_at', 'updated_at', 'payment_date', 'settlement_date', 'pure_price'];
+        $validDirections = ['asc', 'desc'];
+
+        if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
+            return ResponseHelper::jsonResponse([], 'Invalid column or direction', 400, false);
+        }
+
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
+        $warehouses = $this->warehouseRepository->orderBy($column, $direction, $page, $items);
+        $hasMorePages = $warehouses->hasMorePages();
+
+        $data = [
+            'Warehouses' => WarehouseResource::collection($warehouses),
+            'hasMorePages' => $hasMorePages,
+        ];
+
+        return ResponseHelper::jsonResponse($data, 'Warehouses ordered successfully');
+
     }
 
     /**
@@ -416,12 +466,20 @@ class WarehouseService
                 'settlement_date' => 'You cannot update the settlement date it updated automatically.',
             ]);
         }
-        $product = $warehouse->product;
-        $this->checkOwnership($product, 'Warehouse', 'update');
+        try {
+            $product = $warehouse->product;
+            $this->checkOwnership($product, 'Warehouse', 'update');
 
-        $this->validateWarehouseData($data, $warehouse, 'sometimes', 0);
+            $this->validateWarehouseData($data, $warehouse, 'sometimes', 0);
+            $warehouse = $this->warehouseRepository->update($warehouse, $data);
 
-        return $this->warehouseRepository->update($warehouse, $data);
+            $data = ['warehouse' => WarehouseResource::make($warehouse)];
+            $response = ResponseHelper::jsonResponse($data, 'Warehouse updated successfully!');
+        } catch (HttpResponseException $e) {
+            $response = $e->getResponse();
+        }
+
+        return $response;
     }
 
     /**
@@ -472,10 +530,17 @@ class WarehouseService
      */
     public function deleteWarehouse(Warehouse $warehouse)
     {
-        $product = $warehouse->product;
-        $this->checkOwnership($product, 'Warehouse', 'delete');
 
-        return $this->warehouseRepository->delete($warehouse);
+        try {
+            $product = $warehouse->product;
+            $this->checkOwnership($product, 'Warehouse', 'delete');
+            $this->warehouseRepository->delete($warehouse);
+            $response = ResponseHelper::jsonResponse([], 'Warehouse deleted successfully!');
+        } catch (HttpResponseException $e) {
+            $response = $e->getResponse();
+        }
+
+        return $response;
     }
 
     protected function validateWarehouseData(array $data, $warehouse = null, $rule = 'required', $limit = 1)

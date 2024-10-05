@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\ForgetPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
@@ -13,9 +14,7 @@ use App\Http\Controllers\Offer\OfferController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Review\ReviewController;
 use App\Http\Controllers\Warehouse\WarehouseController;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use App\Helpers\ResponseHelper;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -84,21 +83,21 @@ Route::middleware('api')->prefix('users')->group(function () {
     Route::controller(EmailVerificationController::class)->group(function () {
         Route::get('email-verification/{user:email}', 'sendEmailVerification')
             ->missing(function () {
-                return ResponseHelper::jsonRespones([], 'Email Not Found', 404, false);
+                return ResponseHelper::jsonResponse([], 'Email Not Found', 404, false);
             });
         Route::post('email-verification', 'email_verification');
     });
 
     Route::get('password/forget-password/{user:email}', [ForgetPasswordController::class, 'forgetPassword'])
         ->missing(function () {
-            return ResponseHelper::jsonRespones([], 'Email Not Found', 404, false);
+            return ResponseHelper::jsonResponse([], 'Email Not Found', 404, false);
         });
     Route::post('password/reset', [ResetPasswordController::class, 'resetPassword']);
 
     Route::controller(ContactInformationController::class)->prefix('contact')->group(function () {
         Route::post('add', 'store');
         Route::get('show/{user}', 'show')->missing(function () {
-            return ResponseHelper::jsonRespones([], 'User Not Found', 404, false);
+            return ResponseHelper::jsonResponse([], 'User Not Found', 404, false);
         });
         Route::put('update/{user_id}/{contact_id}', 'update');
         Route::delete('remove/{contact_information_id}', 'destroy')->whereNumber('contact_information_id');
@@ -115,11 +114,11 @@ Route::middleware('api')->prefix('users')->group(function () {
         Route::get('all', 'index');
         Route::get('show/{product}', 'show')
             ->missing(function () {
-                return ResponseHelper::jsonRespones([], 'Product Not Found', 404, false);
+                return ResponseHelper::jsonResponse([], 'Product Not Found', 404, false);
             });
         Route::put('update/{product}', 'update')
             ->missing(function () {
-                return ResponseHelper::jsonRespones([], 'Product Not Found', 404, false);
+                return ResponseHelper::jsonResponse([], 'Product Not Found', 404, false);
             });
     });
 });
