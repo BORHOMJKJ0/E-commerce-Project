@@ -30,7 +30,7 @@ class CategoryRepository
 
     public function getCategoyByname(string $name)
     {
-        return Category::where('name', 'like', '%' . $name . '%')->get();
+        return Category::where('name', 'like', '%'.$name.'%')->get();
     }
 
     public function orderBy($column, $direction, $page, $items)
@@ -49,7 +49,7 @@ class CategoryRepository
     {
         return $this->lockForUpdate(Category::class, $category->id, function ($lockedCategory) use ($data) {
             $lockedCategory->update($data);
-            
+
             return $lockedCategory;
         });
     }

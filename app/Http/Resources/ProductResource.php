@@ -96,24 +96,21 @@ class ProductResource extends JsonResource
             'total_amount' => (float) $this->warehouses->sum('amount'),
             'expiry_date' => $minExpiryDate ? $minExpiryDate->format('Y-n-j') : null,
             'category' => $this->category->name,
-            'comments' => $this->comments->count(),
-            'average_rating' => $this->reviews->avg('rating') ?: 0,
-            //   'created_at'=>$this->created_at->format('Y-n-j'),
+            'comments' => $this->comments->count(), // Total number of comments
+            'average_rating' => $this->reviews->avg('rating') ?: 0, // Average rating, defaulting to 0 if none
+            // 'created_at' => $this->created_at->format('Y-n-j'),
         ];
 
         if ($request->routeIs('products.show')) {
-            //            unset($data['comments']);
-            //            unset($data['average_rating']);
             $data['reviewers'] = $this->reviews->map(function ($review) {
                 return [
                     'name' => $review->user->name,
                     'rating' => $review->rating,
-                    'comments' => $review->comments->map(function ($comment) {
-                        return [
-                            'text' => $comment->text,
-                            'image' => $comment->image,
-                        ];
-                    }),
+                    'comment' => $review->comment ? [
+                        'id' => $review->comment->id,
+                        'text' => $review->comment->text ?? null,
+                        'image' => $review->comment->image ?? null,
+                    ] : null,
                 ];
             });
         }

@@ -270,11 +270,12 @@ class OfferService
     public function createOffer(array $data)
     {
         try {
-            $product = Product::findOrFail($data['product_id']);
-            $this->checkOwnership($product, 'Offer', 'create');
             $this->validateOfferData($data);
-            $this->checkOfferOverlap($product->id, $data['start_date'], $data['end_date']);
+            $product = Product::find($data['product_id']);
+            $this->checkOwnership($product, 'Offer', 'create');
             $this->checkDate($data, 'start_date', 'now');
+            $this->checkOfferEndDate($data['product_id'], $data['end_date']);
+            $this->checkOfferOverlap($product->id, $data['start_date'], $data['end_date']);
             $offer = $this->offerRepository->create($data);
             $data = ['offer' => OfferResource::make($offer)];
 
@@ -574,16 +575,15 @@ class OfferService
     public function updateOffer(Offer $offer, array $data)
     {
         try {
+            $this->validateOfferData($data, 'sometimes');
             $product = $offer->product;
             $this->checkOwnership($product, 'Offer', 'update');
-            $this->validateOfferData($data, 'sometimes');
-
             $startDate = $data['start_date'] ?? $offer->start_date;
             $endDate = $data['end_date'] ?? $offer->end_date;
             $productId = $data['product_id'] ?? $offer->product_id;
-
-            $this->checkOfferOverlap($productId, $startDate, $endDate, $offer->id);
             $this->checkOfferDates($offer, 'update');
+            $this->checkOfferEndDate($data['product_id'] ?? $offer['product_id'], $offer->end_date, $data['end_date']);
+            $this->checkOfferOverlap($productId, $startDate, $endDate, $offer->id);
             $offer = $this->offerRepository->update($offer, $data);
             $data = ['offer' => OfferResource::make($offer)];
 
@@ -663,6 +663,7 @@ class OfferService
             'discount_percentage' => "$rule|numeric|between:0,100",
             'start_date' => "$rule|date",
             'end_date' => "$rule|date|after_or_equal:start_date",
+            'product_id' => "$rule|exists:products,id",
         ]);
 
         if ($validator->fails()) {

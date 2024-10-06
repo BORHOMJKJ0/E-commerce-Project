@@ -12,12 +12,12 @@ class CommentResource extends JsonResource
         return [
             'id' => $this->id,
             'review_id' => $this->review->id,
-            //            'product_id' => $this->review->product->id,
+            'product_id' => $this->review->product->id,
             //            'user_id' => $this->review->user->id,
             'product_name' => $this->review->product->name,
             'user_name' => $this->review->user->name,
-            'text' => $this->text,
-            'image' => $this->image,
+            'text' => $this->text ?? null,
+            'image' => $this->image ?? null,
         ];
     }
 }

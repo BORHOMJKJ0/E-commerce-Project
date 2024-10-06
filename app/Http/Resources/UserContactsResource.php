@@ -11,10 +11,11 @@ class UserContactsResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'First_Name' => $this->First_Name,
+            'Last_Name' => $this->Last_Name,
             'email' => $this->email,
+            'Address'=>$this->Address,
             'mobile' => $this->mobile,
-            'gender' => $this->gender,
             'contact_count' => $this->whenCounted('contacts'),
             'contacts' => $this->when($this->contacts->isNotEmpty(), ContactResource::collection($this->contacts)),
         ];

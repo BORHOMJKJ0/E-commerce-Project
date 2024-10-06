@@ -11,7 +11,7 @@ class ExpressionFactory extends Factory
     public function definition(): array
     {
         return [
-            'action' => $this->faker->randomElement(['like', 'dislike']),
+            'action' => fake()->randomElement(['like', 'dislike']),
             'user_id' => User::all()->random()->id,
             'product_id' => Product::all()->random()->id,
         ];

@@ -141,7 +141,7 @@ class UserService
 
         $data = ['user' => new UserResource($user)];
 
-        return ResponseHelper::jsonResponse($data, 'User registered successfully', 201);
+        return ResponseHelper::jsonResponse($data, 'The activation code has been sent to your email', 201);
     }
 
     /**

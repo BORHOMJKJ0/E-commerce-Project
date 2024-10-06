@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Helpers\ResponseHelper;
 use App\Models\Offer;
+use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
@@ -48,5 +49,22 @@ trait ValidationTrait
                 400, false));
         }
 
+    }
+
+    public function checkOfferEndDate($product_id, $end_date, ?string $offer_end = null)
+    {
+        $product = Product::with('warehouses')->find($product_id);
+        $expiryDate = $product->warehouses->min('expiry_date');
+
+        $offerEndDate = Carbon::parse($end_date);
+        $offerEnd = $offer_end ? Carbon::parse($offer_end) : null;
+
+        if ($offerEndDate->gt($expiryDate) || ($offerEnd && $offerEnd->gt($expiryDate))) {
+            throw new HttpResponseException(ResponseHelper::jsonResponse([],
+                "The offer end date must be before or equal to the product expiry date {$expiryDate} .",
+                400, false));
+        }
+
+        return true;
     }
 }

@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Models\User;
 use Carbon\Carbon;
-
 use Illuminate\Console\Command;
 
 class CheckEmailVerification extends Command

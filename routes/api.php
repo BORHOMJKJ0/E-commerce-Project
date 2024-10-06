@@ -13,7 +13,6 @@ use App\Http\Controllers\Expression\ExpressionController;
 use App\Http\Controllers\Offer\OfferController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Review\ReviewController;
-use App\Http\Controllers\SearchProductController;
 use App\Http\Controllers\Warehouse\WarehouseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;

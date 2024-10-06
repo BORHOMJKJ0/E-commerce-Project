@@ -16,11 +16,12 @@ class RegisterRequest extends BaseRequest
     {
 
         return [
-            'name' => 'required|string|max:255',
+            'First_Name' => 'required|string|max:255',
+            'Last_Name' => 'required|string|max:255',
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email', new EmailAddress],
             'password' => 'required|string|min:8|confirmed',
-            'gender' => 'required|in:male,female',
             'mobile' => 'required|string|size:10',
+            'Address' => 'required|string',
         ];
     }
     //    public function attributes(): array{
