@@ -42,10 +42,11 @@ class ProductRepository
         }
 
         if ($request->has('category')) {
-            $categoryIds = Category::where('name', 'like', '%' . $request->category . '%')->pluck('id')->toArray();
-            if (!empty($categoryIds)) {
-                $query->whereIn('category_id', $categoryIds);
-            }
+            $categoryName = $request->input('category');
+
+            $query->whereHas('category', function ($categoryQuery) use ($categoryName) {
+                $categoryQuery->where('name', 'like', '%' . $categoryName . '%');
+            });
         }
 
         if ($request->has('min_price')) {
@@ -56,18 +57,18 @@ class ProductRepository
             $query->where('price', '<=', $request->input('max_price'));
         }
 
-        // if ($request->has('expire_date')) {
-        //     $productsId =  Warehouse::whereNotNull('expiry_date')->where('expiry_date', '<=', $request->expire_date)
-        //         ->where('amount', '>', 0)
-        //         ->groupBy('product_id')
-        //         ->pluck('product_id')
-        //         ->toArray();
+        if ($request->has('expire_date')) {
+            $expireDate = $request->expire_date;
 
-        //     $query->whereIn('id', $productsId);
-        // }
+            $query->whereHas('warehouses', function ($warehouseQuery) use ($expireDate) {
+                $warehouseQuery->whereNotNull('expiry_date')->where('expiry_date', '<=', $expireDate)
+                    ->where('amount', '>', 0)
+                    ->groupBy('product_id');
+            });
+        }
         $products = $query->paginate($items, ['*'], 'page', $page);
 
-        if (!empty($products))
+        if (!$products->isEmpty())
             return $products;
         else
             return null;
