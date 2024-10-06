@@ -13,12 +13,11 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CategorySeeder::class,
             ProductSeeder::class,
-            OfferSeeder::class,
             WarehouseSeeder::class,
             ExpressionSeeder::class,
             ReviewSeeder::class,
             CommentSeeder::class,
-
+            OfferSeeder::class,
         ]);
     }
 }

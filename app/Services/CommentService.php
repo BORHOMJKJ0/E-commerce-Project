@@ -268,7 +268,7 @@ class CommentService
     {
         $this->validateCommentData($data);
         $this->checkReviewOwnership($data['review_id']);
-
+        $this->checkReview($data['review_id']);
         $comment = $this->commentRepository->create($data);
         $data = ['Comment' => CommentResource::make($comment)];
 
@@ -539,10 +539,8 @@ class CommentService
     public function updateComment(Comment $comment, array $data)
     {
         try {
-
-            $this->checkComment($comment, 'Comment', 'update');
-
             $this->validateCommentData($data, 'sometimes');
+            $this->checkComment($comment, 'Comment', 'update');
 
             $comment = $this->commentRepository->update($comment, $data);
 
@@ -617,10 +615,14 @@ class CommentService
     protected function validateCommentData(array $data, $rule = 'required')
     {
         $validator = Validator::make($data, [
-            'text' => "$rule|string|max:255",
-            'image' => "sometimes|image|max:5120",
+            'text' => "$rule|nullable|string|max:255",
+            'image' => 'sometimes|nullable|image|max:5120',
             'review_id' => "$rule|exists:reviews,id",
         ]);
+
+        if (empty($data['text']) && empty($data['image'])) {
+            $validator->errors()->add('text', 'You must provide either text or an image.');
+        }
 
         if ($validator->fails()) {
             throw new ValidationException($validator);

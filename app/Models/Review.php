@@ -11,9 +11,9 @@ class Review extends Model
 
     protected $guarded = [];
 
-    public function comments()
+    public function comment()
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasOne(Comment::class);
     }
 
     public function user()

@@ -216,11 +216,11 @@ class WarehouseService
     public function createWarehouse(array $data)
     {
         try {
-
-            $product = Product::findOrFail($data['product_id']);
+            $this->validateWarehouseData($data);
+            $product = Product::find($data['product_id']);
 
             $this->checkOwnership($product, 'Warehouse', 'create');
-            $this->validateWarehouseData($data);
+
             $this->checkDate($data, 'payment_date', 'now');
             $this->checkDate($data, 'expiry_date', 'future');
 
@@ -467,10 +467,10 @@ class WarehouseService
             ]);
         }
         try {
+            $this->validateWarehouseData($data, $warehouse, 'sometimes', 0);
             $product = $warehouse->product;
             $this->checkOwnership($product, 'Warehouse', 'update');
 
-            $this->validateWarehouseData($data, $warehouse, 'sometimes', 0);
             $warehouse = $this->warehouseRepository->update($warehouse, $data);
 
             $data = ['warehouse' => WarehouseResource::make($warehouse)];

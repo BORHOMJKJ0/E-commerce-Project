@@ -529,10 +529,8 @@ class ReviewService
     public function updateReview(Review $review, array $data)
     {
         try {
-            $this->checkOwnership($review, 'Review', 'update');
-
             $this->validateReviewData($data, 'sometimes');
-
+            $this->checkOwnership($review, 'Review', 'update');
             $review = $this->reviewRepository->update($review, $data);
             $data = ['review' => ReviewResource::make($review)];
             $response = ResponseHelper::jsonResponse($data, 'Review updated successfully!');

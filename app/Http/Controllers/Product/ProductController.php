@@ -6,13 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchProductRequest;
 use App\Models\Product;
 use App\Services\ProductService;
-use App\Services\SearchProductService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     protected $productService;
+
     private $SearchProductService;
 
     public function __construct(ProductService $productService)
@@ -38,7 +38,7 @@ class ProductController extends Controller
 
     public function searchByFilters(SearchProductRequest $request)
     {
-        return  $this->productService->searchByFilters($request);
+        return $this->productService->searchByFilters($request);
     }
 
     public function show(Product $product): JsonResponse

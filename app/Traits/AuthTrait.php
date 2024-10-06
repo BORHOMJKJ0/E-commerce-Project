@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Helpers\ResponseHelper;
+use App\Models\Comment;
 use App\Models\Product;
 use App\Models\Review;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -68,6 +69,17 @@ trait AuthTrait
         if ($review->user_id !== auth()->id()) {
             throw new HttpResponseException(ResponseHelper::jsonResponse([],
                 'You are not authorized to comment on this review. It does not belong to you.',
+                403, false));
+        }
+    }
+
+    public function checkReview($review_id)
+    {
+        $existingComment = Comment::where('review_id', $review_id)->first();
+
+        if ($existingComment) {
+            throw new HttpResponseException(ResponseHelper::jsonResponse([],
+                'You have already commented on this review . Please create a new review to add this comment to it.',
                 403, false));
         }
     }

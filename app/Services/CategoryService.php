@@ -533,9 +533,9 @@ class CategoryService
     public function updateCategory(Category $category, array $data)
     {
         try {
-            $this->checkOwnership($category, 'Category', 'update', 'products', 'Products');
-            $this->checkProduct($category, 'Category', 'update', 'products', 'Products');
             $this->validateCategoryData($data, 'sometimes');
+            $this->checkOwnership($category, 'Category', 'update', 'products', 'Products');
+            $this->checkProduct($category, 'Category', 'update');
             $category = $this->categoryRepository->update($category, $data);
             $data = [
                 'Category' => CategoryResource::make($category),

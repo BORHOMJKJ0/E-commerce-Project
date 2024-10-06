@@ -466,10 +466,10 @@ class ProductService
 
         $products = $this->productRepository->getProductsByFilters($request, $items, $page);
 
-        if (!$products) {
+        if (! $products) {
             return ResponseHelper::jsonResponse([], 'No products found for the given filters.');
         }
-        
+
         $hasMorePages = $products->hasMorePages();
         $data = [
             'Products' => ProductResource::collection($products),
@@ -613,9 +613,8 @@ class ProductService
     public function updateProduct(Product $product, array $data)
     {
         try {
-            $this->checkOwnership($product, 'Product', 'update');
-
             $this->validateProductData($data, 'sometimes');
+            $this->checkOwnership($product, 'Product', 'update');
             $product = $this->productRepository->update($product, $data);
             $data = [
                 'Product' => ProductResource::make($product),
