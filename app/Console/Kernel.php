@@ -15,13 +15,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
-        $schedule->command('app:check-email-verification')->hourly();
+        $schedule->command('app:delete-expired-otps')->everyMinute();
+        $schedule->command('app:check-email-verification')->everyMinute();
         $schedule->command('model:prune', [
             '--model' => [Offer::class, Product::class, Warehouse::class],
         ])->hourly();
         $schedule->command('queue:work')->everyMinute();
-
     }
 
     /**
@@ -29,7 +28,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands(): void
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

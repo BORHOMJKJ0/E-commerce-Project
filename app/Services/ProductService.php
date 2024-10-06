@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Helpers\ResponseHelper;
+use App\Http\Requests\SearchProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Repositories\ProductRepository;
@@ -186,7 +187,6 @@ class ProductService
         $data = ['product' => ProductResource::make($product)];
 
         return ResponseHelper::jsonResponse($data, 'Product retrieved successfully!');
-
     }
 
     /**
@@ -456,6 +456,27 @@ class ProductService
         ];
 
         return ResponseHelper::jsonResponse($data, 'Products ordered successfully!');
+    }
+
+    public function searchByFilters(SearchProductRequest $request)
+    {
+
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 10);
+
+        $products = $this->productRepository->getProductsByFilters($request, $items, $page);
+
+        if (!$products) {
+            return ResponseHelper::jsonResponse([], 'No products found for the given filters.');
+        }
+        
+        $hasMorePages = $products->hasMorePages();
+        $data = [
+            'Products' => ProductResource::collection($products),
+            'hasMorePages' => $hasMorePages,
+        ];
+
+        return ResponseHelper::jsonResponse($data, 'Products retrieved successfully');
     }
 
     /**

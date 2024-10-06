@@ -618,7 +618,7 @@ class CommentService
     {
         $validator = Validator::make($data, [
             'text' => "$rule|string|max:255",
-            'image' => "$rule|image|max:5120",
+            'image' => "sometimes|image|max:5120",
             'review_id' => "$rule|exists:reviews,id",
         ]);
 

@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Models\User;
+use Carbon\Carbon;
+
 use Illuminate\Console\Command;
 
 class CheckEmailVerification extends Command
@@ -13,6 +15,8 @@ class CheckEmailVerification extends Command
 
     public function handle()
     {
-        User::where('email_verified_at', null)->delete();
+        User::whereNull('email_verified_at')
+            ->where('created_at', '<=', Carbon::now()->subHour())
+            ->delete();
     }
 }
