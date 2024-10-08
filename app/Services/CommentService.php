@@ -10,7 +10,6 @@ use App\Traits\AuthTrait;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 
 class CommentService
 {
@@ -266,7 +265,7 @@ class CommentService
      */
     public function createComment(array $data)
     {
-        $this->validateCommentData($data);
+        $this->validateCommentData($data, 'required', 'create');
         $this->checkReviewOwnership($data['review_id']);
         $this->checkReview($data['review_id']);
         $comment = $this->commentRepository->create($data);
@@ -612,20 +611,25 @@ class CommentService
         return $response;
     }
 
-    protected function validateCommentData(array $data, $rule = 'required')
+    protected function validateCommentData(array $data, $rule = 'required', $method = 'any')
     {
         $validator = Validator::make($data, [
-            'text' => "$rule|nullable|string|max:255",
+            'text' => 'sometimes|nullable|string|max:255',
             'image' => 'sometimes|nullable|image|max:5120',
             'review_id' => "$rule|exists:reviews,id",
         ]);
 
-        if (empty($data['text']) && empty($data['image'])) {
-            $validator->errors()->add('text', 'You must provide either text or an image.');
+        if (empty($data['text']) && empty($data['image']) && $method === 'create') {
+            $validator->after(function ($validator) {
+                $validator->errors()->add('text', 'You must provide either text or an image.');
+            });
         }
 
         if ($validator->fails()) {
-            throw new ValidationException($validator);
+            throw new HttpResponseException(
+                ResponseHelper::jsonResponse([], $validator->errors()->first(), 400, false)
+            );
         }
     }
 }
+
