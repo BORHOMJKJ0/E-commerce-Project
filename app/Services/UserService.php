@@ -12,7 +12,9 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Traits\ValidationTrait;
+use Dotenv\Loader\Resolver;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use LaravelLang\Publisher\Concerns\Has;
@@ -107,9 +109,8 @@ class UserService
      *         description="User registered successfully",
      *
      *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="message", type="string", example="User registered successfully"),
-     *             @OA\Property(property="email-verification", type="string", example="An activation code has been sent to your email"),
+     *             @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="The activation code has been sent to your email"),
      *             @OA\Property(property="user", type="object",
      *                 @OA\Property(property="id", type="integer", example=1),
      *                 @OA\Property(property="name", type="string", example="hasan zaeter"),
@@ -118,20 +119,24 @@ class UserService
      *         )
      *     ),
      *
-     *          @OA\Response(
-     *               response=400,
-     *               description="Bad Request",
-     *
-     *          @OA\JsonContent(
-     *
-     *               @OA\Property(property="message", type="string", example="Validation error"),
-     *               @OA\Property(property="errors", type="object", example={})
-     *          )
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad Request",
+     *        @OA\JsonContent(
+     *         @OA\Property(property="successful", type="boolean", example=false),
+     *         @OA\Property(property="message", type="string", example="Validation failed"),
+     *         @OA\Property(
+     *             property="data",
+     *             type="object",
+     *             example={}
+     *         )
+     *         )
      *     ),
      *
-     *      @OA\Response(response=401, description="Unauthorized")
+     *     @OA\Response(response=401, description="Unauthorized")
      * )
      */
+
     public function register(RegisterRequest $request)
     {
 
@@ -164,9 +169,8 @@ class UserService
      *     @OA\Response(
      *         response=200,
      *         description="Login successful",
-     *
      *         @OA\JsonContent(
-     *
+     *             @OA\Property(property="successful", type="boolean", example=true),
      *             @OA\Property(property="token", type="string", example="jwt-token"),
      *             @OA\Property(property="user", type="object",
      *                 @OA\Property(property="id", type="integer", example=1),
@@ -179,35 +183,40 @@ class UserService
      *     @OA\Response(
      *         response=400,
      *         description="Bad Request",
-     *
      *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="message", type="string", example="Validation error or invalid password"),
-     *             @OA\Property(property="errors", type="object", example={})
-     *         )
+     *         @OA\Property(property="successful", type="boolean", example=false),
+     *         @OA\Property(property="message", type="string", example="Validation failed"),
+     *         @OA\Property(
+     *             property="data",
+     *             type="object",
+     *             @OA\Property(
+     *                 property="email",
+     *                 type="array",
+     *                 @OA\Items(type="string", example="The selected email is invalid.")
+     *             )
+     *         ))
      *     ),
      *
      *     @OA\Response(
      *         response=401,
      *         description="Unauthorized",
-     *
      *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="error", type="string", example="Unauthorized")
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Invalid credentials. Please check your email and password")
      *         )
      *     ),
      *
      *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden",
-     *
-     *          @OA\JsonContent(
-     *
-     *              @OA\Property(property="error", type="string", example="your email address is not verified")
-     *          )
-     *      )
+     *         response=403,
+     *         description="Forbidden",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Your email address is not verified")
+     *         )
+     *     )
      * )
      */
+
     public function login(LoginRequest $request): JsonResponse
     {
         $credentials = $request->only('email', 'password');
@@ -238,7 +247,7 @@ class UserService
      *         description="Logout successful",
      *
      *         @OA\JsonContent(
-     *
+     *             @OA\Property(property="successful", type="boolean", example=true),
      *             @OA\Property(property="message", type="string", example="Successfully logged out"),
      *             @OA\Property(property="user", type="object",
      *                 @OA\Property(property="id", type="integer", example=1),
@@ -279,7 +288,8 @@ class UserService
      *         description="Successful retrieval of user profile and contact details",
      *
      *         @OA\JsonContent(
-     *
+     *            @OA\Property(property="successful", type="boolean", example=true),
+     *            @OA\Property(property="message",type="string",example="Profile retrieved successfully"),
      *             @OA\Property(property="id", type="integer", example=1),
      *             @OA\Property(property="name", type="string", example="Hasan Zaeter"),
      *             @OA\Property(property="email", type="string", example="hzaeter@gmail.com"),
@@ -297,7 +307,7 @@ class UserService
      *         description="User not found",
      *
      *          @OA\JsonContent(
-     *
+     *               @OA\Property(property="successful", type="boolean", example=false),
      *               @OA\Property(property="message", type="string", example="User Not Found")
      *           )
      *     ),
@@ -307,12 +317,13 @@ class UserService
      *          description="Unauthorized - Invalid or missing token",
      *
      *     @OA\JsonContent(
-     *
+     *               @OA\Property(property="successful", type="boolean", example=false),
      *               @OA\Property(property="message", type="string", example="Unauthenticated")
      *           )
      *      )
      * )
      */
+
     public function profile(User $user)
     {
 
@@ -321,8 +332,16 @@ class UserService
         return ResponseHelper::jsonResponse($data, 'Profile retrieved successfully');
     }
 
-    // to show when token will expire
-    //'expires_in' => auth()->factory()->getTTL() * 60
+    public function storeFcmToken(Request $request)
+    {
+        $request->validate(['fcm_token' => 'required|string']);
+
+        $user = $this->userRepository->findById(auth()->user()->id);
+        $this->userRepository->update($user, ['fcm_token' => $request->fcm_token]);
+
+        return ResponseHelper::jsonResponse([], 'Fcm token stored successfully');
+    }
+
 
     /**
      * @OA\Put(
@@ -334,7 +353,7 @@ class UserService
      *         required=true,
      *
      *         @OA\JsonContent(
-     *
+     *             
      *             @OA\Property(property="name", type="string", example="Hasan Zaeter"),
      *             @OA\Property(property="mobile", type="string", example="0935917667"),
      *             @OA\Property(property="old_password", type="string", example="oldpassword123"),
@@ -348,7 +367,7 @@ class UserService
      *         description="Profile updated successfully",
      *
      *         @OA\JsonContent(
-     *
+     *             @OA\Property(property="successful", type="boolean", example=true),
      *             @OA\Property(property="message", type="string", example="Profile updated successfully"),
      *             @OA\Property(property="user", type="array", @OA\Items(
      *                 @OA\Property(property="id", type="integer", example=1),
@@ -361,7 +380,6 @@ class UserService
      *                     @OA\Property(property="contact_type_id", type="integer", example=2)
      *              ))
      *             )),
-     *             @OA\Property(property="success", type="boolean", example=true)
      *         )
      *     ),
      *
@@ -370,9 +388,13 @@ class UserService
      *         description="Bad Request",
      *
      *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="message", type="string", example="Validation error or incorrect old password"),
-     *             @OA\Property(property="errors", type="object", example={})
+     *         @OA\Property(property="successful", type="boolean", example=false),
+     *         @OA\Property(property="message", type="string", example="Validation failed"),
+     *         @OA\Property(
+     *             property="data",
+     *             type="object",
+     *             example={}
+     *         )
      *         )
      *     ),
      *
@@ -381,7 +403,7 @@ class UserService
      *         description="Unauthorized, invalid old password",
      *
      *         @OA\JsonContent(
-     *
+     *             @OA\Property(property="successful", type="boolean", example=false),
      *             @OA\Property(property="message", type="string", example="Unauthorized")
      *         )
      *     ),
@@ -391,9 +413,8 @@ class UserService
      *          description="Forbidden",
      *
      *          @OA\JsonContent(
-     *
+     *              @OA\Property(property="successful", type="boolean", example=false),
      *              @OA\Property(property="message", type="string", example="You are not authorized to modify this profile"),
-     *              @OA\Property(property="status",type="boolean",example=false)
      *          )
      *      )
      * )

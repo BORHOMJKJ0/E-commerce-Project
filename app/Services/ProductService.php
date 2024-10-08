@@ -18,10 +18,12 @@ class ProductService
     use AuthTrait;
 
     protected $productRepository;
+    protected $fcmService;
 
-    public function __construct(ProductRepository $productRepository)
+    public function __construct(ProductRepository $productRepository, FcmService $fcmService)
     {
         $this->productRepository = $productRepository;
+        $this->fcmService = $fcmService;
     }
 
     /**
@@ -283,6 +285,9 @@ class ProductService
         $data['user_id'] = auth()->id();
         $this->validateProductData($data);
         $product = $this->productRepository->create($data);
+
+        $this->fcmService->notifyUsers($product);
+
         $data = [
             'Product' => ProductResource::make($product),
         ];

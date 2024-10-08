@@ -46,8 +46,8 @@ class EmailService
      *         description="Email verification successfully",
      *
      *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="success", type="string", example="Email verification successfully")
+     *              @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Email verification successfully")
      *         )
      *     ),
      *
@@ -56,9 +56,18 @@ class EmailService
      *         description="Invalid email activation code",
      *
      *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="error", type="string", example="Your email activation code is invalid")
+     *         @OA\Property(property="successful", type="boolean", example=false),
+     *         @OA\Property(property="message", type="string", example="Validation failed"),
+     *         @OA\Property(
+     *             property="data",
+     *             type="object",
+     *             @OA\Property(
+     *                 property="email",
+     *                 type="array",
+     *                 @OA\Items(type="string", example="The selected email is invalid.")
+     *             )
      *         )
+     *  )
      *     )
      * )
      */
@@ -96,7 +105,7 @@ class EmailService
      *         description="Verification code sent successfully",
      *
      *         @OA\JsonContent(
-     *
+     *             @OA\Property(property="successful", type="boolean", example=true),
      *             @OA\Property(property="message", type="string", example="The activation code has been sent to your email")
      *         )
      *     ),
@@ -106,18 +115,18 @@ class EmailService
      *         description="Email already verified",
      *
      *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="error", type="string", example="Email already verified")
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Email already verified")
      *         )
      *     ),
      *
      *     @OA\Response(
      *         response=404,
-     *         description="User not found",
+     *         description="Email not found",
      *
      *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="error", type="string", example="User not found")
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Email not found")
      *         )
      *     )
      * )
