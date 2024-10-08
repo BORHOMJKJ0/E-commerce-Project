@@ -76,6 +76,7 @@ Route::middleware('api')->prefix('users')->group(function () {
         Route::post('register', 'register');
         Route::post('login', 'login')->middleware('verified.email');
         Route::post('logout', 'logout');
+        Route::post('store/fcm_token', 'storeFcmToken');
         Route::get('profile/{user}', 'profile')->whereNumber('user');
         Route::put('update/{user_id}', 'update')->whereNumber('user');
         Route::delete('destroy', 'destroy');

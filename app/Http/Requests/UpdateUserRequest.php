@@ -20,9 +20,10 @@ class UpdateUserRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'name' => 'sometimes|string',
+            'First_name' => 'sometimes|string|max:255',
+            'Last_name' => 'sometimes|string|max:255',
+            'Address' => 'sometimes|string',
             'mobile' => 'sometimes|string|size:10',
-            'gender' => 'sometimes|enum|in:male,female',
             'old_password' => ['sometimes', 'string', new MatchOldPassword, 'required_with:new_password'],
             'new_password' => ['sometimes', 'string', 'min:8', 'confirmed', function ($attribute, $value, $fail) {
                 if ($this->filled('new_password') && ! $this->filled('old_password')) {

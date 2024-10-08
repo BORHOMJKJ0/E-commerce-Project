@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -37,6 +38,10 @@ class UserController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         return $this->UserService->login($request);
+    }
+
+    public function storeFcmToken(Request $request){
+        return $this->UserService->storeFcmToken($request);
     }
 
     public function profile(User $user)

@@ -13,6 +13,13 @@ class UserRepository
         return User::all();
     }
 
+    public function getAllUsersHasFcmToken()
+    {
+        return User::where('id', '!=', auth()->id())
+            ->whereNotNull('fcm_token')
+            ->get();
+    }
+
     public function findByEmail(string $email)
     {
         return User::where('email', $email)->first();
