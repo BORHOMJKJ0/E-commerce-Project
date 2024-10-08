@@ -11,6 +11,7 @@ use Kreait\Firebase\Messaging\Notification;
 class FcmService
 {
     protected $messaging;
+
     protected $userRepository;
 
     public function __construct(UserRepository $userRepository)
@@ -37,7 +38,7 @@ class FcmService
     {
         $user = auth()->user();
         $title = 'New Product Added';
-        $body = 'User ' . $user->First_Name . ' ' . $user->Last_Name . ' has added a new product' . $product->name;
+        $body = 'User '.$user->First_Name.' '.$user->Last_Name.' has added a new product'.$product->name;
 
         $users = $this->userRepository->getAllUsersHasFcmToken();
 

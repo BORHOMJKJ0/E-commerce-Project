@@ -40,7 +40,8 @@ class UserController extends Controller
         return $this->UserService->login($request);
     }
 
-    public function storeFcmToken(Request $request){
+    public function storeFcmToken(Request $request)
+    {
         return $this->UserService->storeFcmToken($request);
     }
 

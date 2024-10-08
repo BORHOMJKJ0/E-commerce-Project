@@ -13,10 +13,10 @@ class UserFactory extends Factory
             'name' => fake()->name,
             'email' => fake()->unique()->safeEmail,
             'mobile' => fake()->unique()->phoneNumber,
-            'gender' => fake()->randomElement(['male', 'female']),
             'email_verified_at' => fake()->optional()->dateTime(),
             'password' => bcrypt('password'),
             'remember_token' => Str::random(10),
+            'fcm_token' => fake()->optional()->regexify('[A-Za-z0-9]{64}'),
         ];
 
     }
