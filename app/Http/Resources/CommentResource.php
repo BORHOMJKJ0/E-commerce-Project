@@ -7,13 +7,13 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class CommentResource extends JsonResource
 {
-
     /**
      * @OA\Schema(
      *     schema="CommentResource",
      *     type="object",
      *     title="Comment Resource",
      *     description="Comment details",
+     *
      *     @OA\Property(property="id", type="integer", example=42, description="ID of the comment"),
      *     @OA\Property(property="review_id", type="integer", example=15, description="ID of the review"),
      *     @OA\Property(property="product_id", type="integer", example=101, description="ID of the product"),

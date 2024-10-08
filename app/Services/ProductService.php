@@ -18,6 +18,7 @@ class ProductService
     use AuthTrait;
 
     protected $productRepository;
+
     protected $fcmService;
 
     public function __construct(ProductRepository $productRepository, FcmService $fcmService)
