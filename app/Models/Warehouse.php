@@ -12,14 +12,16 @@ use OpenApi\Annotations as OA;
  * @OA\Schema(
  *     schema="Warehouse",
  *     type="object",
+ *     title="Warehouse Model",
+ *     description="Warehouse details",
  *
- *     @OA\Property(property="id", type="integer", example=1),
- *     @OA\Property(property="pure_price", type="number", format="float", example=300.50),
- *     @OA\Property(property="amount", type="number", format="integer", example="100"),
- *     @OA\Property(property="payment_date", type="string", format="date", example="2024-09-01"),
- *     @OA\Property(property="settlement_date", type="string", format="date", example=null),
- *     @OA\Property(property="expiry_date", type="string", format="date", example="2024-12-01"),
- *     @OA\Property(property="product_id",type="integer",example=1),
+ *     @OA\Property(property="id", type="integer", example=1,description="The ID of the warehouse"),
+ *     @OA\Property(property="pure_price", type="number", format="float", example=300.50,description="The pure price of the warehouse"),
+ *     @OA\Property(property="amount", type="number", format="integer", example="100",description="The amount of the warehouse"),
+ *     @OA\Property(property="payment_date", type="string", format="date", example="2024-09-01",description="The payment date of the warehouse"),
+ *     @OA\Property(property="settlement_date", type="string", format="date", example=null,description="The settlement date of the warehouse"),
+ *     @OA\Property(property="expiry_date", type="string", format="date", example="2024-12-01",description="The expiry date of the warehouse"),
+ *     @OA\Property(property="product_id",type="integer",example=1,description="The product ID related to the warehouse"),
  * )
  */
 class Warehouse extends Model

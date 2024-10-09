@@ -36,7 +36,7 @@ class ReviewService
      * @OA\Get(
      *     path="/api/reviews",
      *     summary="Get all reviews",
-     *     tags={"Review"},
+     *     tags={"Reviews"},
      *     security={{"bearerAuth": {} }},
      *
      *     @OA\Parameter(

@@ -732,12 +732,19 @@
                         "multipart/form-data": {
                             "schema": {
                                 "required": [
-                                    "name"
+                                    "text"
                                 ],
                                 "properties": {
-                                    "name": {
+                                    "text": {
+                                        "description": "The comment text. Must provide either 'text' or 'image', or both.",
                                         "type": "string",
-                                        "example": "Fruits"
+                                        "example": "This is a comment"
+                                    },
+                                    "image": {
+                                        "description": "URL of an optional image. Must provide either 'text' or 'image', or both.",
+                                        "type": "string",
+                                        "example": "http://example.com/image.jpg",
+                                        "nullable": true
                                     }
                                 },
                                 "type": "object"
@@ -756,14 +763,14 @@
                                             "type": "integer",
                                             "example": 1
                                         },
-                                        "name": {
+                                        "text": {
                                             "type": "string",
-                                            "example": "Electronic devices"
+                                            "example": "This is a comment"
                                         },
-                                        "products": {
-                                            "type": "array",
-                                            "items": {},
-                                            "example": []
+                                        "image": {
+                                            "type": "string",
+                                            "example": "http://example.com/image.jpg",
+                                            "nullable": true
                                         }
                                     },
                                     "type": "object"
@@ -3620,7 +3627,7 @@
         "/api/reviews": {
             "get": {
                 "tags": [
-                    "Review"
+                    "Reviews"
                 ],
                 "summary": "Get all reviews",
                 "operationId": "fc88ed087c6c5b291884b0b07c5e50f0",
@@ -5532,24 +5539,31 @@
     "components": {
         "schemas": {
             "CategoryResource": {
+                "title": "Category Resource",
+                "description": "Category details",
                 "properties": {
                     "id": {
+                        "description": "The ID of the Category",
                         "type": "integer",
                         "example": 1
                     },
                     "name": {
+                        "description": "The name of the Category",
                         "type": "string",
                         "example": "Electronics"
                     },
                     "products": {
+                        "description": "Product related to the Category",
                         "type": "array",
                         "items": {
                             "properties": {
                                 "name": {
+                                    "description": "The name of the product",
                                     "type": "string",
                                     "example": "Smartphone"
                                 },
                                 "user": {
+                                    "description": "The owner of the product",
                                     "type": "string",
                                     "example": "Hasan Zaeter"
                                 }
@@ -5565,38 +5579,33 @@
                 "description": "Comment details",
                 "properties": {
                     "id": {
-                        "description": "ID of the comment",
+                        "description": "The ID of the comment",
                         "type": "integer",
-                        "example": 42
+                        "example": 1
                     },
                     "review_id": {
-                        "description": "ID of the review",
+                        "description": "The ID of the review",
                         "type": "integer",
-                        "example": 15
-                    },
-                    "product_id": {
-                        "description": "ID of the product",
-                        "type": "integer",
-                        "example": 101
+                        "example": 1
                     },
                     "product_name": {
-                        "description": "Name of the product",
+                        "description": "The name of the product",
                         "type": "string",
                         "example": "iPhone 15"
                     },
                     "user_name": {
-                        "description": "Name of the user who left the comment",
+                        "description": "The name of the user who left the comment",
                         "type": "string",
                         "example": "John Doe"
                     },
                     "text": {
-                        "description": "Comment text",
+                        "description": "The comment text",
                         "type": "string",
                         "example": "This is a great product!",
                         "nullable": true
                     },
                     "image": {
-                        "description": "Image URL attached to the comment",
+                        "description": "The image URL attached to the comment",
                         "type": "string",
                         "example": "http://example.com/image.jpg",
                         "nullable": true
@@ -5604,47 +5613,81 @@
                 },
                 "type": "object"
             },
-            "OfferResource": {
+            "ContactResource": {
+                "title": "Contact Resource",
+                "description": "Contact Resource",
                 "properties": {
                     "id": {
+                        "description": "The ID of the contact",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "link": {
+                        "description": "The contact link",
+                        "type": "string",
+                        "example": "https://example.com"
+                    },
+                    "contact_type_id": {
+                        "description": "The contact type ID",
+                        "type": "integer",
+                        "example": 2
+                    }
+                },
+                "type": "object"
+            },
+            "OfferResource": {
+                "title": "Offer Resource",
+                "description": "Offer details",
+                "properties": {
+                    "id": {
+                        "description": "The ID of the offer",
                         "type": "integer",
                         "example": 1
                     },
                     "discount_percentage": {
+                        "description": "The discount percentage of the offer",
                         "type": "number",
                         "format": "float",
                         "example": 10
                     },
                     "start_date": {
+                        "description": "The start date of the offer",
                         "type": "string",
                         "format": "date",
                         "example": "2024-09-01"
                     },
                     "end_date": {
+                        "description": "The end date of the offer",
                         "type": "string",
                         "format": "date",
                         "example": "2024-12-31"
                     },
                     "product": {
+                        "description": "Product Detalis related to the offer",
                         "properties": {
                             "name": {
+                                "description": "The name of the product",
                                 "type": "string",
                                 "example": "Iphone 15"
                             },
                             "price": {
+                                "description": "The price of the product",
                                 "type": "number",
                                 "format": "float",
                                 "example": 499.99
                             },
                             "description": {
+                                "description": "The description of the product",
                                 "type": "string",
                                 "example": "A high-end smartphone with excellent features and a sleek design"
                             },
                             "category": {
+                                "description": "The category of the product",
                                 "type": "string",
                                 "example": "Smartphone"
                             },
                             "user": {
+                                "description": "The owner of the product",
                                 "type": "string",
                                 "example": "Hasan Zaeter"
                             }
@@ -5655,51 +5698,64 @@
                 "type": "object"
             },
             "ProductResource": {
+                "title": "Product Resource",
+                "description": "Product details",
                 "properties": {
                     "id": {
+                        "description": "The ID of the product",
                         "type": "integer",
-                        "example": 42
+                        "example": 1
                     },
                     "name": {
+                        "description": "The name of the product",
                         "type": "string",
                         "example": "Iphone 15"
                     },
                     "image": {
+                        "description": "The image of the product",
                         "type": "string",
                         "example": "https://example.com/images/smartphone-xyz.jpg"
                     },
                     "price": {
+                        "description": "The price of the product",
                         "type": "number",
                         "format": "float",
                         "example": 499.99
                     },
                     "description": {
+                        "description": "The description of the product",
                         "type": "string",
                         "example": "A high-end smartphone with excellent features and a sleek design."
                     },
                     "current_price": {
+                        "description": "The current price of the product",
                         "type": "number",
                         "format": "float",
                         "example": 449.99
                     },
                     "user": {
+                        "description": "The owner of the product",
                         "type": "string",
                         "example": "Hasan Zaeter"
                     },
                     "offers": {
+                        "description": "Offer related to the product",
                         "type": "array",
                         "items": {
                             "properties": {
                                 "discount": {
+                                    "description": "The discount percentage of the offer",
                                     "type": "string",
                                     "example": "10.00"
                                 },
                                 "starting_at": {
+                                    "description": "The start date of the offer",
                                     "type": "string",
                                     "format": "date-time",
                                     "example": "2024-09-22 12:00"
                                 },
                                 "ending_at": {
+                                    "description": "The end date of the offer",
                                     "type": "string",
                                     "format": "date-time",
                                     "example": "2025-01-15 23:59"
@@ -5709,16 +5765,20 @@
                         }
                     },
                     "expressions": {
+                        "description": "Expressions related to the product",
                         "properties": {
                             "views": {
+                                "description": "The Number of views of the product",
                                 "type": "integer",
                                 "example": 120
                             },
                             "likes": {
+                                "description": "The Number of likes of the product",
                                 "type": "integer",
                                 "example": 45
                             },
                             "dislikes": {
+                                "description": "The Number of dislikes of the product",
                                 "type": "integer",
                                 "example": 5
                             }
@@ -5726,15 +5786,18 @@
                         "type": "object"
                     },
                     "total_amount": {
+                        "description": "The total amount from the product",
                         "type": "integer",
                         "example": 50
                     },
                     "expiry_date": {
+                        "description": "The expiry date of the product",
                         "type": "string",
                         "format": "date",
                         "example": "2025-12-31"
                     },
                     "category": {
+                        "description": "The category of the product",
                         "type": "string",
                         "example": "Smartphones"
                     }
@@ -5746,12 +5809,12 @@
                 "description": "Review details",
                 "properties": {
                     "id": {
-                        "description": "ID of the review",
+                        "description": "The ID of the review",
                         "type": "integer",
-                        "example": 42
+                        "example": 1
                     },
                     "rating": {
-                        "description": "Rating given by the user",
+                        "description": "The rating given by the user",
                         "type": "number",
                         "format": "float",
                         "example": 4.5
@@ -5760,18 +5823,18 @@
                         "description": "Comment related to the review",
                         "properties": {
                             "id": {
-                                "description": "ID of the comment",
+                                "description": "The ID of the comment",
                                 "type": "integer",
-                                "example": 101
+                                "example": 1
                             },
                             "text": {
-                                "description": "Comment text",
+                                "description": "The comment text",
                                 "type": "string",
                                 "example": "Great product!",
                                 "nullable": true
                             },
                             "image": {
-                                "description": "Image URL attached to the comment",
+                                "description": "The image URL attached to the comment",
                                 "type": "string",
                                 "example": "http://example.com/image.jpg",
                                 "nullable": true
@@ -5781,15 +5844,15 @@
                         "nullable": true
                     },
                     "product": {
-                        "description": "Details of the reviewed product",
+                        "description": "The details of the reviewed product",
                         "properties": {
                             "id": {
-                                "description": "ID of the product",
+                                "description": "The ID of the product",
                                 "type": "integer",
-                                "example": 15
+                                "example": 1
                             },
                             "name": {
-                                "description": "Name of the product",
+                                "description": "The name of the product",
                                 "type": "string",
                                 "example": "iPhone 15"
                             }
@@ -5797,15 +5860,15 @@
                         "type": "object"
                     },
                     "user": {
-                        "description": "Details of the user who left the review",
+                        "description": "The details of the user who left the review",
                         "properties": {
                             "id": {
-                                "description": "ID of the user",
+                                "description": "The ID of the user",
                                 "type": "integer",
-                                "example": 5
+                                "example": 1
                             },
                             "name": {
-                                "description": "Name of the user",
+                                "description": "The name of the user",
                                 "type": "string",
                                 "example": "John Doe"
                             }
@@ -5815,53 +5878,155 @@
                 },
                 "type": "object"
             },
-            "WarehouseResource": {
+            "User ContactsResource": {
+                "title": "User Contacts Resource",
+                "description": "User Contacts Resource",
                 "properties": {
                     "id": {
+                        "description": "The ID of the user",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "First_Name": {
+                        "description": "The first name of the user",
+                        "type": "string",
+                        "example": "John"
+                    },
+                    "Last_Name": {
+                        "description": "The last name of the user",
+                        "type": "string",
+                        "example": "Doe"
+                    },
+                    "email": {
+                        "description": "The email address of the user",
+                        "type": "string",
+                        "format": "email",
+                        "example": "john.doe@example.com"
+                    },
+                    "Address": {
+                        "description": "The address of the user",
+                        "type": "string",
+                        "example": "123 Main St"
+                    },
+                    "mobile": {
+                        "description": "The mobile number of the user",
+                        "type": "string",
+                        "example": "123456789"
+                    },
+                    "contact_count": {
+                        "description": "The count of user contacts",
+                        "type": "integer",
+                        "example": 3
+                    },
+                    "contacts": {
+                        "description": "The list of contacts associated with the user",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ContactResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "UserResource": {
+                "title": "User Resource",
+                "description": "User details",
+                "properties": {
+                    "id": {
+                        "description": "The ID of the user",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "First_Name": {
+                        "description": "The first name of the user",
+                        "type": "string",
+                        "example": "John"
+                    },
+                    "Last_Name": {
+                        "description": "The last name of the user",
+                        "type": "string",
+                        "example": "Doe",
+                        "nullable": true
+                    },
+                    "email": {
+                        "description": "The email of the user",
+                        "type": "string",
+                        "example": "john.doe@example.com"
+                    },
+                    "mobile": {
+                        "description": "The Phone number of the user",
+                        "type": "string",
+                        "example": "+1234567890"
+                    },
+                    "Address": {
+                        "description": "The Address of the user",
+                        "type": "string",
+                        "example": "123 Main St, Anytown, USA",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "WarehouseResource": {
+                "title": "Warehouse Resource",
+                "description": "Warehouse details",
+                "properties": {
+                    "id": {
+                        "description": "The ID of the warehouse",
                         "type": "integer",
                         "example": 1
                     },
                     "pure_price": {
+                        "description": "The pure price of the warehouse",
                         "type": "number",
                         "format": "float",
                         "example": "350.50"
                     },
                     "amount": {
+                        "description": "The amount of the warehouse",
                         "type": "number",
                         "format": "integer",
                         "example": "250"
                     },
                     "payment_date": {
+                        "description": "The payment date of the warehouse",
                         "type": "string",
                         "format": "date",
                         "example": "2024-09-15"
                     },
                     "settlement_date": {
+                        "description": "The settlement date of the warehouse",
                         "type": "string",
                         "format": "date",
                         "example": "null"
                     },
                     "expiry_date": {
+                        "description": "The expiry date of the warehouse",
                         "type": "string",
                         "format": "date",
                         "example": "2025-12-31"
                     },
                     "product": {
+                        "description": "Product Detalis related to the warehouse",
                         "properties": {
                             "name": {
+                                "description": "The name of the product",
                                 "type": "string",
                                 "example": "Iphone 15"
                             },
                             "price": {
+                                "description": "The price of the product",
                                 "type": "number",
                                 "format": "float",
                                 "example": "499.99"
                             },
                             "category": {
+                                "description": "The category of the product",
                                 "type": "string",
                                 "example": "Smartphone"
                             },
                             "user": {
+                                "description": "The owner of the product",
                                 "type": "string",
                                 "example": "Hasan Zaeter"
                             }
@@ -5872,56 +6037,156 @@
                 "type": "object"
             },
             "Category": {
+                "title": "Category Model",
+                "description": "Category details",
                 "properties": {
                     "id": {
+                        "description": "The ID of the category",
                         "type": "integer",
                         "example": 1
                     },
                     "name": {
+                        "description": "The name of the category",
                         "type": "string",
                         "example": "Electronics"
+                    }
+                },
+                "type": "object"
+            },
+            "Comment": {
+                "title": "Comment Model",
+                "description": "Comment details",
+                "properties": {
+                    "id": {
+                        "description": "The ID of the comment",
+                        "type": "integer",
+                        "example": 1
                     },
-                    "products": {
-                        "type": "array",
-                        "items": {
-                            "properties": {
-                                "name": {
-                                    "type": "string",
-                                    "example": "Smartphone"
-                                },
-                                "user_id": {
-                                    "type": "integer",
-                                    "example": 1
-                                }
-                            },
-                            "type": "object"
-                        }
+                    "review_id": {
+                        "description": "The ID of the associated review",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "text": {
+                        "description": "The comment text. Must provide either 'text' or 'image', or both.",
+                        "type": "string",
+                        "example": "This is a comment",
+                        "nullable": true
+                    },
+                    "image": {
+                        "description": "the image URL of an optional image. Must provide either 'text' or 'image', or both.",
+                        "type": "string",
+                        "example": "http://example.com/image.jpg",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Contact Information": {
+                "title": "Contact Info Model",
+                "description": "ContactInfo details",
+                "properties": {
+                    "id": {
+                        "description": "The ID of the contact information",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "user_id": {
+                        "description": "The ID of the associated user",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "contact_type_id": {
+                        "description": "The ID of the associated contact type",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "link": {
+                        "description": "The contact link",
+                        "type": "string",
+                        "example": "http://example.com/contact"
+                    }
+                },
+                "type": "object"
+            },
+            "Contact Type": {
+                "title": "Contact Type Model",
+                "description": "Contact Type details",
+                "properties": {
+                    "id": {
+                        "description": "The ID of Contact type",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "type_english": {
+                        "description": "The English name of the contact type",
+                        "type": "string",
+                        "example": "Email"
+                    },
+                    "type_arabic": {
+                        "description": "The Arabic name of the contact type",
+                        "type": "string",
+                        "example": "بريد إلكتروني"
+                    }
+                },
+                "type": "object"
+            },
+            "Expression": {
+                "title": "Expression Model",
+                "description": "Expression details",
+                "properties": {
+                    "id": {
+                        "description": "The ID of the expression",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "user_id": {
+                        "description": "The ID of the user associated with the expression",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "product_id": {
+                        "description": "The ID of the product associated with the expression",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "action": {
+                        "description": "the expression",
+                        "type": "string",
+                        "example": "Like"
                     }
                 },
                 "type": "object"
             },
             "Offer": {
+                "title": "Offer Model",
+                "description": "Offer details",
                 "properties": {
                     "id": {
+                        "description": "The ID of the offer",
                         "type": "integer",
                         "example": 1
                     },
                     "discount_percentage": {
+                        "description": "The discount percentage of the offer",
                         "type": "number",
                         "format": "float",
                         "example": 15.5
                     },
                     "start_date": {
+                        "description": "The start date of the offer",
                         "type": "string",
                         "format": "date",
                         "example": "2024-09-01"
                     },
                     "end_date": {
+                        "description": "The end date of the offer",
                         "type": "string",
                         "format": "date",
                         "example": "2024-12-31"
                     },
                     "product_id": {
+                        "description": "The ID of the product associated with the offer",
                         "type": "integer",
                         "example": 1
                     }
@@ -5929,108 +6194,178 @@
                 "type": "object"
             },
             "Product": {
+                "title": "Product Model",
+                "description": "Product details",
                 "properties": {
                     "id": {
+                        "description": "The ID of the product",
                         "type": "integer",
                         "example": 1
                     },
                     "name": {
+                        "description": "The name of the product",
                         "type": "string",
                         "example": "Smartphone"
                     },
                     "image": {
+                        "description": "The image of the product",
                         "type": "string",
                         "example": "product_image.jpg"
                     },
                     "price": {
+                        "description": "The price of the product",
                         "type": "number",
                         "format": "float",
                         "example": 499.99
                     },
                     "description": {
+                        "description": "The description of the product",
                         "type": "string",
                         "example": "Samsung A30s white color 8Ram 128GB space"
                     },
                     "current_price": {
+                        "description": "The pure price of the product",
                         "type": "number",
                         "format": "float",
                         "example": 422.49
                     },
                     "user_id": {
+                        "description": "The owner ID of the product",
                         "type": "integer",
                         "example": 1
                     },
-                    "offers": {
-                        "type": "array",
-                        "items": {
-                            "properties": {
-                                "discount": {
-                                    "type": "number",
-                                    "format": "float",
-                                    "example": 15.5
-                                },
-                                "starting_at": {
-                                    "type": "string",
-                                    "format": "date-time",
-                                    "example": "2024-09-21 23:20"
-                                },
-                                "ending_at": {
-                                    "type": "string",
-                                    "format": "date-time",
-                                    "example": "2024-09-21 23:20"
-                                }
-                            },
-                            "type": "object"
-                        }
-                    },
                     "total_amount": {
+                        "description": "The total amount of the product",
                         "type": "integer",
                         "example": 100
                     },
                     "expiry_date": {
+                        "description": "The expiry date of the product",
                         "type": "string",
                         "format": "date",
                         "example": "2024-12-01"
                     },
                     "category_id": {
+                        "description": "The category related to the product",
                         "type": "integer",
                         "example": 1
                     }
                 },
                 "type": "object"
             },
-            "Warehouse": {
+            "Review": {
+                "title": "Review Model",
+                "description": "Review details",
                 "properties": {
                     "id": {
+                        "description": "The ID of the review",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "user_id": {
+                        "description": "The ID of the user who made the review",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "product_id": {
+                        "description": "The ID of the product being reviewed",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "rating": {
+                        "description": "Rating given by the user",
+                        "type": "integer",
+                        "example": 5
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "title": "User Model",
+                "description": "User details",
+                "properties": {
+                    "id": {
+                        "description": "The ID of the user",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "First_Name": {
+                        "description": "The first name of the user",
+                        "type": "string",
+                        "example": "John"
+                    },
+                    "Last_Name": {
+                        "description": "The second name of the user",
+                        "type": "string",
+                        "example": "Doe",
+                        "nullable": true
+                    },
+                    "email": {
+                        "description": "The email of the user",
+                        "type": "string",
+                        "example": "john.doe@example.com"
+                    },
+                    "fcm_token": {
+                        "description": "The fcm token of the user",
+                        "type": "string",
+                        "example": "sample_fcm_token",
+                        "nullable": true
+                    },
+                    "mobile": {
+                        "description": "The phone number of the user",
+                        "type": "string",
+                        "example": "1234567890"
+                    },
+                    "Address": {
+                        "description": "The address of the user",
+                        "type": "string",
+                        "example": "123 Main St",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Warehouse": {
+                "title": "Warehouse Model",
+                "description": "Warehouse details",
+                "properties": {
+                    "id": {
+                        "description": "The ID of the warehouse",
                         "type": "integer",
                         "example": 1
                     },
                     "pure_price": {
+                        "description": "The pure price of the warehouse",
                         "type": "number",
                         "format": "float",
                         "example": 300.5
                     },
                     "amount": {
+                        "description": "The amount of the warehouse",
                         "type": "number",
                         "format": "integer",
                         "example": "100"
                     },
                     "payment_date": {
+                        "description": "The payment date of the warehouse",
                         "type": "string",
                         "format": "date",
                         "example": "2024-09-01"
                     },
                     "settlement_date": {
+                        "description": "The settlement date of the warehouse",
                         "type": "string",
                         "format": "date",
                         "example": null
                     },
                     "expiry_date": {
+                        "description": "The expiry date of the warehouse",
                         "type": "string",
                         "format": "date",
                         "example": "2024-12-01"
                     },
                     "product_id": {
+                        "description": "The product ID related to the warehouse",
                         "type": "integer",
                         "example": 1
                     }
@@ -6075,10 +6410,6 @@
         {
             "name": "Products",
             "description": "Products"
-        },
-        {
-            "name": "Review",
-            "description": "Review"
         },
         {
             "name": "Reviews",

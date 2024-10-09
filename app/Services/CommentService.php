@@ -206,18 +206,17 @@ class CommentService
      *
      *     @OA\RequestBody(
      *         required=true,
-     *
-     *      @OA\MediaType(
+     *         @OA\MediaType(
      *             mediaType="multipart/form-data",
-     *
      *             @OA\Schema(
      *                 type="object",
-     *                 required={"name"},
-     *
-     *                 @OA\Property(property="name", type="string", example="Fruits"),
+     *                 required={"text"},
+     *                 @OA\Property(property="text", type="string", example="This is a comment", description="The comment text. Must provide either 'text' or 'image', or both."),
+     *                 @OA\Property(property="image", type="string", example="http://example.com/image.jpg", nullable=true, description="URL of an optional image. Must provide either 'text' or 'image', or both."),
      *             )
      *         )
      *     ),
+     *
      *
      *    @OA\Header(
      *         header="Content-Type",
@@ -236,21 +235,13 @@ class CommentService
      *     @OA\Response(
      *         response=201,
      *         description="Comment created successfully",
-     *
      *         @OA\JsonContent(
      *             type="object",
-     *
      *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="name", type="string", example="Electronic devices"),
-     *             @OA\Property(
-     *                 property="products",
-     *                 type="array",
-     *                 example={},
-     *
-     *             @OA\Items()
+     *             @OA\Property(property="text", type="string", example="This is a comment"),
+     *             @OA\Property(property="image", type="string", example="http://example.com/image.jpg", nullable=true),
      *             )
-     *         )
-     *     ),
+     *           ),
      *
      *     @OA\Response(
      *         response=422,

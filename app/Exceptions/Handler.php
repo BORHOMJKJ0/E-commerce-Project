@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Helpers\ResponseHelper;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -45,40 +46,19 @@ class Handler extends ExceptionHandler
 
             switch ($modelName) {
                 case 'App\\Models\\Product':
-                    return response()->json([
-                        'message' => 'Product not found',
-                        'successful' => false,
-                    ], 404);
+                    return ResponseHelper::jsonResponse([], 'Product Not Found', 404, false);
                 case 'App\\Models\\Category':
-                    return response()->json([
-                        'message' => 'Category not found',
-                        'successful' => false,
-                    ], 404);
+                    return ResponseHelper::jsonResponse([], 'Category Not Found', 404, false);
                 case 'App\\Models\\Offer':
-                    return response()->json([
-                        'message' => 'Offer not found',
-                        'successful' => false,
-                    ], 404);
+                    return ResponseHelper::jsonResponse([], 'Offer Not Found', 404, false);
                 case 'App\\Models\\Warehouse':
-                    return response()->json([
-                        'message' => 'Warehouse not found',
-                        'successful' => false,
-                    ], 404);
+                    return ResponseHelper::jsonResponse([], 'Warehouse Not Found', 404, false);
                 case 'App\\Models\\Review':
-                    return response()->json([
-                        'message' => 'Review not found',
-                        'successful' => false,
-                    ], 404);
+                    return ResponseHelper::jsonResponse([], 'Review Not Found', 404, false);
                 case 'App\\Models\\Comment':
-                    return response()->json([
-                        'message' => 'Comment not found',
-                        'successful' => false,
-                    ], 404);
+                    return ResponseHelper::jsonResponse([], 'Comment Not Found', 404, false);
                 case 'App\\Models\\User':
-                    return response()->json([
-                        'message' => 'User not found',
-                        'successful' => false,
-                    ], 404);
+                    return ResponseHelper::jsonResponse([], 'User Not Found', 404, false);
                 default:
                     return response()->json([
                         'message' => 'Resource not found',

@@ -11,35 +11,39 @@ use OpenApi\Annotations as OA;
  * @OA\Schema(
  *     schema="ProductResource",
  *     type="object",
+ *     title="Product Resource",
+ *     description="Product details",
  *
- *     @OA\Property(property="id", type="integer", example=42),
- *     @OA\Property(property="name", type="string", example="Iphone 15"),
- *     @OA\Property(property="image", type="string", example="https://example.com/images/smartphone-xyz.jpg"),
- *     @OA\Property(property="price", type="number", format="float", example=499.99),
- *     @OA\Property(property="description", type="string", example="A high-end smartphone with excellent features and a sleek design."),
- *     @OA\Property(property="current_price", type="number", format="float", example=449.99),
- *     @OA\Property(property="user", type="string", example="Hasan Zaeter"),
+ *     @OA\Property(property="id", type="integer", example=1,description="The ID of the product"),
+ *     @OA\Property(property="name", type="string", example="Iphone 15",description="The name of the product"),
+ *     @OA\Property(property="image", type="string", example="https://example.com/images/smartphone-xyz.jpg",description="The image of the product"),
+ *     @OA\Property(property="price", type="number", format="float", example=499.99,description="The price of the product"),
+ *     @OA\Property(property="description", type="string", example="A high-end smartphone with excellent features and a sleek design.",description="The description of the product"),
+ *     @OA\Property(property="current_price", type="number", format="float", example=449.99,description="The current price of the product"),
+ *     @OA\Property(property="user", type="string", example="Hasan Zaeter",description="The owner of the product"),
  *     @OA\Property(
  *         property="offers",
  *         type="array",
+ *         description="Offer related to the product",
  *
  *         @OA\Items(
  *
- *             @OA\Property(property="discount", type="string", example="10.00"),
- *             @OA\Property(property="starting_at", type="string", format="date-time", example="2024-09-22 12:00"),
- *             @OA\Property(property="ending_at", type="string", format="date-time", example="2025-01-15 23:59")
+ *             @OA\Property(property="discount", type="string", example="10.00",description="The discount percentage of the offer"),
+ *             @OA\Property(property="starting_at", type="string", format="date-time", example="2024-09-22 12:00",description="The start date of the offer"),
+ *             @OA\Property(property="ending_at", type="string", format="date-time", example="2025-01-15 23:59",description="The end date of the offer")
  *         )
  *     ),
  *     @OA\Property(
  *          property="expressions",
  *          type="object",
- *          @OA\Property(property="views", type="integer", example=120),
- *          @OA\Property(property="likes", type="integer", example=45),
- *          @OA\Property(property="dislikes", type="integer", example=5)
+ *          description="Expressions related to the product",
+ *          @OA\Property(property="views", type="integer", example=120,description="The Number of views of the product"),
+ *          @OA\Property(property="likes", type="integer", example=45,description="The Number of likes of the product"),
+ *          @OA\Property(property="dislikes", type="integer", example=5,description="The Number of dislikes of the product")
  *      ),
- *     @OA\Property(property="total_amount", type="integer", example=50),
- *     @OA\Property(property="expiry_date", type="string", format="date", example="2025-12-31"),
- *     @OA\Property(property="category", type="string", example="Smartphones"),
+ *     @OA\Property(property="total_amount", type="integer", example=50,description="The total amount from the product"),
+ *     @OA\Property(property="expiry_date", type="string", format="date", example="2025-12-31",description="The expiry date of the product"),
+ *     @OA\Property(property="category", type="string", example="Smartphones",description="The category of the product"),
  * )
  */
 class ProductResource extends JsonResource
