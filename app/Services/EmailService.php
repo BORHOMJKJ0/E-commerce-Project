@@ -48,8 +48,10 @@ class EmailService
      *         @OA\JsonContent(
      *
      *              @OA\Property(property="successful", type="boolean", example=true),
-     *             @OA\Property(property="message", type="string", example="Email verification successfully")
-     *         )
+     *             @OA\Property(property="message", type="string", example="Email verification successfully"),
+     *             @OA\Property(property="status_code", type="integer", example=200),
+     *         ),
+     *
      *     ),
      *
      *     @OA\Response(
@@ -69,7 +71,9 @@ class EmailService
      *
      *                 @OA\Items(type="string", example="The selected email is invalid.")
      *             )
-     *         )
+     *         ),
+     *
+     *          @OA\Property(property="status_code", type="integer", example=400),
      *  )
      *     )
      * )
@@ -110,7 +114,8 @@ class EmailService
      *         @OA\JsonContent(
      *
      *             @OA\Property(property="successful", type="boolean", example=true),
-     *             @OA\Property(property="message", type="string", example="The activation code has been sent to your email")
+     *             @OA\Property(property="message", type="string", example="The activation code has been sent to your email"),
+     *              @OA\Property(property="status_code", type="integer", example=200),
      *         )
      *     ),
      *
@@ -121,7 +126,8 @@ class EmailService
      *         @OA\JsonContent(
      *
      *             @OA\Property(property="successful", type="boolean", example=false),
-     *             @OA\Property(property="message", type="string", example="Email already verified")
+     *             @OA\Property(property="message", type="string", example="Email already verified"),
+     *              @OA\Property(property="status_code", type="integer", example=400),
      *         )
      *     ),
      *
@@ -132,7 +138,8 @@ class EmailService
      *         @OA\JsonContent(
      *
      *             @OA\Property(property="successful", type="boolean", example=false),
-     *             @OA\Property(property="message", type="string", example="Email not found")
+     *             @OA\Property(property="message", type="string", example="Email not found"),
+     *              @OA\Property(property="status_code", type="integer", example=404),
      *         )
      *     )
      * )

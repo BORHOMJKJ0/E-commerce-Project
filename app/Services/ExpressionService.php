@@ -63,6 +63,7 @@ class ExpressionService
      *
      *         @OA\JsonContent(
      *
+     *             @OA\Property(property="successful",type="boolean",example=true),
      *             @OA\Property(property="expression", type="object",
      *                 @OA\Property(property="expression_id", type="integer", example=1),
      *                 @OA\Property(property="product_id", type="integer", example=1),
@@ -73,7 +74,8 @@ class ExpressionService
      *                  enum={"like", "dislike"},
      *                  description="The expression action, either 'like' or 'dislike'.",
      *                  example="like"
-     *              )
+     *              ),
+     *              @OA\Property(property="status_code", type="integer", example=201),
      *             )
      *         )
      *     ),
@@ -84,7 +86,9 @@ class ExpressionService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="message", type="string", example="action input is invalid")
+     *             @OA\Property(property="successful",type="boolean",example=false),
+     *             @OA\Property(property="message", type="string", example="action input is invalid"),
+     *              @OA\Property(property="status_code", type="integer", example=400)
      *         )
      *     ),
      *
@@ -94,7 +98,9 @@ class ExpressionService
      *
      *          @OA\JsonContent(
      *
-     *              @OA\Property(property="message", type="string", example="Prodcut Not Found")
+     *              @OA\Property(property="successful",type="boolean",example=false),
+     *              @OA\Property(property="message", type="string", example="Prodcut Not Found"),
+     *               @OA\Property(property="status_code", type="integer", example=404),
      *          )
      *      )
      * )
@@ -139,6 +145,7 @@ class ExpressionService
      *         @OA\JsonContent(
      *             type="object",
      *
+     *             @OA\Property(property="successful",type="boolean",example=true),
      *             @OA\Property(
      *                 property="product",
      *                 type="string",
@@ -207,13 +214,21 @@ class ExpressionService
      *                         }
      *                     )
      *                 )
-     *             )
+     *             ),
+     *              @OA\Property(property="status_code", type="integer", example=200),
      *         )
      *     ),
      *
      *     @OA\Response(
      *         response=404,
-     *         description="Product not found"
+     *         description="Product not found",
+     *          @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="successful",type="boolean",example=false),
+     *             @OA\Property(property="message", type="string", example="Product not found"),
+     *             @OA\Property(property="status_code",type="integer",example=400)
+     *         )
      *     ),
      * )
      */
@@ -263,7 +278,7 @@ class ExpressionService
      *
      *         @OA\JsonContent(
      *             type="object",
-     *
+     *             @OA\Property(property="successful",type="boolean",example=true),
      *             @OA\Property(property="message", type="string", example="updated successfully"),
      *             @OA\Property(
      *                 property="user",
@@ -275,7 +290,8 @@ class ExpressionService
      *                 property="expression",
      *                 type="object",
      *                 @OA\Property(property="action", type="string", example="like")
-     *             )
+     *             ),
+     *             @OA\Property(property="status_code",type="integer",example=200)
      *         )
      *     ),
      *
@@ -286,7 +302,9 @@ class ExpressionService
      *         @OA\JsonContent(
      *             type="object",
      *
-     *             @OA\Property(property="message", type="string", example="User not expressed for this product")
+     *             @OA\Property(property="successful",type="boolean",example=false),
+     *             @OA\Property(property="message", type="string", example="User not expressed for this product"),
+     *             @OA\Property(property="status_code",type="integer",example=404)
      *         )
      *     ),
      *
@@ -297,7 +315,9 @@ class ExpressionService
      *         @OA\JsonContent(
      *             type="object",
      *
-     *             @OA\Property(property="message", type="string", example="action input is invalid")
+     *             @OA\Property(property="successful",type="boolean",example=false),
+     *             @OA\Property(property="message", type="string", example="action input is invalid"),
+     *             @OA\Property(property="status_code",type="integer",example=400)
      *         )
      *     ),
      * )

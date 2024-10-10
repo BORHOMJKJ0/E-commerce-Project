@@ -15,14 +15,15 @@ class LoginRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'email', new EmailAddress,'exists:users,email'],
+            'email' => ['required', 'email', new EmailAddress, 'exists:users,email'],
             'password' => 'required|min:8',
         ];
     }
 
-    public function messages(){
+    public function messages()
+    {
         return [
-            'email.exists'=>'Email does not exist in our records',
+            'email.exists' => 'Email does not exist in our records',
         ];
     }
 }

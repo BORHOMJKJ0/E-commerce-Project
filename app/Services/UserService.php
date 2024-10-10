@@ -160,8 +160,8 @@ class UserService
      *         @OA\JsonContent(
      *             required={"email", "password"},
      *
-     *             @OA\Property(property="email", type="string", example="hzaeter04@gmail.com"),
-     *             @OA\Property(property="password", type="string", example="password123")
+     *             @OA\Property(property="email", type="string", example="hzaeter@gmail.com"),
+     *             @OA\Property(property="password", type="string", example="password1234")
      *         )
      *     ),
      *
@@ -172,12 +172,32 @@ class UserService
      *         @OA\JsonContent(
      *
      *             @OA\Property(property="successful", type="boolean", example=true),
-     *             @OA\Property(property="token", type="string", example="jwt-token"),
-     *             @OA\Property(property="user", type="object",
-     *                 @OA\Property(property="id", type="integer", example=1),
-     *                 @OA\Property(property="name", type="string", example="Hasan Zaeter"),
-     *                 @OA\Property(property="email", type="string", example="hzaeter@gmail.com")
-     *             )
+     *             @OA\Property(property="message", type="string", example="Login successful"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="token", type="string", example="jwt-token"),
+     *                 @OA\Property(property="token_type", type="string", example="bearer"),
+     *                 @OA\Property(property="user", type="object",
+     *                     @OA\Property(property="id", type="integer", example=1),
+     *                     @OA\Property(property="first_name", type="string", example="hasan"),
+     *                     @OA\Property(property="last_name", type="string", example="zaeter"),
+     *                     @OA\Property(property="email", type="string", example="hzaeter@gmail.com"),
+     *                     @OA\Property(property="mobile", type="string", example="0935917557"),
+     *                     @OA\Property(property="Address", type="string", example="median")
+     *                 )
+     *             ),
+     *             @OA\Property(property="status_code", type="integer", example=200)
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=401,
+     *         description="Invalid credentials",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Invalid credentials. Please check your email and password"),
+     *             @OA\Property(property="status_code", type="integer", example=401)
      *         )
      *     ),
      *
@@ -187,28 +207,12 @@ class UserService
      *
      *         @OA\JsonContent(
      *
-     *         @OA\Property(property="successful", type="boolean", example=false),
-     *         @OA\Property(property="message", type="string", example="Validation failed"),
-     *         @OA\Property(
-     *             property="data",
-     *             type="object",
-     *             @OA\Property(
-     *                 property="email",
-     *                 type="array",
-     *
-     *                 @OA\Items(type="string", example="The selected email is invalid.")
-     *             )
-     *         ))
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthorized",
-     *
-     *         @OA\JsonContent(
-     *
      *             @OA\Property(property="successful", type="boolean", example=false),
-     *             @OA\Property(property="message", type="string", example="Invalid credentials. Please check your email and password")
+     *             @OA\Property(property="message", type="string", example="Validation failed"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="email", type="string", example="Email does not exist in our records")
+     *             ),
+     *             @OA\Property(property="status_code", type="integer", example=400)
      *         )
      *     ),
      *
@@ -219,7 +223,8 @@ class UserService
      *         @OA\JsonContent(
      *
      *             @OA\Property(property="successful", type="boolean", example=false),
-     *             @OA\Property(property="message", type="string", example="Your email address is not verified")
+     *             @OA\Property(property="message", type="string", example="Your email address is not verified"),
+     *             @OA\Property(property="status_code", type="integer", example=403)
      *         )
      *     )
      * )
@@ -228,13 +233,12 @@ class UserService
     {
         $credentials = $request->only('email', 'password');
 
-        
         if (! $token = Auth::attempt($credentials)) {
             return ResponseHelper::jsonResponse([], 'Invalid credentials. Please check your email and password', 401, false);
         }
 
         $user = $this->userRepository->findByEmail($request->email);
-        
+
         $data = [
             'token' => $token,
             'token_type' => 'bearer',
@@ -261,9 +265,11 @@ class UserService
      *             @OA\Property(property="message", type="string", example="Successfully logged out"),
      *             @OA\Property(property="user", type="object",
      *                 @OA\Property(property="id", type="integer", example=1),
-     *                 @OA\Property(property="name", type="string", example="hasan zaeter"),
+     *                 @OA\Property(property="first_name", type="string", example="Hasan"),
+     *                 @OA\Property(property="last_name", type="string", example="Zaeter"),
      *                 @OA\Property(property="email", type="string", example="hzaeter04@gmail.com")
-     *             )
+     *             ),
+     *             @OA\Property(property="status_code", type="integer", example=200)
      *         )
      *     )
      * )
@@ -301,15 +307,18 @@ class UserService
      *
      *            @OA\Property(property="successful", type="boolean", example=true),
      *            @OA\Property(property="message",type="string",example="Profile retrieved successfully"),
-     *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="name", type="string", example="Hasan Zaeter"),
-     *             @OA\Property(property="email", type="string", example="hzaeter@gmail.com"),
-     *             @OA\Property(property="mobile", type="string", example="0935917667"),
-     *             @OA\Property(property="contacts", type="array", @OA\Items(
+     *            @OA\Property(property="id", type="integer", example=1),
+     *            @OA\Property(property="first_name", type="string", example="Hasan"),
+     *            @OA\Property(property="last_name", type="string", example="Zaeter"),
+     *            @OA\Property(property="email", type="string", example="hzaeter@gmail.com"),
+     *            @OA\Property(property="mobile", type="string", example="0935917667"),
+     *            @OA\Property(property="Address", type="string", example="median"),
+     *            @OA\Property(property="contacts", type="array", @OA\Items(
      *                 @OA\Property(property="id", type="integer", example=1),
      *                 @OA\Property(property="user_id", type="integer", example=1),
      *                 @OA\Property(property="contact_type_id", type="integer", example=2)
-     *             ))
+     *             )),
+     *             @OA\Property(property="status_code", type="integer", example=200)
      *         )
      *     ),
      *
@@ -320,7 +329,8 @@ class UserService
      *          @OA\JsonContent(
      *
      *               @OA\Property(property="successful", type="boolean", example=false),
-     *               @OA\Property(property="message", type="string", example="User Not Found")
+     *               @OA\Property(property="message", type="string", example="User Not Found"),
+     *               @OA\Property(property="status_code", type="integer", example=404)
      *           )
      *     ),
      *
@@ -331,7 +341,8 @@ class UserService
      *     @OA\JsonContent(
      *
      *               @OA\Property(property="successful", type="boolean", example=false),
-     *               @OA\Property(property="message", type="string", example="Unauthenticated")
+     *               @OA\Property(property="message", type="string", example="Unauthenticated"),
+     *               @OA\Property(property="status_code", type="integer", example=401)
      *           )
      *      )
      * )
@@ -365,11 +376,13 @@ class UserService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="name", type="string", example="Hasan Zaeter"),
+     *             @OA\Property(property="first_name", type="string", example="Hasan"),
+     *             @OA\Property(property="last_name", type="string", example="Zaeter"),
      *             @OA\Property(property="mobile", type="string", example="0935917667"),
+     *             @OA\Property(property="Address", type="string", example="median"),
      *             @OA\Property(property="old_password", type="string", example="oldpassword123"),
      *             @OA\Property(property="new_password", type="string", example="newpassword123"),
-     *             @OA\Property(property="new_password_confirmation", type="string", example="newpassword123"),
+     *             @OA\Property(property="new_password_confirmation", type="string", example="newpassword123")
      *         )
      *     ),
      *
@@ -381,17 +394,20 @@ class UserService
      *
      *             @OA\Property(property="successful", type="boolean", example=true),
      *             @OA\Property(property="message", type="string", example="Profile updated successfully"),
-     *             @OA\Property(property="user", type="array", @OA\Items(
+     *             @OA\Property(property="user", type="object",
      *                 @OA\Property(property="id", type="integer", example=1),
-     *                 @OA\Property(property="name", type="string", example="Hasan Zaeter"),
+     *                 @OA\Property(property="first_name", type="string", example="Hasan"),
+     *                 @OA\Property(property="last_name", type="string", example="Zaeter"),
      *                 @OA\Property(property="email", type="string", example="hzaeter@gmail.com"),
+     *                 @OA\Property(property="Address", type="string", example="median"),
      *                 @OA\Property(property="mobile", type="string", example="0935917667"),
      *                 @OA\Property(property="contacts", type="array", @OA\Items(
      *                     @OA\Property(property="id", type="integer", example=1),
      *                     @OA\Property(property="user_id", type="integer", example=1),
      *                     @OA\Property(property="contact_type_id", type="integer", example=2)
-     *              ))
-     *             )),
+     *                 ))
+     *             ),
+     *             @OA\Property(property="status_code", type="integer", example=200)
      *         )
      *     ),
      *
@@ -401,13 +417,10 @@ class UserService
      *
      *         @OA\JsonContent(
      *
-     *         @OA\Property(property="successful", type="boolean", example=false),
-     *         @OA\Property(property="message", type="string", example="Validation failed"),
-     *         @OA\Property(
-     *             property="data",
-     *             type="object",
-     *             example={}
-     *         )
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Validation failed"),
+     *             @OA\Property(property="data", type="object", example={}),
+     *             @OA\Property(property="status_code", type="integer", example=400)
      *         )
      *     ),
      *
@@ -418,20 +431,22 @@ class UserService
      *         @OA\JsonContent(
      *
      *             @OA\Property(property="successful", type="boolean", example=false),
-     *             @OA\Property(property="message", type="string", example="Unauthorized")
+     *             @OA\Property(property="message", type="string", example="Unauthorized"),
+     *             @OA\Property(property="status_code", type="integer", example=401)
      *         )
      *     ),
      *
      *     @OA\Response(
-     *          response=403,
-     *          description="Forbidden",
+     *         response=403,
+     *         description="Forbidden",
      *
-     *          @OA\JsonContent(
+     *         @OA\JsonContent(
      *
-     *              @OA\Property(property="successful", type="boolean", example=false),
-     *              @OA\Property(property="message", type="string", example="You are not authorized to modify this profile"),
-     *          )
-     *      )
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="You are not authorized to modify this profile"),
+     *             @OA\Property(property="status_code", type="integer", example=403)
+     *         )
+     *     )
      * )
      */
     public function update(UpdateUserRequest $request, $user_id): JsonResponse

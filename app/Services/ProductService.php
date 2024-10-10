@@ -21,10 +21,10 @@ class ProductService
 
     protected $fcmService;
 
-    public function __construct(ProductRepository $productRepository, FcmService $fcmService)
+    public function __construct(ProductRepository $productRepository)
     {
         $this->productRepository = $productRepository;
-        $this->fcmService = $fcmService;
+        // $this->fcmService = $fcmService;
     }
 
     /**
@@ -287,7 +287,7 @@ class ProductService
         $this->validateProductData($data);
         $product = $this->productRepository->create($data);
 
-        $this->fcmService->notifyUsers($product);
+        // $this->fcmService->notifyUsers($product);
 
         $data = [
             'Product' => ProductResource::make($product),

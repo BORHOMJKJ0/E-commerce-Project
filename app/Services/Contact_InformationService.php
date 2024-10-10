@@ -51,8 +51,9 @@ class Contact_InformationService
      *
      *         @OA\JsonContent(
      *
+     *             @OA\Property(property="successful",type="boolean",example=true),
      *             @OA\Property(property="message", type="string", example="Contact information added successfully"),
-     *             @OA\Property(property="success", type="boolean", example=true)
+     *              @OA\Property(property="status_code", type="integer", example=201),
      *         )
      *     ),
      *
@@ -62,8 +63,10 @@ class Contact_InformationService
      *
      *         @OA\JsonContent(
      *
+     *             @OA\Property(property="successful",type="boolean",example=false),
      *             @OA\Property(property="message", type="string", example="Validation error"),
-     *             @OA\Property(property="error",type="object",example={})
+     *             @OA\Property(property="error",type="object",example={}),
+     *              @OA\Property(property="status_code", type="integer", example=400),
      *         )
      *     ),
      *
@@ -73,7 +76,9 @@ class Contact_InformationService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Unauthorized")
+     *             @OA\Property(property="successful",type="boolean",example=false),
+     *             @OA\Property(property="error", type="string", example="Unauthorized"),
+     *              @OA\Property(property="status_code", type="integer", example=401),
      *         )
      *     )
      * )
@@ -108,11 +113,13 @@ class Contact_InformationService
      *
      *         @OA\JsonContent(
      *
+     *             @OA\Property(property="successful",type="boolean",example=true),
      *             @OA\Property(property="contacts", type="array", @OA\Items(
      *                 @OA\Property(property="id", type="integer", example=1),
      *                 @OA\Property(property="contact_type_id", type="integer", example=1),
      *                 @OA\Property(property="link", type="string", example="your link")
-     *             ))
+     *             )),
+     *              @OA\Property(property="status_code", type="integer", example=200),
      *         )
      *     ),
      *
@@ -122,7 +129,9 @@ class Contact_InformationService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="message", type="string", example="Contact information not found")
+     *             @OA\Property(property="successful",type="boolean",example=false),
+     *             @OA\Property(property="message", type="string", example="Contact information not found"),
+     *             @OA\Property(property="status_code", type="integer", example=404),
      *         )
      *     )
      * )
@@ -141,6 +150,104 @@ class Contact_InformationService
         return ResponseHelper::jsonResponse($data, 'Contact Information retrieved successfully');
     }
 
+    /**
+     * @OA\Put(
+     *     path="/api/users/{user_id}/contacts/{contact_id}",
+     *     summary="Update user contact information",
+     *     tags={"Contacts"},
+     *
+     *     @OA\Parameter(
+     *         name="user_id",
+     *         in="path",
+     *         required=true,
+     *
+     *         @OA\Schema(type="integer"),
+     *         description="ID of the user"
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="contact_id",
+     *         in="path",
+     *         required=true,
+     *
+     *         @OA\Schema(type="integer"),
+     *         description="ID of the contact to update"
+     *     ),
+     *
+     *     @OA\RequestBody(
+     *         required=true,
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="link", type="string", example="https://example.com"),
+     *             @OA\Property(property="contact_type_id", type="integer", example=2)
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Contact Information updated successfully",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Contact Information updated successfully"),
+     *             @OA\Property(property="user", type="object",
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="first_name", type="string", example="Hasan"),
+     *                 @OA\Property(property="last_name", type="string", example="Zaeter"),
+     *                 @OA\Property(property="email", type="string", example="hzaeter@gmail.com"),
+     *                 @OA\Property(property="Address", type="string", example="median"),
+     *                 @OA\Property(property="mobile", type="string", example="0935917667"),
+     *                 @OA\Property(property="contact_count", type="integer", example=3),
+     *                 @OA\Property(property="contacts", type="array", @OA\Items(
+     *                     @OA\Property(property="id", type="integer", example=1),
+     *                     @OA\Property(property="link", type="string", example="https://example.com"),
+     *                     @OA\Property(property="contact_type_id", type="integer", example=2)
+     *                 ))
+     *             ),
+     *             @OA\Property(property="status_code", type="integer", example=200)
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=404,
+     *         description="There is no Contact Information With this ID",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="There is no Contact Information With this id"),
+     *             @OA\Property(property="status_code", type="integer", example=404)
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad Request",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Validation failed"),
+     *              @OA\Property(property="data", type="object", example={}),
+     *             @OA\Property(property="status_code", type="integer", example=400)
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=403,
+     *         description="Forbidden",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="You are not authorized to update this contact"),
+     *             @OA\Property(property="status_code", type="integer", example=403)
+     *         )
+     *     )
+     * )
+     */
     public function update(UpdateContactRequest $request, $user_id, $contact_id)
     {
         $contact_information = $this->contactRepository->findContactById($contact_id);
@@ -181,7 +288,9 @@ class Contact_InformationService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="message", type="string", example="Contact deleted successfully")
+     *             @OA\Property(property="successful",type="boolean",example=true),
+     *             @OA\Property(property="message", type="string", example="Contact deleted successfully"),
+     *             @OA\Property(property="status_code", type="integer", example=200),
      *         )
      *     ),
      *
@@ -191,7 +300,9 @@ class Contact_InformationService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="message", type="string", example="Contact not found")
+     *             @OA\Property(property="successful",type="boolean",example=false),
+     *             @OA\Property(property="message", type="string", example="Contact not found"),
+     *              @OA\Property(property="status_code", type="integer", example=404),
      *         )
      *     )
      * )
@@ -222,7 +333,9 @@ class Contact_InformationService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="message", type="string", example="All Contacts deleted successfully")
+     *             @OA\Property(property="successful",type="boolean",example=true),
+     *             @OA\Property(property="message", type="string", example="All Contacts deleted successfully"),
+     *              @OA\Property(property="status_code", type="integer", example=200),
      *         )
      *     ),
      *
@@ -232,7 +345,9 @@ class Contact_InformationService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="message", type="string", example="Contacts not found for this user")
+     *             @OA\Property(property="successful",type="boolean",example=false),
+     *             @OA\Property(property="message", type="string", example="Contacts not found for this user"),
+     *             @OA\Property(property="status_code", type="integer", example=400),
      *         )
      *     )
      * )
