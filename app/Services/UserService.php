@@ -145,9 +145,7 @@ class UserService
 
         $this->EmailVerificationController->sendEmailVerification($user);
 
-        $data = ['user' => new UserResource($user)];
-
-        return ResponseHelper::jsonResponse($data, 'The activation code has been sent to your email', 201);
+        return ResponseHelper::jsonResponse([], 'The activation code has been sent to your email', 201);
     }
 
     /**
@@ -230,11 +228,13 @@ class UserService
     {
         $credentials = $request->only('email', 'password');
 
+        
         if (! $token = Auth::attempt($credentials)) {
             return ResponseHelper::jsonResponse([], 'Invalid credentials. Please check your email and password', 401, false);
         }
 
         $user = $this->userRepository->findByEmail($request->email);
+        
         $data = [
             'token' => $token,
             'token_type' => 'bearer',

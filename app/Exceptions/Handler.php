@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use App\Helpers\ResponseHelper;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Helpers\ResponseHelper;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\ValidationException;
@@ -31,11 +32,7 @@ class Handler extends ExceptionHandler
             //     ? "$firstError (and $additionalErrorsCount more error".($additionalErrorsCount > 1 ? 's' : '').')'
             //     : $firstError;
 
-            return response()->json([
-                // 'message' => $summaryMessage,
-                'errors' => $errors,
-                'successful' => false,
-            ], Response::HTTP_BAD_REQUEST);
+            return ResponseHelper::jsonResponse($errors, 'Validation Failed', 400, false);
         });
     }
 
@@ -46,6 +43,7 @@ class Handler extends ExceptionHandler
 
             switch ($modelName) {
                 case 'App\\Models\\Product':
+<<<<<<< HEAD
                     return ResponseHelper::jsonResponse([], 'Product Not Found', 404, false);
                 case 'App\\Models\\Category':
                     return ResponseHelper::jsonResponse([], 'Category Not Found', 404, false);
@@ -59,16 +57,28 @@ class Handler extends ExceptionHandler
                     return ResponseHelper::jsonResponse([], 'Comment Not Found', 404, false);
                 case 'App\\Models\\User':
                     return ResponseHelper::jsonResponse([], 'User Not Found', 404, false);
+=======
+                    return ResponseHelper::jsonResponse([], 'Product not found', 400, false);
+                case 'App\\Models\\Category':
+                    return ResponseHelper::jsonResponse([], 'Category not found', 400, false);
+                case 'App\\Models\\Offer':
+                    return ResponseHelper::jsonResponse([], 'Offer not found', 400, false);
+                case 'App\\Models\\Warehouse':
+                    return ResponseHelper::jsonResponse([], 'Warehouse not found', 400, false);
+                case 'App\\Models\\Review':
+                    return ResponseHelper::jsonResponse([], 'Review not found', 400, false);
+                case 'App\\Models\\Comment':
+                    return ResponseHelper::jsonResponse([], 'Comment not found', 400, false);
+                case 'App\\Models\\User':
+                    return ResponseHelper::jsonResponse([], 'User not found', 400, false);
+>>>>>>> 88516598d22a95b7682f01a22c6039d380d728a3
                 default:
-                    return response()->json([
-                        'message' => 'Resource not found',
-                        'successful' => false,
-                    ], 404);
+                    return ResponseHelper::jsonResponse([], 'Resource not found', 400, false);
             }
         }
 
         if ($exception instanceof HttpResponseException) {
-            return response()->json(['message' => $exception->getMessage(), 'successful' => false], $exception->getCode());
+            return ResponseHelper::jsonResponse([], $exception->getMessage(), $exception->getCode(), false);
         }
 
         return parent::render($request, $exception);
