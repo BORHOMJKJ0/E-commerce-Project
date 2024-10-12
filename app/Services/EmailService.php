@@ -84,7 +84,7 @@ class EmailService
         $otp2 = $this->otp->validate($user->email, $request->code);
 
         if (! $otp2->status) {
-            return ResponseHelper::jsonResponse([], 'Your email activation code is invalid', 400, false);
+            return ResponseHelper::jsonResponse([], 'Your email activation code is incorrect', 400, false);
         } else {
             $this->userRepository->VerifyEmail($user);
 
