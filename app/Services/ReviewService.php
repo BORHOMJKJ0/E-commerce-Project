@@ -212,9 +212,10 @@ class ReviewService
      *
      *             @OA\Schema(
      *                 type="object",
-     *                 required={"name"},
+     *                 required={"rating","product_id"},
      *
-     *                 @OA\Property(property="name", type="string", example="Fruits"),
+     *               @OA\Property(property="rating", type="number", format="float", example="4.5", description="The rating of the product, a number between 0 and 5"),
+     *                @OA\Property(property="product_id", type="integer", example=1,description="Product ID you want to add review to it"),
      *             )
      *         )
      *     ),
@@ -241,14 +242,8 @@ class ReviewService
      *             type="object",
      *
      *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="name", type="string", example="Electronic devices"),
-     *             @OA\Property(
-     *                 property="products",
-     *                 type="array",
-     *                 example={},
-     *
-     *             @OA\Items()
-     *             )
+     *             @OA\Property(property="rating", type="number",format="float", example="4"),
+     *             @OA\Property(property="product_id", type="integer", example=1),
      *         )
      *     ),
      *
@@ -285,7 +280,7 @@ class ReviewService
      *         in="path",
      *         required=true,
      *
-     *         @OA\Schema(type="string", enum={"name", "created_at", "updated_at"})
+     *         @OA\Schema(type="string", enum={"rating", "created_at", "updated_at"})
      *     ),
      *
      *     @OA\Parameter(
@@ -371,7 +366,7 @@ class ReviewService
      *         in="path",
      *         required=true,
      *
-     *         @OA\Schema(type="string", enum={"name", "created_at", "updated_at"})
+     *         @OA\Schema(type="string", enum={"rating", "created_at", "updated_at"})
      *     ),
      *
      *     @OA\Parameter(
@@ -461,11 +456,19 @@ class ReviewService
      *     ),
      *
      *     @OA\Parameter(
-     *         name="name",
+     *         name="rating",
      *         in="query",
      *         required=false,
      *
-     *         @OA\Schema(type="string", example="Vegetables")
+     *         @OA\Schema(type="number",format="float" ,example="3")
+     *     ),
+     *
+     *      @OA\Parameter(
+     *         name="product_id",
+     *         in="query",
+     *         required=false,
+     *
+     *         @OA\Schema(type="integer", example=1)
      *     ),
      *
      *     @OA\Header(
@@ -490,18 +493,8 @@ class ReviewService
      *             type="object",
      *
      *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="name", type="string", example="Electronic devices"),
-     *             @OA\Property(
-     *                 property="products",
-     *                 type="array",
-     *
-     *                 @OA\Items(
-     *                     type="object",
-     *
-     *                     @OA\Property(property="name", type="string", example="Smartphone"),
-     *                     @OA\Property(property="user", type="string", example="Hasan Zaeter")
-     *                 )
-     *             )
+     *             @OA\Property(property="rating", type="number",format="float", example="2"),
+     *             @OA\Property(property="product_id", type="integer", example=1),
      *         )
      *     ),
      *

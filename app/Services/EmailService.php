@@ -33,12 +33,17 @@ class EmailService
      *     @OA\RequestBody(
      *         required=true,
      *
-     *         @OA\JsonContent(
-     *             required={"email", "otp"},
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *
+     *             @OA\Schema(
+     *                 type="object",
+     *                required={"email", "otp"},
      *
      *             @OA\Property(property="email", type="string", format="email", example="hzaeter04@gmail.com", description="User's email to verify"),
      *             @OA\Property(property="code", type="string", example="123456", description="OTP code for email verification")
      *         )
+     *        )
      *     ),
      *
      *     @OA\Response(
@@ -111,12 +116,17 @@ class EmailService
      *         response=200,
      *         description="Verification code sent successfully",
      *
-     *         @OA\JsonContent(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *
+     *             @OA\Schema(
+     *                 type="object",
      *
      *             @OA\Property(property="successful", type="boolean", example=true),
      *             @OA\Property(property="message", type="string", example="The activation code has been sent to your email"),
      *              @OA\Property(property="status_code", type="integer", example=200),
      *         )
+     *       )
      *     ),
      *
      *     @OA\Response(

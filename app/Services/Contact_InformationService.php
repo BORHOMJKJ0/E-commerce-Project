@@ -37,12 +37,17 @@ class Contact_InformationService
      *     @OA\RequestBody(
      *         required=true,
      *
-     *         @OA\JsonContent(
-     *             required={"contact_type_id", "link"},
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *
+     *             @OA\Schema(
+     *                required={"contact_type_id", "link"},
+     *                 type="object",
      *
      *             @OA\Property(property="contact_type_id", type="integer", example=1, description="Contact type ID"),
      *             @OA\Property(property="link", type="string", example="your link", description="Contact information value (facebook_account, instagram_account, tiwtter_account)")
      *         )
+     *        )
      *     ),
      *
      *     @OA\Response(
@@ -177,11 +182,16 @@ class Contact_InformationService
      *     @OA\RequestBody(
      *         required=true,
      *
-     *         @OA\JsonContent(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *
+     *            @OA\Schema(
+     *                 type="object",
      *
      *             @OA\Property(property="link", type="string", example="https://example.com"),
      *             @OA\Property(property="contact_type_id", type="integer", example=2)
      *         )
+     *       )
      *     ),
      *
      *     @OA\Response(

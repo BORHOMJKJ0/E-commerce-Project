@@ -732,19 +732,23 @@
                         "multipart/form-data": {
                             "schema": {
                                 "required": [
-                                    "text"
+                                    "review_id"
                                 ],
                                 "properties": {
+                                    "review_id": {
+                                        "description": "The ID of your review",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
                                     "text": {
                                         "description": "The comment text. Must provide either 'text' or 'image', or both.",
                                         "type": "string",
                                         "example": "This is a comment"
                                     },
                                     "image": {
-                                        "description": "URL of an optional image. Must provide either 'text' or 'image', or both.",
+                                        "description": "Optional image. Must provide either 'text' or 'image', or both.",
                                         "type": "string",
-                                        "example": "http://example.com/image.jpg",
-                                        "nullable": true
+                                        "format": "binary"
                                     }
                                 },
                                 "type": "object"
@@ -771,6 +775,14 @@
                                             "type": "string",
                                             "example": "http://example.com/image.jpg",
                                             "nullable": true
+                                        },
+                                        "product_name": {
+                                            "type": "string",
+                                            "example": "apple"
+                                        },
+                                        "user_name": {
+                                            "type": "string",
+                                            "example": "Only"
                                         }
                                     },
                                     "type": "object"
@@ -787,6 +799,22 @@
                                         "error": {
                                             "type": "string",
                                             "example": "Invalid input data"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "The text field is required when none of image are present."
                                         }
                                     },
                                     "type": "object"
@@ -938,12 +966,30 @@
                         }
                     },
                     {
-                        "name": "name",
+                        "name": "text",
                         "in": "query",
                         "required": false,
                         "schema": {
                             "type": "string",
-                            "example": "Vegetables"
+                            "example": "Thank you!"
+                        }
+                    },
+                    {
+                        "name": "image",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "binary"
+                        }
+                    },
+                    {
+                        "name": "review_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
                         }
                     }
                 ],
@@ -958,25 +1004,25 @@
                                             "type": "integer",
                                             "example": 1
                                         },
-                                        "name": {
+                                        "text": {
                                             "type": "string",
-                                            "example": "Electronic devices"
+                                            "example": "Thank you!"
                                         },
-                                        "products": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "name": {
-                                                        "type": "string",
-                                                        "example": "Smartphone"
-                                                    },
-                                                    "user": {
-                                                        "type": "string",
-                                                        "example": "Hasan Zaeter"
-                                                    }
-                                                },
-                                                "type": "object"
-                                            }
+                                        "image": {
+                                            "type": "string",
+                                            "example": "https://example.com/images/smartphone-xyz.jpg"
+                                        },
+                                        "product_name": {
+                                            "type": "string",
+                                            "example": "apple"
+                                        },
+                                        "user_name": {
+                                            "type": "string",
+                                            "example": "Only"
+                                        },
+                                        "review_id": {
+                                            "type": "integer",
+                                            "example": 1
                                         }
                                     },
                                     "type": "object"
@@ -1128,7 +1174,6 @@
                         "schema": {
                             "type": "string",
                             "enum": [
-                                "name",
                                 "created_at",
                                 "updated_at"
                             ]
@@ -1220,7 +1265,6 @@
                         "schema": {
                             "type": "string",
                             "enum": [
-                                "name",
                                 "created_at",
                                 "updated_at"
                             ]
@@ -1307,7 +1351,7 @@
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
                                     "contact_type_id",
@@ -1536,7 +1580,7 @@
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "properties": {
                                     "link": {
@@ -1859,7 +1903,7 @@
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
                                     "email",
@@ -1971,7 +2015,7 @@
                     "200": {
                         "description": "Verification code sent successfully",
                         "content": {
-                            "application/json": {
+                            "multipart/form-data": {
                                 "schema": {
                                     "properties": {
                                         "successful": {
@@ -2043,6 +2087,51 @@
                 }
             }
         },
+        "/api/users/expression/all": {
+            "get": {
+                "tags": [
+                    "Expressions"
+                ],
+                "summary": "Get all expressions",
+                "operationId": "ce95ec1992e25374a09917fe5f460bb2",
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CategoryResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid parameters"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/users/expression/add": {
             "post": {
                 "tags": [
@@ -2054,7 +2143,7 @@
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
                                     "product_id",
@@ -2379,7 +2468,7 @@
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "properties": {
                                     "action": {
@@ -4071,12 +4160,20 @@
                         "multipart/form-data": {
                             "schema": {
                                 "required": [
-                                    "name"
+                                    "rating",
+                                    "product_id"
                                 ],
                                 "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "example": "Fruits"
+                                    "rating": {
+                                        "description": "The rating of the product, a number between 0 and 5",
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": "4.5"
+                                    },
+                                    "product_id": {
+                                        "description": "Product ID you want to add review to it",
+                                        "type": "integer",
+                                        "example": 1
                                     }
                                 },
                                 "type": "object"
@@ -4095,14 +4192,14 @@
                                             "type": "integer",
                                             "example": 1
                                         },
-                                        "name": {
-                                            "type": "string",
-                                            "example": "Electronic devices"
+                                        "rating": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": "4"
                                         },
-                                        "products": {
-                                            "type": "array",
-                                            "items": {},
-                                            "example": []
+                                        "product_id": {
+                                            "type": "integer",
+                                            "example": 1
                                         }
                                     },
                                     "type": "object"
@@ -4270,12 +4367,22 @@
                         }
                     },
                     {
-                        "name": "name",
+                        "name": "rating",
                         "in": "query",
                         "required": false,
                         "schema": {
-                            "type": "string",
-                            "example": "Vegetables"
+                            "type": "number",
+                            "format": "float",
+                            "example": "3"
+                        }
+                    },
+                    {
+                        "name": "product_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
                         }
                     }
                 ],
@@ -4290,25 +4397,14 @@
                                             "type": "integer",
                                             "example": 1
                                         },
-                                        "name": {
-                                            "type": "string",
-                                            "example": "Electronic devices"
+                                        "rating": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": "2"
                                         },
-                                        "products": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "name": {
-                                                        "type": "string",
-                                                        "example": "Smartphone"
-                                                    },
-                                                    "user": {
-                                                        "type": "string",
-                                                        "example": "Hasan Zaeter"
-                                                    }
-                                                },
-                                                "type": "object"
-                                            }
+                                        "product_id": {
+                                            "type": "integer",
+                                            "example": 1
                                         }
                                     },
                                     "type": "object"
@@ -4444,7 +4540,7 @@
                         "schema": {
                             "type": "string",
                             "enum": [
-                                "name",
+                                "rating",
                                 "created_at",
                                 "updated_at"
                             ]
@@ -4536,7 +4632,7 @@
                         "schema": {
                             "type": "string",
                             "enum": [
-                                "name",
+                                "rating",
                                 "created_at",
                                 "updated_at"
                             ]
@@ -4706,20 +4802,25 @@
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
-                                    "name",
+                                    "first_name",
+                                    "last_name",
                                     "email",
                                     "mobile",
-                                    "gender",
+                                    "address",
                                     "password",
                                     "password_confirmation"
                                 ],
                                 "properties": {
-                                    "name": {
+                                    "first_name": {
                                         "type": "string",
-                                        "example": "hasan zaeter"
+                                        "example": "hasan"
+                                    },
+                                    "last_name": {
+                                        "type": "string",
+                                        "example": "zaeter"
                                     },
                                     "email": {
                                         "type": "string",
@@ -4729,9 +4830,9 @@
                                         "type": "string",
                                         "example": "0935917667"
                                     },
-                                    "gender": {
+                                    "address": {
                                         "type": "string",
-                                        "example": "male or female"
+                                        "example": "midan"
                                     },
                                     "password": {
                                         "type": "string",
@@ -4825,7 +4926,7 @@
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "required": [
                                     "email",
@@ -5211,7 +5312,7 @@
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "application/json": {
+                        "multipart/form-data": {
                             "schema": {
                                 "properties": {
                                     "first_name": {
@@ -5226,7 +5327,7 @@
                                         "type": "string",
                                         "example": "0935917667"
                                     },
-                                    "Address": {
+                                    "address": {
                                         "type": "string",
                                         "example": "median"
                                     },
@@ -5281,7 +5382,7 @@
                                                     "type": "string",
                                                     "example": "hzaeter@gmail.com"
                                                 },
-                                                "Address": {
+                                                "address": {
                                                     "type": "string",
                                                     "example": "median"
                                                 },
@@ -5399,6 +5500,81 @@
                         }
                     }
                 }
+            }
+        },
+        "/api/user/delete/{id}": {
+            "delete": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Delete a user",
+                "operationId": "f6c8835d41fda2883d613997316b8d41",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "forbidden error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "You are not authorized to delete this User."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "User not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/warehouses": {
@@ -6058,7 +6234,7 @@
                         "example": "iPhone 15"
                     },
                     "user_name": {
-                        "description": "The name of the user who left the comment",
+                        "description": "The full_name of the user who left the comment",
                         "type": "string",
                         "example": "John Doe"
                     },
@@ -6351,12 +6527,12 @@
                         "type": "integer",
                         "example": 1
                     },
-                    "First_Name": {
+                    "first_name": {
                         "description": "The first name of the user",
                         "type": "string",
                         "example": "John"
                     },
-                    "Last_Name": {
+                    "last_name": {
                         "description": "The last name of the user",
                         "type": "string",
                         "example": "Doe"
@@ -6367,7 +6543,7 @@
                         "format": "email",
                         "example": "john.doe@example.com"
                     },
-                    "Address": {
+                    "address": {
                         "description": "The address of the user",
                         "type": "string",
                         "example": "123 Main St"
@@ -6401,12 +6577,12 @@
                         "type": "integer",
                         "example": 1
                     },
-                    "First_Name": {
+                    "first_name": {
                         "description": "The first name of the user",
                         "type": "string",
                         "example": "John"
                     },
-                    "Last_Name": {
+                    "Llast_name": {
                         "description": "The last name of the user",
                         "type": "string",
                         "example": "Doe",
@@ -6422,7 +6598,7 @@
                         "type": "string",
                         "example": "+1234567890"
                     },
-                    "Address": {
+                    "address": {
                         "description": "The Address of the user",
                         "type": "string",
                         "example": "123 Main St, Anytown, USA",

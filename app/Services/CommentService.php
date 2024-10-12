@@ -206,17 +206,20 @@ class CommentService
      *
      *     @OA\RequestBody(
      *         required=true,
+     *
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
+     *
      *             @OA\Schema(
      *                 type="object",
-     *                 required={"text"},
+     *                   required={"review_id"},
+     *
+     *                 @OA\Property(property="review_id", type="integer", example=1, description="The ID of your review"),
      *                 @OA\Property(property="text", type="string", example="This is a comment", description="The comment text. Must provide either 'text' or 'image', or both."),
-     *                 @OA\Property(property="image", type="string", example="http://example.com/image.jpg", nullable=true, description="URL of an optional image. Must provide either 'text' or 'image', or both."),
+     *                 @OA\Property(property="image", type="string", format="binary", description="Optional image. Must provide either 'text' or 'image', or both.")
      *             )
      *         )
      *     ),
-     *
      *
      *    @OA\Header(
      *         header="Content-Type",
@@ -235,11 +238,15 @@ class CommentService
      *     @OA\Response(
      *         response=201,
      *         description="Comment created successfully",
+     *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(property="id", type="integer", example=1),
      *             @OA\Property(property="text", type="string", example="This is a comment"),
      *             @OA\Property(property="image", type="string", example="http://example.com/image.jpg", nullable=true),
+     *             @OA\Property(property="product_name", type="string", example="apple"),
+     *             @OA\Property(property="user_name", type="string", example="Only"),
      *             )
      *           ),
      *
@@ -250,6 +257,16 @@ class CommentService
      *         @OA\JsonContent(
      *
      *             @OA\Property(property="error", type="string", example="Invalid input data")
+     *         )
+     *     ),
+     *
+     *    @OA\Response(
+     *         response=400,
+     *         description="Bad Request",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="error", type="string", example="The text field is required when none of image are present.")
      *         )
      *     ),
      * )
@@ -277,7 +294,7 @@ class CommentService
      *         in="path",
      *         required=true,
      *
-     *         @OA\Schema(type="string", enum={"name", "created_at", "updated_at"})
+     *         @OA\Schema(type="string", enum={"created_at", "updated_at"})
      *     ),
      *
      *     @OA\Parameter(
@@ -362,7 +379,7 @@ class CommentService
      *         in="path",
      *         required=true,
      *
-     *         @OA\Schema(type="string", enum={"name", "created_at", "updated_at"})
+     *         @OA\Schema(type="string", enum={"created_at", "updated_at"})
      *     ),
      *
      *     @OA\Parameter(
@@ -451,11 +468,27 @@ class CommentService
      *     ),
      *
      *     @OA\Parameter(
-     *         name="name",
+     *         name="text",
      *         in="query",
      *         required=false,
      *
-     *         @OA\Schema(type="string", example="Vegetables")
+     *         @OA\Schema(type="string", example="Thank you!")
+     *     ),
+     *
+     *   @OA\Parameter(
+     *         name="image",
+     *         in="query",
+     *         required=false,
+     *
+     *         @OA\Schema(type="string", format="binary")
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="review_id",
+     *         in="query",
+     *         required=false,
+     *
+     *         @OA\Schema(type="integer", example=1)
      *     ),
      *
      *     @OA\Header(
@@ -480,20 +513,13 @@ class CommentService
      *             type="object",
      *
      *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="name", type="string", example="Electronic devices"),
-     *             @OA\Property(
-     *                 property="products",
-     *                 type="array",
-     *
-     *                 @OA\Items(
-     *                     type="object",
-     *
-     *                     @OA\Property(property="name", type="string", example="Smartphone"),
-     *                     @OA\Property(property="user", type="string", example="Hasan Zaeter")
-     *                 )
-     *             )
-     *         )
-     *     ),
+     *             @OA\Property(property="text", type="string", example="Thank you!"),
+     *             @OA\Property(property="image", type="string", example="https://example.com/images/smartphone-xyz.jpg"),
+     *             @OA\Property(property="product_name", type="string", example="apple"),
+     *             @OA\Property(property="user_name", type="string", example="Only"),
+     *             @OA\Property(property="review_id", type="integer", example=1),
+     *      ),
+     *    ),
      *
      *     @OA\Response(
      *         response=422,
@@ -605,16 +631,10 @@ class CommentService
     protected function validateCommentData(array $data, $rule = 'required', $method = 'any')
     {
         $validator = Validator::make($data, [
-            'text' => 'sometimes|nullable|string|max:255',
-            'image' => 'sometimes|nullable|image|max:5120',
+            'text' => 'required_without_all:image|nullable|string|max:255',
+            'image' => 'required_without_all:text|nullable|image|max:5120',
             'review_id' => "$rule|exists:reviews,id",
         ]);
-
-        if (empty($data['text']) && empty($data['image']) && $method === 'create') {
-            $validator->after(function ($validator) {
-                $validator->errors()->add('text', 'You must provide either text or an image.');
-            });
-        }
 
         if ($validator->fails()) {
             throw new HttpResponseException(

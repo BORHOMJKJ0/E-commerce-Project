@@ -38,12 +38,10 @@ class CategoryResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'products' => $this->Products->map(function ($product) {
-                $first_name=$product->user->First_Name;
-                $last_name=$product->user->Last_Name;
-                $full_name = $first_name . ' ' . $last_name;
+
                 return [
                     'name' => $product->name,
-                    'user' => trim($full_name),
+                    'user' => $product->user->first_name.' '.$product->user->last_name,
                 ];
             }),
         ];

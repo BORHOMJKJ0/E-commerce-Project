@@ -91,16 +91,22 @@ class UserService
      *     @OA\RequestBody(
      *         required=true,
      *
-     *         @OA\JsonContent(
-     *             required={"name", "email", "mobile", "gender", "password", "password_confirmation"},
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
      *
-     *             @OA\Property(property="name", type="string", example="hasan zaeter"),
+     *          @OA\Schema(
+     *                 type="object",
+     *             required={"first_name","last_name", "email", "mobile", "address", "password", "password_confirmation"},
+     *
+     *             @OA\Property(property="first_name", type="string", example="hasan"),
+     *             @OA\Property(property="last_name", type="string", example="zaeter"),
      *             @OA\Property(property="email", type="string", example="hzaeter@gmail.com"),
      *             @OA\Property(property="mobile", type="string", example="0935917667"),
-     *             @OA\Property(property="gender", type="string", example="male or female"),
+     *             @OA\Property(property="address", type="string", example="midan"),
      *             @OA\Property(property="password", type="string", example="password123"),
      *             @OA\Property(property="password_confirmation", type="string", example="password123")
      *         )
+     *       )
      *     ),
      *
      *     @OA\Response(
@@ -157,12 +163,17 @@ class UserService
      *     @OA\RequestBody(
      *         required=true,
      *
-     *         @OA\JsonContent(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *
+     *            @OA\Schema(
+     *                 type="object",
      *             required={"email", "password"},
      *
      *             @OA\Property(property="email", type="string", example="hzaeter@gmail.com"),
      *             @OA\Property(property="password", type="string", example="password1234")
      *         )
+     *       )
      *     ),
      *
      *     @OA\Response(
@@ -374,16 +385,21 @@ class UserService
      *     @OA\RequestBody(
      *         required=true,
      *
-     *         @OA\JsonContent(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *
+     *             @OA\Schema(
+     *                 type="object",
      *
      *             @OA\Property(property="first_name", type="string", example="Hasan"),
      *             @OA\Property(property="last_name", type="string", example="Zaeter"),
      *             @OA\Property(property="mobile", type="string", example="0935917667"),
-     *             @OA\Property(property="Address", type="string", example="median"),
+     *             @OA\Property(property="address", type="string", example="median"),
      *             @OA\Property(property="old_password", type="string", example="oldpassword123"),
      *             @OA\Property(property="new_password", type="string", example="newpassword123"),
      *             @OA\Property(property="new_password_confirmation", type="string", example="newpassword123")
      *         )
+     *        )
      *     ),
      *
      *     @OA\Response(
@@ -399,7 +415,7 @@ class UserService
      *                 @OA\Property(property="first_name", type="string", example="Hasan"),
      *                 @OA\Property(property="last_name", type="string", example="Zaeter"),
      *                 @OA\Property(property="email", type="string", example="hzaeter@gmail.com"),
-     *                 @OA\Property(property="Address", type="string", example="median"),
+     *                 @OA\Property(property="address", type="string", example="median"),
      *                 @OA\Property(property="mobile", type="string", example="0935917667"),
      *                 @OA\Property(property="contacts", type="array", @OA\Items(
      *                     @OA\Property(property="id", type="integer", example=1),
@@ -471,6 +487,52 @@ class UserService
         return ResponseHelper::jsonResponse($data, 'Profile updated successfully');
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/user/delete/{id}",
+     *     summary="Delete a user",
+     *     tags={"Users"},
+     *     security={{"bearerAuth": {} }},
+     *
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *
+     *          @OA\Schema(type="integer", example=1)
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="User deleted successfully",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="message", type="string", example="User deleted successfully")
+     *         )
+     *     ),
+     *
+     *    @OA\Response(
+     *         response=403,
+     *         description="forbidden error",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="error", type="string", example="You are not authorized to delete this User.")
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=404,
+     *         description="User not found",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="error", type="string", example="User not found")
+     *         )
+     *     )
+     * )
+     */
     public function destroy()
     {
         $user = $this->userRepository->destroy();

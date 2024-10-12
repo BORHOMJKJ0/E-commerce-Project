@@ -24,16 +24,13 @@ class CommentResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $first_name=$this->review->user->First_Name;
-        $last_name=$this->review->user->Last_Name;
-        $full_name = $first_name . ' ' . $last_name;
         return [
             'id' => $this->id,
             'review_id' => $this->review->id,
             //'product_id' => $this->review->product->id,
-                        'user_id' => $this->review->user->id,
+            'user_id' => $this->review->user->id,
             'product_name' => $this->review->product->name,
-            'user_name' => trim($full_name),
+            'user_name' => $this->review->user->first_name.' '.$this->review->user->last_name,
             'text' => $this->text ?? null,
             'image' => $this->image ?? null,
         ];

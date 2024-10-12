@@ -29,9 +29,6 @@ class OfferResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        $first_name=$this->Product->User->First_Name;
-        $last_name=$this->Product->User->Last_Name;
-        $full_name = $first_name . ' ' . $last_name;
         return [
             'id' => $this->id,
             'discount_percentage' => number_format($this->discount_percentage, 2, '.', '').' %',
@@ -42,7 +39,7 @@ class OfferResource extends JsonResource
                 'price' => (float) $this->Product->price,
                 'description' => $this->Product->description,
                 'category' => $this->Product->Category ? $this->Product->Category->name : null,
-                'user' => $this->Product->User ? $this->Product->User->$full_name : null,
+                'user' => $this->Product->User->first_name.' '.$this->Product->User->last_name,
             ] : null,
         ];
     }

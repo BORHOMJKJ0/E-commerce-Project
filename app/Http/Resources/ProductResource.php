@@ -81,7 +81,7 @@ class ProductResource extends JsonResource
             'price' => (float) $this->price,
             'description' => $this->description,
             'current_price' => (float) $currentPrice,
-            'user' => $this->user->name,
+            'user' => $this->user->first_name.' '.$this->user->last_name,
             'offers' => $this->offers->filter(function ($offer) {
                 return Carbon::parse($offer->end_date)->isFuture() || Carbon::parse($offer->end_date)->isToday();
             })->map(function ($offer) {
@@ -100,15 +100,15 @@ class ProductResource extends JsonResource
             'total_amount' => (float) $this->warehouses->sum('amount'),
             'expiry_date' => $minExpiryDate ? $minExpiryDate->format('Y-n-j') : null,
             'category' => $this->category->name,
-            'comments' => $this->comments->count(), // Total number of comments
-            'average_rating' => $this->reviews->avg('rating') ?: 0, // Average rating, defaulting to 0 if none
+            'comments' => $this->comments->count(),
+            'average_rating' => $this->reviews->avg('rating') ?: 0,
             // 'created_at' => $this->created_at->format('Y-n-j'),
         ];
 
         if ($request->routeIs('products.show')) {
             $data['reviewers'] = $this->reviews->map(function ($review) {
                 return [
-                    'name' => $review->user->name,
+                    'name' => $review->user->first_name.' '.$review->user->last_name,
                     'rating' => $review->rating,
                     'comment' => $review->comment ? [
                         'id' => $review->comment->id,

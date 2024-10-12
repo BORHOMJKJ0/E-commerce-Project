@@ -45,7 +45,7 @@ class WarehouseResource extends JsonResource
                 'name' => $this->Product->name,
                 'price' => (float) $this->Product->price,
                 'category' => $this->Product->Category ? $this->Product->Category->name : null,
-                'user' => $this->Product->User ? $this->Product->User->name : null,
+                'user' => $this->Product->User->first_name.' '.$this->Product->User->last_name,
             ] : null,
         ];
     }

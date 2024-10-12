@@ -4,7 +4,6 @@ namespace App\Exceptions;
 
 use App\Helpers\ResponseHelper;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\ValidationException;
@@ -55,7 +54,8 @@ class Handler extends ExceptionHandler
                     return ResponseHelper::jsonResponse([], 'Comment Not Found', 404, false);
                 case 'App\\Models\\User':
                     return ResponseHelper::jsonResponse([], 'User Not Found', 404, false);
-                default :
+
+                default:
                     return ResponseHelper::jsonResponse([], 'Resource not found', 400, false);
             }
         }
