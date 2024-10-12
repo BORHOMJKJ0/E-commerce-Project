@@ -1337,13 +1337,17 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
                                         "message": {
                                             "type": "string",
                                             "example": "Contact information added successfully"
                                         },
-                                        "success": {
-                                            "type": "boolean",
-                                            "example": true
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 201
                                         }
                                     },
                                     "type": "object"
@@ -1357,6 +1361,10 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
                                         "message": {
                                             "type": "string",
                                             "example": "Validation error"
@@ -1364,6 +1372,10 @@
                                         "error": {
                                             "type": "object",
                                             "example": []
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 400
                                         }
                                     },
                                     "type": "object"
@@ -1377,9 +1389,17 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
                                         "error": {
                                             "type": "string",
                                             "example": "Unauthorized"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 401
                                         }
                                     },
                                     "type": "object"
@@ -1420,6 +1440,10 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
                                         "contacts": {
                                             "type": "array",
                                             "items": {
@@ -1439,6 +1463,10 @@
                                                 },
                                                 "type": "object"
                                             }
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
                                         }
                                     },
                                     "type": "object"
@@ -1452,9 +1480,17 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
                                         "message": {
                                             "type": "string",
                                             "example": "Contact information not found"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 404
                                         }
                                     },
                                     "type": "object"
@@ -1468,6 +1504,210 @@
                         "bearerAuth": []
                     }
                 ]
+            }
+        },
+        "/api/users/{user_id}/contacts/{contact_id}": {
+            "put": {
+                "tags": [
+                    "Contacts"
+                ],
+                "summary": "Update user contact information",
+                "operationId": "bd6ae08b967f4ecf34ccd2b05d999114",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "ID of the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "contact_id",
+                        "in": "path",
+                        "description": "ID of the contact to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "link": {
+                                        "type": "string",
+                                        "example": "https://example.com"
+                                    },
+                                    "contact_type_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Contact Information updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Contact Information updated successfully"
+                                        },
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "first_name": {
+                                                    "type": "string",
+                                                    "example": "Hasan"
+                                                },
+                                                "last_name": {
+                                                    "type": "string",
+                                                    "example": "Zaeter"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "hzaeter@gmail.com"
+                                                },
+                                                "Address": {
+                                                    "type": "string",
+                                                    "example": "median"
+                                                },
+                                                "mobile": {
+                                                    "type": "string",
+                                                    "example": "0935917667"
+                                                },
+                                                "contact_count": {
+                                                    "type": "integer",
+                                                    "example": 3
+                                                },
+                                                "contacts": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "link": {
+                                                                "type": "string",
+                                                                "example": "https://example.com"
+                                                            },
+                                                            "contact_type_id": {
+                                                                "type": "integer",
+                                                                "example": 2
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "There is no Contact Information With this ID",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "There is no Contact Information With this id"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation failed"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 400
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "You are not authorized to update this contact"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 403
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/api/users/contact/remove/{contact_information_id}": {
@@ -1495,9 +1735,17 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
                                         "message": {
                                             "type": "string",
                                             "example": "Contact deleted successfully"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
                                         }
                                     },
                                     "type": "object"
@@ -1511,9 +1759,17 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
                                         "message": {
                                             "type": "string",
                                             "example": "Contact not found"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 404
                                         }
                                     },
                                     "type": "object"
@@ -1543,9 +1799,17 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
                                         "message": {
                                             "type": "string",
                                             "example": "All Contacts deleted successfully"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
                                         }
                                     },
                                     "type": "object"
@@ -1559,9 +1823,17 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
                                         "message": {
                                             "type": "string",
                                             "example": "Contacts not found for this user"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 400
                                         }
                                     },
                                     "type": "object"
@@ -1625,6 +1897,10 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Email verification successfully"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
                                         }
                                     },
                                     "type": "object"
@@ -1657,6 +1933,10 @@
                                                 }
                                             },
                                             "type": "object"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 400
                                         }
                                     },
                                     "type": "object"
@@ -1701,6 +1981,10 @@
                                         "message": {
                                             "type": "string",
                                             "example": "The activation code has been sent to your email"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
                                         }
                                     },
                                     "type": "object"
@@ -1721,6 +2005,10 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Email already verified"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 400
                                         }
                                     },
                                     "type": "object"
@@ -1741,6 +2029,10 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Email not found"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 404
                                         }
                                     },
                                     "type": "object"
@@ -1790,6 +2082,10 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
                                         "expression": {
                                             "properties": {
                                                 "expression_id": {
@@ -1812,6 +2108,10 @@
                                                         "dislike"
                                                     ],
                                                     "example": "like"
+                                                },
+                                                "status_code": {
+                                                    "type": "integer",
+                                                    "example": 201
                                                 }
                                             },
                                             "type": "object"
@@ -1828,9 +2128,17 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
                                         "message": {
                                             "type": "string",
                                             "example": "action input is invalid"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 400
                                         }
                                     },
                                     "type": "object"
@@ -1844,9 +2152,17 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
                                         "message": {
                                             "type": "string",
                                             "example": "Prodcut Not Found"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 404
                                         }
                                     },
                                     "type": "object"
@@ -1883,6 +2199,10 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
                                         "product": {
                                             "description": "Name of the product",
                                             "type": "string"
@@ -1999,6 +2319,10 @@
                                                 }
                                             },
                                             "type": "object"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
                                         }
                                     },
                                     "type": "object"
@@ -2007,7 +2331,28 @@
                         }
                     },
                     "404": {
-                        "description": "Product not found"
+                        "description": "Product not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Product not found"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 400
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -2059,6 +2404,10 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
                                         "message": {
                                             "type": "string",
                                             "example": "updated successfully"
@@ -2084,6 +2433,10 @@
                                                 }
                                             },
                                             "type": "object"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
                                         }
                                     },
                                     "type": "object"
@@ -2097,9 +2450,17 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
                                         "message": {
                                             "type": "string",
                                             "example": "User not expressed for this product"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 404
                                         }
                                     },
                                     "type": "object"
@@ -2113,9 +2474,17 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
                                         "message": {
                                             "type": "string",
                                             "example": "action input is invalid"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 400
                                         }
                                     },
                                     "type": "object"
@@ -4465,11 +4834,11 @@
                                 "properties": {
                                     "email": {
                                         "type": "string",
-                                        "example": "hzaeter04@gmail.com"
+                                        "example": "hzaeter@gmail.com"
                                     },
                                     "password": {
                                         "type": "string",
-                                        "example": "password123"
+                                        "example": "password1234"
                                     }
                                 },
                                 "type": "object"
@@ -4488,26 +4857,79 @@
                                             "type": "boolean",
                                             "example": true
                                         },
-                                        "token": {
+                                        "message": {
                                             "type": "string",
-                                            "example": "jwt-token"
+                                            "example": "Login successful"
                                         },
-                                        "user": {
+                                        "data": {
                                             "properties": {
-                                                "id": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "name": {
+                                                "token": {
                                                     "type": "string",
-                                                    "example": "Hasan Zaeter"
+                                                    "example": "jwt-token"
                                                 },
-                                                "email": {
+                                                "token_type": {
                                                     "type": "string",
-                                                    "example": "hzaeter@gmail.com"
+                                                    "example": "bearer"
+                                                },
+                                                "user": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "first_name": {
+                                                            "type": "string",
+                                                            "example": "hasan"
+                                                        },
+                                                        "last_name": {
+                                                            "type": "string",
+                                                            "example": "zaeter"
+                                                        },
+                                                        "email": {
+                                                            "type": "string",
+                                                            "example": "hzaeter@gmail.com"
+                                                        },
+                                                        "mobile": {
+                                                            "type": "string",
+                                                            "example": "0935917557"
+                                                        },
+                                                        "Address": {
+                                                            "type": "string",
+                                                            "example": "median"
+                                                        }
+                                                    },
+                                                    "type": "object"
                                                 }
                                             },
                                             "type": "object"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invalid credentials. Please check your email and password"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 401
                                         }
                                     },
                                     "type": "object"
@@ -4532,34 +4954,15 @@
                                         "data": {
                                             "properties": {
                                                 "email": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "string",
-                                                        "example": "The selected email is invalid."
-                                                    }
+                                                    "type": "string",
+                                                    "example": "Email does not exist in our records"
                                                 }
                                             },
                                             "type": "object"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "successful": {
-                                            "type": "boolean",
-                                            "example": false
                                         },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Invalid credentials. Please check your email and password"
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 400
                                         }
                                     },
                                     "type": "object"
@@ -4580,6 +4983,10 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Your email address is not verified"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 403
                                         }
                                     },
                                     "type": "object"
@@ -4618,9 +5025,13 @@
                                                     "type": "integer",
                                                     "example": 1
                                                 },
-                                                "name": {
+                                                "first_name": {
                                                     "type": "string",
-                                                    "example": "hasan zaeter"
+                                                    "example": "Hasan"
+                                                },
+                                                "last_name": {
+                                                    "type": "string",
+                                                    "example": "Zaeter"
                                                 },
                                                 "email": {
                                                     "type": "string",
@@ -4628,6 +5039,10 @@
                                                 }
                                             },
                                             "type": "object"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
                                         }
                                     },
                                     "type": "object"
@@ -4680,9 +5095,13 @@
                                             "type": "integer",
                                             "example": 1
                                         },
-                                        "name": {
+                                        "first_name": {
                                             "type": "string",
-                                            "example": "Hasan Zaeter"
+                                            "example": "Hasan"
+                                        },
+                                        "last_name": {
+                                            "type": "string",
+                                            "example": "Zaeter"
                                         },
                                         "email": {
                                             "type": "string",
@@ -4691,6 +5110,10 @@
                                         "mobile": {
                                             "type": "string",
                                             "example": "0935917667"
+                                        },
+                                        "Address": {
+                                            "type": "string",
+                                            "example": "median"
                                         },
                                         "contacts": {
                                             "type": "array",
@@ -4711,6 +5134,10 @@
                                                 },
                                                 "type": "object"
                                             }
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
                                         }
                                     },
                                     "type": "object"
@@ -4731,6 +5158,10 @@
                                         "message": {
                                             "type": "string",
                                             "example": "User Not Found"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 404
                                         }
                                     },
                                     "type": "object"
@@ -4751,6 +5182,10 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Unauthenticated"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 401
                                         }
                                     },
                                     "type": "object"
@@ -4779,13 +5214,21 @@
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "name": {
+                                    "first_name": {
                                         "type": "string",
-                                        "example": "Hasan Zaeter"
+                                        "example": "Hasan"
+                                    },
+                                    "last_name": {
+                                        "type": "string",
+                                        "example": "Zaeter"
                                     },
                                     "mobile": {
                                         "type": "string",
                                         "example": "0935917667"
+                                    },
+                                    "Address": {
+                                        "type": "string",
+                                        "example": "median"
                                     },
                                     "old_password": {
                                         "type": "string",
@@ -4821,48 +5264,57 @@
                                             "example": "Profile updated successfully"
                                         },
                                         "user": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "id": {
-                                                        "type": "integer",
-                                                        "example": 1
-                                                    },
-                                                    "name": {
-                                                        "type": "string",
-                                                        "example": "Hasan Zaeter"
-                                                    },
-                                                    "email": {
-                                                        "type": "string",
-                                                        "example": "hzaeter@gmail.com"
-                                                    },
-                                                    "mobile": {
-                                                        "type": "string",
-                                                        "example": "0935917667"
-                                                    },
-                                                    "contacts": {
-                                                        "type": "array",
-                                                        "items": {
-                                                            "properties": {
-                                                                "id": {
-                                                                    "type": "integer",
-                                                                    "example": 1
-                                                                },
-                                                                "user_id": {
-                                                                    "type": "integer",
-                                                                    "example": 1
-                                                                },
-                                                                "contact_type_id": {
-                                                                    "type": "integer",
-                                                                    "example": 2
-                                                                }
-                                                            },
-                                                            "type": "object"
-                                                        }
-                                                    }
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
                                                 },
-                                                "type": "object"
-                                            }
+                                                "first_name": {
+                                                    "type": "string",
+                                                    "example": "Hasan"
+                                                },
+                                                "last_name": {
+                                                    "type": "string",
+                                                    "example": "Zaeter"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "hzaeter@gmail.com"
+                                                },
+                                                "Address": {
+                                                    "type": "string",
+                                                    "example": "median"
+                                                },
+                                                "mobile": {
+                                                    "type": "string",
+                                                    "example": "0935917667"
+                                                },
+                                                "contacts": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "user_id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "contact_type_id": {
+                                                                "type": "integer",
+                                                                "example": 2
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
                                         }
                                     },
                                     "type": "object"
@@ -4887,6 +5339,10 @@
                                         "data": {
                                             "type": "object",
                                             "example": []
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 400
                                         }
                                     },
                                     "type": "object"
@@ -4907,6 +5363,10 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Unauthorized"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 401
                                         }
                                     },
                                     "type": "object"
@@ -4927,6 +5387,10 @@
                                         "message": {
                                             "type": "string",
                                             "example": "You are not authorized to modify this profile"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 403
                                         }
                                     },
                                     "type": "object"
