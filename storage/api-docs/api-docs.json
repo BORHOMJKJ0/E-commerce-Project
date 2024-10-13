@@ -100,6 +100,7 @@
                                 ],
                                 "properties": {
                                     "name": {
+                                        "description": "Category name",
                                         "type": "string",
                                         "example": "Fruits"
                                     }
@@ -237,6 +238,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "ID of the category you want to show it",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -288,6 +290,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "Category ID you want to update it",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -297,6 +300,7 @@
                     {
                         "name": "name",
                         "in": "query",
+                        "description": "Category name",
                         "required": false,
                         "schema": {
                             "type": "string",
@@ -406,6 +410,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "Category ID you want to delete it",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -481,6 +486,7 @@
                     {
                         "name": "column",
                         "in": "path",
+                        "description": "Column you want to order the categories by it",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -494,6 +500,7 @@
                     {
                         "name": "direction",
                         "in": "path",
+                        "description": "Dircetion of ordering",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -573,6 +580,7 @@
                     {
                         "name": "column",
                         "in": "path",
+                        "description": "Column you want to order the categories by it",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -586,6 +594,7 @@
                     {
                         "name": "direction",
                         "in": "path",
+                        "description": "Dircetion of ordering",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -908,6 +917,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "Comment ID you want to show it",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -959,6 +969,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "Comment ID you want to update it",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -968,6 +979,7 @@
                     {
                         "name": "text",
                         "in": "query",
+                        "description": "Comment Text",
                         "required": false,
                         "schema": {
                             "type": "string",
@@ -977,6 +989,7 @@
                     {
                         "name": "image",
                         "in": "query",
+                        "description": "Comment Image",
                         "required": false,
                         "schema": {
                             "type": "string",
@@ -986,6 +999,7 @@
                     {
                         "name": "review_id",
                         "in": "query",
+                        "description": "Review ID you want to update it",
                         "required": false,
                         "schema": {
                             "type": "integer",
@@ -1095,6 +1109,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "Comment ID you want to delete it",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -1170,6 +1185,7 @@
                     {
                         "name": "column",
                         "in": "path",
+                        "description": "Column you want to order the comments by it",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -1182,6 +1198,7 @@
                     {
                         "name": "direction",
                         "in": "path",
+                        "description": "Dircetion of ordering",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -1261,6 +1278,7 @@
                     {
                         "name": "column",
                         "in": "path",
+                        "description": "Column you want to order the comments by it",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -1273,6 +1291,7 @@
                     {
                         "name": "direction",
                         "in": "path",
+                        "description": "Dircetion of ordering",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -2151,10 +2170,12 @@
                                 ],
                                 "properties": {
                                     "product_id": {
+                                        "description": "Product ID you want to add expression to it",
                                         "type": "integer",
                                         "example": 1
                                     },
                                     "action": {
+                                        "description": "the Action Like or dislike",
                                         "type": "enum",
                                         "example": "like"
                                     }
@@ -2587,7 +2608,7 @@
         "/api/offers": {
             "get": {
                 "tags": [
-                    "offers"
+                    "Offers"
                 ],
                 "summary": "Get all offers",
                 "operationId": "82b2a3d767019d2805a70e2059bf7ed3",
@@ -2652,7 +2673,7 @@
             },
             "post": {
                 "tags": [
-                    "offers"
+                    "Offers"
                 ],
                 "summary": "Create a offer",
                 "operationId": "a6d9a7f4b923441a1072570cb7a787b2",
@@ -2669,21 +2690,25 @@
                                 ],
                                 "properties": {
                                     "discount_percentage": {
+                                        "description": "Discount_percentage of the offer",
                                         "type": "number",
                                         "format": "float",
                                         "example": "15.50"
                                     },
                                     "start_date": {
+                                        "description": "Offer Start Date",
                                         "type": "string",
                                         "format": "date",
                                         "example": "2024-10-01"
                                     },
                                     "end_date": {
+                                        "description": "Offer End Date",
                                         "type": "string",
                                         "format": "date",
                                         "example": "2024-12-31"
                                     },
                                     "product_id": {
+                                        "description": "Product ID you want to add offer to it",
                                         "type": "integer",
                                         "example": 1
                                     }
@@ -2747,7 +2772,7 @@
         "/api/offers/my": {
             "get": {
                 "tags": [
-                    "offers"
+                    "Offers"
                 ],
                 "summary": "Get My offers",
                 "operationId": "5478b93fc7cf9bda6c93ded4c3b2f228",
@@ -2814,7 +2839,7 @@
         "/api/offers/{id}": {
             "get": {
                 "tags": [
-                    "offers"
+                    "Offers"
                 ],
                 "summary": "Get a offer by ID",
                 "operationId": "1bc75c9c6e634dee5d2b9ce660bfba5c",
@@ -2822,6 +2847,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "Offer ID you want to show it",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -2865,7 +2891,7 @@
             },
             "put": {
                 "tags": [
-                    "offers"
+                    "Offers"
                 ],
                 "summary": "Update an offer",
                 "operationId": "9a896cb858c0c57d6113d978fd830605",
@@ -2873,6 +2899,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "Offer ID you want to update it",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -2882,6 +2909,7 @@
                     {
                         "name": "discount_percentage",
                         "in": "query",
+                        "description": "Discount Percentage of the offer",
                         "required": false,
                         "schema": {
                             "type": "number",
@@ -2892,6 +2920,7 @@
                     {
                         "name": "start_date",
                         "in": "query",
+                        "description": "Start Date of the offer",
                         "required": false,
                         "schema": {
                             "type": "string",
@@ -2902,6 +2931,7 @@
                     {
                         "name": "end_date",
                         "in": "query",
+                        "description": "End Date of the offer",
                         "required": false,
                         "schema": {
                             "type": "string",
@@ -2912,6 +2942,7 @@
                     {
                         "name": "product_id",
                         "in": "query",
+                        "description": "Product ID of the offer",
                         "required": false,
                         "schema": {
                             "type": "integer",
@@ -3034,7 +3065,7 @@
             },
             "delete": {
                 "tags": [
-                    "offers"
+                    "Offers"
                 ],
                 "summary": "Delete a offer",
                 "operationId": "bf32ad4c435d8f34475df60483a038b6",
@@ -3042,6 +3073,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "Offer ID you want to delete it",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -3109,7 +3141,7 @@
         "/api/offers/order/{column}/{direction}": {
             "get": {
                 "tags": [
-                    "offers"
+                    "Offers"
                 ],
                 "summary": "Order offers by a specific column",
                 "operationId": "6ead40a61d18d819cacf8537069a72be",
@@ -3117,6 +3149,7 @@
                     {
                         "name": "column",
                         "in": "path",
+                        "description": "Column you want to order the offers by it",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -3132,6 +3165,7 @@
                     {
                         "name": "direction",
                         "in": "path",
+                        "description": "Dircetion of ordering",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -3203,7 +3237,7 @@
         "/api/offers/my/order/{column}/{direction}": {
             "get": {
                 "tags": [
-                    "offers"
+                    "Offers"
                 ],
                 "summary": "Order My offers by a specific column",
                 "operationId": "8e8019bc9e99feab22bea5546f987873",
@@ -3211,6 +3245,7 @@
                     {
                         "name": "column",
                         "in": "path",
+                        "description": "Column you want to order the offers by it",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -3226,6 +3261,7 @@
                     {
                         "name": "direction",
                         "in": "path",
+                        "description": "Dircetion of ordering",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -3380,23 +3416,28 @@
                                 ],
                                 "properties": {
                                     "name": {
+                                        "description": "Product Name",
                                         "type": "string",
                                         "example": "Perform"
                                     },
                                     "image": {
+                                        "description": "Product Image",
                                         "type": "string",
                                         "format": "binary"
                                     },
                                     "price": {
+                                        "description": "Product Price",
                                         "type": "number",
                                         "format": "float",
                                         "example": 250.75
                                     },
                                     "description": {
+                                        "description": "Product Description",
                                         "type": "string",
-                                        "example": "This is a new Perform and it's cool Try it"
+                                        "example": "This is a new Perform and it cool Try it"
                                     },
                                     "category_id": {
+                                        "description": "Category ID that product belong to it",
                                         "type": "integer",
                                         "example": 1
                                     }
@@ -3585,6 +3626,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "Product ID you want to show it",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -3636,6 +3678,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "Product ID you want to update it",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -3645,6 +3688,7 @@
                     {
                         "name": "name",
                         "in": "query",
+                        "description": "Product name",
                         "required": false,
                         "schema": {
                             "type": "string",
@@ -3654,6 +3698,7 @@
                     {
                         "name": "image",
                         "in": "query",
+                        "description": "Product Image",
                         "required": false,
                         "schema": {
                             "type": "string",
@@ -3663,6 +3708,7 @@
                     {
                         "name": "price",
                         "in": "query",
+                        "description": "Product price",
                         "required": false,
                         "schema": {
                             "type": "number",
@@ -3673,15 +3719,17 @@
                     {
                         "name": "description",
                         "in": "query",
+                        "description": "Product Description",
                         "required": false,
                         "schema": {
                             "type": "string",
-                            "example": "This is a new Perform and it's cool Try it"
+                            "example": "This is a new Perform and it cool Try it"
                         }
                     },
                     {
                         "name": "category_id",
                         "in": "query",
+                        "description": "Category ID that product belong to it",
                         "required": false,
                         "schema": {
                             "type": "integer",
@@ -3832,6 +3880,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "Product ID you want to delete it",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -3907,6 +3956,7 @@
                     {
                         "name": "column",
                         "in": "path",
+                        "description": "Column you want to order the products by it",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -3941,6 +3991,7 @@
                     {
                         "name": "direction",
                         "in": "path",
+                        "description": "Dircetion of ordering",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -4000,6 +4051,7 @@
                     {
                         "name": "column",
                         "in": "path",
+                        "description": "Column you want to order the products by it",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -4034,6 +4086,7 @@
                     {
                         "name": "direction",
                         "in": "path",
+                        "description": "Dircetion of ordering",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -4309,6 +4362,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "Review ID you want to show it",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -4360,6 +4414,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "review ID you want to update it",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -4369,6 +4424,7 @@
                     {
                         "name": "rating",
                         "in": "query",
+                        "description": "your rating in this product",
                         "required": false,
                         "schema": {
                             "type": "number",
@@ -4379,6 +4435,7 @@
                     {
                         "name": "product_id",
                         "in": "query",
+                        "description": "The product you want to add rating to it",
                         "required": false,
                         "schema": {
                             "type": "integer",
@@ -4461,6 +4518,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "Review ID you want to delete it",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -4536,6 +4594,7 @@
                     {
                         "name": "column",
                         "in": "path",
+                        "description": "Column you want to order the reviews by it",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -4549,6 +4608,7 @@
                     {
                         "name": "direction",
                         "in": "path",
+                        "description": "Dircetion of ordering",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -4628,6 +4688,7 @@
                     {
                         "name": "column",
                         "in": "path",
+                        "description": "Column you want to order the reviews by it",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -4641,6 +4702,7 @@
                     {
                         "name": "direction",
                         "in": "path",
+                        "description": "Dircetion of ordering",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -4815,30 +4877,37 @@
                                 ],
                                 "properties": {
                                     "first_name": {
+                                        "description": "User first name",
                                         "type": "string",
                                         "example": "hasan"
                                     },
                                     "last_name": {
+                                        "description": "User last name",
                                         "type": "string",
                                         "example": "zaeter"
                                     },
                                     "email": {
+                                        "description": "User email",
                                         "type": "string",
                                         "example": "hzaeter@gmail.com"
                                     },
                                     "mobile": {
+                                        "description": "User mobile phone",
                                         "type": "string",
                                         "example": "0935917667"
                                     },
                                     "address": {
+                                        "description": "User address",
                                         "type": "string",
                                         "example": "midan"
                                     },
                                     "password": {
+                                        "description": "User password",
                                         "type": "string",
                                         "example": "password123"
                                     },
                                     "password_confirmation": {
+                                        "description": "User confirmation password",
                                         "type": "string",
                                         "example": "password123"
                                     }
@@ -4934,10 +5003,12 @@
                                 ],
                                 "properties": {
                                     "email": {
+                                        "description": "User email",
                                         "type": "string",
                                         "example": "hzaeter@gmail.com"
                                     },
                                     "password": {
+                                        "description": "User password",
                                         "type": "string",
                                         "example": "password1234"
                                     }
@@ -5316,30 +5387,37 @@
                             "schema": {
                                 "properties": {
                                     "first_name": {
+                                        "description": "User first name",
                                         "type": "string",
                                         "example": "Hasan"
                                     },
                                     "last_name": {
+                                        "description": "User last name",
                                         "type": "string",
                                         "example": "Zaeter"
                                     },
                                     "mobile": {
+                                        "description": "User mobile phone",
                                         "type": "string",
                                         "example": "0935917667"
                                     },
                                     "address": {
+                                        "description": "User Address",
                                         "type": "string",
                                         "example": "median"
                                     },
                                     "old_password": {
+                                        "description": "User old password",
                                         "type": "string",
                                         "example": "oldpassword123"
                                     },
                                     "new_password": {
+                                        "description": "User new password",
                                         "type": "string",
                                         "example": "newpassword123"
                                     },
                                     "new_password_confirmation": {
+                                        "description": "User confirmation new password",
                                         "type": "string",
                                         "example": "newpassword123"
                                     }
@@ -5513,6 +5591,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "User ID you want to delete it",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -5663,29 +5742,35 @@
                                 ],
                                 "properties": {
                                     "amount": {
+                                        "description": "Warehouse Amount",
                                         "type": "number",
                                         "example": 100
                                     },
                                     "pure_price": {
+                                        "description": "Warehouse pure price",
                                         "type": "number",
                                         "example": 50.75
                                     },
                                     "payment_date": {
+                                        "description": "Warehouse payment date",
                                         "type": "string",
                                         "format": "date",
                                         "example": "2024-09-01"
                                     },
                                     "settlement_date": {
+                                        "description": "Warehouse settlement date",
                                         "type": "string",
                                         "format": "date",
                                         "example": "2024-09-15"
                                     },
                                     "expiry_date": {
+                                        "description": "Warehouse exoiry date",
                                         "type": "string",
                                         "format": "date",
                                         "example": "2024-12-01"
                                     },
                                     "product_id": {
+                                        "description": "Product ID that you want to add this warehouse to it",
                                         "type": "integer",
                                         "example": 1
                                     }
@@ -5757,6 +5842,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "your Warehouse ID you want to show it",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -5824,6 +5910,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "your Warehouse ID that you want to update it",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -5833,6 +5920,7 @@
                     {
                         "name": "amount",
                         "in": "query",
+                        "description": "THe amount of this warehouse",
                         "required": false,
                         "schema": {
                             "type": "integer",
@@ -5842,6 +5930,7 @@
                     {
                         "name": "pure_price",
                         "in": "query",
+                        "description": "Pure price of this warehouse",
                         "required": false,
                         "schema": {
                             "type": "number",
@@ -5852,6 +5941,7 @@
                     {
                         "name": "payment_date",
                         "in": "query",
+                        "description": "payment date of this warehouse",
                         "required": false,
                         "schema": {
                             "type": "string",
@@ -5862,6 +5952,7 @@
                     {
                         "name": "settlement_date",
                         "in": "query",
+                        "description": "Settlement date of this warehouse",
                         "required": false,
                         "schema": {
                             "type": "string",
@@ -5870,17 +5961,9 @@
                         }
                     },
                     {
-                        "name": "expiry_date",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "format": "date"
-                        }
-                    },
-                    {
                         "name": "product_id",
                         "in": "query",
+                        "description": "Product ID of this warehouse",
                         "required": false,
                         "schema": {
                             "type": "integer",
@@ -6016,6 +6099,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "your Warehouse ID you want to delete it",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -6091,6 +6175,7 @@
                     {
                         "name": "column",
                         "in": "path",
+                        "description": "Column you want to order the warehouses by it",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -6107,6 +6192,7 @@
                     {
                         "name": "direction",
                         "in": "path",
+                        "description": "Dircetion of ordering",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -7044,8 +7130,8 @@
             "description": "Expressions"
         },
         {
-            "name": "offers",
-            "description": "offers"
+            "name": "Offers",
+            "description": "Offers"
         },
         {
             "name": "Products",

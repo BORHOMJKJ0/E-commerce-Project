@@ -168,6 +168,7 @@ class CommentService
      *         name="id",
      *         in="path",
      *         required=true,
+     *     description="Comment ID you want to show it",
      *
      *          @OA\Schema(type="integer", example=1)
      *     ),
@@ -293,6 +294,7 @@ class CommentService
      *         name="column",
      *         in="path",
      *         required=true,
+     *     description="Column you want to order the comments by it",
      *
      *         @OA\Schema(type="string", enum={"created_at", "updated_at"})
      *     ),
@@ -301,6 +303,7 @@ class CommentService
      *         name="direction",
      *         in="path",
      *         required=true,
+     *     description="Dircetion of ordering",
      *
      *         @OA\Schema(type="string", enum={"asc", "desc"})
      *     ),
@@ -378,6 +381,7 @@ class CommentService
      *         name="column",
      *         in="path",
      *         required=true,
+     *         description="Column you want to order the comments by it",
      *
      *         @OA\Schema(type="string", enum={"created_at", "updated_at"})
      *     ),
@@ -386,6 +390,7 @@ class CommentService
      *         name="direction",
      *         in="path",
      *         required=true,
+     *     description="Dircetion of ordering",
      *
      *         @OA\Schema(type="string", enum={"asc", "desc"})
      *     ),
@@ -463,6 +468,7 @@ class CommentService
      *         name="id",
      *         in="path",
      *         required=true,
+     *     description="Comment ID you want to update it",
      *
      *         @OA\Schema(type="integer", example=1)
      *     ),
@@ -471,6 +477,7 @@ class CommentService
      *         name="text",
      *         in="query",
      *         required=false,
+     *     description="Comment Text",
      *
      *         @OA\Schema(type="string", example="Thank you!")
      *     ),
@@ -479,6 +486,7 @@ class CommentService
      *         name="image",
      *         in="query",
      *         required=false,
+     *     description="Comment Image",
      *
      *         @OA\Schema(type="string", format="binary")
      *     ),
@@ -487,6 +495,7 @@ class CommentService
      *         name="review_id",
      *         in="query",
      *         required=false,
+     *     description="Review ID you want to update it",
      *
      *         @OA\Schema(type="integer", example=1)
      *     ),
@@ -580,6 +589,7 @@ class CommentService
      *         name="id",
      *         in="path",
      *         required=true,
+     *     description="Comment ID you want to delete it",
      *
      *          @OA\Schema(type="integer", example=1)
      *     ),

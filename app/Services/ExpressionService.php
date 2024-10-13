@@ -94,8 +94,8 @@ class ExpressionService
      *                 type="object",
      *             required={"product_id", "user_id"},
      *
-     *             @OA\Property(property="product_id", type="integer", example=1),
-     *             @OA\Property(property="action", type="enum", example="like")
+     *             @OA\Property(property="product_id", type="integer", example=1,description="Product ID you want to add expression to it",),
+     *             @OA\Property(property="action", type="enum", example="like",description="the Action Like or dislike")
      *         )
      *       )
      *     ),

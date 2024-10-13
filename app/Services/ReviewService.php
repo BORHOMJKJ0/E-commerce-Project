@@ -167,6 +167,7 @@ class ReviewService
      *         name="id",
      *         in="path",
      *         required=true,
+     *         description="Review ID you want to show it",
      *
      *          @OA\Schema(type="integer", example=1)
      *     ),
@@ -279,6 +280,7 @@ class ReviewService
      *         name="column",
      *         in="path",
      *         required=true,
+     *         description="Column you want to order the reviews by it",
      *
      *         @OA\Schema(type="string", enum={"rating", "created_at", "updated_at"})
      *     ),
@@ -287,6 +289,7 @@ class ReviewService
      *         name="direction",
      *         in="path",
      *         required=true,
+     *     description="Dircetion of ordering",
      *
      *         @OA\Schema(type="string", enum={"asc", "desc"})
      *     ),
@@ -365,6 +368,7 @@ class ReviewService
      *         name="column",
      *         in="path",
      *         required=true,
+     *        description="Column you want to order the reviews by it",
      *
      *         @OA\Schema(type="string", enum={"rating", "created_at", "updated_at"})
      *     ),
@@ -373,6 +377,7 @@ class ReviewService
      *         name="direction",
      *         in="path",
      *         required=true,
+     *     description="Dircetion of ordering",
      *
      *         @OA\Schema(type="string", enum={"asc", "desc"})
      *     ),
@@ -451,6 +456,7 @@ class ReviewService
      *         name="id",
      *         in="path",
      *         required=true,
+     *     description="review ID you want to update it",
      *
      *         @OA\Schema(type="integer", example=1)
      *     ),
@@ -459,6 +465,7 @@ class ReviewService
      *         name="rating",
      *         in="query",
      *         required=false,
+     *     description="your rating in this product",
      *
      *         @OA\Schema(type="number",format="float" ,example="3")
      *     ),
@@ -467,6 +474,7 @@ class ReviewService
      *         name="product_id",
      *         in="query",
      *         required=false,
+     *     description="The product you want to add rating to it",
      *
      *         @OA\Schema(type="integer", example=1)
      *     ),
@@ -545,6 +553,7 @@ class ReviewService
      *         name="id",
      *         in="path",
      *         required=true,
+     *     description="Review ID you want to delete it",
      *
      *          @OA\Schema(type="integer", example=1)
      *     ),

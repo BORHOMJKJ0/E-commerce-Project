@@ -38,7 +38,7 @@ class OfferService
      * @OA\Get(
      *     path="/api/offers",
      *     summary="Get all offers",
-     *     tags={"offers"},
+     *      tags={"Offers"},
      *     security={{"bearerAuth": {} }},
      *
      *     @OA\Parameter(
@@ -101,7 +101,7 @@ class OfferService
      * @OA\Get(
      *     path="/api/offers/my",
      *     summary="Get My offers",
-     *     tags={"offers"},
+     *      tags={"Offers"},
      *     security={{"bearerAuth": {} }},
      *
      *     @OA\Parameter(
@@ -164,13 +164,14 @@ class OfferService
      * @OA\Get(
      *     path="/api/offers/{id}",
      *     summary="Get a offer by ID",
-     *     tags={"offers"},
+     *      tags={"Offers"},
      *     security={{"bearerAuth": {} }},
      *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
+     *     description="Offer ID you want to show it",
      *
      *          @OA\Schema(type="integer", example=1)
      *     ),
@@ -204,7 +205,7 @@ class OfferService
      * @OA\Post(
      *     path="/api/offers",
      *     summary="Create a offer",
-     *     tags={"offers"},
+     *      tags={"Offers"},
      *     security={{"bearerAuth": {} }},
      *
      *     @OA\RequestBody(
@@ -217,10 +218,10 @@ class OfferService
      *                 type="object",
      *                 required={"discount_percentage", "start_date", "end_date", "product_id"},
      *
-     *                 @OA\Property(property="discount_percentage", type="number", format="float", example="15.50"),
-     *                 @OA\Property(property="start_date", type="string", format="date", example="2024-10-01"),
-     *                 @OA\Property(property="end_date", type="string", format="date", example="2024-12-31"),
-     *                 @OA\Property(property="product_id", type="integer", example=1),
+     *                 @OA\Property(property="discount_percentage", type="number", format="float", example="15.50",description="Discount_percentage of the offer",),
+     *                 @OA\Property(property="start_date", type="string", format="date", example="2024-10-01",description="Offer Start Date",),
+     *                 @OA\Property(property="end_date", type="string", format="date", example="2024-12-31",description="Offer End Date",),
+     *                 @OA\Property(property="product_id", type="integer", example=1,description="Product ID you want to add offer to it",),
      *             )
      *         )
      *     ),
@@ -291,13 +292,14 @@ class OfferService
      * @OA\Get(
      *     path="/api/offers/order/{column}/{direction}",
      *     summary="Order offers by a specific column",
-     *     tags={"offers"},
+     *      tags={"Offers"},
      *     security={{"bearerAuth": {} }},
      *
      *     @OA\Parameter(
      *         name="column",
      *         in="path",
      *         required=true,
+     *     description="Column you want to order the offers by it",
      *
      *         @OA\Schema(type="string", enum={"discount_percentage","start_date","end_date", "created_at", "updated_at"})
      *     ),
@@ -306,6 +308,7 @@ class OfferService
      *         name="direction",
      *         in="path",
      *         required=true,
+     *     description="Dircetion of ordering",
      *
      *         @OA\Schema(type="string", enum={"asc", "desc"})
      *     ),
@@ -377,13 +380,14 @@ class OfferService
      * @OA\Get(
      *     path="/api/offers/my/order/{column}/{direction}",
      *     summary="Order My offers by a specific column",
-     *     tags={"offers"},
+     *      tags={"Offers"},
      *     security={{"bearerAuth": {} }},
      *
      *     @OA\Parameter(
      *         name="column",
      *         in="path",
      *         required=true,
+     *         description="Column you want to order the offers by it",
      *
      *         @OA\Schema(type="string", enum={"discount_percentage","start_date","end_date", "created_at", "updated_at"})
      *     ),
@@ -392,6 +396,7 @@ class OfferService
      *         name="direction",
      *         in="path",
      *         required=true,
+     *     description="Dircetion of ordering",
      *
      *         @OA\Schema(type="string", enum={"asc", "desc"})
      *     ),
@@ -463,13 +468,14 @@ class OfferService
      * @OA\Put(
      *     path="/api/offers/{id}",
      *     summary="Update an offer",
-     *     tags={"offers"},
+     *      tags={"Offers"},
      *     security={{"bearerAuth": {}}},
      *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
+     *         description="Offer ID you want to update it",
      *
      *         @OA\Schema(type="integer", example=1)
      *     ),
@@ -478,6 +484,7 @@ class OfferService
      *         name="discount_percentage",
      *         in="query",
      *         required=false,
+     *     description="Discount Percentage of the offer",
      *
      *         @OA\Schema(type="number", format="float", example=20.5)
      *     ),
@@ -486,6 +493,7 @@ class OfferService
      *         name="start_date",
      *         in="query",
      *         required=false,
+     *     description="Start Date of the offer",
      *
      *         @OA\Schema(type="string", format="date", example="2024-10-01")
      *     ),
@@ -494,6 +502,7 @@ class OfferService
      *         name="end_date",
      *         in="query",
      *         required=false,
+     *     description="End Date of the offer",
      *
      *         @OA\Schema(type="string", format="date", example="2024-12-31")
      *     ),
@@ -502,6 +511,7 @@ class OfferService
      *         name="product_id",
      *         in="query",
      *         required=false,
+     *     description="Product ID of the offer",
      *
      *         @OA\Schema(type="integer", example=1)
      *     ),
@@ -599,13 +609,14 @@ class OfferService
      * @OA\Delete(
      *     path="/api/offers/{id}",
      *     summary="Delete a offer",
-     *     tags={"offers"},
+     *      tags={"Offers"},
      *     security={{"bearerAuth": {} }},
      *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
+     *     description="Offer ID you want to delete it",
      *
      *          @OA\Schema(type="integer", example=1)
      *     ),

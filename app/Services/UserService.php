@@ -98,13 +98,13 @@ class UserService
      *                 type="object",
      *             required={"first_name","last_name", "email", "mobile", "address", "password", "password_confirmation"},
      *
-     *             @OA\Property(property="first_name", type="string", example="hasan"),
-     *             @OA\Property(property="last_name", type="string", example="zaeter"),
-     *             @OA\Property(property="email", type="string", example="hzaeter@gmail.com"),
-     *             @OA\Property(property="mobile", type="string", example="0935917667"),
-     *             @OA\Property(property="address", type="string", example="midan"),
-     *             @OA\Property(property="password", type="string", example="password123"),
-     *             @OA\Property(property="password_confirmation", type="string", example="password123")
+     *             @OA\Property(property="first_name", type="string", example="hasan",description="User first name"),
+     *             @OA\Property(property="last_name", type="string", example="zaeter",description="User last name"),
+     *             @OA\Property(property="email", type="string", example="hzaeter@gmail.com",description="User email"),
+     *             @OA\Property(property="mobile", type="string", example="0935917667",description="User mobile phone"),
+     *             @OA\Property(property="address", type="string", example="midan",description="User address"),
+     *             @OA\Property(property="password", type="string", example="password123",description="User password"),
+     *             @OA\Property(property="password_confirmation", type="string", example="password123",description="User confirmation password")
      *         )
      *       )
      *     ),
@@ -170,8 +170,8 @@ class UserService
      *                 type="object",
      *             required={"email", "password"},
      *
-     *             @OA\Property(property="email", type="string", example="hzaeter@gmail.com"),
-     *             @OA\Property(property="password", type="string", example="password1234")
+     *             @OA\Property(property="email", type="string", example="hzaeter@gmail.com",description="User email"),
+     *             @OA\Property(property="password", type="string", example="password1234",description="User password")
      *         )
      *       )
      *     ),
@@ -391,13 +391,13 @@ class UserService
      *             @OA\Schema(
      *                 type="object",
      *
-     *             @OA\Property(property="first_name", type="string", example="Hasan"),
-     *             @OA\Property(property="last_name", type="string", example="Zaeter"),
-     *             @OA\Property(property="mobile", type="string", example="0935917667"),
-     *             @OA\Property(property="address", type="string", example="median"),
-     *             @OA\Property(property="old_password", type="string", example="oldpassword123"),
-     *             @OA\Property(property="new_password", type="string", example="newpassword123"),
-     *             @OA\Property(property="new_password_confirmation", type="string", example="newpassword123")
+     *             @OA\Property(property="first_name", type="string", example="Hasan",description="User first name"),
+     *             @OA\Property(property="last_name", type="string", example="Zaeter",description="User last name"),
+     *             @OA\Property(property="mobile", type="string", example="0935917667",description="User mobile phone"),
+     *             @OA\Property(property="address", type="string", example="median",description="User Address"),
+     *             @OA\Property(property="old_password", type="string", example="oldpassword123",description="User old password"),
+     *             @OA\Property(property="new_password", type="string", example="newpassword123",description="User new password"),
+     *             @OA\Property(property="new_password_confirmation", type="string", example="newpassword123",description="User confirmation new password")
      *         )
      *        )
      *     ),
@@ -498,6 +498,7 @@ class UserService
      *         name="id",
      *         in="path",
      *         required=true,
+     *     description="User ID you want to delete it",
      *
      *          @OA\Schema(type="integer", example=1)
      *     ),
