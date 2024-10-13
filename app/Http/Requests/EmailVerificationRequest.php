@@ -13,7 +13,7 @@ class EmailVerificationRequest extends BaseRequest
     {
         return [
             'code' => 'required|numeric|digits:6',
-            'email' => 'required|email|exists:users,email',
+            'email' => 'required|email',
         ];
     }
 }

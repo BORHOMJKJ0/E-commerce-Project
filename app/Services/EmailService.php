@@ -81,6 +81,7 @@ class EmailService
     public function email_verification(EmailVerificationRequest $request): JsonResponse
     {
         $user = $this->userRepository->findByEmail($request->email);
+
         $otp2 = $this->otp->validate($user->email, $request->code);
 
         if (! $otp2->status) {

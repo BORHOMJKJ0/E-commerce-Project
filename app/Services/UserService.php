@@ -140,7 +140,10 @@ class UserService
      */
     public function register(RegisterRequest $request)
     {
-
+        $user = $this->userRepository->findByEmail($request->email);
+        if ($user) {
+            return ResponseHelper::jsonResponse([], 'The Email has already been taken', 400, false);
+        }
         $user = $this->userRepository->create($request->validated());
 
         $this->EmailVerificationController->sendEmailVerification($user);
@@ -233,8 +236,13 @@ class UserService
     {
         $credentials = $request->only('email', 'password');
 
+        $user = $this->userRepository->findByEmail($credentials['email']);
+        if (! $user) {
+            return ResponseHelper::jsonResponse([], 'Email not found. Please register or check your email', 404, false);
+        }
+
         if (! $token = Auth::attempt($credentials)) {
-            return ResponseHelper::jsonResponse([], 'Invalid credentials. Please check your email and password', 401, false);
+            return ResponseHelper::jsonResponse([], 'Invalid password. Please check your password', 401, false);
         }
 
         $user = $this->userRepository->findByEmail($request->email);

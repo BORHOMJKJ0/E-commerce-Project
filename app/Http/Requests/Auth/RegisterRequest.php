@@ -16,12 +16,12 @@ class RegisterRequest extends BaseRequest
     {
 
         return [
-            'First_Name' => 'required|string|max:255',
-            'Last_Name' => 'sometimes|string|max:255',
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email', new EmailAddress],
-            'password' => 'required|string|min:8|confirmed',
-            'mobile' => 'required|string|size:10',
-            'Address' => 'required|string',
+            'First_Name' => 'required',
+            'Last_Name' => 'sometimes',
+            'email' => 'required',
+            'password' => 'required',
+            'mobile' => 'required',
+            'Address' => 'required',
         ];
     }
     //    public function attributes(): array{
@@ -33,15 +33,4 @@ class RegisterRequest extends BaseRequest
     //            'password_confirmation'=>__('password_confirmation')
     //        ];
     //    }
-
-    public function attributes(): array
-    {
-        return [
-            'name' => 'Name',
-            'email' => 'Email',
-            'password' => 'Password',
-            'gender' => 'Gender',
-            'mobile' => 'Mobile',
-        ];
-    }
 }
