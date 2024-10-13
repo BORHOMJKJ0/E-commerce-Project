@@ -99,6 +99,7 @@ class WarehouseService
      *         name="id",
      *         in="path",
      *         required=true,
+     *     description="your Warehouse ID you want to show it",
      *
      *        @OA\Schema(type="integer", example=1)
      *     ),
@@ -161,12 +162,12 @@ class WarehouseService
      *             @OA\Schema(
      *             required={"amount", "pure_price", "payment_date", "expiry_date", "product_id"},
      *
-     *             @OA\Property(property="amount", type="number", example=100),
-     *             @OA\Property(property="pure_price", type="number", example=50.75),
-     *             @OA\Property(property="payment_date", type="string", format="date", example="2024-09-01"),
-     *             @OA\Property(property="settlement_date", type="string", format="date", example="2024-09-15"),
-     *             @OA\Property(property="expiry_date", type="string", format="date", example="2024-12-01"),
-     *             @OA\Property(property="product_id", type="integer", example=1)
+     *             @OA\Property(property="amount", type="number", example=100,description="Warehouse Amount"),
+     *             @OA\Property(property="pure_price", type="number", example=50.75,description="Warehouse pure price"),
+     *             @OA\Property(property="payment_date", type="string", format="date", example="2024-09-01",description="Warehouse payment date"),
+     *             @OA\Property(property="settlement_date", type="string", format="date", example="2024-09-15",description="Warehouse settlement date"),
+     *             @OA\Property(property="expiry_date", type="string", format="date", example="2024-12-01",description="Warehouse exoiry date"),
+     *             @OA\Property(property="product_id", type="integer", example=1,description="Product ID that you want to add this warehouse to it")
      *             )
      *         )
      *     ),
@@ -247,6 +248,7 @@ class WarehouseService
      *         name="column",
      *         in="path",
      *         required=true,
+     *     description="Column you want to order the warehouses by it",
      *
      *         @OA\Schema(type="string", enum={"expiry_date", "created_at", "updated_at", "payment_date", "settlement_date", "pure_price"})
      *     ),
@@ -255,6 +257,7 @@ class WarehouseService
      *         name="direction",
      *         in="path",
      *         required=true,
+     *     description="Dircetion of ordering",
      *
      *         @OA\Schema(type="string", enum={"asc", "desc"})
      *     ),
@@ -333,6 +336,7 @@ class WarehouseService
      *         name="id",
      *         in="path",
      *         required=true,
+     *     description="your Warehouse ID that you want to update it",
      *
      *         @OA\Schema(type="integer", example=1)
      *     ),
@@ -341,6 +345,7 @@ class WarehouseService
      *         name="amount",
      *         in="query",
      *         required=false,
+     *     description="THe amount of this warehouse",
      *
      *         @OA\Schema(type="integer", example=100)
      *     ),
@@ -349,6 +354,7 @@ class WarehouseService
      *         name="pure_price",
      *         in="query",
      *         required=false,
+     *     description="Pure price of this warehouse",
      *
      *         @OA\Schema(type="number", format="float", example=225.5)
      *     ),
@@ -357,6 +363,7 @@ class WarehouseService
      *         name="payment_date",
      *         in="query",
      *         required=false,
+     *     description="payment date of this warehouse",
      *
      *         @OA\Schema(type="string", format="date", example="2024-09-10")
      *     ),
@@ -365,22 +372,16 @@ class WarehouseService
      *         name="settlement_date",
      *         in="query",
      *         required=false,
+     *     description="Settlement date of this warehouse",
      *
      *         @OA\Schema(type="string", format="date", example="2024-09-24")
-     *     ),
-     *
-     *     @OA\Parameter(
-     *         name="expiry_date",
-     *         in="query",
-     *         required=false,
-     *
-     *         @OA\Schema(type="string", format="date")
      *     ),
      *
      *     @OA\Parameter(
      *         name="product_id",
      *         in="query",
      *         required=false,
+     *     description="Product ID of this warehouse",
      *
      *         @OA\Schema(type="integer", example=1)
      *     ),
@@ -493,6 +494,7 @@ class WarehouseService
      *         name="id",
      *         in="path",
      *         required=true,
+     *     description="your Warehouse ID you want to delete it",
      *
      *         @OA\Schema(type="integer", example=1)
      *     ),

@@ -24,6 +24,44 @@ class ExpressionService
         $this->expressionRepository = $expressionRepository;
     }
 
+    /**
+     * @OA\SecurityScheme(
+     *     securityScheme="bearerAuth",
+     *     type="http",
+     *     scheme="bearer",
+     *     bearerFormat="JWT",
+     *     description="Enter JWT Bearer token in the format 'Bearer {token}'"
+     * )
+     */
+    /**
+     * @OA\Get(
+     *     path="/api/users/expression/all",
+     *     summary="Get all expressions",
+     *     tags={"Expressions"},
+     *     security={{"bearerAuth": {} }},
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful response",
+     *
+     *         @OA\JsonContent(
+     *             type="array",
+     *
+     *             @OA\Items(ref="#/components/schemas/CategoryResource")
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=422,
+     *         description="Invalid parameters",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="error", type="string", example="Invalid parameters")
+     *         )
+     *     )
+     * )
+     */
     public function index(): JsonResponse
     {
         $products = Product::all();
@@ -49,12 +87,17 @@ class ExpressionService
      *     @OA\RequestBody(
      *         required=true,
      *
-     *         @OA\JsonContent(
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *
+     *             @OA\Schema(
+     *                 type="object",
      *             required={"product_id", "user_id"},
      *
-     *             @OA\Property(property="product_id", type="integer", example=1),
-     *             @OA\Property(property="action", type="enum", example="like")
+     *             @OA\Property(property="product_id", type="integer", example=1,description="Product ID you want to add expression to it",),
+     *             @OA\Property(property="action", type="enum", example="like",description="the Action Like or dislike")
      *         )
+     *       )
      *     ),
      *
      *     @OA\Response(
@@ -222,6 +265,7 @@ class ExpressionService
      *     @OA\Response(
      *         response=404,
      *         description="Product not found",
+     *
      *          @OA\JsonContent(
      *             type="object",
      *
@@ -259,16 +303,20 @@ class ExpressionService
      *     @OA\RequestBody(
      *         required=true,
      *
-     *         @OA\JsonContent(
-     *             type="object",
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
      *
-     *             @OA\Property(
+     *             @OA\Schema(
+     *                 type="object",
+     *
+     *              @OA\Property(
      *                 property="action",
      *                 type="string",
      *                 enum={"like", "dislike"},
      *                 description="The expression action, either 'like' or 'dislike'.",
      *                 example="like"
      *             )
+     *           )
      *         )
      *     ),
      *
@@ -278,6 +326,7 @@ class ExpressionService
      *
      *         @OA\JsonContent(
      *             type="object",
+     *
      *             @OA\Property(property="successful",type="boolean",example=true),
      *             @OA\Property(property="message", type="string", example="updated successfully"),
      *             @OA\Property(

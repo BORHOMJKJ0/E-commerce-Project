@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('user_id')->constrained()->restrictOnUpdate()->restrictOnDelete();
-            $table->unsignedInteger('rating');
+            $table->double('rating');
             $table->timestamps();
         });
     }

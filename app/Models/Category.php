@@ -10,20 +10,11 @@ use OpenApi\Annotations as OA;
  * @OA\Schema(
  *     schema="Category",
  *     type="object",
+ *     title="Category Model",
+ *     description="Category details",
  *
- *     @OA\Property(property="id", type="integer", example=1),
- *     @OA\Property(property="name", type="string", example="Electronics"),
- *     @OA\Property(
- *         property="products",
- *         type="array",
- *
- *         @OA\Items(
- *             type="object",
- *
- *             @OA\Property(property="name", type="string", example="Smartphone"),
- *             @OA\Property(property="user_id", type="integer", example=1),
- *         )
- *     ),
+ *     @OA\Property(property="id", type="integer", example=1,description="The ID of the category"),
+ *     @OA\Property(property="name", type="string", example="Electronics",description="The name of the category"),
  * )
  */
 class Category extends Model

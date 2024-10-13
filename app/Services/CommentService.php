@@ -10,7 +10,6 @@ use App\Traits\AuthTrait;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 
 class CommentService
 {
@@ -169,6 +168,7 @@ class CommentService
      *         name="id",
      *         in="path",
      *         required=true,
+     *     description="Comment ID you want to show it",
      *
      *          @OA\Schema(type="integer", example=1)
      *     ),
@@ -208,14 +208,16 @@ class CommentService
      *     @OA\RequestBody(
      *         required=true,
      *
-     *      @OA\MediaType(
+     *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *
      *             @OA\Schema(
      *                 type="object",
-     *                 required={"name"},
+     *                   required={"review_id"},
      *
-     *                 @OA\Property(property="name", type="string", example="Fruits"),
+     *                 @OA\Property(property="review_id", type="integer", example=1, description="The ID of your review"),
+     *                 @OA\Property(property="text", type="string", example="This is a comment", description="The comment text. Must provide either 'text' or 'image', or both."),
+     *                 @OA\Property(property="image", type="string", format="binary", description="Optional image. Must provide either 'text' or 'image', or both.")
      *             )
      *         )
      *     ),
@@ -242,16 +244,12 @@ class CommentService
      *             type="object",
      *
      *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="name", type="string", example="Electronic devices"),
-     *             @OA\Property(
-     *                 property="products",
-     *                 type="array",
-     *                 example={},
-     *
-     *             @OA\Items()
+     *             @OA\Property(property="text", type="string", example="This is a comment"),
+     *             @OA\Property(property="image", type="string", example="http://example.com/image.jpg", nullable=true),
+     *             @OA\Property(property="product_name", type="string", example="apple"),
+     *             @OA\Property(property="user_name", type="string", example="Only"),
      *             )
-     *         )
-     *     ),
+     *           ),
      *
      *     @OA\Response(
      *         response=422,
@@ -262,11 +260,21 @@ class CommentService
      *             @OA\Property(property="error", type="string", example="Invalid input data")
      *         )
      *     ),
+     *
+     *    @OA\Response(
+     *         response=400,
+     *         description="Bad Request",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="error", type="string", example="The text field is required when none of image are present.")
+     *         )
+     *     ),
      * )
      */
     public function createComment(array $data)
     {
-        $this->validateCommentData($data);
+        $this->validateCommentData($data, 'required', 'create');
         $this->checkReviewOwnership($data['review_id']);
         $this->checkReview($data['review_id']);
         $comment = $this->commentRepository->create($data);
@@ -286,14 +294,16 @@ class CommentService
      *         name="column",
      *         in="path",
      *         required=true,
+     *     description="Column you want to order the comments by it",
      *
-     *         @OA\Schema(type="string", enum={"name", "created_at", "updated_at"})
+     *         @OA\Schema(type="string", enum={"created_at", "updated_at"})
      *     ),
      *
      *     @OA\Parameter(
      *         name="direction",
      *         in="path",
      *         required=true,
+     *     description="Dircetion of ordering",
      *
      *         @OA\Schema(type="string", enum={"asc", "desc"})
      *     ),
@@ -371,14 +381,16 @@ class CommentService
      *         name="column",
      *         in="path",
      *         required=true,
+     *         description="Column you want to order the comments by it",
      *
-     *         @OA\Schema(type="string", enum={"name", "created_at", "updated_at"})
+     *         @OA\Schema(type="string", enum={"created_at", "updated_at"})
      *     ),
      *
      *     @OA\Parameter(
      *         name="direction",
      *         in="path",
      *         required=true,
+     *     description="Dircetion of ordering",
      *
      *         @OA\Schema(type="string", enum={"asc", "desc"})
      *     ),
@@ -456,16 +468,36 @@ class CommentService
      *         name="id",
      *         in="path",
      *         required=true,
+     *     description="Comment ID you want to update it",
      *
      *         @OA\Schema(type="integer", example=1)
      *     ),
      *
      *     @OA\Parameter(
-     *         name="name",
+     *         name="text",
      *         in="query",
      *         required=false,
+     *     description="Comment Text",
      *
-     *         @OA\Schema(type="string", example="Vegetables")
+     *         @OA\Schema(type="string", example="Thank you!")
+     *     ),
+     *
+     *   @OA\Parameter(
+     *         name="image",
+     *         in="query",
+     *         required=false,
+     *     description="Comment Image",
+     *
+     *         @OA\Schema(type="string", format="binary")
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="review_id",
+     *         in="query",
+     *         required=false,
+     *     description="Review ID you want to update it",
+     *
+     *         @OA\Schema(type="integer", example=1)
      *     ),
      *
      *     @OA\Header(
@@ -490,20 +522,13 @@ class CommentService
      *             type="object",
      *
      *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="name", type="string", example="Electronic devices"),
-     *             @OA\Property(
-     *                 property="products",
-     *                 type="array",
-     *
-     *                 @OA\Items(
-     *                     type="object",
-     *
-     *                     @OA\Property(property="name", type="string", example="Smartphone"),
-     *                     @OA\Property(property="user", type="string", example="Hasan Zaeter")
-     *                 )
-     *             )
-     *         )
-     *     ),
+     *             @OA\Property(property="text", type="string", example="Thank you!"),
+     *             @OA\Property(property="image", type="string", example="https://example.com/images/smartphone-xyz.jpg"),
+     *             @OA\Property(property="product_name", type="string", example="apple"),
+     *             @OA\Property(property="user_name", type="string", example="Only"),
+     *             @OA\Property(property="review_id", type="integer", example=1),
+     *      ),
+     *    ),
      *
      *     @OA\Response(
      *         response=422,
@@ -564,6 +589,7 @@ class CommentService
      *         name="id",
      *         in="path",
      *         required=true,
+     *     description="Comment ID you want to delete it",
      *
      *          @OA\Schema(type="integer", example=1)
      *     ),
@@ -612,20 +638,18 @@ class CommentService
         return $response;
     }
 
-    protected function validateCommentData(array $data, $rule = 'required')
+    protected function validateCommentData(array $data, $rule = 'required', $method = 'any')
     {
         $validator = Validator::make($data, [
-            'text' => "$rule|nullable|string|max:255",
-            'image' => 'sometimes|nullable|image|max:5120',
+            'text' => 'required_without_all:image|nullable|string|max:255',
+            'image' => 'required_without_all:text|nullable|image|max:5120',
             'review_id' => "$rule|exists:reviews,id",
         ]);
 
-        if (empty($data['text']) && empty($data['image'])) {
-            $validator->errors()->add('text', 'You must provide either text or an image.');
-        }
-
         if ($validator->fails()) {
-            throw new ValidationException($validator);
+            throw new HttpResponseException(
+                ResponseHelper::jsonResponse([], $validator->errors()->first(), 400, false)
+            );
         }
     }
 }

@@ -36,7 +36,7 @@ class ReviewService
      * @OA\Get(
      *     path="/api/reviews",
      *     summary="Get all reviews",
-     *     tags={"Review"},
+     *     tags={"Reviews"},
      *     security={{"bearerAuth": {} }},
      *
      *     @OA\Parameter(
@@ -167,6 +167,7 @@ class ReviewService
      *         name="id",
      *         in="path",
      *         required=true,
+     *         description="Review ID you want to show it",
      *
      *          @OA\Schema(type="integer", example=1)
      *     ),
@@ -212,9 +213,10 @@ class ReviewService
      *
      *             @OA\Schema(
      *                 type="object",
-     *                 required={"name"},
+     *                 required={"rating","product_id"},
      *
-     *                 @OA\Property(property="name", type="string", example="Fruits"),
+     *               @OA\Property(property="rating", type="number", format="float", example="4.5", description="The rating of the product, a number between 0 and 5"),
+     *                @OA\Property(property="product_id", type="integer", example=1,description="Product ID you want to add review to it"),
      *             )
      *         )
      *     ),
@@ -241,14 +243,8 @@ class ReviewService
      *             type="object",
      *
      *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="name", type="string", example="Electronic devices"),
-     *             @OA\Property(
-     *                 property="products",
-     *                 type="array",
-     *                 example={},
-     *
-     *             @OA\Items()
-     *             )
+     *             @OA\Property(property="rating", type="number",format="float", example="4"),
+     *             @OA\Property(property="product_id", type="integer", example=1),
      *         )
      *     ),
      *
@@ -284,14 +280,16 @@ class ReviewService
      *         name="column",
      *         in="path",
      *         required=true,
+     *         description="Column you want to order the reviews by it",
      *
-     *         @OA\Schema(type="string", enum={"name", "created_at", "updated_at"})
+     *         @OA\Schema(type="string", enum={"rating", "created_at", "updated_at"})
      *     ),
      *
      *     @OA\Parameter(
      *         name="direction",
      *         in="path",
      *         required=true,
+     *     description="Dircetion of ordering",
      *
      *         @OA\Schema(type="string", enum={"asc", "desc"})
      *     ),
@@ -370,14 +368,16 @@ class ReviewService
      *         name="column",
      *         in="path",
      *         required=true,
+     *        description="Column you want to order the reviews by it",
      *
-     *         @OA\Schema(type="string", enum={"name", "created_at", "updated_at"})
+     *         @OA\Schema(type="string", enum={"rating", "created_at", "updated_at"})
      *     ),
      *
      *     @OA\Parameter(
      *         name="direction",
      *         in="path",
      *         required=true,
+     *     description="Dircetion of ordering",
      *
      *         @OA\Schema(type="string", enum={"asc", "desc"})
      *     ),
@@ -456,16 +456,27 @@ class ReviewService
      *         name="id",
      *         in="path",
      *         required=true,
+     *     description="review ID you want to update it",
      *
      *         @OA\Schema(type="integer", example=1)
      *     ),
      *
      *     @OA\Parameter(
-     *         name="name",
+     *         name="rating",
      *         in="query",
      *         required=false,
+     *     description="your rating in this product",
      *
-     *         @OA\Schema(type="string", example="Vegetables")
+     *         @OA\Schema(type="number",format="float" ,example="3")
+     *     ),
+     *
+     *      @OA\Parameter(
+     *         name="product_id",
+     *         in="query",
+     *         required=false,
+     *     description="The product you want to add rating to it",
+     *
+     *         @OA\Schema(type="integer", example=1)
      *     ),
      *
      *     @OA\Header(
@@ -490,18 +501,8 @@ class ReviewService
      *             type="object",
      *
      *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="name", type="string", example="Electronic devices"),
-     *             @OA\Property(
-     *                 property="products",
-     *                 type="array",
-     *
-     *                 @OA\Items(
-     *                     type="object",
-     *
-     *                     @OA\Property(property="name", type="string", example="Smartphone"),
-     *                     @OA\Property(property="user", type="string", example="Hasan Zaeter")
-     *                 )
-     *             )
+     *             @OA\Property(property="rating", type="number",format="float", example="2"),
+     *             @OA\Property(property="product_id", type="integer", example=1),
      *         )
      *     ),
      *
@@ -552,6 +553,7 @@ class ReviewService
      *         name="id",
      *         in="path",
      *         required=true,
+     *     description="Review ID you want to delete it",
      *
      *          @OA\Schema(type="integer", example=1)
      *     ),

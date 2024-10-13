@@ -163,6 +163,7 @@ class ProductService
      *         name="id",
      *         in="path",
      *         required=true,
+     *     description="Product ID you want to show it",
      *
      *         @OA\Schema(type="integer", example=1)
      *     ),
@@ -209,11 +210,11 @@ class ProductService
      *                 type="object",
      *                 required={"name", "image", "price", "description", "category_id"},
      *
-     *                 @OA\Property(property="name", type="string", example="Perform"),
-     *                 @OA\Property(property="image", type="string", format="binary"),
-     *                 @OA\Property(property="price", type="number", format="float", example=250.75),
-     *                 @OA\Property(property="description", type="string", example="This is a new Perform and it's cool Try it"),
-     *                 @OA\Property(property="category_id", type="integer", example=1),
+     *                 @OA\Property(property="name", type="string", example="Perform",description="Product Name"),
+     *                 @OA\Property(property="image", type="string", format="binary",description="Product Image"),
+     *                 @OA\Property(property="price", type="number", format="float", example=250.75,description="Product Price"),
+     *                 @OA\Property(property="description", type="string", example="This is a new Perform and it cool Try it",description="Product Description"),
+     *                 @OA\Property(property="category_id", type="integer", example=1,description="Category ID that product belong to it"),
      *             )
      *         )
      *     ),
@@ -307,6 +308,7 @@ class ProductService
      *         name="column",
      *         in="path",
      *         required=true,
+     *         description="Column you want to order the products by it",
      *
      *         @OA\Schema(type="string", enum={"name", "price", "created_at", "updated_at"})
      *     ),
@@ -333,6 +335,7 @@ class ProductService
      *         name="direction",
      *         in="path",
      *         required=true,
+     *     description="Dircetion of ordering",
      *
      *         @OA\Schema(type="string", enum={"asc", "desc"})
      *     ),
@@ -391,6 +394,7 @@ class ProductService
      *         name="column",
      *         in="path",
      *         required=true,
+     *         description="Column you want to order the products by it",
      *
      *         @OA\Schema(type="string", enum={"name", "price", "created_at", "updated_at"})
      *     ),
@@ -417,6 +421,7 @@ class ProductService
      *         name="direction",
      *         in="path",
      *         required=true,
+     *     description="Dircetion of ordering",
      *
      *         @OA\Schema(type="string", enum={"asc", "desc"})
      *     ),
@@ -496,6 +501,7 @@ class ProductService
      *         name="id",
      *         in="path",
      *         required=true,
+     *     description="Product ID you want to update it",
      *
      *         @OA\Schema(type="integer", example=1)
      *     ),
@@ -504,6 +510,7 @@ class ProductService
      *         name="name",
      *         in="query",
      *         required=false,
+     *     description="Product name",
      *
      *         @OA\Schema(type="string", example="Perform")
      *     ),
@@ -512,6 +519,7 @@ class ProductService
      *         name="image",
      *         in="query",
      *         required=false,
+     *     description="Product Image",
      *
      *         @OA\Schema(type="string", format="binary")
      *     ),
@@ -520,6 +528,7 @@ class ProductService
      *         name="price",
      *         in="query",
      *         required=false,
+     *     description="Product price",
      *
      *         @OA\Schema(type="number", format="float", example=50.75)
      *     ),
@@ -528,14 +537,16 @@ class ProductService
      *         name="description",
      *         in="query",
      *         required=false,
+     *     description="Product Description",
      *
-     *         @OA\Schema(type="string", example="This is a new Perform and it's cool Try it")
+     *         @OA\Schema(type="string", example="This is a new Perform and it cool Try it")
      *     ),
      *
      *     @OA\Parameter(
      *         name="category_id",
      *         in="query",
      *         required=false,
+     *     description="Category ID that product belong to it",
      *
      *         @OA\Schema(type="integer", example=1)
      *     ),
@@ -645,6 +656,7 @@ class ProductService
      *         name="id",
      *         in="path",
      *         required=true,
+     *     description="Product ID you want to delete it",
      *
      *          @OA\Schema(type="integer", example=1)
      *     ),

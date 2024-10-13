@@ -167,6 +167,7 @@ class CategoryService
      *         name="id",
      *         in="path",
      *         required=true,
+     *         description="ID of the category you want to show it",
      *
      *          @OA\Schema(type="integer", example=1)
      *     ),
@@ -213,7 +214,7 @@ class CategoryService
      *                 type="object",
      *                 required={"name"},
      *
-     *                 @OA\Property(property="name", type="string", example="Fruits"),
+     *                 @OA\Property(property="name", type="string", example="Fruits",description="Category name"),
      *             )
      *         )
      *     ),
@@ -284,6 +285,7 @@ class CategoryService
      *         name="column",
      *         in="path",
      *         required=true,
+     *         description="Column you want to order the categories by it",
      *
      *         @OA\Schema(type="string", enum={"name", "created_at", "updated_at"})
      *     ),
@@ -292,6 +294,7 @@ class CategoryService
      *         name="direction",
      *         in="path",
      *         required=true,
+     *        description="Dircetion of ordering",
      *
      *         @OA\Schema(type="string", enum={"asc", "desc"})
      *     ),
@@ -367,6 +370,7 @@ class CategoryService
      *         name="column",
      *         in="path",
      *         required=true,
+     *     description="Column you want to order the categories by it",
      *
      *         @OA\Schema(type="string", enum={"name", "created_at", "updated_at"})
      *     ),
@@ -375,6 +379,7 @@ class CategoryService
      *         name="direction",
      *         in="path",
      *         required=true,
+     *        description="Dircetion of ordering",
      *
      *         @OA\Schema(type="string", enum={"asc", "desc"})
      *     ),
@@ -450,6 +455,7 @@ class CategoryService
      *         name="id",
      *         in="path",
      *         required=true,
+     *     description="Category ID you want to update it",
      *
      *         @OA\Schema(type="integer", example=1)
      *     ),
@@ -458,6 +464,7 @@ class CategoryService
      *         name="name",
      *         in="query",
      *         required=false,
+     *     description="Category name",
      *
      *         @OA\Schema(type="string", example="Vegetables")
      *     ),
@@ -560,6 +567,7 @@ class CategoryService
      *         name="id",
      *         in="path",
      *         required=true,
+     *     description="Category ID you want to delete it",
      *
      *          @OA\Schema(type="integer", example=1)
      *     ),

@@ -41,19 +41,20 @@ class Handler extends ExceptionHandler
 
             switch ($modelName) {
                 case 'App\\Models\\Product':
-                    return ResponseHelper::jsonResponse([], 'Product not found', 400, false);
+                    return ResponseHelper::jsonResponse([], 'Product Not Found', 404, false);
                 case 'App\\Models\\Category':
-                    return ResponseHelper::jsonResponse([], 'Category not found', 400, false);
+                    return ResponseHelper::jsonResponse([], 'Category Not Found', 404, false);
                 case 'App\\Models\\Offer':
-                    return ResponseHelper::jsonResponse([], 'Offer not found', 400, false);
+                    return ResponseHelper::jsonResponse([], 'Offer Not Found', 404, false);
                 case 'App\\Models\\Warehouse':
-                    return ResponseHelper::jsonResponse([], 'Warehouse not found', 400, false);
+                    return ResponseHelper::jsonResponse([], 'Warehouse Not Found', 404, false);
                 case 'App\\Models\\Review':
-                    return ResponseHelper::jsonResponse([], 'Review not found', 400, false);
+                    return ResponseHelper::jsonResponse([], 'Review Not Found', 404, false);
                 case 'App\\Models\\Comment':
-                    return ResponseHelper::jsonResponse([], 'Comment not found', 400, false);
+                    return ResponseHelper::jsonResponse([], 'Comment Not Found', 404, false);
                 case 'App\\Models\\User':
-                    return ResponseHelper::jsonResponse([], 'User not found', 400, false);
+                    return ResponseHelper::jsonResponse([], 'User Not Found', 404, false);
+
                 default:
                     return ResponseHelper::jsonResponse([], 'Resource not found', 400, false);
             }
