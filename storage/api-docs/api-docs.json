@@ -1926,7 +1926,7 @@
                             "schema": {
                                 "required": [
                                     "email",
-                                    "otp"
+                                    "code"
                                 ],
                                 "properties": {
                                     "email": {
