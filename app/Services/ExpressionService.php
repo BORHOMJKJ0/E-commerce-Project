@@ -74,7 +74,7 @@ class ExpressionService
 
         $data = ['products' => $all_Product];
 
-        return ResponseHelper::jsonResponse([], 'Expressions for all products is retrieved successfully');
+        return ResponseHelper::jsonResponse($data, 'Expressions for all products is retrieved successfully');
     }
 
     /**
@@ -391,7 +391,8 @@ class ExpressionService
             'message' => 'updated successfully',
             'user' => [
                 'id' => auth()->id(),
-                'name' => $user->name,
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name,
             ],
             'expression' => [
                 'action' => $request->action ?? 'No Action',

@@ -83,14 +83,14 @@ class ExpressionRepository
     {
         $product = Product::find($product_id);
 
-        return $product->expressions()->with('user:id,name')->get()->pluck('user');
+        return $product->expressions()->with('user:id,first_name,last_name')->get()->pluck('user');
     }
 
     public function usersWhoAddExpression($product_id, $expression)
     {
         $product = Product::find($product_id);
 
-        return $product->expressions()->where('action', $expression)->with('user:id,name')->get()->pluck('user');
+        return $product->expressions()->where('action', $expression)->with('user:id,first_name,last_name')->get()->pluck('user');
     }
 
     public function findByUser_Product($user_id, $product_id)
