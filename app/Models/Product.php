@@ -43,9 +43,9 @@ class Product extends Model
         return $this->hasMany(Warehouse::class);
     }
 
-    public function offers()
+    public function images()
     {
-        return $this->hasMany(Offer::class);
+        return $this->hasMany(Image::class);
     }
 
     public function user()

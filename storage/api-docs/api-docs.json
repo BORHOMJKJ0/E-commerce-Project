@@ -2157,7 +2157,6 @@
                     "Expressions"
                 ],
                 "summary": "Create an Expression",
-                "description": "Create a new expression with product_id,id for auth user, and an optional action",
                 "operationId": "81055745914e6988e7968d50962b1d37",
                 "requestBody": {
                     "required": true,
@@ -2289,8 +2288,7 @@
                     "Expressions"
                 ],
                 "summary": "Get product expressions including views, likes, and dislikes",
-                "description": "Returns the number of views, likes, dislikes, and the list of users who interacted with the product.",
-                "operationId": "Expressions_Product",
+                "operationId": "891365eade33703f98caba68e1d505ac",
                 "parameters": [
                     {
                         "name": "product_id",
@@ -2298,7 +2296,8 @@
                         "description": "ID of the product",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "integer",
+                            "example": 1
                         }
                     }
                 ],
@@ -2473,8 +2472,7 @@
                     "Expressions"
                 ],
                 "summary": "Update user expression for a product",
-                "description": "Allows a user to update their expression (like or dislike) for a specific product.",
-                "operationId": "updateExpression",
+                "operationId": "e69f94feb8eee42ffeb94dd56ec9c35f",
                 "parameters": [
                     {
                         "name": "product",
@@ -2482,7 +2480,8 @@
                         "description": "ID of the product",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "integer",
+                            "example": 1
                         }
                     }
                 ],
@@ -2603,6 +2602,730 @@
                         }
                     }
                 }
+            }
+        },
+        "/api/images": {
+            "get": {
+                "tags": [
+                    "Images"
+                ],
+                "summary": "Get all Images",
+                "operationId": "d3ce99c139e4c06eaf01d159320b06ed",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "items",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 20
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ImageResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid parameters"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Images"
+                ],
+                "summary": "Create an Image",
+                "operationId": "aee61b55b3d27f5ee499b722f2d951f3",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "image",
+                                    "product_id"
+                                ],
+                                "properties": {
+                                    "product_id": {
+                                        "description": "Product ID that the image belongs to",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "image": {
+                                        "description": "Product Image",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Image created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "The ID of the image",
+                                            "type": "integer",
+                                            "example": 22
+                                        },
+                                        "image": {
+                                            "description": "The path to the product image",
+                                            "type": "string"
+                                        },
+                                        "product_id": {
+                                            "description": "The ID of the product the image belongs to",
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "product": {
+                                            "description": "Product details associated with the image",
+                                            "properties": {
+                                                "id": {
+                                                    "description": "The ID of the product",
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "description": "The name of the product",
+                                                    "type": "string",
+                                                    "example": "banana"
+                                                },
+                                                "price": {
+                                                    "description": "The price of the product",
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 22021320
+                                                },
+                                                "description": {
+                                                    "description": "The description of the product",
+                                                    "type": "string",
+                                                    "example": "This is a fantastic product"
+                                                },
+                                                "category": {
+                                                    "description": "The category of the product",
+                                                    "type": "string",
+                                                    "example": "tempore est"
+                                                },
+                                                "user": {
+                                                    "description": "The owner of the product",
+                                                    "type": "string",
+                                                    "example": "Hasan Zaeter"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid input data"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/images/my": {
+            "get": {
+                "tags": [
+                    "Images"
+                ],
+                "summary": "Get My Images",
+                "operationId": "6d266bddea3cee2af7ac2792d4d597c5",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "items",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 20
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ImageResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid parameters"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/images/{id}": {
+            "get": {
+                "tags": [
+                    "Images"
+                ],
+                "summary": "Get a Image by ID",
+                "operationId": "fcfdf8490dbc791f96111ab1c77dfa4d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Image you want to show it",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ImageResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Image not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Image not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Images"
+                ],
+                "summary": "Update a Image",
+                "operationId": "6d687db0214bbb727bd8e0c30d12e016",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Image ID you want to update it",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "image",
+                        "in": "query",
+                        "description": "Product Image",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "binary"
+                        }
+                    },
+                    {
+                        "name": "product_id",
+                        "in": "query",
+                        "description": "Product ID that image belong to it",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Image created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "description": "The ID of the image",
+                                            "type": "integer",
+                                            "example": 22
+                                        },
+                                        "image": {
+                                            "description": "The path to the product image",
+                                            "type": "string"
+                                        },
+                                        "product_id": {
+                                            "description": "The ID of the product the image belongs to",
+                                            "type": "integer",
+                                            "example": 2
+                                        },
+                                        "product": {
+                                            "description": "Product details associated with the image",
+                                            "properties": {
+                                                "id": {
+                                                    "description": "The ID of the product",
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "name": {
+                                                    "description": "The name of the product",
+                                                    "type": "string",
+                                                    "example": "meat"
+                                                },
+                                                "price": {
+                                                    "description": "The price of the product",
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 200
+                                                },
+                                                "description": {
+                                                    "description": "The description of the product",
+                                                    "type": "string",
+                                                    "example": "This is a greate product"
+                                                },
+                                                "category": {
+                                                    "description": "The category of the product",
+                                                    "type": "string",
+                                                    "example": "hakunamatata"
+                                                },
+                                                "user": {
+                                                    "description": "The owner of the product",
+                                                    "type": "string",
+                                                    "example": "Muhammad Aydi"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid input data"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "forbidden error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "You cannot update Image with associated products."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Image not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Image not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Images"
+                ],
+                "summary": "Delete a Image",
+                "operationId": "9dca9b58fe5779578781b011f1389698",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Image ID you want to delete it",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Image deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Image deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "forbidden error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "You are not authorized to delete this Image."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Image not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Image not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/images/order/{column}/{direction}": {
+            "get": {
+                "tags": [
+                    "Images"
+                ],
+                "summary": "Order images by a specific column",
+                "operationId": "245f089bb6694d2575441eec7a9cd2a4",
+                "parameters": [
+                    {
+                        "name": "column",
+                        "in": "path",
+                        "description": "Column you want to order the images by it",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "created_at",
+                                "updated_at"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "direction",
+                        "in": "path",
+                        "description": "Dircetion of ordering",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "items",
+                        "in": "query",
+                        "description": "Number of items per page ",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 20
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ImageResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid column or direction",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid column or direction or parameters"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/images/my/order/{column}/{direction}": {
+            "get": {
+                "tags": [
+                    "Images"
+                ],
+                "summary": "Order My images by a specific column",
+                "operationId": "8069e38541f31d30d608e57eeecca3a8",
+                "parameters": [
+                    {
+                        "name": "column",
+                        "in": "path",
+                        "description": "Column you want to order the images by it",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "created_at",
+                                "updated_at"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "direction",
+                        "in": "path",
+                        "description": "Dircetion of ordering",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "items",
+                        "in": "query",
+                        "description": "Number of items per page ",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 20
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ImageResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid column or direction",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Invalid column or direction or parameters"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/offers": {
@@ -3409,7 +4132,6 @@
                             "schema": {
                                 "required": [
                                     "name",
-                                    "image",
                                     "price",
                                     "description",
                                     "category_id"
@@ -3420,11 +4142,6 @@
                                         "type": "string",
                                         "example": "Perform"
                                     },
-                                    "image": {
-                                        "description": "Product Image",
-                                        "type": "string",
-                                        "format": "binary"
-                                    },
                                     "price": {
                                         "description": "Product Price",
                                         "type": "number",
@@ -3434,10 +4151,10 @@
                                     "description": {
                                         "description": "Product Description",
                                         "type": "string",
-                                        "example": "This is a new Perform and it cool Try it"
+                                        "example": "This is a new Perform and it's cool. Try it"
                                     },
                                     "category_id": {
-                                        "description": "Category ID that product belong to it",
+                                        "description": "Category ID the product belongs to",
                                         "type": "integer",
                                         "example": 1
                                     }
@@ -3462,9 +4179,13 @@
                                             "type": "string",
                                             "example": "Iphone 15"
                                         },
-                                        "image": {
-                                            "type": "string",
-                                            "example": "https://example.com/images/smartphone-xyz.jpg"
+                                        "images": {
+                                            "description": "List of image URLs",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string",
+                                                "example": "https://example.com/images/smartphone-xyz.jpg"
+                                            }
                                         },
                                         "price": {
                                             "type": "number",
@@ -3483,11 +4204,6 @@
                                         "user": {
                                             "type": "string",
                                             "example": "Hasan Zaeter"
-                                        },
-                                        "offers": {
-                                            "type": "array",
-                                            "items": {},
-                                            "example": []
                                         },
                                         "total_amount": {
                                             "type": "integer",
@@ -3509,7 +4225,7 @@
                         }
                     },
                     "403": {
-                        "description": "forbidden error",
+                        "description": "Forbidden error",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3678,7 +4394,7 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "Product ID you want to update it",
+                        "description": "Product ID you want to update",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -3687,29 +4403,17 @@
                     },
                     {
                         "name": "name",
-                        "in": "query",
+                        "in": "path",
                         "description": "Product name",
-                        "required": false,
                         "schema": {
                             "type": "string",
                             "example": "Perform"
                         }
                     },
                     {
-                        "name": "image",
-                        "in": "query",
-                        "description": "Product Image",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "format": "binary"
-                        }
-                    },
-                    {
                         "name": "price",
-                        "in": "query",
+                        "in": "path",
                         "description": "Product price",
-                        "required": false,
                         "schema": {
                             "type": "number",
                             "format": "float",
@@ -3717,20 +4421,18 @@
                         }
                     },
                     {
-                        "name": "description",
-                        "in": "query",
-                        "description": "Product Description",
-                        "required": false,
+                        "name": "decription",
+                        "in": "path",
+                        "description": "Product Drecription",
                         "schema": {
                             "type": "string",
-                            "example": "This is a new Perform and it cool Try it"
+                            "example": "This is a new Perform and it's cool. Try it"
                         }
                     },
                     {
                         "name": "category_id",
-                        "in": "query",
-                        "description": "Category ID that product belong to it",
-                        "required": false,
+                        "in": "path",
+                        "description": "Category ID the product belongs to",
                         "schema": {
                             "type": "integer",
                             "example": 1
@@ -3746,20 +4448,24 @@
                                     "properties": {
                                         "id": {
                                             "type": "integer",
-                                            "example": 1
+                                            "example": 42
                                         },
                                         "name": {
                                             "type": "string",
                                             "example": "Iphone 14"
                                         },
-                                        "image": {
-                                            "type": "string",
-                                            "example": "https://example.com/images/smartphone-xyz.jpg"
+                                        "images": {
+                                            "description": "List of image URLs",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string",
+                                                "example": "https://example.com/images/smartphone-xyz.jpg"
+                                            }
                                         },
                                         "price": {
                                             "type": "number",
                                             "format": "float",
-                                            "example": 499.99
+                                            "example": 500
                                         },
                                         "description": {
                                             "type": "string",
@@ -3774,36 +4480,14 @@
                                             "type": "string",
                                             "example": "Hasan Zaeter"
                                         },
-                                        "offers": {
-                                            "type": "array",
-                                            "items": {
-                                                "properties": {
-                                                    "discount": {
-                                                        "type": "string",
-                                                        "example": "10.00"
-                                                    },
-                                                    "starting_at": {
-                                                        "type": "string",
-                                                        "format": "date-time",
-                                                        "example": "2024-09-22 12:00"
-                                                    },
-                                                    "ending_at": {
-                                                        "type": "string",
-                                                        "format": "date-time",
-                                                        "example": "2025-01-15 23:59"
-                                                    }
-                                                },
-                                                "type": "object"
-                                            }
-                                        },
                                         "total_amount": {
                                             "type": "integer",
-                                            "example": 250
+                                            "example": 0
                                         },
                                         "expiry_date": {
                                             "type": "string",
                                             "format": "date",
-                                            "example": "2025-01-15"
+                                            "example": "null"
                                         },
                                         "category": {
                                             "type": "string",
@@ -3832,7 +4516,7 @@
                         }
                     },
                     "403": {
-                        "description": "forbidden error",
+                        "description": "Forbidden error",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -5735,8 +6419,6 @@
                             "schema": {
                                 "required": [
                                     "amount",
-                                    "pure_price",
-                                    "payment_date",
                                     "expiry_date",
                                     "product_id"
                                 ],
@@ -5745,23 +6427,6 @@
                                         "description": "Warehouse Amount",
                                         "type": "number",
                                         "example": 100
-                                    },
-                                    "pure_price": {
-                                        "description": "Warehouse pure price",
-                                        "type": "number",
-                                        "example": 50.75
-                                    },
-                                    "payment_date": {
-                                        "description": "Warehouse payment date",
-                                        "type": "string",
-                                        "format": "date",
-                                        "example": "2024-09-01"
-                                    },
-                                    "settlement_date": {
-                                        "description": "Warehouse settlement date",
-                                        "type": "string",
-                                        "format": "date",
-                                        "example": "2024-09-15"
                                     },
                                     "expiry_date": {
                                         "description": "Warehouse exoiry date",
@@ -5928,39 +6593,6 @@
                         }
                     },
                     {
-                        "name": "pure_price",
-                        "in": "query",
-                        "description": "Pure price of this warehouse",
-                        "required": false,
-                        "schema": {
-                            "type": "number",
-                            "format": "float",
-                            "example": 225.5
-                        }
-                    },
-                    {
-                        "name": "payment_date",
-                        "in": "query",
-                        "description": "payment date of this warehouse",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "format": "date",
-                            "example": "2024-09-10"
-                        }
-                    },
-                    {
-                        "name": "settlement_date",
-                        "in": "query",
-                        "description": "Settlement date of this warehouse",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "format": "date",
-                            "example": "2024-09-24"
-                        }
-                    },
-                    {
                         "name": "product_id",
                         "in": "query",
                         "description": "Product ID of this warehouse",
@@ -5982,24 +6614,9 @@
                                             "type": "integer",
                                             "example": 1
                                         },
-                                        "pure_price": {
-                                            "type": "number",
-                                            "format": "float",
-                                            "example": 3500.5
-                                        },
                                         "amount": {
                                             "type": "integer",
                                             "example": 0
-                                        },
-                                        "payment_date": {
-                                            "type": "string",
-                                            "format": "date",
-                                            "example": "2024-09-15"
-                                        },
-                                        "settlement_date": {
-                                            "type": "string",
-                                            "format": "date",
-                                            "example": "2024-09-30"
                                         },
                                         "expiry_date": {
                                             "type": "string",
@@ -6361,36 +6978,25 @@
                 },
                 "type": "object"
             },
-            "OfferResource": {
-                "title": "Offer Resource",
-                "description": "Offer details",
+            "ImageResource": {
+                "title": "Image Resource",
                 "properties": {
                     "id": {
-                        "description": "The ID of the offer",
                         "type": "integer",
                         "example": 1
                     },
-                    "discount_percentage": {
-                        "description": "The discount percentage of the offer",
-                        "type": "number",
-                        "format": "float",
-                        "example": 10
-                    },
-                    "start_date": {
-                        "description": "The start date of the offer",
+                    "image": {
                         "type": "string",
-                        "format": "date",
-                        "example": "2024-09-01"
-                    },
-                    "end_date": {
-                        "description": "The end date of the offer",
-                        "type": "string",
-                        "format": "date",
-                        "example": "2024-12-31"
+                        "example": "https://example.com/image.jpg"
                     },
                     "product": {
-                        "description": "Product Detalis related to the offer",
+                        "description": "Product related to the image",
                         "properties": {
+                            "id": {
+                                "description": "The ID of the product",
+                                "type": "integer",
+                                "example": 1
+                            },
                             "name": {
                                 "description": "The name of the product",
                                 "type": "string",
@@ -6405,17 +7011,86 @@
                             "description": {
                                 "description": "The description of the product",
                                 "type": "string",
-                                "example": "A high-end smartphone with excellent features and a sleek design"
+                                "example": "A high-end smartphone with excellent features and a sleek design."
                             },
                             "category": {
                                 "description": "The category of the product",
                                 "type": "string",
-                                "example": "Smartphone"
+                                "example": "Smartphones"
                             },
                             "user": {
                                 "description": "The owner of the product",
                                 "type": "string",
                                 "example": "Hasan Zaeter"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "OfferResource": {
+                "title": "Offer Resource",
+                "description": "Offer details including warehouse and product information",
+                "properties": {
+                    "id": {
+                        "description": "The ID of the offer",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "discount_percentage": {
+                        "description": "The discount percentage of the offer",
+                        "type": "string",
+                        "example": "10.00 %"
+                    },
+                    "start_date": {
+                        "description": "The start date of the offer",
+                        "type": "string",
+                        "format": "date",
+                        "example": "2024-09-01"
+                    },
+                    "end_date": {
+                        "description": "The end date of the offer",
+                        "type": "string",
+                        "format": "date",
+                        "example": "2024-12-31"
+                    },
+                    "warehouse": {
+                        "description": "Warehouse related to the offer",
+                        "properties": {
+                            "amount": {
+                                "description": "The amount of the product in the warehouse",
+                                "type": "number",
+                                "format": "float",
+                                "example": 100
+                            },
+                            "expiry_date": {
+                                "description": "The expiry date of the warehouse stock",
+                                "type": "string",
+                                "format": "date",
+                                "example": "2024-10-31"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "product": {
+                        "description": "Product related to the offer",
+                        "properties": {
+                            "id": {
+                                "description": "The ID of the product",
+                                "type": "integer",
+                                "example": 11
+                            },
+                            "name": {
+                                "description": "The name of the product",
+                                "type": "string",
+                                "example": "Banana"
+                            },
+                            "price": {
+                                "description": "The price of the product",
+                                "type": "number",
+                                "format": "float",
+                                "example": 22021320
                             }
                         },
                         "type": "object"
@@ -6437,10 +7112,23 @@
                         "type": "string",
                         "example": "Iphone 15"
                     },
-                    "image": {
-                        "description": "The image of the product",
-                        "type": "string",
-                        "example": "https://example.com/images/smartphone-xyz.jpg"
+                    "images": {
+                        "description": "Images related to the product",
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "image": {
+                                    "description": "Product Image URL",
+                                    "type": "string"
+                                },
+                                "id": {
+                                    "description": "Image ID",
+                                    "type": "integer",
+                                    "example": 1
+                                }
+                            },
+                            "type": "object"
+                        }
                     },
                     "price": {
                         "description": "The price of the product",
@@ -6454,7 +7142,7 @@
                         "example": "A high-end smartphone with excellent features and a sleek design."
                     },
                     "current_price": {
-                        "description": "The current price of the product",
+                        "description": "The current price of the product after discounts",
                         "type": "number",
                         "format": "float",
                         "example": 449.99
@@ -6464,47 +7152,21 @@
                         "type": "string",
                         "example": "Hasan Zaeter"
                     },
-                    "offers": {
-                        "description": "Offer related to the product",
-                        "type": "array",
-                        "items": {
-                            "properties": {
-                                "discount": {
-                                    "description": "The discount percentage of the offer",
-                                    "type": "string",
-                                    "example": "10.00"
-                                },
-                                "starting_at": {
-                                    "description": "The start date of the offer",
-                                    "type": "string",
-                                    "format": "date-time",
-                                    "example": "2024-09-22 12:00"
-                                },
-                                "ending_at": {
-                                    "description": "The end date of the offer",
-                                    "type": "string",
-                                    "format": "date-time",
-                                    "example": "2025-01-15 23:59"
-                                }
-                            },
-                            "type": "object"
-                        }
-                    },
                     "expressions": {
                         "description": "Expressions related to the product",
                         "properties": {
                             "views": {
-                                "description": "The Number of views of the product",
+                                "description": "The number of views of the product",
                                 "type": "integer",
                                 "example": 120
                             },
                             "likes": {
-                                "description": "The Number of likes of the product",
+                                "description": "The number of likes of the product",
                                 "type": "integer",
                                 "example": 45
                             },
                             "dislikes": {
-                                "description": "The Number of dislikes of the product",
+                                "description": "The number of dislikes of the product",
                                 "type": "integer",
                                 "example": 5
                             }
@@ -6512,7 +7174,7 @@
                         "type": "object"
                     },
                     "total_amount": {
-                        "description": "The total amount from the product",
+                        "description": "The total amount of product available",
                         "type": "integer",
                         "example": 50
                     },
@@ -6526,6 +7188,46 @@
                         "description": "The category of the product",
                         "type": "string",
                         "example": "Smartphones"
+                    },
+                    "best_offer": {
+                        "description": "Details of the best offer for the product",
+                        "properties": {
+                            "discount": {
+                                "description": "The discount percentage of the best offer",
+                                "type": "string",
+                                "example": "10.00 %"
+                            },
+                            "starting_at": {
+                                "description": "The start date of the best offer",
+                                "type": "string",
+                                "format": "date",
+                                "example": "2024-09-01"
+                            },
+                            "ending_at": {
+                                "description": "The end date of the best offer",
+                                "type": "string",
+                                "format": "date",
+                                "example": "2024-12-31"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "max_expiry_date": {
+                        "description": "The maximum expiry date of all warehouses holding the product",
+                        "type": "string",
+                        "format": "date",
+                        "example": "2025-12-31"
+                    },
+                    "comments": {
+                        "description": "The number of comments on the product",
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "average_rating": {
+                        "description": "The average rating of the product",
+                        "type": "number",
+                        "format": "float",
+                        "example": 4.5
                     }
                 },
                 "type": "object"
@@ -6702,29 +7404,10 @@
                         "type": "integer",
                         "example": 1
                     },
-                    "pure_price": {
-                        "description": "The pure price of the warehouse",
-                        "type": "number",
-                        "format": "float",
-                        "example": "350.50"
-                    },
                     "amount": {
-                        "description": "The amount of the warehouse",
-                        "type": "number",
-                        "format": "integer",
-                        "example": "250"
-                    },
-                    "payment_date": {
-                        "description": "The payment date of the warehouse",
-                        "type": "string",
-                        "format": "date",
-                        "example": "2024-09-15"
-                    },
-                    "settlement_date": {
-                        "description": "The settlement date of the warehouse",
-                        "type": "string",
-                        "format": "date",
-                        "example": "null"
+                        "description": "The amount of the product in the warehouse",
+                        "type": "integer",
+                        "example": 250
                     },
                     "expiry_date": {
                         "description": "The expiry date of the warehouse",
@@ -6733,7 +7416,7 @@
                         "example": "2025-12-31"
                     },
                     "product": {
-                        "description": "Product Detalis related to the warehouse",
+                        "description": "Product details related to the warehouse",
                         "properties": {
                             "name": {
                                 "description": "The name of the product",
@@ -6744,7 +7427,7 @@
                                 "description": "The price of the product",
                                 "type": "number",
                                 "format": "float",
-                                "example": "499.99"
+                                "example": 499.99
                             },
                             "category": {
                                 "description": "The category of the product",
@@ -6755,9 +7438,45 @@
                                 "description": "The owner of the product",
                                 "type": "string",
                                 "example": "Hasan Zaeter"
+                            },
+                            "current_price": {
+                                "description": "The current price of the product after discounts",
+                                "type": "string",
+                                "example": "449.99"
                             }
                         },
                         "type": "object"
+                    },
+                    "offers": {
+                        "description": "List of current offers for the product in the warehouse",
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "id": {
+                                    "description": "The ID of the offer",
+                                    "type": "integer",
+                                    "example": 1
+                                },
+                                "discount_percentage": {
+                                    "description": "The discount percentage of the offer",
+                                    "type": "string",
+                                    "example": "10.00 %"
+                                },
+                                "start_date": {
+                                    "description": "The start date of the offer",
+                                    "type": "string",
+                                    "format": "date",
+                                    "example": "2024-09-01"
+                                },
+                                "end_date": {
+                                    "description": "The end date of the offer",
+                                    "type": "string",
+                                    "format": "date",
+                                    "example": "2024-12-31"
+                                }
+                            },
+                            "type": "object"
+                        }
                     }
                 },
                 "type": "object"
@@ -6884,6 +7603,28 @@
                 },
                 "type": "object"
             },
+            "Image": {
+                "title": "Image Model",
+                "description": "Image details",
+                "properties": {
+                    "id": {
+                        "description": "The ID of the image",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "image": {
+                        "description": "The URL of the image",
+                        "type": "string",
+                        "example": "https://example.com/image.jpg"
+                    },
+                    "product_id": {
+                        "description": "The ID of the product that the image belongs to",
+                        "type": "integer",
+                        "example": 1
+                    }
+                },
+                "type": "object"
+            },
             "Offer": {
                 "title": "Offer Model",
                 "description": "Offer details",
@@ -6911,7 +7652,7 @@
                         "format": "date",
                         "example": "2024-12-31"
                     },
-                    "product_id": {
+                    "warehouse_id": {
                         "description": "The ID of the product associated with the offer",
                         "type": "integer",
                         "example": 1
@@ -7060,29 +7801,11 @@
                         "type": "integer",
                         "example": 1
                     },
-                    "pure_price": {
-                        "description": "The pure price of the warehouse",
-                        "type": "number",
-                        "format": "float",
-                        "example": 300.5
-                    },
                     "amount": {
                         "description": "The amount of the warehouse",
                         "type": "number",
                         "format": "integer",
                         "example": "100"
-                    },
-                    "payment_date": {
-                        "description": "The payment date of the warehouse",
-                        "type": "string",
-                        "format": "date",
-                        "example": "2024-09-01"
-                    },
-                    "settlement_date": {
-                        "description": "The settlement date of the warehouse",
-                        "type": "string",
-                        "format": "date",
-                        "example": null
                     },
                     "expiry_date": {
                         "description": "The expiry date of the warehouse",
@@ -7128,6 +7851,10 @@
         {
             "name": "Expressions",
             "description": "Expressions"
+        },
+        {
+            "name": "Images",
+            "description": "Images"
         },
         {
             "name": "Offers",

@@ -11,16 +11,12 @@ class WarehouseRepository
 
     public function getAll($items, $page)
     {
-        return Warehouse::whereHas('product', function ($query) {
-            $query->where('user_id', auth()->id());
-        })->paginate($items, ['*'], 'page', $page);
+        return Warehouse::paginate($items, ['*'], 'page', $page);
     }
 
     public function orderBy($column, $direction, $page, $items)
     {
-        return Warehouse::whereHas('product', function ($query) {
-            $query->where('user_id', auth()->id());
-        })->orderBy($column, $direction)->paginate($items, ['*'], 'page', $page);
+        return Warehouse::orderBy($column, $direction)->paginate($items, ['*'], 'page', $page);
     }
 
     public function create(array $data)

@@ -62,7 +62,7 @@ class WarehouseService
      *     ),
      *
      *     @OA\Response(
-     *         response=422,
+     *         response=400,
      *         description="Invalid parameters",
      *
      *         @OA\JsonContent(
@@ -160,12 +160,9 @@ class WarehouseService
      *             mediaType="multipart/form-data",
      *
      *             @OA\Schema(
-     *             required={"amount", "pure_price", "payment_date", "expiry_date", "product_id"},
+     *             required={"amount", "expiry_date", "product_id"},
      *
      *             @OA\Property(property="amount", type="number", example=100,description="Warehouse Amount"),
-     *             @OA\Property(property="pure_price", type="number", example=50.75,description="Warehouse pure price"),
-     *             @OA\Property(property="payment_date", type="string", format="date", example="2024-09-01",description="Warehouse payment date"),
-     *             @OA\Property(property="settlement_date", type="string", format="date", example="2024-09-15",description="Warehouse settlement date"),
      *             @OA\Property(property="expiry_date", type="string", format="date", example="2024-12-01",description="Warehouse exoiry date"),
      *             @OA\Property(property="product_id", type="integer", example=1,description="Product ID that you want to add this warehouse to it")
      *             )
@@ -204,7 +201,7 @@ class WarehouseService
      *     ),
      *
      *     @OA\Response(
-     *         response=422,
+     *         response=400,
      *         description="Validation error",
      *
      *         @OA\JsonContent(
@@ -217,16 +214,10 @@ class WarehouseService
     public function createWarehouse(array $data)
     {
         try {
-            $this->validateWarehouseData($data);
             $product = Product::find($data['product_id']);
-
+            $this->validateWarehouseData($data);
             $this->checkOwnership($product, 'Warehouse', 'create');
-
-            $this->checkDate($data, 'payment_date', 'now');
             $this->checkDate($data, 'expiry_date', 'future');
-
-            $data['settlement_date'] = null;
-
             $warehouse = $this->warehouseRepository->create($data);
             $data = ['warehouse' => WarehouseResource::make($warehouse)];
             $response = ResponseHelper::jsonResponse($data, 'Warehouse created successfully!', 201);
@@ -292,7 +283,7 @@ class WarehouseService
      *     ),
      *
      *     @OA\Response(
-     *         response=422,
+     *         response=400,
      *         description="Invalid column or direction",
      *
      *         @OA\JsonContent(
@@ -304,7 +295,7 @@ class WarehouseService
      */
     public function getWarehousesOrderedBy($column, $direction, Request $request)
     {
-        $validColumns = ['expiry_date', 'created_at', 'updated_at', 'payment_date', 'settlement_date', 'pure_price'];
+        $validColumns = ['expiry_date', 'created_at', 'updated_at'];
         $validDirections = ['asc', 'desc'];
 
         if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
@@ -351,33 +342,6 @@ class WarehouseService
      *     ),
      *
      *     @OA\Parameter(
-     *         name="pure_price",
-     *         in="query",
-     *         required=false,
-     *     description="Pure price of this warehouse",
-     *
-     *         @OA\Schema(type="number", format="float", example=225.5)
-     *     ),
-     *
-     *     @OA\Parameter(
-     *         name="payment_date",
-     *         in="query",
-     *         required=false,
-     *     description="payment date of this warehouse",
-     *
-     *         @OA\Schema(type="string", format="date", example="2024-09-10")
-     *     ),
-     *
-     *     @OA\Parameter(
-     *         name="settlement_date",
-     *         in="query",
-     *         required=false,
-     *     description="Settlement date of this warehouse",
-     *
-     *         @OA\Schema(type="string", format="date", example="2024-09-24")
-     *     ),
-     *
-     *     @OA\Parameter(
      *         name="product_id",
      *         in="query",
      *         required=false,
@@ -408,10 +372,7 @@ class WarehouseService
      *             type="object",
      *
      *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="pure_price", type="number", format="float", example=3500.5),
      *             @OA\Property(property="amount", type="integer", example=0),
-     *             @OA\Property(property="payment_date", type="string", format="date", example="2024-09-15"),
-     *             @OA\Property(property="settlement_date", type="string", format="date", example="2024-09-30"),
      *             @OA\Property(property="expiry_date", type="string", format="date", example="2025-12-31"),
      *             @OA\Property(
      *                 property="product",
@@ -425,7 +386,7 @@ class WarehouseService
      *     ),
      *
      *     @OA\Response(
-     *         response=422,
+     *         response=400,
      *         description="Validation error",
      *
      *         @OA\JsonContent(
@@ -460,11 +421,6 @@ class WarehouseService
         if (isset($data['expiry_date'])) {
             throw ValidationException::withMessages([
                 'expiry_date' => 'You cannot update the expiry date once it has been set.',
-            ]);
-        }
-        if (isset($data['settlement_date'])) {
-            throw ValidationException::withMessages([
-                'settlement_date' => 'You cannot update the settlement date it updated automatically.',
             ]);
         }
         try {
@@ -548,22 +504,10 @@ class WarehouseService
     protected function validateWarehouseData(array $data, $warehouse = null, $rule = 'required', $limit = 1)
     {
         $validator = Validator::make($data, [
-            'pure_price' => "$rule|numeric|min:0",
             'amount' => "$rule|numeric|min:$limit",
-            'payment_date' => "$rule|date",
-            'settlement_date' => 'nullable|date|after_or_equal:payment_date',
             'expiry_date' => "$rule|date|after_or_equal:payment_date",
             'product_id' => "$rule|exists:products,id",
         ]);
-
-        $validator->after(function ($validator) use ($data, $warehouse) {
-            $expiryDate = $data['expiry_date'] ?? ($warehouse ? $warehouse->expiry_date : null);
-            if (! empty($data['settlement_date']) && ! empty($expiryDate)) {
-                if (strtotime($data['settlement_date']) > strtotime($expiryDate)) {
-                    $validator->errors()->add('settlement_date', 'The settlement date must be before or equal to the expiry date ('.$expiryDate.').');
-                }
-            }
-        });
 
         if ($validator->fails()) {
             throw new ValidationException($validator);

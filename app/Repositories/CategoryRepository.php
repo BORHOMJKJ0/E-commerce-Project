@@ -28,7 +28,7 @@ class CategoryRepository
         })->orderBy($column, $direction)->paginate($items, ['*'], 'page', $page);
     }
 
-    public function getCategoyByname(string $name)
+    public function getCategoryByName(string $name)
     {
         return Category::where('name', 'like', '%'.$name.'%')->get();
     }

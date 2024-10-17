@@ -52,7 +52,7 @@ class ExpressionService
      *     ),
      *
      *     @OA\Response(
-     *         response=422,
+     *         response=400,
      *         description="Invalid parameters",
      *
      *         @OA\JsonContent(

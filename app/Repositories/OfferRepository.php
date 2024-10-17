@@ -16,14 +16,14 @@ class OfferRepository
 
     public function getMy($items, $page)
     {
-        return Offer::whereHas('product', function ($query) {
+        return Offer::whereHas('warehouse.product', function ($query) {
             $query->where('user_id', auth()->id());
         })->paginate($items, ['*'], 'page', $page);
     }
 
     public function orderMyBy($column, $direction, $page, $items)
     {
-        return Offer::whereHas('product', function ($query) {
+        return Offer::whereHas('warehouse.product', function ($query) {
             $query->where('user_id', auth()->id());
         })->orderBy($column, $direction)->paginate($items, ['*'], 'page', $page);
     }

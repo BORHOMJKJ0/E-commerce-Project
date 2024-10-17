@@ -69,7 +69,7 @@ class CategoryService
      *     ),
      *
      *     @OA\Response(
-     *         response=422,
+     *         response=400,
      *         description="Invalid parameters",
      *
      *         @OA\JsonContent(
@@ -131,7 +131,7 @@ class CategoryService
      *     ),
      *
      *     @OA\Response(
-     *         response=422,
+     *         response=400,
      *         description="Invalid parameters",
      *
      *         @OA\JsonContent(
@@ -253,7 +253,7 @@ class CategoryService
      *     ),
      *
      *     @OA\Response(
-     *         response=422,
+     *         response=400,
      *         description="Validation error",
      *
      *         @OA\JsonContent(
@@ -329,7 +329,7 @@ class CategoryService
      *     ),
      *
      *     @OA\Response(
-     *         response=422,
+     *         response=400,
      *         description="Invalid column or direction",
      *
      *         @OA\JsonContent(
@@ -414,7 +414,7 @@ class CategoryService
      *     ),
      *
      *     @OA\Response(
-     *         response=422,
+     *         response=400,
      *         description="Invalid column or direction",
      *
      *         @OA\JsonContent(
@@ -507,7 +507,7 @@ class CategoryService
      *     ),
      *
      *     @OA\Response(
-     *         response=422,
+     *         response=400,
      *         description="Validation error",
      *
      *         @OA\JsonContent(

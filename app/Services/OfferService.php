@@ -6,6 +6,7 @@ use App\Helpers\ResponseHelper;
 use App\Http\Resources\OfferResource;
 use App\Models\Offer;
 use App\Models\Product;
+use App\Models\Warehouse;
 use App\Repositories\OfferRepository;
 use App\Traits\AuthTrait;
 use App\Traits\ValidationTrait;
@@ -16,7 +17,7 @@ use Illuminate\Validation\ValidationException;
 
 class OfferService
 {
-    use AuthTrait,ValidationTrait;
+    use AuthTrait, ValidationTrait;
 
     protected $offerRepository;
 
@@ -71,7 +72,7 @@ class OfferService
      *     ),
      *
      *     @OA\Response(
-     *         response=422,
+     *         response=400,
      *         description="Invalid parameters",
      *
      *         @OA\JsonContent(
@@ -134,7 +135,7 @@ class OfferService
      *     ),
      *
      *     @OA\Response(
-     *         response=422,
+     *         response=400,
      *         description="Invalid parameters",
      *
      *         @OA\JsonContent(
@@ -204,9 +205,9 @@ class OfferService
     /**
      * @OA\Post(
      *     path="/api/offers",
-     *     summary="Create a offer",
-     *      tags={"Offers"},
-     *     security={{"bearerAuth": {} }},
+     *     summary="Create an offer",
+     *     tags={"Offers"},
+     *     security={{"bearerAuth": {}}},
      *
      *     @OA\RequestBody(
      *         required=true,
@@ -216,17 +217,17 @@ class OfferService
      *
      *             @OA\Schema(
      *                 type="object",
-     *                 required={"discount_percentage", "start_date", "end_date", "product_id"},
+     *                 required={"discount_percentage", "start_date", "end_date", "warehouse_id"},
      *
-     *                 @OA\Property(property="discount_percentage", type="number", format="float", example="15.50",description="Discount_percentage of the offer",),
-     *                 @OA\Property(property="start_date", type="string", format="date", example="2024-10-01",description="Offer Start Date",),
-     *                 @OA\Property(property="end_date", type="string", format="date", example="2024-12-31",description="Offer End Date",),
-     *                 @OA\Property(property="product_id", type="integer", example=1,description="Product ID you want to add offer to it",),
+     *                 @OA\Property(property="discount_percentage", type="number", format="float", example=15.50, description="Discount percentage of the offer"),
+     *                 @OA\Property(property="start_date", type="string", format="date", example="2024-10-01", description="Offer Start Date"),
+     *                 @OA\Property(property="end_date", type="string", format="date", example="2024-12-31", description="Offer End Date"),
+     *                 @OA\Property(property="warehouse_id", type="integer", example=1, description="Warehouse ID you want to add the offer to"),
      *             )
      *         )
      *     ),
      *
-     *    @OA\Header(
+     *     @OA\Header(
      *         header="Content-Type",
      *         description="Content-Type header",
      *
@@ -244,12 +245,34 @@ class OfferService
      *         response=201,
      *         description="Offer created successfully",
      *
-     *         @OA\JsonContent(ref="#/components/schemas/OfferResource")
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="id", type="integer", example=24, description="The ID of the offer"),
+     *             @OA\Property(property="discount_percentage", type="string", example="10.00 %", description="Discount percentage of the offer"),
+     *             @OA\Property(property="start_date", type="string", format="date", example="2024-10-01", description="Offer Start Date"),
+     *             @OA\Property(property="end_date", type="string", format="date", example="2024-10-03", description="Offer End Date"),
+     *             @OA\Property(
+     *                 property="warehouse",
+     *                 type="object",
+     *                 description="Warehouse details related to the offer",
+     *                 @OA\Property(property="amount", type="integer", example=200, description="Amount available in the warehouse"),
+     *                 @OA\Property(property="expiry_date", type="string", format="date", example="2024-10-22", description="Expiry date of the warehouse stock")
+     *             ),
+     *             @OA\Property(
+     *                 property="product",
+     *                 type="object",
+     *                 description="Product details related to the offer",
+     *                 @OA\Property(property="id", type="integer", example=12, description="The ID of the product"),
+     *                 @OA\Property(property="name", type="string", example="apple", description="The name of the product"),
+     *                 @OA\Property(property="price", type="number", format="float", example=20, description="The price of the product")
+     *             )
+     *         )
      *     ),
      *
-     *      @OA\Response(
+     *     @OA\Response(
      *         response=403,
-     *         description="forbidden error",
+     *         description="Forbidden error",
      *
      *         @OA\JsonContent(
      *
@@ -258,7 +281,7 @@ class OfferService
      *     ),
      *
      *     @OA\Response(
-     *         response=422,
+     *         response=400,
      *         description="Validation error",
      *
      *         @OA\JsonContent(
@@ -271,21 +294,30 @@ class OfferService
     public function createOffer(array $data)
     {
         try {
+
             $this->validateOfferData($data);
-            $product = Product::find($data['product_id']);
+
+            $warehouse = Warehouse::findOrFail($data['warehouse_id']);
+            $product = Product::findOrFail($warehouse->product_id);
+
             $this->checkOwnership($product, 'Offer', 'create');
+
             $this->checkDate($data, 'start_date', 'now');
-            $this->checkOfferEndDate($data['product_id'], $data['end_date']);
-            $this->checkOfferOverlap($product->id, $data['start_date'], $data['end_date']);
+            $this->checkOfferEndDate($warehouse->expiry_date, $data['end_date']);
+            $this->checkOfferOverlap($warehouse->id, $data['start_date'], $data['end_date']);
+
+            $existingOffers = Offer::where('warehouse_id', $warehouse->id)
+                ->orderBy('start_date')
+                ->get();
+            $this->checkDiscount($data['discount_percentage'], $data['start_date'], $existingOffers);
+
             $offer = $this->offerRepository->create($data);
             $data = ['offer' => OfferResource::make($offer)];
 
-            $response = ResponseHelper::jsonResponse($data, 'Offer created successfully!', 201);
+            return ResponseHelper::jsonResponse($data, 'Offer created successfully!', 201);
         } catch (HttpResponseException $e) {
-            $response = $e->getResponse();
+            return $e->getResponse();
         }
-
-        return $response;
     }
 
     /**
@@ -343,7 +375,7 @@ class OfferService
      *     ),
      *
      *     @OA\Response(
-     *         response=422,
+     *         response=400,
      *         description="Invalid column or direction",
      *
      *         @OA\JsonContent(
@@ -431,7 +463,7 @@ class OfferService
      *     ),
      *
      *     @OA\Response(
-     *         response=422,
+     *         response=400,
      *         description="Invalid column or direction",
      *
      *         @OA\JsonContent(
@@ -508,10 +540,10 @@ class OfferService
      *     ),
      *
      *     @OA\Parameter(
-     *         name="product_id",
+     *         name="warehouse_id",
      *         in="query",
      *         required=false,
-     *     description="Product ID of the offer",
+     *     description="Warehouse ID of the offer",
      *
      *         @OA\Schema(type="integer", example=1)
      *     ),
@@ -537,22 +569,30 @@ class OfferService
      *         @OA\JsonContent(
      *             type="object",
      *
-     *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="discount_percentage", type="number", format="float", example=80.00),
-     *             @OA\Property(property="start_date", type="string", format="date", example="2024-09-01"),
-     *             @OA\Property(property="end_date", type="string", format="date", example="2024-12-31"),
-     *             @OA\Property(property="product", type="object",
-     *                 @OA\Property(property="name", type="string", example="Iphone 15"),
-     *                 @OA\Property(property="price", type="number", format="float", example=499.99),
-     *                 @OA\Property(property="description", type="string", example="A high-end smartphone with excellent features and a sleek design"),
-     *                 @OA\Property(property="category", type="string", example="Smartphone"),
-     *                 @OA\Property(property="user", type="string", example="Hasan Zaeter")
+     *             @OA\Property(property="id", type="integer", example=24, description="The ID of the offer"),
+     *             @OA\Property(property="discount_percentage", type="string", example="50.00 %", description="Discount percentage of the offer"),
+     *             @OA\Property(property="start_date", type="string", format="date", example="2024-10-10", description="Offer Start Date"),
+     *             @OA\Property(property="end_date", type="string", format="date", example="2024-10-13", description="Offer End Date"),
+     *             @OA\Property(
+     *                 property="warehouse",
+     *                 type="object",
+     *                 description="Warehouse details related to the offer",
+     *                 @OA\Property(property="amount", type="integer", example=200, description="Amount available in the warehouse"),
+     *                 @OA\Property(property="expiry_date", type="string", format="date", example="2024-10-22", description="Expiry date of the warehouse stock")
      *             ),
+     *             @OA\Property(
+     *                 property="product",
+     *                 type="object",
+     *                 description="Product details related to the offer",
+     *                 @OA\Property(property="id", type="integer", example=12, description="The ID of the product"),
+     *                 @OA\Property(property="name", type="string", example="apple", description="The name of the product"),
+     *                 @OA\Property(property="price", type="number", format="float", example=20, description="The price of the product")
+     *             )
      *         )
      *     ),
      *
      *     @OA\Response(
-     *         response=422,
+     *         response=400,
      *         description="Validation error",
      *
      *         @OA\JsonContent(
@@ -585,19 +625,35 @@ class OfferService
     public function updateOffer(Offer $offer, array $data)
     {
         try {
+            if (isset($data['warehouse_id'])) {
+                $warehouse = Warehouse::find($data['warehouse_id']);
+                $product = $warehouse->product;
+            } else {
+                $warehouse = Warehouse::find($offer->warehouse_id);
+                $product = $warehouse->product;
+            }
+            $data['warehouse_id'] = $warehouse->id;
             $this->validateOfferData($data, 'sometimes');
-            $product = $offer->product;
-            $this->checkOwnership($product, 'Offer', 'update');
-            $startDate = $data['start_date'] ?? $offer->start_date;
-            $endDate = $data['end_date'] ?? $offer->end_date;
-            $productId = $data['product_id'] ?? $offer->product_id;
-            $this->checkOfferDates($offer, 'update');
-            $this->checkOfferEndDate($data['product_id'] ?? $offer['product_id'], $offer->end_date, $data['end_date']);
-            $this->checkOfferOverlap($productId, $startDate, $endDate, $offer->id);
-            $offer = $this->offerRepository->update($offer, $data);
-            $data = ['offer' => OfferResource::make($offer)];
 
-            $response = ResponseHelper::jsonResponse($data, 'Offer updated successfully!');
+            $this->checkOwnership($product, 'Offer', 'update');
+
+            $data['start_date'] = $startDate = $data['start_date'] ?? $offer->start_date;
+            $endDate = $data['end_date'] ?? $offer->end_date;
+            $discount = $data['discount_percentage'] ?? $offer->discount_percentage;
+
+            $this->checkDate($data, 'start_date', 'now');
+            $this->checkOfferDates($offer, 'update');
+            $this->checkOfferEndDate($warehouse->expiry_date, $offer->end_date, $endDate);
+
+            $existingOffers = Offer::where('warehouse_id', $warehouse->id)
+                ->orderBy('start_date')
+                ->get();
+            $this->checkOfferOverlap($warehouse->id, $startDate, $endDate, $offer->id);
+            $this->checkDiscount($discount, $startDate, $existingOffers);
+
+            $updatedOffer = $this->offerRepository->update($offer, $data);
+            $responseData = ['offer' => OfferResource::make($updatedOffer)];
+            $response = ResponseHelper::jsonResponse($responseData, 'Offer updated successfully!');
         } catch (HttpResponseException $e) {
             $response = $e->getResponse();
         }
@@ -655,8 +711,7 @@ class OfferService
     public function deleteOffer(Offer $offer)
     {
         try {
-
-            $product = $offer->product;
+            $product = Product::find($offer->warehouse->product_id);
             $this->checkOwnership($product, 'Offer', 'delete');
             $this->checkOfferDates($offer, 'delete');
             $this->offerRepository->delete($offer);
@@ -670,36 +725,16 @@ class OfferService
 
     protected function validateOfferData(array $data, $rule = 'required')
     {
+        $warehouse = Warehouse::findOrFail($data['warehouse_id']);
         $validator = Validator::make($data, [
             'discount_percentage' => "$rule|numeric|between:0,100",
             'start_date' => "$rule|date",
-            'end_date' => "$rule|date|after_or_equal:start_date",
-            'product_id' => "$rule|exists:products,id",
+            'end_date' => "$rule|date|after:start_date|before_or_equal: $warehouse->expiry_date",
+            'warehouse_id' => "$rule|exists:warehouses,id",
         ]);
 
         if ($validator->fails()) {
             throw new ValidationException($validator);
-        }
-    }
-
-    protected function checkOfferOverlap($productId, $startDate, $endDate, $ignoreOfferId = null)
-    {
-        $existingOffers = Offer::where('product_id', $productId)
-            ->when($ignoreOfferId, function ($query, $ignoreOfferId) {
-                return $query->where('id', '!=', $ignoreOfferId);
-            })
-            ->get();
-
-        foreach ($existingOffers as $offer) {
-            if (
-                ($startDate >= $offer->start_date && $startDate <= $offer->end_date) ||
-                ($endDate >= $offer->start_date && $endDate <= $offer->end_date) ||
-                ($startDate <= $offer->start_date && $endDate >= $offer->end_date)
-            ) {
-                throw new HttpResponseException(ResponseHelper::jsonResponse([],
-                    "This offer overlaps with an existing offer from {$offer->start_date} to {$offer->end_date} for this product: {$offer->product->name}.",
-                    403, false));
-            }
         }
     }
 }
