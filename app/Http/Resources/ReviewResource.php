@@ -48,6 +48,7 @@ class ReviewResource extends JsonResource
             'rating' => $this->rating,
             'comment' => $this->comment ? [
                 'id' => $this->comment->id,
+                'title' => $this->comment->title ?? null,
                 'text' => $this->comment->text ?? null,
                 'image' => $this->comment->image ?? null,
             ] : null,
@@ -59,6 +60,7 @@ class ReviewResource extends JsonResource
                 'id' => $this->user->id,
                 'name' => $this->user->first_name.' '.$this->user->last_name,
             ],
+            'created_at' => $this->created_at->format('Y-m-d'),
         ];
     }
 }

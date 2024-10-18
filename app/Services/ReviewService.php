@@ -215,7 +215,7 @@ class ReviewService
      *                 type="object",
      *                 required={"rating","product_id"},
      *
-     *               @OA\Property(property="rating", type="number", format="float", example="4.5", description="The rating of the product, a number between 0 and 5"),
+     *               @OA\Property(property="rating", type="integer", example="4.5", description="The rating of the product, a number between 0 and 5"),
      *                @OA\Property(property="product_id", type="integer", example=1,description="Product ID you want to add review to it"),
      *             )
      *         )
@@ -243,7 +243,7 @@ class ReviewService
      *             type="object",
      *
      *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="rating", type="number",format="float", example="4"),
+     *             @OA\Property(property="rating", type="integer", example="4"),
      *             @OA\Property(property="product_id", type="integer", example=1),
      *         )
      *     ),
@@ -467,7 +467,7 @@ class ReviewService
      *         required=false,
      *     description="your rating in this product",
      *
-     *         @OA\Schema(type="number",format="float" ,example="3")
+     *         @OA\Schema(type="integer" ,example="3")
      *     ),
      *
      *      @OA\Parameter(
@@ -501,7 +501,7 @@ class ReviewService
      *             type="object",
      *
      *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="rating", type="number",format="float", example="2"),
+     *             @OA\Property(property="rating", type="integer", example="2"),
      *             @OA\Property(property="product_id", type="integer", example=1),
      *         )
      *     ),
@@ -605,7 +605,7 @@ class ReviewService
     protected function validateReviewData(array $data, $rule = 'required')
     {
         $validator = Validator::make($data, [
-            'rating' => "$rule|numeric|min:0|max:5",
+            'rating' => "$rule|integer|between:0,5",
             'product_id' => "$rule|exists:products,id",
         ]);
 
