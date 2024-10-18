@@ -76,18 +76,23 @@ class ProductResource extends JsonResource
             $discountedAmount = $this->price * ($discountPercentage / 100);
             $currentPrice = $this->price - $discountedAmount;
         }
+        $mainImage = $this->images->where('main', 1)->first() ?? $this->images->first();
+        $ratingsCount = [
+            '1_star' => $this->reviews->where('rating', 1)->count(),
+            '2_star' => $this->reviews->where('rating', 2)->count(),
+            '3_star' => $this->reviews->where('rating', 3)->count(),
+            '4_star' => $this->reviews->where('rating', 4)->count(),
+            '5_star' => $this->reviews->where('rating', 5)->count(),
+        ];
 
         $data = [
             'id' => $this->id,
             'name' => $this->name,
-            'images' => $this->images->map(function ($image) {
-                return [
-                    'id' => $image->id,
-                    'image' => $image->image,
-                ];
-            }),
+            'image' => $mainImage ? [
+                'id' => $mainImage->id,
+                'image' => $mainImage->image,
+            ] : null,
             'price' => (float) $this->price,
-            'description' => $this->description,
             'current_price' => (float) $currentPrice,
             'user' => $this->user->first_name.' '.$this->user->last_name,
 
@@ -106,6 +111,15 @@ class ProductResource extends JsonResource
         ];
 
         if ($request->routeIs('products.show')) {
+            unset($data['image']);
+            $data['ratings_count'] = $ratingsCount;
+            $data['images'] = $this->images->map(function ($image) {
+                return [
+                    'id' => $image->id,
+                    'image' => $image->image,
+                ];
+            });
+            $data['description'] = $this->description;
             $data['reviewers'] = $this->reviews ? $this->reviews->map(function ($review) {
                 return [
                     'name' => $review->user->first_name.' '.$review->user->last_name,
@@ -115,6 +129,7 @@ class ProductResource extends JsonResource
                         'text' => $review->comment->text ?? null,
                         'image' => $review->comment->image ?? null,
                     ] : null,
+                    'created_at' => $review->created_at->format('Y-m-d'),
                 ];
             }) : [];
         }

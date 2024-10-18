@@ -216,6 +216,7 @@ class CommentService
      *                   required={"review_id"},
      *
      *                 @OA\Property(property="review_id", type="integer", example=1, description="The ID of your review"),
+     *                 @OA\Property(property="title", type="string", example="This is a comment title", description="The comment title. Must provide either 'text' or 'image', or both."),
      *                 @OA\Property(property="text", type="string", example="This is a comment", description="The comment text. Must provide either 'text' or 'image', or both."),
      *                 @OA\Property(property="image", type="string", format="binary", description="Optional image. Must provide either 'text' or 'image', or both.")
      *             )
@@ -244,7 +245,8 @@ class CommentService
      *             type="object",
      *
      *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="text", type="string", example="This is a comment"),
+     *             @OA\Property(property="title", type="string", example="My opinion"),
+     *             @OA\Property(property="text", type="string", example="Thank you very much!"),
      *             @OA\Property(property="image", type="string", example="http://example.com/image.jpg", nullable=true),
      *             @OA\Property(property="product_name", type="string", example="apple"),
      *             @OA\Property(property="user_name", type="string", example="Only"),
@@ -252,7 +254,7 @@ class CommentService
      *           ),
      *
      *     @OA\Response(
-     *         response=400,
+     *         response=422,
      *         description="Validation error",
      *
      *         @OA\JsonContent(
@@ -474,6 +476,15 @@ class CommentService
      *     ),
      *
      *     @OA\Parameter(
+     *         name="title",
+     *         in="query",
+     *         required=false,
+     *     description="Comment Text",
+     *
+     *         @OA\Schema(type="string", example="My opinion")
+     *     ),
+     *
+     *     @OA\Parameter(
      *         name="text",
      *         in="query",
      *         required=false,
@@ -522,7 +533,8 @@ class CommentService
      *             type="object",
      *
      *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="text", type="string", example="Thank you!"),
+     *             @OA\Property(property="title", type="string", example="My opinion"),
+     *             @OA\Property(property="text", type="string", example="Thank you very much!"),
      *             @OA\Property(property="image", type="string", example="https://example.com/images/smartphone-xyz.jpg"),
      *             @OA\Property(property="product_name", type="string", example="apple"),
      *             @OA\Property(property="user_name", type="string", example="Only"),
@@ -641,10 +653,16 @@ class CommentService
     protected function validateCommentData(array $data, $rule = 'required', $method = 'any')
     {
         $validator = Validator::make($data, [
-            'text' => 'required_without_all:image|nullable|string|max:255',
-            'image' => 'required_without_all:text|nullable|image|max:5120',
+            'title' => 'required_without_all:text|nullable|string|max:255',
+            'text' => 'required_without_all:image|nullable|string|max:1000',
+            'image' => 'required_without_all:title|nullable|image|max:5120',
             'review_id' => "$rule|exists:reviews,id",
-        ]);
+        ],
+            [
+                'text.required_without_all' => 'You must provide either an image or both title and text.',
+                'title.required_without_all' => 'You must provide either an image or both title and text.',
+                'image.required_without_all' => 'You must provide either an image or both title and text.',
+            ]);
 
         if ($validator->fails()) {
             throw new HttpResponseException(

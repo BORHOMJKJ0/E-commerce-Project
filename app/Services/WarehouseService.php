@@ -111,16 +111,6 @@ class WarehouseService
      *         @OA\JsonContent(ref="#/components/schemas/WarehouseResource")
      *     ),
      *
-     *    @OA\Response(
-     *         response=403,
-     *         description="forbidden error",
-     *
-     *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="error", type="string", example="You are not authorized to view this warehouse.")
-     *         )
-     *     ),
-     *
      *     @OA\Response(
      *         response=404,
      *         description="Product not found",
@@ -134,16 +124,59 @@ class WarehouseService
      */
     public function getWarehouseById(Warehouse $warehouse)
     {
-        try {
-            $product = $warehouse->product;
-            $this->checkOwnership($product, 'Warehouse', 'perform');
-            $data = ['warehouse' => WarehouseResource::make($warehouse)];
-            $response = ResponseHelper::jsonResponse($data, 'Warehouse retrieved successfully!');
-        } catch (HttpResponseException $e) {
-            $response = $e->getResponse();
-        }
+        $data = ['warehouse' => WarehouseResource::make($warehouse)];
 
-        return $response;
+        return ResponseHelper::jsonResponse($data, 'Warehouse retrieved successfully!');
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api/warehouses/get_warehouse_for_this_product/{product}",
+     *     summary="Get all warehouses by Product ID",
+     *     tags={"Warehouse"},
+     *     security={{"bearerAuth": {} }},
+     *
+     *     @OA\Parameter(
+     *         name="product",
+     *         in="path",
+     *         required=true,
+     *     description="Product ID you want to show all warehouses of it",
+     *
+     *        @OA\Schema(type="integer", example=1)
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful response",
+     *
+     *         @OA\JsonContent(ref="#/components/schemas/WarehouseResource")
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=404,
+     *         description="Product not found",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="error", type="string", example="Product not found")
+     *         )
+     *     )
+     * )
+     */
+    public function getWarehousesByProductID(Product $product, Request $request)
+    {
+        $page = $request->query('page', 1);
+        $items = $request->query('items', 20);
+
+        $warehouses = $this->warehouseRepository->getProductWarehouses($product, $items, $page);
+        $hasMorePages = $warehouses->hasMorePages();
+
+        $data = [
+            'Warehouses' => WarehouseResource::collection($warehouses),
+            'hasMorePages' => $hasMorePages,
+        ];
+
+        return ResponseHelper::jsonResponse($data, 'Warehouses retrieved successfully!');
     }
 
     /**

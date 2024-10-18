@@ -11,7 +11,9 @@ class ImageSeeder extends Seeder
     public function run(): void
     {
         DB::transaction(function () {
-            Image::factory(20)->create();
+            foreach (range(1, 20) as $index) {
+                Image::factory()->create();
+            }
         });
     }
 }

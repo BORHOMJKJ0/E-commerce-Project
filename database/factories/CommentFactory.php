@@ -21,7 +21,8 @@ class CommentFactory extends Factory
         }
 
         return [
-            'text' => $hasText ? fake()->sentence : null,
+            'title' => $hasText ? fake()->sentence : null,
+            'text' => $hasText ? fake()->realText : null,
             'image' => $hasImage ? fake()->imageUrl(200, 200) : null,
             'review_id' => $review->id,
         ];

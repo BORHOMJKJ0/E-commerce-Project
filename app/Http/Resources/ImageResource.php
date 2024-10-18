@@ -32,6 +32,7 @@ class ImageResource extends JsonResource
         return [
             'id' => $this->id,
             'image' => $this->image,
+            'main' => $this->main,
             'product' => $this->Product ? [
                 'id' => $this->Product->id,
                 'name' => $this->Product->name,

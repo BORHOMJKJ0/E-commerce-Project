@@ -13,7 +13,7 @@ class ReviewFactory extends Factory
         return [
             'product_id' => Product::inRandomOrder()->first()->id,
             'user_id' => User::inRandomOrder()->first()->id,
-            'rating' => fake()->randomFloat(2, 1, 5),
+            'rating' => fake()->numberBetween(1, 5),
         ];
     }
 }

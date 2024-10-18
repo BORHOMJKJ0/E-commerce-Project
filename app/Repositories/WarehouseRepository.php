@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Product;
 use App\Models\Warehouse;
 use App\Traits\Lockable;
 
@@ -17,6 +18,11 @@ class WarehouseRepository
     public function orderBy($column, $direction, $page, $items)
     {
         return Warehouse::orderBy($column, $direction)->paginate($items, ['*'], 'page', $page);
+    }
+
+    public function getProductWarehouses(Product $product, $items, $page)
+    {
+        return Warehouse::where('product_id', $product->id)->paginate($items, ['*'], 'page', $page);
     }
 
     public function create(array $data)

@@ -10,7 +10,8 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->text('text')->nullable();
+            $table->text('title')->nullable();
+            $table->longText('text')->nullable();
             $table->string('image')->nullable();
             $table->foreignId('review_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
