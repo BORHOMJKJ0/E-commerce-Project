@@ -45,9 +45,79 @@ class ExpressionService
      *         description="Successful response",
      *
      *         @OA\JsonContent(
-     *             type="array",
+     *             type="object",
      *
-     *             @OA\Items(ref="#/components/schemas/CategoryResource")
+     *             @OA\Property(property="successful",type="boolean",example=true),
+     *             @OA\Property(
+     *                 property="product",
+     *                 type="string",
+     *                 description="Name of the product"
+     *             ),
+     *             @OA\Property(
+     *                 property="expression",
+     *                 type="object",
+     *                 @OA\Property(
+     *                     property="views",
+     *                     type="object",
+     *                     @OA\Property(property="number", type="integer", example=3, description="Number of views"),
+     *                     @OA\Property(
+     *                         property="users",
+     *                         type="array",
+     *
+     *                         @OA\Items(
+     *                             type="object",
+     *
+     *                             @OA\Property(property="id", type="integer", example=1),
+     *                             @OA\Property(property="name", type="string", example="Hasan")
+     *                         ),
+     *                         example={
+     *                             {"id": 1, "name": "Hasan"},
+     *                             {"id": 2, "name": "Hadi"},
+     *                            {"id": 3, "name": "Anas"},
+     *                         }
+     *                     )
+     *                 ),
+     *                 @OA\Property(
+     *                     property="likes",
+     *                     type="object",
+     *                     @OA\Property(property="number", type="integer", example=2, description="Number of likes"),
+     *                     @OA\Property(
+     *                         property="users",
+     *                         type="array",
+     *
+     *                         @OA\Items(
+     *                             type="object",
+     *
+     *                             @OA\Property(property="id", type="integer", example=1),
+     *                             @OA\Property(property="name", type="string", example="Hasan")
+     *                         ),
+     *                         example={
+     *                             {"id": 1, "name": "Hasan"},
+     *                             {"id": 3, "name": "Anas"}
+     *                         }
+     *                     )
+     *                 ),
+     *                 @OA\Property(
+     *                     property="disLikes",
+     *                     type="object",
+     *                     @OA\Property(property="number", type="integer", example=1, description="Number of dislikes"),
+     *                     @OA\Property(
+     *                         property="users",
+     *                         type="array",
+     *
+     *                         @OA\Items(
+     *                             type="object",
+     *
+     *                             @OA\Property(property="id", type="integer", example=1),
+     *                             @OA\Property(property="name", type="string", example="Hasan")
+     *                         ),
+     *                         example={
+     *                             {"id": 1, "name": "Hasan"},
+     *                         }
+     *                     )
+     *                 )
+     *             ),
+     *              @OA\Property(property="status_code", type="integer", example=200),
      *         )
      *     ),
      *

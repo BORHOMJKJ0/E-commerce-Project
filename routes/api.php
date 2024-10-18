@@ -5,6 +5,8 @@ use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\ForgetPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\UserController;
+use App\Http\Controllers\Cart\CartController;
+use App\Http\Controllers\Cart\CartItemsController;
 use App\Http\Controllers\Category\CategoryController;
 use App\Http\Controllers\Comment\CommentController;
 use App\Http\Controllers\Contact\ContactInformationController;
@@ -37,6 +39,7 @@ Route::middleware('api')->group(function () {
     Route::apiResource('reviews', ReviewController::class);
     Route::apiResource('comments', CommentController::class);
     Route::apiResource('images', ImageController::class);
+    Route::apiResource('cart_items', CartItemsController::class);
     Route::prefix('products')->controller(ProductController::class)->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');
         Route::get('/my/order/{column}/{direction}', 'MyProductsOrderBy');
@@ -70,6 +73,16 @@ Route::middleware('api')->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');
         Route::get('/my/order/{column}/{direction}', 'MyImagesOrderBy');
         Route::get('/my/random', 'MyImages');
+        Route::post('/search', 'searchByFilters');
+    });
+    Route::prefix('carts')->controller(CartController::class)->group(function () {
+        Route::get('/get_cart/{cart}', 'show');
+        Route::post('/create_cart', 'store');
+        Route::put('/update_cart/{cart}', 'update');
+        Route::delete('/delete_cart/{cart}', 'destroy');
+    });
+    Route::prefix('cart_items')->controller(CartItemsController::class)->group(function () {
+        Route::get('/order/{column}/{direction}', 'orderBy');
         Route::post('/search', 'searchByFilters');
     });
 });

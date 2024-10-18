@@ -41,6 +41,12 @@ class Warehouse extends Model
         return $this->hasMany(Offer::class);
     }
 
+    public function cart_items()
+    {
+        return $this->belongsToMany(Cart_items::class)
+            ->withPivot('quantity');
+    }
+
     public function prunable()
     {
         return static::where('expiry_date', '<', Carbon::now())

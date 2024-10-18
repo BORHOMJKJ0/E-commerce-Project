@@ -4,9 +4,6 @@ namespace App\Http\Requests;
 
 class UpdateContactRequest extends BaseRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         $userIdFormRoute = $this->route('user_id');
@@ -17,11 +14,6 @@ class UpdateContactRequest extends BaseRequest
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [

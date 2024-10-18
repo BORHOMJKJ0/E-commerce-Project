@@ -7,7 +7,9 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
+use App\Repositories\CartRepository;
 use App\Repositories\UserRepository;
+use App\Services\CartService;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -18,11 +20,14 @@ class UserController extends Controller
 
     protected $UserService;
 
+    protected $cartService;
+
     public function __construct()
     {
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
         $this->EmailVerificationController = new EmailVerificationController;
-        $this->UserService = new UserService(new EmailVerificationController, new UserRepository);
+        $this->cartService = new CartService(new CartRepository);
+        $this->UserService = new UserService(new EmailVerificationController, new UserRepository, new CartService(new CartRepository));
     }
 
     public function index(): JsonResponse

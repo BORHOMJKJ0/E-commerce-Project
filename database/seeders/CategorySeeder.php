@@ -11,7 +11,7 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         DB::transaction(function () {
-            Category::factory(5)->create();
+            Category::factory()->create();
         });
     }
 }

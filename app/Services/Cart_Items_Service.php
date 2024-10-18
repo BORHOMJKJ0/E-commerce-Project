@@ -3,10 +3,10 @@
 namespace App\Services;
 
 use App\Helpers\ResponseHelper;
-use App\Http\Resources\WarehouseResource;
-use App\Models\Product;
-use App\Models\Warehouse;
-use App\Repositories\WarehouseRepository;
+use App\Http\Resources\CartItemsResource;
+use App\Models\Cart;
+use App\Models\Cart_items;
+use App\Repositories\CartItemsRepository;
 use App\Traits\AuthTrait;
 use App\Traits\ValidationTrait;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -14,22 +14,22 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
-class WarehouseService
+class Cart_Items_Service
 {
     use AuthTrait,ValidationTrait;
 
-    protected $warehouseRepository;
+    protected $cartItemsRepository;
 
-    public function __construct(WarehouseRepository $warehouseRepository)
+    public function __construct(CartItemsRepository $cartItemsRepository)
     {
-        $this->warehouseRepository = $warehouseRepository;
+        $this->cartItemsRepository = $cartItemsRepository;
     }
 
     /**
      * @OA\Get(
-     *     path="/api/warehouses",
-     *     summary="Get my warehouses",
-     *     tags={"Warehouse"},
+     *     path="/api/cart_items",
+     *     summary="Get my Cart_items",
+     *     tags={"Cart_items"},
      *     security={{"bearerAuth": {} }},
      *
      *     @OA\Parameter(
@@ -57,7 +57,7 @@ class WarehouseService
      *         @OA\JsonContent(
      *             type="array",
      *
-     *             @OA\Items(ref="#/components/schemas/WarehouseResource")
+     *             @OA\Items(ref="#/components/schemas/CartItemsResource")
      *         )
      *     ),
      *
@@ -72,34 +72,34 @@ class WarehouseService
      *     )
      * )
      */
-    public function getAllWarehouses(Request $request)
+    public function getAllCart_items(Request $request)
     {
         $page = $request->query('page', 1);
         $items = $request->query('items', 20);
 
-        $warehouses = $this->warehouseRepository->getAll($items, $page);
-        $hasMorePages = $warehouses->hasMorePages();
+        $cart_items = $this->cartItemsRepository->getAll($items, $page);
+        $hasMorePages = $cart_items->hasMorePages();
 
         $data = [
-            'Warehouses' => WarehouseResource::collection($warehouses),
+            'Cart_items' => CartItemsResource::collection($cart_items),
             'hasMorePages' => $hasMorePages,
         ];
 
-        return ResponseHelper::jsonResponse($data, 'Warehouses retrieved successfully!');
+        return ResponseHelper::jsonResponse($data, 'Cart_items retrieved successfully!');
     }
 
     /**
      * @OA\Get(
-     *     path="/api/warehouses/{id}",
-     *     summary="Get a warehouse by ID",
-     *     tags={"Warehouse"},
+     *     path="/api/cart_items/{id}",
+     *     summary="Get a Cart_items by ID",
+     *     tags={"Cart_items"},
      *     security={{"bearerAuth": {} }},
      *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *     description="your Warehouse ID you want to show it",
+     *     description="your Cart_items ID you want to show it",
      *
      *        @OA\Schema(type="integer", example=1)
      *     ),
@@ -108,7 +108,7 @@ class WarehouseService
      *         response=200,
      *         description="Successful response",
      *
-     *         @OA\JsonContent(ref="#/components/schemas/WarehouseResource")
+     *         @OA\JsonContent(ref="#/components/schemas/CartItemsResource")
      *     ),
      *
      *    @OA\Response(
@@ -117,28 +117,34 @@ class WarehouseService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="You are not authorized to view this warehouse.")
+     *             @OA\Property(property="error", type="string", example="You are not authorized to view this Cart_items.")
      *         )
      *     ),
      *
      *     @OA\Response(
      *         response=404,
-     *         description="Product not found",
+     *         description="cart not found",
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Product not found")
+     *             @OA\Property(property="error", type="string", example="cart not found")
      *         )
      *     )
      * )
      */
-    public function getWarehouseById(Warehouse $warehouse)
+    public function getCart_itemsById(Cart_items $cart_items)
     {
         try {
-            $product = $warehouse->product;
-            $this->checkOwnership($product, 'Warehouse', 'perform');
-            $data = ['warehouse' => WarehouseResource::make($warehouse)];
-            $response = ResponseHelper::jsonResponse($data, 'Warehouse retrieved successfully!');
+            $cart = $cart_items->cart;
+            if (!$cart) {
+                \Log::error('Cart not found for Cart_items ID: ' . $cart_items->id);
+                throw new HttpResponseException(
+                    ResponseHelper::jsonResponse([], 'Cart not found', 404, false)
+                );
+            }
+            $this->checkOwnership($cart, 'Cart_items', 'perform');
+            $data = ['Cart_items' => CartItemsResource::make($cart_items)];
+            $response = ResponseHelper::jsonResponse($data, 'Cart_items retrieved successfully!');
         } catch (HttpResponseException $e) {
             $response = $e->getResponse();
         }
@@ -146,11 +152,13 @@ class WarehouseService
         return $response;
     }
 
+
+
     /**
      * @OA\Post(
-     *     path="/api/warehouses",
-     *     summary="Create a warehouse",
-     *     tags={"Warehouse"},
+     *     path="/api/cart_items",
+     *     summary="Create a Cart_items",
+     *     tags={"Cart_items"},
      *     security={{"bearerAuth": {} }},
      *
      *     @OA\RequestBody(
@@ -160,11 +168,11 @@ class WarehouseService
      *             mediaType="multipart/form-data",
      *
      *             @OA\Schema(
-     *             required={"amount", "expiry_date", "product_id"},
+     *             required={"amount", "expiry_date", "cart_id"},
      *
-     *             @OA\Property(property="amount", type="number", example=100,description="Warehouse Amount"),
-     *             @OA\Property(property="expiry_date", type="string", format="date", example="2024-12-01",description="Warehouse exoiry date"),
-     *             @OA\Property(property="product_id", type="integer", example=1,description="Product ID that you want to add this warehouse to it")
+     *             @OA\Property(property="amount", type="number", example=100,description="Cart_items Amount"),
+     *             @OA\Property(property="expiry_date", type="string", format="date", example="2024-12-01",description="Cart_items exoiry date"),
+     *             @OA\Property(property="cart_id", type="integer", example=1,description="cart ID that you want to add this Cart_items to it")
      *             )
      *         )
      *     ),
@@ -185,9 +193,9 @@ class WarehouseService
      *
      *     @OA\Response(
      *         response=201,
-     *         description="Warehouse created successfully",
+     *         description="Cart_items created successfully",
      *
-     *         @OA\JsonContent(ref="#/components/schemas/WarehouseResource")
+     *         @OA\JsonContent(ref="#/components/schemas/CartItemsResource")
      *     ),
      *
      *    @OA\Response(
@@ -196,7 +204,7 @@ class WarehouseService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="You are not authorized to create this warehouse .")
+     *             @OA\Property(property="error", type="string", example="You are not authorized to create this Cart_items .")
      *         )
      *     ),
      *
@@ -211,16 +219,13 @@ class WarehouseService
      *     ),
      * )
      */
-    public function createWarehouse(array $data)
+    public function createCart_items(array $data)
     {
         try {
-            $this->validateWarehouseData($data);
-            $product = Product::find($data['product_id']);
-            $this->checkOwnership($product, 'Warehouse', 'create');
-            $this->checkDate($data, 'expiry_date', 'future');
-            $warehouse = $this->warehouseRepository->create($data);
-            $data = ['warehouse' => WarehouseResource::make($warehouse)];
-            $response = ResponseHelper::jsonResponse($data, 'Warehouse created successfully!', 201);
+            $this->validate_Cart_items_Data($data);
+            $cart_items = $this->cartItemsRepository->create($data);
+            $data = ['Cart_items' => CartItemsResource::make($cart_items)];
+            $response = ResponseHelper::jsonResponse($data, 'Cart_items created successfully!', 201);
         } catch (HttpResponseException $e) {
             $response = $e->getResponse();
         }
@@ -230,18 +235,18 @@ class WarehouseService
 
     /**
      * @OA\Get(
-     *     path="/api/warehouses/order/{column}/{direction}",
-     *     summary="Order My warehouses by a specific column",
-     *     tags={"Warehouse"},
+     *     path="/api/cart_items/order/{column}/{direction}",
+     *     summary="Order My Cart_items by a specific column",
+     *     tags={"Cart_items"},
      *     security={{"bearerAuth": {} }},
      *
      *     @OA\Parameter(
      *         name="column",
      *         in="path",
      *         required=true,
-     *     description="Column you want to order the warehouses by it",
+     *     description="Column you want to order the Cart_items by it",
      *
-     *         @OA\Schema(type="string", enum={"expiry_date", "created_at", "updated_at"})
+     *         @OA\Schema(type="string", enum={"quantity", "created_at", "updated_at"})
      *     ),
      *
      *     @OA\Parameter(
@@ -278,7 +283,7 @@ class WarehouseService
      *         @OA\JsonContent(
      *             type="array",
      *
-     *             @OA\Items(ref="#/components/schemas/WarehouseResource")
+     *             @OA\Items(ref="#/components/schemas/CartItemsResource")
      *         )
      *     ),
      *
@@ -293,9 +298,9 @@ class WarehouseService
      *     )
      * )
      */
-    public function getWarehousesOrderedBy($column, $direction, Request $request)
+    public function getCart_items_OrderedBy($column, $direction, Request $request)
     {
-        $validColumns = ['expiry_date', 'created_at', 'updated_at'];
+        $validColumns = ['quantity', 'created_at', 'updated_at'];
         $validDirections = ['asc', 'desc'];
 
         if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
@@ -304,30 +309,30 @@ class WarehouseService
 
         $page = $request->query('page', 1);
         $items = $request->query('items', 20);
-        $warehouses = $this->warehouseRepository->orderBy($column, $direction, $page, $items);
-        $hasMorePages = $warehouses->hasMorePages();
+        $cart_items = $this->cartItemsRepository->orderBy($column, $direction, $page, $items);
+        $hasMorePages = $cart_items->hasMorePages();
 
         $data = [
-            'Warehouses' => WarehouseResource::collection($warehouses),
+            'Cart_items' => CartItemsResource::collection($cart_items),
             'hasMorePages' => $hasMorePages,
         ];
 
-        return ResponseHelper::jsonResponse($data, 'Warehouses ordered successfully');
+        return ResponseHelper::jsonResponse($data, 'Cart_items ordered successfully');
 
     }
 
     /**
      * @OA\Put(
-     *     path="/api/warehouses/{id}",
-     *     summary="Update a warehouse",
-     *     tags={"Warehouse"},
+     *     path="/api/cart_items/{id}",
+     *     summary="Update a Cart_items",
+     *     tags={"Cart_items"},
      *     security={{"bearerAuth": {}}},
      *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *     description="your Warehouse ID that you want to update it",
+     *     description="your Cart_items ID that you want to update it",
      *
      *         @OA\Schema(type="integer", example=1)
      *     ),
@@ -336,16 +341,16 @@ class WarehouseService
      *         name="amount",
      *         in="query",
      *         required=false,
-     *     description="THe amount of this warehouse",
+     *     description="THe amount of this Cart_items",
      *
      *         @OA\Schema(type="integer", example=100)
      *     ),
      *
      *     @OA\Parameter(
-     *         name="product_id",
+     *         name="cart_id",
      *         in="query",
      *         required=false,
-     *     description="Product ID of this warehouse",
+     *     description="cart ID of this Cart_items",
      *
      *         @OA\Schema(type="integer", example=1)
      *     ),
@@ -366,7 +371,7 @@ class WarehouseService
      *
      *     @OA\Response(
      *         response=200,
-     *         description="Warehouse updated successfully",
+     *         description="Cart_items updated successfully",
      *
      *         @OA\JsonContent(
      *             type="object",
@@ -375,7 +380,7 @@ class WarehouseService
      *             @OA\Property(property="amount", type="integer", example=0),
      *             @OA\Property(property="expiry_date", type="string", format="date", example="2025-12-31"),
      *             @OA\Property(
-     *                 property="product",
+     *                 property="cart",
      *                 type="object",
      *                 @OA\Property(property="name", type="string", example="Iphone 15"),
      *                 @OA\Property(property="price", type="number", format="float", example="499.99"),
@@ -401,37 +406,30 @@ class WarehouseService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="You are not authorized to delete this warehouse .")
+     *             @OA\Property(property="error", type="string", example="You are not authorized to delete this Cart_items .")
      *         )
      *     ),
      *
      *     @OA\Response(
      *         response=404,
-     *         description="Warehouse not found",
+     *         description="Cart_items not found",
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Warehouse not found")
+     *             @OA\Property(property="error", type="string", example="Cart_items not found")
      *         )
      *     )
      * )
      */
-    public function updateWarehouse(Warehouse $warehouse, array $data)
+    public function updateCart_items(Cart_items $cart_items, array $data)
     {
-        if (isset($data['expiry_date'])) {
-            throw ValidationException::withMessages([
-                'expiry_date' => 'You cannot update the expiry date once it has been set.',
-            ]);
-        }
         try {
-            $this->validateWarehouseData($data, 'sometimes', 0);
-            $product = $warehouse->product;
-            $this->checkOwnership($product, 'Warehouse', 'update');
-
-            $warehouse = $this->warehouseRepository->update($warehouse, $data);
-
-            $data = ['warehouse' => WarehouseResource::make($warehouse)];
-            $response = ResponseHelper::jsonResponse($data, 'Warehouse updated successfully!');
+            $this->validate_Cart_items_Data($data, 'sometimes', 0);
+            $cart = $cart_items->cart;
+            $this->checkOwnership($cart, 'Cart_items', 'update');
+            $cart_items = $this->cartItemsRepository->update($cart_items, $data);
+            $data = ['Cart_items' => CartItemsResource::make($cart_items)];
+            $response = ResponseHelper::jsonResponse($data, 'Cart_items updated successfully!');
         } catch (HttpResponseException $e) {
             $response = $e->getResponse();
         }
@@ -441,27 +439,27 @@ class WarehouseService
 
     /**
      * @OA\Delete(
-     *     path="/api/warehouses/{id}",
-     *     summary="Delete a warehouse",
-     *     tags={"Warehouse"},
+     *     path="/api/cart_items/{id}",
+     *     summary="Delete a Cart_items",
+     *     tags={"Cart_items"},
      *     security={{"bearerAuth": {} }},
      *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *     description="your Warehouse ID you want to delete it",
+     *     description="your Cart_items ID you want to delete it",
      *
      *         @OA\Schema(type="integer", example=1)
      *     ),
      *
      *     @OA\Response(
      *         response=200,
-     *         description="Warehouse deleted successfully",
+     *         description="Cart_items deleted successfully",
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="message", type="string", example="Warehouse deleted successfully")
+     *             @OA\Property(property="message", type="string", example="Cart_items deleted successfully")
      *         )
      *     ),
      *
@@ -471,29 +469,28 @@ class WarehouseService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="You are not authorized to delete this warehouse .")
+     *             @OA\Property(property="error", type="string", example="You are not authorized to delete this Cart_items .")
      *         )
      *     ),
      *
      *     @OA\Response(
      *         response=404,
-     *         description="Warehouse not found",
+     *         description="Cart_items not found",
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Warehouse not found")
+     *             @OA\Property(property="error", type="string", example="Cart_items not found")
      *         )
      *     )
      * )
      */
-    public function deleteWarehouse(Warehouse $warehouse)
+    public function deleteCart_items(Cart_items $cart_items)
     {
-
         try {
-            $product = $warehouse->product;
-            $this->checkOwnership($product, 'Warehouse', 'delete');
-            $this->warehouseRepository->delete($warehouse);
-            $response = ResponseHelper::jsonResponse([], 'Warehouse deleted successfully!');
+            $cart = $cart_items->cart;
+            $this->checkOwnership($cart, 'Cart_items', 'delete');
+            $this->cartItemsRepository->delete($cart_items);
+            $response = ResponseHelper::jsonResponse([], 'Cart_items deleted successfully!');
         } catch (HttpResponseException $e) {
             $response = $e->getResponse();
         }
@@ -501,11 +498,10 @@ class WarehouseService
         return $response;
     }
 
-    protected function validateWarehouseData(array $data, $rule = 'required', $limit = 1)
+    protected function validate_Cart_items_Data(array $data, $rule = 'required', $limit = 1)
     {
         $validator = Validator::make($data, [
-            'amount' => "$rule|numeric|min:$limit",
-            'expiry_date' => "$rule|date|after_or_equal:payment_date",
+            'quantity' => "$rule|numeric|min:$limit",
             'product_id' => "$rule|exists:products,id",
         ]);
 

@@ -56,7 +56,7 @@ class UserRepository
 
     public function destroy(): User
     {
-        $user = User::findOrFail(auth()->user()->id);
+        $user = User::findOrFail(auth()->id());
         $user->delete();
 
         return $user;
