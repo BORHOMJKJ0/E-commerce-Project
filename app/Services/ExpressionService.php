@@ -52,7 +52,7 @@ class ExpressionService
      *     ),
      *
      *     @OA\Response(
-     *         response=422,
+     *         response=400,
      *         description="Invalid parameters",
      *
      *         @OA\JsonContent(
@@ -82,7 +82,6 @@ class ExpressionService
      *     path="/api/users/expression/add",
      *     summary="Create an Expression",
      *     tags={"Expressions"},
-     *     description="Create a new expression with product_id,id for auth user, and an optional action",
      *
      *     @OA\RequestBody(
      *         required=true,
@@ -168,8 +167,6 @@ class ExpressionService
      * @OA\Get(
      *     path="/api/users/expression/show/{product_id}",
      *     summary="Get product expressions including views, likes, and dislikes",
-     *     description="Returns the number of views, likes, dislikes, and the list of users who interacted with the product.",
-     *     operationId="Expressions_Product",
      *     tags={"Expressions"},
      *
      *     @OA\Parameter(
@@ -178,7 +175,7 @@ class ExpressionService
      *         description="ID of the product",
      *         required=true,
      *
-     *         @OA\Schema(type="integer")
+     *         @OA\Schema(type="integer",example=1)
      *     ),
      *
      *     @OA\Response(
@@ -287,8 +284,6 @@ class ExpressionService
      * @OA\Put(
      *     path="/api/users/expression/update/{product_id}",
      *     summary="Update user expression for a product",
-     *     description="Allows a user to update their expression (like or dislike) for a specific product.",
-     *     operationId="updateExpression",
      *     tags={"Expressions"},
      *
      *     @OA\Parameter(
@@ -297,7 +292,7 @@ class ExpressionService
      *         description="ID of the product",
      *         required=true,
      *
-     *         @OA\Schema(type="integer")
+     *         @OA\Schema(type="integer",example=1)
      *     ),
      *
      *     @OA\RequestBody(

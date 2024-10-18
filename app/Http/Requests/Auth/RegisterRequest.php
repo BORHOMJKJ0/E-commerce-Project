@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Auth;
 
 use App\Http\Requests\BaseRequest;
-use App\Rules\EmailAddress;
 
 class RegisterRequest extends BaseRequest
 {
@@ -16,12 +15,12 @@ class RegisterRequest extends BaseRequest
     {
 
         return [
-            'First_Name' => 'required',
-            'Last_Name' => 'sometimes',
+            'first_name' => 'required',
+            'last_name' => 'sometimes',
             'email' => 'required',
             'password' => 'required',
             'mobile' => 'required',
-            'Address' => 'required',
+            'address' => 'required',
         ];
     }
     //    public function attributes(): array{

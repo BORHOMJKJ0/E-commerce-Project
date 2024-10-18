@@ -64,7 +64,7 @@ class ProductService
      *     ),
      *
      *     @OA\Response(
-     *         response=422,
+     *         response=400,
      *         description="Invalid parameters",
      *
      *         @OA\JsonContent(
@@ -127,7 +127,7 @@ class ProductService
      *     ),
      *
      *     @OA\Response(
-     *         response=422,
+     *         response=400,
      *         description="Invalid parameters",
      *
      *         @OA\JsonContent(
@@ -208,13 +208,12 @@ class ProductService
      *
      *             @OA\Schema(
      *                 type="object",
-     *                 required={"name", "image", "price", "description", "category_id"},
+     *                 required={"name", "price", "description", "category_id"},
      *
-     *                 @OA\Property(property="name", type="string", example="Perform",description="Product Name"),
-     *                 @OA\Property(property="image", type="string", format="binary",description="Product Image"),
-     *                 @OA\Property(property="price", type="number", format="float", example=250.75,description="Product Price"),
-     *                 @OA\Property(property="description", type="string", example="This is a new Perform and it cool Try it",description="Product Description"),
-     *                 @OA\Property(property="category_id", type="integer", example=1,description="Category ID that product belong to it"),
+     *                 @OA\Property(property="name", type="string", example="Perform", description="Product Name"),
+     *                 @OA\Property(property="price", type="number", format="float", example=250.75, description="Product Price"),
+     *                 @OA\Property(property="description", type="string", example="This is a new Perform and it's cool. Try it", description="Product Description"),
+     *                 @OA\Property(property="category_id", type="integer", example=1, description="Category ID the product belongs to"),
      *             )
      *         )
      *     ),
@@ -242,28 +241,30 @@ class ProductService
      *
      *             @OA\Property(property="id", type="integer", example=42),
      *             @OA\Property(property="name", type="string", example="Iphone 15"),
-     *             @OA\Property(property="image", type="string", example="https://example.com/images/smartphone-xyz.jpg"),
+     *             @OA\Property(
+     *                 property="images",
+     *                 type="array",
+     *                 description="List of image URLs",
+     *
+     *                 @OA\Items(
+     *                     type="string",
+     *                     example="https://example.com/images/smartphone-xyz.jpg"
+     *                 )
+     *             ),
+     *
      *             @OA\Property(property="price", type="number", format="float", example=499.99),
      *             @OA\Property(property="description", type="string", example="A high-end smartphone with excellent features and a sleek design."),
      *             @OA\Property(property="current_price", type="number", format="float", example=449.99),
      *             @OA\Property(property="user", type="string", example="Hasan Zaeter"),
-     *             @OA\Property(
-     *                 property="offers",
-     *                 type="array",
-     *                 example={},
-     *
-     *                 @OA\Items()
-     *             ),
-     *
      *             @OA\Property(property="total_amount", type="integer", example=0),
      *             @OA\Property(property="expiry_date", type="string", format="date", example="null"),
      *             @OA\Property(property="category", type="string", example="Smartphones")
      *         )
      *     ),
      *
-     *    @OA\Response(
+     *     @OA\Response(
      *         response=403,
-     *         description="forbidden error",
+     *         description="Forbidden error",
      *
      *         @OA\JsonContent(
      *
@@ -272,7 +273,7 @@ class ProductService
      *     ),
      *
      *     @OA\Response(
-     *         response=422,
+     *         response=400,
      *         description="Validation error",
      *
      *         @OA\JsonContent(
@@ -352,7 +353,7 @@ class ProductService
      *     ),
      *
      *     @OA\Response(
-     *         response=422,
+     *         response=400,
      *         description="Invalid column or direction",
      *
      *         @OA\JsonContent(
@@ -438,7 +439,7 @@ class ProductService
      *     ),
      *
      *     @OA\Response(
-     *         response=422,
+     *         response=400,
      *         description="Invalid column or direction",
      *
      *         @OA\JsonContent(
@@ -501,7 +502,7 @@ class ProductService
      *         name="id",
      *         in="path",
      *         required=true,
-     *     description="Product ID you want to update it",
+     *         description="Product ID you want to update",
      *
      *         @OA\Schema(type="integer", example=1)
      *     ),
@@ -510,59 +511,36 @@ class ProductService
      *         name="name",
      *         in="query",
      *         required=false,
-     *     description="Product name",
+     *         description="Product name",
      *
      *         @OA\Schema(type="string", example="Perform")
-     *     ),
-     *
-     *     @OA\Parameter(
-     *         name="image",
-     *         in="query",
-     *         required=false,
-     *     description="Product Image",
-     *
-     *         @OA\Schema(type="string", format="binary")
      *     ),
      *
      *     @OA\Parameter(
      *         name="price",
      *         in="query",
      *         required=false,
-     *     description="Product price",
+     *         description="Product price",
      *
-     *         @OA\Schema(type="number", format="float", example=50.75)
+     *         @OA\Schema(type="number", format="float", example=50.75,)
      *     ),
      *
-     *     @OA\Parameter(
-     *         name="description",
+     *      @OA\Parameter(
+     *         name="decription",
      *         in="query",
      *         required=false,
-     *     description="Product Description",
+     *         description="Product Drecription",
      *
-     *         @OA\Schema(type="string", example="This is a new Perform and it cool Try it")
+     *         @OA\Schema(type="string", example="This is a new Perform and it's cool. Try it")
      *     ),
      *
      *     @OA\Parameter(
      *         name="category_id",
      *         in="query",
      *         required=false,
-     *     description="Category ID that product belong to it",
+     *         description="Category ID the product belongs to",
      *
      *         @OA\Schema(type="integer", example=1)
-     *     ),
-     *
-     *     @OA\Header(
-     *         header="Content-Type",
-     *         description="Content-Type header",
-     *
-     *         @OA\Schema(type="string", example="application/json")
-     *     ),
-     *
-     *     @OA\Header(
-     *         header="Accept",
-     *         description="Accept header",
-     *
-     *         @OA\Schema(type="string", example="application/json")
      *     ),
      *
      *     @OA\Response(
@@ -572,32 +550,31 @@ class ProductService
      *         @OA\JsonContent(
      *             type="object",
      *
-     *             @OA\Property(property="id", type="integer", example=1),
+     *             @OA\Property(property="id", type="integer", example=42),
      *             @OA\Property(property="name", type="string", example="Iphone 14"),
-     *             @OA\Property(property="image", type="string", example="https://example.com/images/smartphone-xyz.jpg"),
-     *             @OA\Property(property="price", type="number", format="float", example=499.99),
+     *             @OA\Property(
+     *                 property="images",
+     *                 type="array",
+     *                 description="List of image URLs",
+     *
+     *                 @OA\Items(
+     *                     type="string",
+     *                     example="https://example.com/images/smartphone-xyz.jpg"
+     *                 )
+     *             ),
+     *
+     *             @OA\Property(property="price", type="number", format="float", example=500),
      *             @OA\Property(property="description", type="string", example="A high-end smartphone with excellent features and a sleek design."),
      *             @OA\Property(property="current_price", type="number", format="float", example=449.99),
      *             @OA\Property(property="user", type="string", example="Hasan Zaeter"),
-     *             @OA\Property(
-     *                 property="offers",
-     *                 type="array",
-     *
-     *                 @OA\Items(
-     *
-     *                     @OA\Property(property="discount", type="string", example="10.00"),
-     *                     @OA\Property(property="starting_at", type="string", format="date-time", example="2024-09-22 12:00"),
-     *                     @OA\Property(property="ending_at", type="string", format="date-time", example="2025-01-15 23:59")
-     *                 )
-     *             ),
-     *             @OA\Property(property="total_amount", type="integer", example=250),
-     *             @OA\Property(property="expiry_date", type="string", format="date", example="2025-01-15"),
+     *             @OA\Property(property="total_amount", type="integer", example=0),
+     *             @OA\Property(property="expiry_date", type="string", format="date", example="null"),
      *             @OA\Property(property="category", type="string", example="Smartphones")
      *         )
      *     ),
      *
      *     @OA\Response(
-     *         response=422,
+     *         response=400,
      *         description="Validation error",
      *
      *         @OA\JsonContent(
@@ -606,9 +583,9 @@ class ProductService
      *         )
      *     ),
      *
-     *      @OA\Response(
+     *     @OA\Response(
      *         response=403,
-     *         description="forbidden error",
+     *         description="Forbidden error",
      *
      *         @OA\JsonContent(
      *
@@ -710,7 +687,6 @@ class ProductService
     {
         $validator = Validator::make($data, [
             'name' => "$rule|string|max:255|unique:products,name",
-            'image' => "$rule|image|max:5120",
             'price' => "$rule|numeric|min:0",
             'description' => "$rule|string|max:1000",
             'category_id' => "$rule|exists:categories,id",

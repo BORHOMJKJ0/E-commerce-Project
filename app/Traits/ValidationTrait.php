@@ -4,7 +4,6 @@ namespace App\Traits;
 
 use App\Helpers\ResponseHelper;
 use App\Models\Offer;
-use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
@@ -31,12 +30,20 @@ trait ValidationTrait
                 "The {$name} must be in the future.",
                 400, false));
         }
+    }
 
-        if ($condition === 'now' && $dateTime->lt(now()->startOfDay())) {
+    public function checkOfferEndDate($expiryDate, $end_date, ?string $offer_end = null)
+    {
+        $offerEndDate = Carbon::parse($end_date);
+        $offerEnd = $offer_end ? Carbon::parse($offer_end) : null;
+
+        if ($offerEndDate->gt($expiryDate) || ($offerEnd && $offerEnd->gt($expiryDate))) {
             throw new HttpResponseException(ResponseHelper::jsonResponse([],
-                "The {$name} must be greater than or equal to now.",
+                "The offer end date must be before or equal to the product expiry date {$expiryDate} .",
                 400, false));
         }
+
+        return true;
     }
 
     public function checkOfferDates(Offer $offer, string $action)
@@ -51,20 +58,108 @@ trait ValidationTrait
 
     }
 
-    public function checkOfferEndDate($product_id, $end_date, ?string $offer_end = null)
+    protected function checkDiscount($newOfferDiscount, $start, $existingOffers)
     {
-        $product = Product::with('warehouses')->find($product_id);
-        $expiryDate = $product->warehouses->min('expiry_date');
+        $previousOffer = null;
+        $nextOffer = null;
 
-        $offerEndDate = Carbon::parse($end_date);
-        $offerEnd = $offer_end ? Carbon::parse($offer_end) : null;
+        foreach ($existingOffers as $offer) {
+            if ($offer->start_date < $start) {
+                $previousOffer = $offer;
+            } elseif ($offer->start_date > $start && ! $nextOffer) {
+                $nextOffer = $offer;
+                break;
+            }
+        }
 
-        if ($offerEndDate->gt($expiryDate) || ($offerEnd && $offerEnd->gt($expiryDate))) {
-            throw new HttpResponseException(ResponseHelper::jsonResponse([],
-                "The offer end date must be before or equal to the product expiry date {$expiryDate} .",
-                400, false));
+        if ($previousOffer && $nextOffer) {
+            if ($newOfferDiscount <= $previousOffer->discount_percentage ||
+                $newOfferDiscount >= $nextOffer->discount_percentage) {
+                throw new HttpResponseException(ResponseHelper::jsonResponse(
+                    [],
+                    "The discount percentage must be between the previous offer ({$previousOffer->discount_percentage}%) and the next offer ({$nextOffer->discount_percentage}%).",
+                    400,
+                    false
+                ));
+            }
+        } elseif ($previousOffer) {
+            if ($newOfferDiscount <= $previousOffer->discount_percentage) {
+                throw new HttpResponseException(ResponseHelper::jsonResponse(
+                    [],
+                    "The discount percentage must be greater than the previous offer ({$previousOffer->discount_percentage}%).",
+                    400,
+                    false
+                ));
+            }
+        } elseif ($nextOffer) {
+            if ($newOfferDiscount >= $nextOffer->discount_percentage) {
+                throw new HttpResponseException(ResponseHelper::jsonResponse(
+                    [],
+                    "The discount percentage must be less than the next offer ({$nextOffer->discount_percentage}%).",
+                    400,
+                    false
+                ));
+            }
+        }
+    }
+
+    protected function checkOfferOverlap($warehouseId, $startDate, $endDate, $ignoreOfferId = null)
+    {
+        $existingOffers = Offer::where('warehouse_id', $warehouseId)
+            ->when($ignoreOfferId, function ($query) use ($ignoreOfferId) {
+                return $query->where('id', '!=', $ignoreOfferId);
+            })
+            ->get();
+
+        $overlappingOffers = collect();
+        $allExistingOffers = collect();
+
+        foreach ($existingOffers as $offer) {
+            $allExistingOffers->push([
+                'id' => $offer->id,
+                'discount_percentage' => $offer->discount_percentage,
+                'start_date' => $offer->start_date->format('Y-n-j'),
+                'end_date' => $offer->end_date->format('Y-n-j'),
+            ]);
+
+            if ($this->isOverlapping($startDate, $endDate, $offer->start_date, $offer->end_date, 'Full')) {
+                $overlappingOffers->push([
+                    'id' => $offer->id,
+                    'discount_percentage' => $offer->discount_percentage,
+                    'start_date' => $offer->start_date->format('Y-n-j'),
+                    'end_date' => $offer->end_date->format('Y-n-j'),
+                ]);
+            } elseif ($this->isOverlapping($startDate, $endDate, $offer->start_date, $offer->end_date, 'Partial')) {
+                $overlappingOffers->push([
+                    'id' => $offer->id,
+                    'discount_percentage' => $offer->discount_percentage,
+                    'start_date' => $offer->start_date->format('Y-n-j'),
+                    'end_date' => $offer->end_date->format('Y-n-j'),
+                ]);
+            }
+        }
+
+        if ($overlappingOffers->isNotEmpty()) {
+            throw new HttpResponseException(ResponseHelper::jsonResponse(
+                [
+                    'overlapping_offers' => $overlappingOffers,
+                    'existing_offers' => $allExistingOffers,
+                ],
+                'The offer dates conflict with existing offers.',
+                400,
+                false
+            ));
         }
 
         return true;
+    }
+
+    private function isOverlapping($start1, $end1, $start2, $end2, $type)
+    {
+        if ($type == 'Full') {
+            return $start1 >= $start2 && $end1 <= $end2;
+        } else {
+            return $start1 < $end2 && $end1 > $start2;
+        }
     }
 }

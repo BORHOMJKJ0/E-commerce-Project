@@ -13,7 +13,7 @@ return new class extends Migration
             $table->decimal('discount_percentage', 5, 2);
             $table->date('start_date');
             $table->date('end_date');
-            $table->foreignId('product_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('warehouse_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

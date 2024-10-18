@@ -38,7 +38,7 @@ class EmailService
      *
      *             @OA\Schema(
      *                 type="object",
-     *                required={"email", "otp"},
+     *                required={"email", "code"},
      *
      *             @OA\Property(property="email", type="string", format="email", example="hzaeter04@gmail.com", description="User's email to verify"),
      *             @OA\Property(property="code", type="string", example="123456", description="OTP code for email verification")

@@ -10,6 +10,7 @@ use App\Http\Controllers\Comment\CommentController;
 use App\Http\Controllers\Contact\ContactInformationController;
 use App\Http\Controllers\Contact\ContactTypeController;
 use App\Http\Controllers\Expression\ExpressionController;
+use App\Http\Controllers\Image\ImageController;
 use App\Http\Controllers\Offer\OfferController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Review\ReviewController;
@@ -35,6 +36,7 @@ Route::middleware('api')->group(function () {
     Route::apiResource('offers', OfferController::class);
     Route::apiResource('reviews', ReviewController::class);
     Route::apiResource('comments', CommentController::class);
+    Route::apiResource('images', ImageController::class);
     Route::prefix('products')->controller(ProductController::class)->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');
         Route::get('/my/order/{column}/{direction}', 'MyProductsOrderBy');
@@ -63,6 +65,12 @@ Route::middleware('api')->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');
         Route::get('/my/order/{column}/{direction}', 'MyCommentsOrderBy');
         Route::get('/my/random', 'MyComments');
+    });
+    Route::prefix('images')->controller(ImageController::class)->group(function () {
+        Route::get('/order/{column}/{direction}', 'orderBy');
+        Route::get('/my/order/{column}/{direction}', 'MyImagesOrderBy');
+        Route::get('/my/random', 'MyImages');
+        Route::post('/search', 'searchByFilters');
     });
 });
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

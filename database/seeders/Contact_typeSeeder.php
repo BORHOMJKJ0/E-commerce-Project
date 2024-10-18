@@ -4,11 +4,14 @@ namespace Database\Seeders;
 
 use App\Models\Contact_type;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class Contact_typeSeeder extends Seeder
 {
     public function run(): void
     {
-        Contact_type::factory(10)->create();
+        DB::transaction(function () {
+            Contact_type::factory(10)->create();
+        });
     }
 }

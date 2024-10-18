@@ -54,7 +54,8 @@ class Handler extends ExceptionHandler
                     return ResponseHelper::jsonResponse([], 'Comment Not Found', 404, false);
                 case 'App\\Models\\User':
                     return ResponseHelper::jsonResponse([], 'User Not Found', 404, false);
-
+                case 'App\\Models\\Image':
+                    return ResponseHelper::jsonResponse([], 'Image Not Found', 404, false);
                 default:
                     return ResponseHelper::jsonResponse([], 'Resource not found', 404, false);
             }

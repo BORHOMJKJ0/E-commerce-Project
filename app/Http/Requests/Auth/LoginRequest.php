@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Auth;
 
 use App\Http\Requests\BaseRequest;
-use App\Rules\EmailAddress;
 
 class LoginRequest extends BaseRequest
 {
