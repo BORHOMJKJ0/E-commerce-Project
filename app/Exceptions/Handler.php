@@ -56,7 +56,7 @@ class Handler extends ExceptionHandler
                     return ResponseHelper::jsonResponse([], 'User Not Found', 404, false);
 
                 default:
-                    return ResponseHelper::jsonResponse([], 'Resource not found', 400, false);
+                    return ResponseHelper::jsonResponse([], 'Resource not found', 404, false);
             }
         }
 

@@ -163,7 +163,6 @@ class EmailService
             return ResponseHelper::jsonResponse([], 'Email already verified', 401, false);
         } else {
             EmailVerificationJob::dispatch($user);
-
             return ResponseHelper::jsonResponse([], 'The activation code has been sent to your email');
         }
     }
