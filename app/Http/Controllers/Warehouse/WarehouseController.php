@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Warehouse;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use App\Models\Warehouse;
 use App\Services\WarehouseService;
 use Illuminate\Http\JsonResponse;
@@ -31,6 +32,11 @@ class WarehouseController extends Controller
     public function show(Warehouse $warehouse): JsonResponse
     {
         return $this->warehouseService->getWarehouseById($warehouse);
+    }
+
+    public function getWarehousesForSpecificProduct(Product $product, Request $request)
+    {
+        return $this->warehouseService->getWarehousesByProductID($product, $request);
     }
 
     public function orderBy($column, $direction, Request $request): JsonResponse

@@ -61,7 +61,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Invalid parameters",
                         "content": {
                             "application/json": {
@@ -136,7 +136,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Validation error",
                         "content": {
                             "application/json": {
@@ -203,7 +203,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Invalid parameters",
                         "content": {
                             "application/json": {
@@ -345,7 +345,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Validation error",
                         "content": {
                             "application/json": {
@@ -545,7 +545,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Invalid column or direction",
                         "content": {
                             "application/json": {
@@ -639,7 +639,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Invalid column or direction",
                         "content": {
                             "application/json": {
@@ -706,7 +706,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Invalid parameters",
                         "content": {
                             "application/json": {
@@ -749,6 +749,11 @@
                                         "type": "integer",
                                         "example": 1
                                     },
+                                    "title": {
+                                        "description": "The comment title. Must provide either 'text' or 'image', or both.",
+                                        "type": "string",
+                                        "example": "This is a comment title"
+                                    },
                                     "text": {
                                         "description": "The comment text. Must provide either 'text' or 'image', or both.",
                                         "type": "string",
@@ -776,9 +781,13 @@
                                             "type": "integer",
                                             "example": 1
                                         },
+                                        "title": {
+                                            "type": "string",
+                                            "example": "My opinion"
+                                        },
                                         "text": {
                                             "type": "string",
-                                            "example": "This is a comment"
+                                            "example": "Thank you very much!"
                                         },
                                         "image": {
                                             "type": "string",
@@ -882,7 +891,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Invalid parameters",
                         "content": {
                             "application/json": {
@@ -977,6 +986,16 @@
                         }
                     },
                     {
+                        "name": "title",
+                        "in": "query",
+                        "description": "Comment Text",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "My opinion"
+                        }
+                    },
+                    {
                         "name": "text",
                         "in": "query",
                         "description": "Comment Text",
@@ -1018,9 +1037,13 @@
                                             "type": "integer",
                                             "example": 1
                                         },
+                                        "title": {
+                                            "type": "string",
+                                            "example": "My opinion"
+                                        },
                                         "text": {
                                             "type": "string",
-                                            "example": "Thank you!"
+                                            "example": "Thank you very much!"
                                         },
                                         "image": {
                                             "type": "string",
@@ -1044,7 +1067,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Validation error",
                         "content": {
                             "application/json": {
@@ -1243,7 +1266,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Invalid column or direction",
                         "content": {
                             "application/json": {
@@ -1336,7 +1359,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Invalid column or direction",
                         "content": {
                             "application/json": {
@@ -2127,7 +2150,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Invalid parameters",
                         "content": {
                             "application/json": {
@@ -2647,7 +2670,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Invalid parameters",
                         "content": {
                             "application/json": {
@@ -2683,7 +2706,8 @@
                             "schema": {
                                 "required": [
                                     "image",
-                                    "product_id"
+                                    "product_id",
+                                    "main"
                                 ],
                                 "properties": {
                                     "product_id": {
@@ -2695,6 +2719,11 @@
                                         "description": "Product Image",
                                         "type": "string",
                                         "format": "binary"
+                                    },
+                                    "main": {
+                                        "description": "Whether the image is the main image for the product",
+                                        "type": "boolean",
+                                        "example": false
                                     }
                                 },
                                 "type": "object"
@@ -2722,6 +2751,11 @@
                                             "description": "The ID of the product the image belongs to",
                                             "type": "integer",
                                             "example": 1
+                                        },
+                                        "main": {
+                                            "description": "Whether the image is the main image for the product",
+                                            "type": "boolean",
+                                            "example": false
                                         },
                                         "product": {
                                             "description": "Product details associated with the image",
@@ -2766,7 +2800,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Validation error",
                         "content": {
                             "application/json": {
@@ -2833,7 +2867,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Invalid parameters",
                         "content": {
                             "application/json": {
@@ -2938,6 +2972,16 @@
                         }
                     },
                     {
+                        "name": "main",
+                        "in": "query",
+                        "description": "Whether the image is the main image for the product",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "example": false
+                        }
+                    },
+                    {
                         "name": "product_id",
                         "in": "query",
                         "description": "Product ID that image belong to it",
@@ -2963,6 +3007,11 @@
                                         "image": {
                                             "description": "The path to the product image",
                                             "type": "string"
+                                        },
+                                        "main": {
+                                            "description": "Whether the image is the main image for the product",
+                                            "type": "boolean",
+                                            "example": false
                                         },
                                         "product_id": {
                                             "description": "The ID of the product the image belongs to",
@@ -3012,7 +3061,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Validation error",
                         "content": {
                             "application/json": {
@@ -3211,7 +3260,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Invalid column or direction",
                         "content": {
                             "application/json": {
@@ -3304,7 +3353,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Invalid column or direction",
                         "content": {
                             "application/json": {
@@ -3371,7 +3420,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Invalid parameters",
                         "content": {
                             "application/json": {
@@ -3398,7 +3447,7 @@
                 "tags": [
                     "Offers"
                 ],
-                "summary": "Create a offer",
+                "summary": "Create an offer",
                 "operationId": "a6d9a7f4b923441a1072570cb7a787b2",
                 "requestBody": {
                     "required": true,
@@ -3409,14 +3458,14 @@
                                     "discount_percentage",
                                     "start_date",
                                     "end_date",
-                                    "product_id"
+                                    "warehouse_id"
                                 ],
                                 "properties": {
                                     "discount_percentage": {
-                                        "description": "Discount_percentage of the offer",
+                                        "description": "Discount percentage of the offer",
                                         "type": "number",
                                         "format": "float",
-                                        "example": "15.50"
+                                        "example": 15.5
                                     },
                                     "start_date": {
                                         "description": "Offer Start Date",
@@ -3430,8 +3479,8 @@
                                         "format": "date",
                                         "example": "2024-12-31"
                                     },
-                                    "product_id": {
-                                        "description": "Product ID you want to add offer to it",
+                                    "warehouse_id": {
+                                        "description": "Warehouse ID you want to add the offer to",
                                         "type": "integer",
                                         "example": 1
                                     }
@@ -3447,13 +3496,76 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/OfferResource"
+                                    "properties": {
+                                        "id": {
+                                            "description": "The ID of the offer",
+                                            "type": "integer",
+                                            "example": 24
+                                        },
+                                        "discount_percentage": {
+                                            "description": "Discount percentage of the offer",
+                                            "type": "string",
+                                            "example": "10.00 %"
+                                        },
+                                        "start_date": {
+                                            "description": "Offer Start Date",
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2024-10-01"
+                                        },
+                                        "end_date": {
+                                            "description": "Offer End Date",
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2024-10-03"
+                                        },
+                                        "warehouse": {
+                                            "description": "Warehouse details related to the offer",
+                                            "properties": {
+                                                "amount": {
+                                                    "description": "Amount available in the warehouse",
+                                                    "type": "integer",
+                                                    "example": 200
+                                                },
+                                                "expiry_date": {
+                                                    "description": "Expiry date of the warehouse stock",
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2024-10-22"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "product": {
+                                            "description": "Product details related to the offer",
+                                            "properties": {
+                                                "id": {
+                                                    "description": "The ID of the product",
+                                                    "type": "integer",
+                                                    "example": 12
+                                                },
+                                                "name": {
+                                                    "description": "The name of the product",
+                                                    "type": "string",
+                                                    "example": "apple"
+                                                },
+                                                "price": {
+                                                    "description": "The price of the product",
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 20
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
                     },
                     "403": {
-                        "description": "forbidden error",
+                        "description": "Forbidden error",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3468,7 +3580,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Validation error",
                         "content": {
                             "application/json": {
@@ -3535,7 +3647,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Invalid parameters",
                         "content": {
                             "application/json": {
@@ -3663,9 +3775,9 @@
                         }
                     },
                     {
-                        "name": "product_id",
+                        "name": "warehouse_id",
                         "in": "query",
-                        "description": "Product ID of the offer",
+                        "description": "Warehouse ID of the offer",
                         "required": false,
                         "schema": {
                             "type": "integer",
@@ -3681,46 +3793,62 @@
                                 "schema": {
                                     "properties": {
                                         "id": {
+                                            "description": "The ID of the offer",
                                             "type": "integer",
-                                            "example": 1
+                                            "example": 24
                                         },
                                         "discount_percentage": {
-                                            "type": "number",
-                                            "format": "float",
-                                            "example": 80
+                                            "description": "Discount percentage of the offer",
+                                            "type": "string",
+                                            "example": "50.00 %"
                                         },
                                         "start_date": {
+                                            "description": "Offer Start Date",
                                             "type": "string",
                                             "format": "date",
-                                            "example": "2024-09-01"
+                                            "example": "2024-10-10"
                                         },
                                         "end_date": {
+                                            "description": "Offer End Date",
                                             "type": "string",
                                             "format": "date",
-                                            "example": "2024-12-31"
+                                            "example": "2024-10-13"
+                                        },
+                                        "warehouse": {
+                                            "description": "Warehouse details related to the offer",
+                                            "properties": {
+                                                "amount": {
+                                                    "description": "Amount available in the warehouse",
+                                                    "type": "integer",
+                                                    "example": 200
+                                                },
+                                                "expiry_date": {
+                                                    "description": "Expiry date of the warehouse stock",
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2024-10-22"
+                                                }
+                                            },
+                                            "type": "object"
                                         },
                                         "product": {
+                                            "description": "Product details related to the offer",
                                             "properties": {
+                                                "id": {
+                                                    "description": "The ID of the product",
+                                                    "type": "integer",
+                                                    "example": 12
+                                                },
                                                 "name": {
+                                                    "description": "The name of the product",
                                                     "type": "string",
-                                                    "example": "Iphone 15"
+                                                    "example": "apple"
                                                 },
                                                 "price": {
+                                                    "description": "The price of the product",
                                                     "type": "number",
                                                     "format": "float",
-                                                    "example": 499.99
-                                                },
-                                                "description": {
-                                                    "type": "string",
-                                                    "example": "A high-end smartphone with excellent features and a sleek design"
-                                                },
-                                                "category": {
-                                                    "type": "string",
-                                                    "example": "Smartphone"
-                                                },
-                                                "user": {
-                                                    "type": "string",
-                                                    "example": "Hasan Zaeter"
+                                                    "example": 20
                                                 }
                                             },
                                             "type": "object"
@@ -3731,7 +3859,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Validation error",
                         "content": {
                             "application/json": {
@@ -3933,7 +4061,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Invalid column or direction",
                         "content": {
                             "application/json": {
@@ -4029,7 +4157,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Invalid column or direction",
                         "content": {
                             "application/json": {
@@ -4096,7 +4224,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Invalid parameters",
                         "content": {
                             "application/json": {
@@ -4240,7 +4368,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Validation error",
                         "content": {
                             "application/json": {
@@ -4307,7 +4435,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Invalid parameters",
                         "content": {
                             "application/json": {
@@ -4403,8 +4531,9 @@
                     },
                     {
                         "name": "name",
-                        "in": "path",
+                        "in": "query",
                         "description": "Product name",
+                        "required": false,
                         "schema": {
                             "type": "string",
                             "example": "Perform"
@@ -4412,8 +4541,9 @@
                     },
                     {
                         "name": "price",
-                        "in": "path",
+                        "in": "query",
                         "description": "Product price",
+                        "required": false,
                         "schema": {
                             "type": "number",
                             "format": "float",
@@ -4422,8 +4552,9 @@
                     },
                     {
                         "name": "decription",
-                        "in": "path",
+                        "in": "query",
                         "description": "Product Drecription",
+                        "required": false,
                         "schema": {
                             "type": "string",
                             "example": "This is a new Perform and it's cool. Try it"
@@ -4431,8 +4562,9 @@
                     },
                     {
                         "name": "category_id",
-                        "in": "path",
+                        "in": "query",
                         "description": "Category ID the product belongs to",
+                        "required": false,
                         "schema": {
                             "type": "integer",
                             "example": 1
@@ -4499,7 +4631,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Validation error",
                         "content": {
                             "application/json": {
@@ -4700,7 +4832,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Invalid column or direction",
                         "content": {
                             "application/json": {
@@ -4795,7 +4927,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Invalid column or direction",
                         "content": {
                             "application/json": {
@@ -4862,7 +4994,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Invalid parameters",
                         "content": {
                             "application/json": {
@@ -4903,8 +5035,7 @@
                                 "properties": {
                                     "rating": {
                                         "description": "The rating of the product, a number between 0 and 5",
-                                        "type": "number",
-                                        "format": "float",
+                                        "type": "integer",
                                         "example": "4.5"
                                     },
                                     "product_id": {
@@ -4930,8 +5061,7 @@
                                             "example": 1
                                         },
                                         "rating": {
-                                            "type": "number",
-                                            "format": "float",
+                                            "type": "integer",
                                             "example": "4"
                                         },
                                         "product_id": {
@@ -4944,7 +5074,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Validation error",
                         "content": {
                             "application/json": {
@@ -5011,7 +5141,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Invalid parameters",
                         "content": {
                             "application/json": {
@@ -5111,8 +5241,7 @@
                         "description": "your rating in this product",
                         "required": false,
                         "schema": {
-                            "type": "number",
-                            "format": "float",
+                            "type": "integer",
                             "example": "3"
                         }
                     },
@@ -5139,8 +5268,7 @@
                                             "example": 1
                                         },
                                         "rating": {
-                                            "type": "number",
-                                            "format": "float",
+                                            "type": "integer",
                                             "example": "2"
                                         },
                                         "product_id": {
@@ -5153,7 +5281,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Validation error",
                         "content": {
                             "application/json": {
@@ -5337,7 +5465,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Invalid column or direction",
                         "content": {
                             "application/json": {
@@ -5431,7 +5559,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Invalid column or direction",
                         "content": {
                             "application/json": {
@@ -6383,7 +6511,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Invalid parameters",
                         "content": {
                             "application/json": {
@@ -6472,7 +6600,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Validation error",
                         "content": {
                             "application/json": {
@@ -6522,22 +6650,6 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/WarehouseResource"
-                                }
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "forbidden error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "error": {
-                                            "type": "string",
-                                            "example": "You are not authorized to view this warehouse."
-                                        }
-                                    },
-                                    "type": "object"
                                 }
                             }
                         }
@@ -6651,7 +6763,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Validation error",
                         "content": {
                             "application/json": {
@@ -6781,6 +6893,60 @@
                 ]
             }
         },
+        "/api/warehouses/get_warehouse_for_this_product/{product}": {
+            "get": {
+                "tags": [
+                    "Warehouse"
+                ],
+                "summary": "Get all warehouses by Product ID",
+                "operationId": "aac02f14c46a91151786fb8aef7fb7dc",
+                "parameters": [
+                    {
+                        "name": "product",
+                        "in": "path",
+                        "description": "Product ID you want to show all warehouses of it",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WarehouseResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Product not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/warehouses/order/{column}/{direction}": {
             "get": {
                 "tags": [
@@ -6854,7 +7020,7 @@
                             }
                         }
                     },
-                    "422": {
+                    "400": {
                         "description": "Invalid column or direction",
                         "content": {
                             "application/json": {

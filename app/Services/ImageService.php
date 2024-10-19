@@ -213,10 +213,11 @@ class ImageService
      *
      *             @OA\Schema(
      *                 type="object",
-     *                 required={"image", "product_id"},
+     *                 required={"image", "product_id", "main"},
      *
      *                 @OA\Property(property="product_id", type="integer", example=1, description="Product ID that the image belongs to"),
      *                 @OA\Property(property="image", type="string", format="binary", description="Product Image"),
+     *                 @OA\Property(property="main", type="boolean", example=false, description="Whether the image is the main image for the product")
      *             )
      *         )
      *     ),
@@ -245,6 +246,7 @@ class ImageService
      *             @OA\Property(property="id", type="integer", example=22, description="The ID of the image"),
      *             @OA\Property(property="image", type="string", description="The path to the product image"),
      *             @OA\Property(property="product_id", type="integer", example=1, description="The ID of the product the image belongs to"),
+     *             @OA\Property(property="main", type="boolean", example=false, description="Whether the image is the main image for the product"),
      *             @OA\Property(property="product", type="object", description="Product details associated with the image",
      *                 @OA\Property(property="id", type="integer", example=1, description="The ID of the product"),
      *                 @OA\Property(property="name", type="string", example="banana", description="The name of the product"),
@@ -270,8 +272,22 @@ class ImageService
     public function createImage(array $data)
     {
         try {
+            if (isset($data['main'])) {
+                $data['main'] = filter_var($data['main'], FILTER_VALIDATE_BOOLEAN);
+            }
             $this->validateImageData($data);
-            $this->checkOwnership(Product::find($data['product_id']), 'Image', 'create');
+
+            $product = Product::find($data['product_id']);
+            $this->checkOwnership($product, 'Image', 'create');
+
+            $hasMainImage = Image::where('product_id', $data['product_id'])
+                ->where('main', 1)
+                ->exists();
+
+            if ($hasMainImage && isset($data['main']) && $data['main'] == 1) {
+                return ResponseHelper::jsonResponse([], 'This product already has a main image.', 400);
+            }
+
             $image = $this->imageRepository->create($data);
             $data = [
                 'Image' => ImageResource::make($image),
@@ -481,6 +497,15 @@ class ImageService
      *     ),
      *
      *     @OA\Parameter(
+     *         name="main",
+     *         in="query",
+     *         required=false,
+     *     description="Whether the image is the main image for the product",
+     *
+     *         @OA\Schema(type="boolean", example=false)
+     *     ),
+     *
+     *     @OA\Parameter(
      *         name="product_id",
      *         in="query",
      *         required=false,
@@ -512,6 +537,7 @@ class ImageService
      *
      *             @OA\Property(property="id", type="integer", example=22, description="The ID of the image"),
      *             @OA\Property(property="image", type="string", description="The path to the product image"),
+     *             @OA\Property(property="main", type="boolean", example=false, description="Whether the image is the main image for the product"),
      *             @OA\Property(property="product_id", type="integer", example=2, description="The ID of the product the image belongs to"),
      *             @OA\Property(property="product", type="object", description="Product details associated with the image",
      *                 @OA\Property(property="id", type="integer", example=2, description="The ID of the product"),
@@ -558,6 +584,9 @@ class ImageService
     public function updateImage(Image $image, array $data)
     {
         try {
+            if (isset($data['main'])) {
+                $data['main'] = filter_var($data['main'], FILTER_VALIDATE_BOOLEAN);
+            }
             $this->validateImageData($data, 'sometimes');
             $this->checkOwnership($image->product, 'Image', 'update');
             if (isset($data['product_id'])) {
@@ -640,6 +669,7 @@ class ImageService
     {
         $validator = Validator::make($data, [
             'image' => "$rule|image|max:5120",
+            'main' => "$rule|nullable|boolean",
             'product_id' => "$rule|exists:products,id",
         ]);
 
