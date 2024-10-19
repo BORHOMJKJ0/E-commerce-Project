@@ -34,11 +34,10 @@ class WarehouseController extends Controller
         return $this->warehouseService->getWarehouseById($warehouse);
     }
 
-    public function getWarehousesForSpecificProduct(Product $product, Request $request)
+    public function getWarehousesHaveOffers(Product $product, Request $request)
     {
-        return $this->warehouseService->getWarehousesByProductID($product, $request);
+        return $this->warehouseService->getWarehousesHaveOffers($product, $request);
     }
-
     public function orderBy($column, $direction, Request $request): JsonResponse
     {
         return $warehouses = $this->warehouseService->getWarehousesOrderedBy($column, $direction, $request);

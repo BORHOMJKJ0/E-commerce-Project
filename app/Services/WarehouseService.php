@@ -10,13 +10,14 @@ use App\Repositories\WarehouseRepository;
 use App\Traits\AuthTrait;
 use App\Traits\ValidationTrait;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class WarehouseService
 {
-    use AuthTrait,ValidationTrait;
+    use AuthTrait, ValidationTrait;
 
     protected $warehouseRepository;
 
@@ -122,53 +123,19 @@ class WarehouseService
      *     )
      * )
      */
-    public function getWarehouseById(Warehouse $warehouse)
+    public function getWarehouseById(Warehouse $warehouse): JsonResponse
     {
         $data = ['warehouse' => WarehouseResource::make($warehouse)];
 
         return ResponseHelper::jsonResponse($data, 'Warehouse retrieved successfully!');
     }
 
-    /**
-     * @OA\Get(
-     *     path="/api/warehouses/get_warehouse_for_this_product/{product}",
-     *     summary="Get all warehouses by Product ID",
-     *     tags={"Warehouse"},
-     *     security={{"bearerAuth": {} }},
-     *
-     *     @OA\Parameter(
-     *         name="product",
-     *         in="path",
-     *         required=true,
-     *     description="Product ID you want to show all warehouses of it",
-     *
-     *        @OA\Schema(type="integer", example=1)
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successful response",
-     *
-     *         @OA\JsonContent(ref="#/components/schemas/WarehouseResource")
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=404,
-     *         description="Product not found",
-     *
-     *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="error", type="string", example="Product not found")
-     *         )
-     *     )
-     * )
-     */
-    public function getWarehousesByProductID(Product $product, Request $request)
+    public function getWarehousesHaveOffers(Product $product, Request $request): JsonResponse
     {
         $page = $request->query('page', 1);
         $items = $request->query('items', 20);
 
-        $warehouses = $this->warehouseRepository->getProductWarehouses($product, $items, $page);
+        $warehouses = $this->warehouseRepository->getProductWithOffers($items, $page);
         $hasMorePages = $warehouses->hasMorePages();
 
         $data = [

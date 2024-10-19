@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use OpenApi\Annotations as OA;
@@ -47,38 +46,34 @@ class WarehouseResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        $productPrice = $this->Product ? (float) $this->Product->price : 0;
+        $offersWithPrice = $this->offers->sortByDesc('discount_percentage')
+            ->map(function ($offer) {
+                $originalPrice = $this->product->price;
+                $discountPercentage = $offer->discount_percentage;
+                $discountAmount = $originalPrice * $discountPercentage / 100;
+                $currentPrice = $originalPrice - $discountAmount;
 
-        $filteredOffers = $this->offers->filter(function ($offer) {
-            return Carbon::parse($offer->end_date)->isFuture() || Carbon::parse($offer->end_date)->isToday();
-        })->sortByDesc('discount_percentage');
-
-        $highestDiscountOffer = $filteredOffers->first();
-        $discountPercentage = $highestDiscountOffer ? $highestDiscountOffer->discount_percentage : 0;
-
-        $discountedAmount = $productPrice * ($discountPercentage / 100);
-        $currentPrice = $productPrice - $discountedAmount;
+                return [
+                    'id' => $offer->id,
+                    'discount_percentage' => $offer->discount_percentage,
+                    'start_date' => $offer->start_date->format('Y-m-d'),
+                    'end_date' => $offer->end_date->format('Y-m-d'),
+                    'current_price' => round($currentPrice, 2),
+                ];
+            })->values()
+            ->toArray();
 
         return [
             'id' => $this->id,
-            'amount' => (int) $this->amount,
-            'expiry_date' => $this->expiry_date ? $this->expiry_date->format('Y-n-j') : null,
-            'product' => $this->Product ? [
-                'name' => $this->Product->name,
-                'price' => $productPrice,
-                'category' => $this->Product->Category ? $this->Product->Category->name : null,
-                'user' => $this->Product->User->first_name.' '.$this->Product->User->last_name,
-                'current_price' => number_format($currentPrice, 2, '.', ''),
-            ] : null,
-
-            'offers' => $filteredOffers->map(function ($offer) {
-                return [
-                    'id' => $offer->id,
-                    'discount_percentage' => number_format($offer->discount_percentage, 2, '.', '').' %',
-                    'start_date' => $offer->start_date ? $offer->start_date->format('Y-n-j') : null,
-                    'end_date' => $offer->end_date ? $offer->end_date->format('Y-n-j') : null,
-                ];
-            }),
+            'amount' => $this->amount,
+            'expiry_date' => $this->expiry_date->format('Y-m-d'),
+            'product' => [
+                'name' => $this->product->name,
+                'price' => $this->product->price,
+                'category' => $this->product->category->name,
+                'user' => $this->product->user->first_name . ' ' . $this->product->user->last_name,
+            ],
+            'offers' => $offersWithPrice,
         ];
     }
 }

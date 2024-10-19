@@ -39,12 +39,12 @@ class ProductRepository
         $query = Product::query();
 
         if ($request->has('name')) {
-            $query->where('name', 'like', '%'.$request->name.'%');
+            $query->where('name', 'like', '%' . $request->name . '%');
         }
 
         if ($request->has('category')) {
-            $categoryIds = Category::where('name', 'like', '%'.$request->category.'%')->pluck('id')->toArray();
-            if (! empty($categoryIds)) {
+            $categoryIds = Category::where('name', 'like', '%' . $request->category . '%')->pluck('id')->toArray();
+            if (!empty($categoryIds)) {
                 $query->whereIn('category_id', $categoryIds);
             }
         }
@@ -68,7 +68,7 @@ class ProductRepository
         // }
         $products = $query->paginate($items, ['*'], 'page', $page);
 
-        if (! empty($products)) {
+        if (!empty($products)) {
             return $products;
         } else {
             return null;

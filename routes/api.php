@@ -12,6 +12,7 @@ use App\Http\Controllers\Contact\ContactTypeController;
 use App\Http\Controllers\Expression\ExpressionController;
 use App\Http\Controllers\Image\ImageController;
 use App\Http\Controllers\Offer\OfferController;
+use App\Http\Controllers\Product\FavoriteProductController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Review\ReviewController;
 use App\Http\Controllers\Warehouse\WarehouseController;
@@ -37,6 +38,17 @@ Route::middleware('api')->group(function () {
     Route::apiResource('reviews', ReviewController::class);
     Route::apiResource('comments', CommentController::class);
     Route::apiResource('images', ImageController::class);
+
+    Route::prefix('products/favorites')->controller(FavoriteProductController::class)->group(function () {
+        Route::get('index', 'index');
+        Route::post('store/{product}', 'store')->missing(function () {
+            return ResponseHelper::jsonResponse([], 'Product Not Found', 404, false);
+        });
+        Route::delete('destroy/{product}', 'destroy')->missing(function () {
+            return ResponseHelper::jsonResponse([], 'Product Not Found', 404, false);
+        });
+    });
+
     Route::prefix('products')->controller(ProductController::class)->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');
         Route::get('/my/order/{column}/{direction}', 'MyProductsOrderBy');
@@ -50,7 +62,7 @@ Route::middleware('api')->group(function () {
     });
     Route::prefix('warehouses')->controller(WarehouseController::class)->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');
-        Route::get('/get_warehouse_for_this_product/{product}', 'getWarehousesForSpecificProduct');
+        Route::get('/get_warehouse_have_offers/{product}', 'getWarehousesHaveOffers');
     });
     Route::prefix('offers')->controller(OfferController::class)->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');
