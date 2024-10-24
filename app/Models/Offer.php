@@ -42,4 +42,9 @@ class Offer extends Model
     {
         return static::where('end_date', '<', Carbon::now());
     }
+    public function product()
+    {
+        return $this->hasOneThrough(Product::class, Warehouse::class);
+    }
+
 }

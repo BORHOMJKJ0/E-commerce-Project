@@ -10,34 +10,28 @@ use OpenApi\Annotations as OA;
  * @OA\Schema(
  *     schema="WarehouseResource",
  *     type="object",
- *     title="Warehouse Resource",
- *     description="Warehouse details",
- *
- *     @OA\Property(property="id", type="integer", example=1, description="The ID of the warehouse"),
- *     @OA\Property(property="amount", type="integer", example=250, description="The amount of the product in the warehouse"),
- *     @OA\Property(property="expiry_date", type="string", format="date", example="2025-12-31", description="The expiry date of the warehouse"),
+ *     description="Warehouse resource containing product details and offers",
+ *     @OA\Property(property="id", type="integer", description="Warehouse ID", example=1),
+ *     @OA\Property(property="amount", type="integer", description="Amount of the product in the warehouse", example=86),
+ *     @OA\Property(property="expiry_date", type="string", description="Expiry date of the product", format="date", example="2025-01-14"),
  *     @OA\Property(
  *         property="product",
  *         type="object",
- *         description="Product details related to the warehouse",
- *         @OA\Property(property="name", type="string", example="Iphone 15", description="The name of the product"),
- *         @OA\Property(property="price", type="number", format="float", example=499.99, description="The price of the product"),
- *         @OA\Property(property="category", type="string", example="Smartphone", description="The category of the product"),
- *         @OA\Property(property="user", type="string", example="Hasan Zaeter", description="The owner of the product"),
- *         @OA\Property(property="current_price", type="string", example="449.99", description="The current price of the product after discounts"),
+ *         @OA\Property(property="name", type="string", example="incidunt in"),
+ *         @OA\Property(property="price", type="number", format="float", example=3819.9989),
+ *         @OA\Property(property="category", type="string", example="eos nulla"),
+ *         @OA\Property(property="user", type="string", example="Broderick Bayer")
  *     ),
  *     @OA\Property(
  *         property="offers",
  *         type="array",
- *         description="List of current offers for the product in the warehouse",
- *
+ *         description="List of offers for the product",
  *         @OA\Items(
- *             type="object",
- *
- *             @OA\Property(property="id", type="integer", example=1, description="The ID of the offer"),
- *             @OA\Property(property="discount_percentage", type="string", example="10.00 %", description="The discount percentage of the offer"),
- *             @OA\Property(property="start_date", type="string", format="date", example="2024-09-01", description="The start date of the offer"),
- *             @OA\Property(property="end_date", type="string", format="date", example="2024-12-31", description="The end date of the offer")
+ *             @OA\Property(property="id", type="integer", example=3),
+ *             @OA\Property(property="discount_percentage", type="number", format="float", example=28.41),
+ *             @OA\Property(property="start_date", type="string", format="date", example="2024-10-19"),
+ *             @OA\Property(property="end_date", type="string", format="date", example="2024-10-20"),
+ *             @OA\Property(property="current_price", type="number", format="float", example=2734.74)
  *         )
  *     )
  * )
@@ -55,7 +49,7 @@ class WarehouseResource extends JsonResource
 
                 return [
                     'id' => $offer->id,
-                    'discount_percentage' => $offer->discount_percentage,
+                    'discount_percentage' => (float) $offer->discount_percentage,
                     'start_date' => $offer->start_date->format('Y-m-d'),
                     'end_date' => $offer->end_date->format('Y-m-d'),
                     'current_price' => round($currentPrice, 2),
@@ -71,7 +65,7 @@ class WarehouseResource extends JsonResource
                 'name' => $this->product->name,
                 'price' => $this->product->price,
                 'category' => $this->product->category->name,
-                'user' => $this->product->user->first_name . ' ' . $this->product->user->last_name,
+                'user' => $this->product->user->first_name.' '.$this->product->user->last_name,
             ],
             'offers' => $offersWithPrice,
         ];

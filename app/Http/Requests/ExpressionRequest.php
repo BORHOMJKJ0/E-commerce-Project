@@ -49,4 +49,11 @@ class ExpressionRequest extends BaseRequest
             'action' => 'sometimes|in:like,dislike',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'action' => 'action input is invalid',
+        ];
+    }
 }

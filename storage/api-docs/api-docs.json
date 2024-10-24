@@ -2142,23 +2142,24 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/CategoryResource"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid parameters",
-                        "content": {
-                            "application/json": {
-                                "schema": {
                                     "properties": {
-                                        "error": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
                                             "type": "string",
-                                            "example": "Invalid parameters"
+                                            "example": "Expressions retrieved successfully"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/CategoryResource"
+                                            }
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
                                         }
                                     },
                                     "type": "object"
@@ -2197,8 +2198,12 @@
                                         "example": 1
                                     },
                                     "action": {
-                                        "description": "the Action Like or dislike",
-                                        "type": "enum",
+                                        "description": "The Action, either 'like' or 'dislike'",
+                                        "type": "string",
+                                        "enum": [
+                                            "like",
+                                            "dislike"
+                                        ],
                                         "example": "like"
                                     }
                                 },
@@ -2218,35 +2223,39 @@
                                             "type": "boolean",
                                             "example": true
                                         },
-                                        "expression": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Expression created successfully"
+                                        },
+                                        "data": {
                                             "properties": {
-                                                "expression_id": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "product_id": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "user_id": {
-                                                    "type": "integer",
-                                                    "example": 2
-                                                },
-                                                "action": {
-                                                    "description": "The expression action, either 'like' or 'dislike'.",
-                                                    "type": "string",
-                                                    "enum": [
-                                                        "like",
-                                                        "dislike"
-                                                    ],
-                                                    "example": "like"
-                                                },
-                                                "status_code": {
-                                                    "type": "integer",
-                                                    "example": 201
+                                                "expression": {
+                                                    "properties": {
+                                                        "expression_id": {
+                                                            "type": "integer",
+                                                            "example": 11
+                                                        },
+                                                        "product_id": {
+                                                            "type": "integer",
+                                                            "example": 2
+                                                        },
+                                                        "user_id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "action": {
+                                                            "type": "string",
+                                                            "example": "like"
+                                                        }
+                                                    },
+                                                    "type": "object"
                                                 }
                                             },
                                             "type": "object"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 201
                                         }
                                     },
                                     "type": "object"
@@ -2266,7 +2275,11 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "action input is invalid"
+                                            "example": "Validation Failed"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "example": []
                                         },
                                         "status_code": {
                                             "type": "integer",
@@ -2290,7 +2303,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "Prodcut Not Found"
+                                            "example": "Product Not Found"
                                         },
                                         "status_code": {
                                             "type": "integer",
@@ -6499,27 +6512,37 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successful response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/WarehouseResource"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid parameters",
+                        "description": "Warehouses retrieved successfully!",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
                                             "type": "string",
-                                            "example": "Invalid parameters"
+                                            "example": "Warehouses retrieved successfully!"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "Warehouses": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/WarehouseResource"
+                                                    }
+                                                },
+                                                "hasMorePages": {
+                                                    "type": "boolean",
+                                                    "example": false
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
                                         }
                                     },
                                     "type": "object"
@@ -6557,13 +6580,13 @@
                                         "example": 100
                                     },
                                     "expiry_date": {
-                                        "description": "Warehouse exoiry date",
+                                        "description": "Warehouse expiry date",
                                         "type": "string",
                                         "format": "date",
                                         "example": "2024-12-01"
                                     },
                                     "product_id": {
-                                        "description": "Product ID that you want to add this warehouse to it",
+                                        "description": "Product ID that you want to add this warehouse to",
                                         "type": "integer",
                                         "example": 1
                                     }
@@ -6575,24 +6598,61 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Warehouse created successfully",
+                        "description": "Warehouse created successfully!",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/WarehouseResource"
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Warehouse created successfully!"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "Warehouses": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/WarehouseResource"
+                                                    }
+                                                },
+                                                "hasMorePages": {
+                                                    "type": "boolean",
+                                                    "example": false
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 201
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
                     },
                     "403": {
-                        "description": "forbidden error",
+                        "description": "Forbidden error",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
                                             "type": "string",
-                                            "example": "You are not authorized to create this warehouse ."
+                                            "example": "You are not authorized to create this warehouse."
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 403
                                         }
                                     },
                                     "type": "object"
@@ -6606,9 +6666,21 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
                                             "type": "string",
-                                            "example": "Invalid input data"
+                                            "example": "Validation Failed"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 400
                                         }
                                     },
                                     "type": "object"
@@ -6645,11 +6717,40 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successful response",
+                        "description": "Warehouses retrieved successfully!",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/WarehouseResource"
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Warehouses retrieved successfully!"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "Warehouses": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/WarehouseResource"
+                                                    }
+                                                },
+                                                "hasMorePages": {
+                                                    "type": "boolean",
+                                                    "example": false
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -6660,9 +6761,17 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
                                             "type": "string",
                                             "example": "Product not found"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 404
                                         }
                                     },
                                     "type": "object"
@@ -6687,7 +6796,7 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "your Warehouse ID that you want to update it",
+                        "description": "Your Warehouse ID that you want to update",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -6697,7 +6806,7 @@
                     {
                         "name": "amount",
                         "in": "query",
-                        "description": "THe amount of this warehouse",
+                        "description": "The amount of this warehouse",
                         "required": false,
                         "schema": {
                             "type": "integer",
@@ -6717,45 +6826,37 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Warehouse updated successfully",
+                        "description": "Warehouses updated successfully!",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
                                         },
-                                        "amount": {
-                                            "type": "integer",
-                                            "example": 0
-                                        },
-                                        "expiry_date": {
+                                        "message": {
                                             "type": "string",
-                                            "format": "date",
-                                            "example": "2025-12-31"
+                                            "example": "Warehouses updated successfully!"
                                         },
-                                        "product": {
+                                        "data": {
                                             "properties": {
-                                                "name": {
-                                                    "type": "string",
-                                                    "example": "Iphone 15"
+                                                "Warehouses": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/WarehouseResource"
+                                                    }
                                                 },
-                                                "price": {
-                                                    "type": "number",
-                                                    "format": "float",
-                                                    "example": "499.99"
-                                                },
-                                                "category": {
-                                                    "type": "string",
-                                                    "example": "Smartphone"
-                                                },
-                                                "user": {
-                                                    "type": "string",
-                                                    "example": "Hasan Zaeter"
+                                                "hasMorePages": {
+                                                    "type": "boolean",
+                                                    "example": false
                                                 }
                                             },
                                             "type": "object"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
                                         }
                                     },
                                     "type": "object"
@@ -6769,9 +6870,21 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
                                             "type": "string",
-                                            "example": "Invalid input data"
+                                            "example": "Validation Failed"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "example": []
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 400
                                         }
                                     },
                                     "type": "object"
@@ -6780,14 +6893,22 @@
                         }
                     },
                     "403": {
-                        "description": "forbidden error",
+                        "description": "Forbidden error",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
                                             "type": "string",
-                                            "example": "You are not authorized to delete this warehouse ."
+                                            "example": "You are not authorized to update this warehouse."
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 403
                                         }
                                     },
                                     "type": "object"
@@ -6801,9 +6922,17 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
                                             "type": "string",
                                             "example": "Warehouse not found"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 404
                                         }
                                     },
                                     "type": "object"
@@ -6828,7 +6957,7 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "your Warehouse ID you want to delete it",
+                        "description": "Your Warehouse ID you want to delete",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -6843,9 +6972,17 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
                                         "message": {
                                             "type": "string",
                                             "example": "Warehouse deleted successfully"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
                                         }
                                     },
                                     "type": "object"
@@ -6854,14 +6991,22 @@
                         }
                     },
                     "403": {
-                        "description": "forbidden error",
+                        "description": "Forbidden error",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
                                         "error": {
                                             "type": "string",
-                                            "example": "You are not authorized to delete this warehouse ."
+                                            "example": "You are not authorized to delete this warehouse."
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 403
                                         }
                                     },
                                     "type": "object"
@@ -6875,9 +7020,17 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
                                         "error": {
                                             "type": "string",
                                             "example": "Warehouse not found"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 404
                                         }
                                     },
                                     "type": "object"
@@ -6893,58 +7046,80 @@
                 ]
             }
         },
-        "/api/warehouses/get_warehouse_for_this_product/{product}": {
+        "/warehouse/get_warehouse_have_offers": {
             "get": {
                 "tags": [
                     "Warehouse"
                 ],
-                "summary": "Get all warehouses by Product ID",
-                "operationId": "aac02f14c46a91151786fb8aef7fb7dc",
+                "summary": "Get warehouses with active offers",
+                "description": "Retrieve a paginated list of warehouses that have active offers along with their current product prices based on discount.",
+                "operationId": "1e38f9b2897dd576163c4512e339bdc3",
                 "parameters": [
                     {
-                        "name": "product",
-                        "in": "path",
-                        "description": "Product ID you want to show all warehouses of it",
-                        "required": true,
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number for pagination",
+                        "required": false,
                         "schema": {
                             "type": "integer",
-                            "example": 1
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "items",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successful response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/WarehouseResource"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Product not found",
+                        "description": "Warehouses retrieved successfully!",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
                                             "type": "string",
-                                            "example": "Product not found"
+                                            "example": "Warehouses retrieved successfully!"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "Warehouses": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/WarehouseResource"
+                                                    }
+                                                },
+                                                "hasMorePages": {
+                                                    "type": "boolean",
+                                                    "example": false
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
                                         }
                                     },
                                     "type": "object"
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request"
                     }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
+                }
             }
         },
         "/api/warehouses/order/{column}/{direction}": {
@@ -6958,7 +7133,7 @@
                     {
                         "name": "column",
                         "in": "path",
-                        "description": "Column you want to order the warehouses by it",
+                        "description": "Column you want to order the warehouses by",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -6975,7 +7150,7 @@
                     {
                         "name": "direction",
                         "in": "path",
-                        "description": "Dircetion of ordering",
+                        "description": "Direction of ordering",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -6998,7 +7173,7 @@
                     {
                         "name": "items",
                         "in": "query",
-                        "description": "Number of items per page ",
+                        "description": "Number of items per page",
                         "required": false,
                         "schema": {
                             "type": "integer",
@@ -7008,14 +7183,40 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successful response",
+                        "description": "Warehouses retrieved successfully!",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/WarehouseResource"
-                                    }
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Warehouses retrieved successfully!"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "Warehouses": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/WarehouseResource"
+                                                    }
+                                                },
+                                                "hasMorePages": {
+                                                    "type": "boolean",
+                                                    "example": false
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -7026,9 +7227,17 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
                                         "error": {
                                             "type": "string",
                                             "example": "Invalid column or direction or parameters"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 400
                                         }
                                     },
                                     "type": "object"
@@ -7562,83 +7771,74 @@
                 "type": "object"
             },
             "WarehouseResource": {
-                "title": "Warehouse Resource",
-                "description": "Warehouse details",
+                "description": "Warehouse resource containing product details and offers",
                 "properties": {
                     "id": {
-                        "description": "The ID of the warehouse",
+                        "description": "Warehouse ID",
                         "type": "integer",
                         "example": 1
                     },
                     "amount": {
-                        "description": "The amount of the product in the warehouse",
+                        "description": "Amount of the product in the warehouse",
                         "type": "integer",
-                        "example": 250
+                        "example": 86
                     },
                     "expiry_date": {
-                        "description": "The expiry date of the warehouse",
+                        "description": "Expiry date of the product",
                         "type": "string",
                         "format": "date",
-                        "example": "2025-12-31"
+                        "example": "2025-01-14"
                     },
                     "product": {
-                        "description": "Product details related to the warehouse",
                         "properties": {
                             "name": {
-                                "description": "The name of the product",
                                 "type": "string",
-                                "example": "Iphone 15"
+                                "example": "incidunt in"
                             },
                             "price": {
-                                "description": "The price of the product",
                                 "type": "number",
                                 "format": "float",
-                                "example": 499.99
+                                "example": 3819.9989
                             },
                             "category": {
-                                "description": "The category of the product",
                                 "type": "string",
-                                "example": "Smartphone"
+                                "example": "eos nulla"
                             },
                             "user": {
-                                "description": "The owner of the product",
                                 "type": "string",
-                                "example": "Hasan Zaeter"
-                            },
-                            "current_price": {
-                                "description": "The current price of the product after discounts",
-                                "type": "string",
-                                "example": "449.99"
+                                "example": "Broderick Bayer"
                             }
                         },
                         "type": "object"
                     },
                     "offers": {
-                        "description": "List of current offers for the product in the warehouse",
+                        "description": "List of offers for the product",
                         "type": "array",
                         "items": {
                             "properties": {
                                 "id": {
-                                    "description": "The ID of the offer",
                                     "type": "integer",
-                                    "example": 1
+                                    "example": 3
                                 },
                                 "discount_percentage": {
-                                    "description": "The discount percentage of the offer",
-                                    "type": "string",
-                                    "example": "10.00 %"
+                                    "type": "number",
+                                    "format": "float",
+                                    "example": 28.41
                                 },
                                 "start_date": {
-                                    "description": "The start date of the offer",
                                     "type": "string",
                                     "format": "date",
-                                    "example": "2024-09-01"
+                                    "example": "2024-10-19"
                                 },
                                 "end_date": {
-                                    "description": "The end date of the offer",
                                     "type": "string",
                                     "format": "date",
-                                    "example": "2024-12-31"
+                                    "example": "2024-10-20"
+                                },
+                                "current_price": {
+                                    "type": "number",
+                                    "format": "float",
+                                    "example": 2734.74
                                 }
                             },
                             "type": "object"

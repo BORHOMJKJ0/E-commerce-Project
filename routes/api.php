@@ -60,9 +60,9 @@ Route::middleware('api')->group(function () {
         Route::get('/my/order/{column}/{direction}', 'MyCategoriesOrderBy');
         Route::get('/my/random', 'MyCategories');
     });
+    Route::get('warehouse/get_warehouse_have_offers', [WarehouseController::class, 'getWarehousesHaveOffers']);
     Route::prefix('warehouses')->controller(WarehouseController::class)->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');
-        Route::get('/get_warehouse_have_offers/{product}', 'getWarehousesHaveOffers');
     });
     Route::prefix('offers')->controller(OfferController::class)->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');

@@ -20,16 +20,15 @@ class WarehouseRepository
         return Warehouse::orderBy($column, $direction)->paginate($items, ['*'], 'page', $page);
     }
 
-    public function getProductWithOffers($items, $page): LengthAwarePaginator
+    public function getWarehousesWithActiveOffers($items, $page): LengthAwarePaginator
     {
-        return Warehouse::with(['product.user', 'offers' => function ($query) {
+        return Warehouse::whereHas('offers', function ($query) {
             $query->whereDate('start_date', '<=', now())
                 ->whereDate('end_date', '>=', now());
-        }])->whereHas('offers', function ($query) {
+        })->with(['product', 'offers' => function ($query) {
             $query->whereDate('start_date', '<=', now())
                 ->whereDate('end_date', '>=', now());
-        })
-            ->paginate($items, ['*'], 'page', $page);
+        }])->paginate($items, ['*'], 'page', $page);
     }
 
     public function create(array $data)

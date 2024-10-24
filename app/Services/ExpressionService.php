@@ -38,30 +38,27 @@ class ExpressionService
      *     path="/api/users/expression/all",
      *     summary="Get all expressions",
      *     tags={"Expressions"},
-     *     security={{"bearerAuth": {} }},
+     *     security={{"bearerAuth": {}}},
      *
      *     @OA\Response(
      *         response=200,
      *         description="Successful response",
-     *
      *         @OA\JsonContent(
-     *             type="array",
-     *
-     *             @OA\Items(ref="#/components/schemas/CategoryResource")
+     *             type="object",
+     *             @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Expressions retrieved successfully"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(ref="#/components/schemas/CategoryResource")
+     *             ),
+     *             @OA\Property(property="status_code", type="integer", example=200)
      *         )
      *     ),
      *
-     *     @OA\Response(
-     *         response=400,
-     *         description="Invalid parameters",
-     *
-     *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="error", type="string", example="Invalid parameters")
-     *         )
-     *     )
      * )
      */
+
     public function index(): JsonResponse
     {
         $products = Product::all();
@@ -85,68 +82,64 @@ class ExpressionService
      *
      *     @OA\RequestBody(
      *         required=true,
-     *
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
-     *
      *             @OA\Schema(
      *                 type="object",
-     *             required={"product_id", "user_id"},
-     *
-     *             @OA\Property(property="product_id", type="integer", example=1,description="Product ID you want to add expression to it",),
-     *             @OA\Property(property="action", type="enum", example="like",description="the Action Like or dislike")
+     *                 required={"product_id", "user_id"},
+     *                 @OA\Property(property="product_id", type="integer", example=1, description="Product ID you want to add expression to it"),
+     *                 @OA\Property(property="action", type="string", enum={"like", "dislike"}, example="like", description="The Action, either 'like' or 'dislike'")
+     *             )
      *         )
-     *       )
      *     ),
      *
      *     @OA\Response(
      *         response=201,
      *         description="Expression created successfully",
-     *
      *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="successful",type="boolean",example=true),
-     *             @OA\Property(property="expression", type="object",
-     *                 @OA\Property(property="expression_id", type="integer", example=1),
-     *                 @OA\Property(property="product_id", type="integer", example=1),
-     *                 @OA\Property(property="user_id", type="integer", example=2),
-     *                @OA\Property(
-     *                  property="action",
-     *                  type="string",
-     *                  enum={"like", "dislike"},
-     *                  description="The expression action, either 'like' or 'dislike'.",
-     *                  example="like"
-     *              ),
-     *              @OA\Property(property="status_code", type="integer", example=201),
-     *             )
+     *             type="object",
+     *             @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Expression created successfully"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Property(
+     *                     property="expression",
+     *                     type="object",
+     *                     @OA\Property(property="expression_id", type="integer", example=11),
+     *                     @OA\Property(property="product_id", type="integer", example=2),
+     *                     @OA\Property(property="user_id", type="integer", example=1),
+     *                     @OA\Property(property="action", type="string", example="like")
+     *                 )
+     *             ),
+     *             @OA\Property(property="status_code", type="integer", example=201)
      *         )
      *     ),
      *
      *     @OA\Response(
      *         response=400,
      *         description="Bad Request",
-     *
      *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="successful",type="boolean",example=false),
-     *             @OA\Property(property="message", type="string", example="action input is invalid"),
-     *              @OA\Property(property="status_code", type="integer", example=400)
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Validation Failed"),
+     *             @OA\Property(property="data", type="object", example={}),
+     *             @OA\Property(property="status_code", type="integer", example=400)
      *         )
      *     ),
      *
      *     @OA\Response(
-     *          response=404,
-     *          description="Not Found",
-     *
-     *          @OA\JsonContent(
-     *
-     *              @OA\Property(property="successful",type="boolean",example=false),
-     *              @OA\Property(property="message", type="string", example="Prodcut Not Found"),
-     *               @OA\Property(property="status_code", type="integer", example=404),
-     *          )
-     *      )
+     *         response=404,
+     *         description="Not Found",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Product Not Found"),
+     *             @OA\Property(property="status_code", type="integer", example=404)
+     *         )
+     *     )
      * )
      */
+
     public function create(ExpressionRequest $request): JsonResponse
     {
         // return response()->json($request->all());

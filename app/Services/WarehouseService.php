@@ -51,26 +51,30 @@ class WarehouseService
      *         @OA\Schema(type="integer", example=20)
      *     ),
      *
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successful response",
+     *    @OA\Response(
+     *          response=200,
+     *          description="Warehouses retrieved successfully!",
      *
-     *         @OA\JsonContent(
-     *             type="array",
+     *          @OA\JsonContent(
+     *              type="object",
      *
-     *             @OA\Items(ref="#/components/schemas/WarehouseResource")
-     *         )
-     *     ),
+     *              @OA\Property(property="successful", type="boolean", example=true),
+     *              @OA\Property(property="message", type="string", example="Warehouses retrieved successfully!"),
+     *              @OA\Property(
+     *                  property="data",
+     *                  type="object",
+     *                  @OA\Property(
+     *                      property="Warehouses",
+     *                      type="array",
      *
-     *     @OA\Response(
-     *         response=400,
-     *         description="Invalid parameters",
+     *                      @OA\Items(ref="#/components/schemas/WarehouseResource")
+     *                  ),
      *
-     *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="error", type="string", example="Invalid parameters")
-     *         )
-     *     )
+     *                  @OA\Property(property="hasMorePages", type="boolean", example=false)
+     *              ),
+     *              @OA\Property(property="status_code", type="integer", example=200)
+     *          )
+     *      ),
      * )
      */
     public function getAllWarehouses(Request $request)
@@ -105,12 +109,30 @@ class WarehouseService
      *        @OA\Schema(type="integer", example=1)
      *     ),
      *
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successful response",
+     *    @OA\Response(
+     *          response=200,
+     *          description="Warehouses retrieved successfully!",
      *
-     *         @OA\JsonContent(ref="#/components/schemas/WarehouseResource")
-     *     ),
+     *          @OA\JsonContent(
+     *              type="object",
+     *
+     *              @OA\Property(property="successful", type="boolean", example=true),
+     *              @OA\Property(property="message", type="string", example="Warehouses retrieved successfully!"),
+     *              @OA\Property(
+     *                  property="data",
+     *                  type="object",
+     *                  @OA\Property(
+     *                      property="Warehouses",
+     *                      type="array",
+     *
+     *                      @OA\Items(ref="#/components/schemas/WarehouseResource")
+     *                  ),
+     *
+     *                  @OA\Property(property="hasMorePages", type="boolean", example=false)
+     *              ),
+     *              @OA\Property(property="status_code", type="integer", example=200)
+     *          )
+     *      ),
      *
      *     @OA\Response(
      *         response=404,
@@ -118,7 +140,9 @@ class WarehouseService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Product not found")
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Product not found"),
+     *             @OA\Property(property="status_code", type="integer", example=404)
      *         )
      *     )
      * )
@@ -130,12 +154,68 @@ class WarehouseService
         return ResponseHelper::jsonResponse($data, 'Warehouse retrieved successfully!');
     }
 
-    public function getWarehousesHaveOffers(Product $product, Request $request): JsonResponse
+    /**
+     * @OA\Get(
+     *     path="/warehouse/get_warehouse_have_offers",
+     *     summary="Get warehouses with active offers",
+     *     description="Retrieve a paginated list of warehouses that have active offers along with their current product prices based on discount.",
+     *     tags={"Warehouse"},
+     *
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         description="Page number for pagination",
+     *         required=false,
+     *
+     *         @OA\Schema(type="integer", default=1)
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="items",
+     *         in="query",
+     *         description="Number of items per page",
+     *         required=false,
+     *
+     *         @OA\Schema(type="integer", default=20)
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Warehouses retrieved successfully!",
+     *
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Warehouses retrieved successfully!"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Property(
+     *                     property="Warehouses",
+     *                     type="array",
+     *
+     *                     @OA\Items(ref="#/components/schemas/WarehouseResource")
+     *                 ),
+     *
+     *                 @OA\Property(property="hasMorePages", type="boolean", example=false)
+     *             ),
+     *             @OA\Property(property="status_code", type="integer", example=200)
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=400,
+     *         description="Bad Request"
+     *     )
+     * )
+     */
+    public function getWarehousesHaveOffers(Request $request): JsonResponse
     {
         $page = $request->query('page', 1);
         $items = $request->query('items', 20);
 
-        $warehouses = $this->warehouseRepository->getProductWithOffers($items, $page);
+        $warehouses = $this->warehouseRepository->getWarehousesWithActiveOffers($items, $page);
         $hasMorePages = $warehouses->hasMorePages();
 
         $data = [
@@ -151,25 +231,25 @@ class WarehouseService
      *     path="/api/warehouses",
      *     summary="Create a warehouse",
      *     tags={"Warehouse"},
-     *     security={{"bearerAuth": {} }},
+     *     security={{"bearerAuth": {}}},
      *
      *     @OA\RequestBody(
      *         required=true,
      *
-     *      @OA\MediaType(
+     *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *
      *             @OA\Schema(
-     *             required={"amount", "expiry_date", "product_id"},
+     *                 required={"amount", "expiry_date", "product_id"},
      *
-     *             @OA\Property(property="amount", type="number", example=100,description="Warehouse Amount"),
-     *             @OA\Property(property="expiry_date", type="string", format="date", example="2024-12-01",description="Warehouse exoiry date"),
-     *             @OA\Property(property="product_id", type="integer", example=1,description="Product ID that you want to add this warehouse to it")
+     *                 @OA\Property(property="amount", type="number", example=100, description="Warehouse Amount"),
+     *                 @OA\Property(property="expiry_date", type="string", format="date", example="2024-12-01", description="Warehouse expiry date"),
+     *                 @OA\Property(property="product_id", type="integer", example=1, description="Product ID that you want to add this warehouse to")
      *             )
      *         )
      *     ),
      *
-     *      @OA\Header(
+     *     @OA\Header(
      *         header="Content-Type",
      *         description="Content-Type header",
      *
@@ -185,18 +265,38 @@ class WarehouseService
      *
      *     @OA\Response(
      *         response=201,
-     *         description="Warehouse created successfully",
+     *         description="Warehouse created successfully!",
      *
-     *         @OA\JsonContent(ref="#/components/schemas/WarehouseResource")
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Warehouse created successfully!"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Property(
+     *                     property="Warehouses",
+     *                     type="array",
+     *
+     *                     @OA\Items(ref="#/components/schemas/WarehouseResource")
+     *                 ),
+     *
+     *                 @OA\Property(property="hasMorePages", type="boolean", example=false)
+     *             ),
+     *             @OA\Property(property="status_code", type="integer", example=201)
+     *         )
      *     ),
      *
-     *    @OA\Response(
+     *     @OA\Response(
      *         response=403,
-     *         description="forbidden error",
+     *         description="Forbidden error",
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="You are not authorized to create this warehouse .")
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="You are not authorized to create this warehouse."),
+     *             @OA\Property(property="status_code", type="integer", example=403)
      *         )
      *     ),
      *
@@ -206,9 +306,16 @@ class WarehouseService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid input data")
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Validation Failed"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 example={}
+     *             ),
+     *             @OA\Property(property="status_code", type="integer", example=400)
      *         )
-     *     ),
+     *     )
      * )
      */
     public function createWarehouse(array $data)
@@ -233,13 +340,13 @@ class WarehouseService
      *     path="/api/warehouses/order/{column}/{direction}",
      *     summary="Order My warehouses by a specific column",
      *     tags={"Warehouse"},
-     *     security={{"bearerAuth": {} }},
+     *     security={{"bearerAuth": {}}},
      *
      *     @OA\Parameter(
      *         name="column",
      *         in="path",
      *         required=true,
-     *     description="Column you want to order the warehouses by it",
+     *         description="Column you want to order the warehouses by",
      *
      *         @OA\Schema(type="string", enum={"expiry_date", "created_at", "updated_at", "payment_date", "settlement_date", "pure_price"})
      *     ),
@@ -248,12 +355,12 @@ class WarehouseService
      *         name="direction",
      *         in="path",
      *         required=true,
-     *     description="Dircetion of ordering",
+     *         description="Direction of ordering",
      *
      *         @OA\Schema(type="string", enum={"asc", "desc"})
      *     ),
      *
-     *    @OA\Parameter(
+     *     @OA\Parameter(
      *         name="page",
      *         in="query",
      *         required=false,
@@ -266,19 +373,33 @@ class WarehouseService
      *         name="items",
      *         in="query",
      *         required=false,
-     *         description="Number of items per page ",
+     *         description="Number of items per page",
      *
      *         @OA\Schema(type="integer", example=20)
      *     ),
      *
      *     @OA\Response(
      *         response=200,
-     *         description="Successful response",
+     *         description="Warehouses retrieved successfully!",
      *
      *         @OA\JsonContent(
-     *             type="array",
+     *             type="object",
      *
-     *             @OA\Items(ref="#/components/schemas/WarehouseResource")
+     *             @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Warehouses retrieved successfully!"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Property(
+     *                     property="Warehouses",
+     *                     type="array",
+     *
+     *                     @OA\Items(ref="#/components/schemas/WarehouseResource")
+     *                 ),
+     *
+     *                 @OA\Property(property="hasMorePages", type="boolean", example=false)
+     *             ),
+     *             @OA\Property(property="status_code", type="integer", example=200)
      *         )
      *     ),
      *
@@ -288,7 +409,9 @@ class WarehouseService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid column or direction or parameters")
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="error", type="string", example="Invalid column or direction or parameters"),
+     *             @OA\Property(property="status_code", type="integer", example=400)
      *         )
      *     )
      * )
@@ -327,7 +450,7 @@ class WarehouseService
      *         name="id",
      *         in="path",
      *         required=true,
-     *     description="your Warehouse ID that you want to update it",
+     *         description="Your Warehouse ID that you want to update",
      *
      *         @OA\Schema(type="integer", example=1)
      *     ),
@@ -336,7 +459,7 @@ class WarehouseService
      *         name="amount",
      *         in="query",
      *         required=false,
-     *     description="THe amount of this warehouse",
+     *         description="The amount of this warehouse",
      *
      *         @OA\Schema(type="integer", example=100)
      *     ),
@@ -345,7 +468,7 @@ class WarehouseService
      *         name="product_id",
      *         in="query",
      *         required=false,
-     *     description="Product ID of this warehouse",
+     *         description="Product ID of this warehouse",
      *
      *         @OA\Schema(type="integer", example=1)
      *     ),
@@ -366,22 +489,26 @@ class WarehouseService
      *
      *     @OA\Response(
      *         response=200,
-     *         description="Warehouse updated successfully",
+     *         description="Warehouses updated successfully!",
      *
      *         @OA\JsonContent(
      *             type="object",
      *
-     *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="amount", type="integer", example=0),
-     *             @OA\Property(property="expiry_date", type="string", format="date", example="2025-12-31"),
+     *             @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Warehouses updated successfully!"),
      *             @OA\Property(
-     *                 property="product",
+     *                 property="data",
      *                 type="object",
-     *                 @OA\Property(property="name", type="string", example="Iphone 15"),
-     *                 @OA\Property(property="price", type="number", format="float", example="499.99"),
-     *                 @OA\Property(property="category", type="string", example="Smartphone"),
-     *                 @OA\Property(property="user", type="string", example="Hasan Zaeter")
-     *             )
+     *                 @OA\Property(
+     *                     property="Warehouses",
+     *                     type="array",
+     *
+     *                     @OA\Items(ref="#/components/schemas/WarehouseResource")
+     *                 ),
+     *
+     *                 @OA\Property(property="hasMorePages", type="boolean", example=false)
+     *             ),
+     *             @OA\Property(property="status_code", type="integer", example=200)
      *         )
      *     ),
      *
@@ -391,17 +518,26 @@ class WarehouseService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid input data")
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Validation Failed"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 example={}
+     *             ),
+     *             @OA\Property(property="status_code", type="integer", example=400)
      *         )
      *     ),
      *
-     *  @OA\Response(
+     *     @OA\Response(
      *         response=403,
-     *         description="forbidden error",
+     *         description="Forbidden error",
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="You are not authorized to delete this warehouse .")
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="You are not authorized to update this warehouse."),
+     *             @OA\Property(property="status_code", type="integer", example=403)
      *         )
      *     ),
      *
@@ -411,7 +547,9 @@ class WarehouseService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Warehouse not found")
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Warehouse not found"),
+     *             @OA\Property(property="status_code", type="integer", example=404)
      *         )
      *     )
      * )
@@ -444,13 +582,13 @@ class WarehouseService
      *     path="/api/warehouses/{id}",
      *     summary="Delete a warehouse",
      *     tags={"Warehouse"},
-     *     security={{"bearerAuth": {} }},
+     *     security={{"bearerAuth": {}}},
      *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *     description="your Warehouse ID you want to delete it",
+     *         description="Your Warehouse ID you want to delete",
      *
      *         @OA\Schema(type="integer", example=1)
      *     ),
@@ -461,17 +599,21 @@ class WarehouseService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="message", type="string", example="Warehouse deleted successfully")
+     *             @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Warehouse deleted successfully"),
+     *             @OA\Property(property="status_code", type="integer", example=200)
      *         )
      *     ),
      *
-     *    @OA\Response(
+     *     @OA\Response(
      *         response=403,
-     *         description="forbidden error",
+     *         description="Forbidden error",
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="You are not authorized to delete this warehouse .")
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="error", type="string", example="You are not authorized to delete this warehouse."),
+     *             @OA\Property(property="status_code", type="integer", example=403)
      *         )
      *     ),
      *
@@ -481,7 +623,9 @@ class WarehouseService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Warehouse not found")
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="error", type="string", example="Warehouse not found"),
+     *             @OA\Property(property="status_code", type="integer", example=404)
      *         )
      *     )
      * )
@@ -501,7 +645,7 @@ class WarehouseService
         return $response;
     }
 
-    protected function validateWarehouseData(array $data, $warehouse = null, $rule = 'required', $limit = 1)
+    protected function validateWarehouseData(array $data, $warehouse = null, $rule = 'required', $limit = 1): void
     {
         $validator = Validator::make($data, [
             'amount' => "$rule|numeric|min:$limit",
