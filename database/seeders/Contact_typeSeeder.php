@@ -11,7 +11,7 @@ class Contact_typeSeeder extends Seeder
     public function run(): void
     {
         DB::transaction(function () {
-            Contact_type::factory(10)->create();
+            Contact_type::factory(5)->create();
         });
     }
 }

@@ -11,12 +11,12 @@ use Illuminate\Http\Request;
 
 class CartItemsController extends Controller
 {
-    protected $cart_items_Service;
+    protected $cart_items_items_Service;
 
-    public function __construct(Cart_Items_Service $cart_items_Service)
+    public function __construct(Cart_Items_Service $cart_items_items_Service)
     {
         $this->middleware('auth:api');
-        $this->cart_items_Service = $cart_items_Service;
+        $this->cart_items_Service = $cart_items_items_Service;
     }
 
     public function index(Request $request): JsonResponse
@@ -34,23 +34,23 @@ class CartItemsController extends Controller
         return $this->cart_items_Service->createCart_items($request->all());
     }
 
-    public function searchByFilters(SearchProductRequest $request)
+    public function searchByFilters(SearchProductRequest $request): JsonResponse
     {
         return $this->cart_items_Service->searchByFilters($request);
     }
 
-    public function update(Cart_items $cart, Request $request)
+    public function update(Cart_items $cart_item, Request $request): JsonResponse
     {
-        return $this->cart_items_Service->updateCart_items($cart, $request->all());
+        return $this->cart_items_Service->updateCart_items($cart_item, $request->all());
     }
 
-    public function show(Cart_items $Cart): JsonResponse
+    public function show(Cart_items $cart_item): JsonResponse
     {
-        return $this->cart_items_Service->getCart_itemsById($Cart);
+        return $this->cart_items_Service->getCart_itemById($cart_item);
     }
 
-    public function destroy(Cart_items $Cart): JsonResponse
+    public function destroy(Cart_items $cart_item): JsonResponse
     {
-        return $this->cart_items_Service->deleteCart_items($Cart);
+        return $this->cart_items_Service->deleteCart_items($cart_item);
     }
 }

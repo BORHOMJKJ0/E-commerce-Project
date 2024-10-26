@@ -13,6 +13,8 @@ class DatabaseSeeder extends Seeder
             $this->call([
                 Contact_typeSeeder::class,
                 UserSeeder::class,
+                Contact_informationSeeder::class,
+                CartSeeder::class,
                 CategorySeeder::class,
                 ProductSeeder::class,
                 ImageSeeder::class,

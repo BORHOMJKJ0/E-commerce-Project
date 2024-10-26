@@ -11,7 +11,7 @@ class CommentSeeder extends Seeder
     public function run(): void
     {
         DB::transaction(function () {
-            Comment::factory(10)->create();
+            Comment::factory(20)->create();
         });
     }
 }

@@ -11,14 +11,19 @@ class CartItemsResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'quantity' => $this->quantity,
             'cart' => $this->cart ? [
                 'id' => $this->cart->id,
                 'user_name' => optional($this->cart->user)->first_name.' '.optional($this->cart->user)->last_name,
             ] : null,
-            'quantity' => $this->quantity,
-            'product' => $this->product ? [
-                'name' => $this->product->name,
-                'user' => optional($this->product->user)->first_name.' '.optional($this->product->user)->last_name,
+            'product' => $this->warehouse && $this->warehouse->product ? [
+                'id' => $this->warehouse->product->id,
+                'name' => $this->warehouse->product->name,
+                'category' => optional($this->warehouse->product->category)->name,
+                'user' => [
+                    'id' => optional($this->warehouse->product->user)->id,
+                    'name' => optional($this->warehouse->product->user)->first_name.' '.optional($this->warehouse->product->user)->last_name,
+                ],
             ] : null,
         ];
     }

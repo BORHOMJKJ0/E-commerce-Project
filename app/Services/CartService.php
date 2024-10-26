@@ -140,7 +140,7 @@ class CartService
 
             return ResponseHelper::jsonResponse($data, 'Cart created successfully!', 201);
         } else {
-            return ResponseHelper::jsonResponse([], 'You already have a cart ', 200);
+            return ResponseHelper::jsonResponse([], 'You already have a cart ', 400);
         }
     }
 

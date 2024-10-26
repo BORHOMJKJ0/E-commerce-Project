@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Helpers\ResponseHelper;
 use App\Models\Offer;
+use App\Models\Warehouse;
 use Carbon\Carbon;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
@@ -19,6 +20,15 @@ trait ValidationTrait
         }
 
         return null;
+    }
+
+    public function checkAmount(array $data, Warehouse $warehouse)
+    {
+        if ($data['quantity'] > $warehouse->amount) {
+            throw new HttpResponseException(ResponseHelper::jsonResponse([],
+                "The quantity must be less or equal than {$warehouse->amount}.",
+                400, false));
+        }
     }
 
     public function checkDate(array $data, string $name, string $condition)

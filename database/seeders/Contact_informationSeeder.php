@@ -2,16 +2,16 @@
 
 namespace Database\Seeders;
 
-use App\Models\Cart;
+use App\Models\Contact_information;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class CartSeeder extends Seeder
+class Contact_informationSeeder extends Seeder
 {
     public function run(): void
     {
         DB::transaction(function () {
-            Cart::factory(3)->create();
+            Contact_information::factory(10)->create();
         });
     }
 }

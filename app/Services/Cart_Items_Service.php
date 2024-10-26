@@ -6,6 +6,7 @@ use App\Helpers\ResponseHelper;
 use App\Http\Resources\CartItemsResource;
 use App\Models\Cart;
 use App\Models\Cart_items;
+use App\Models\Warehouse;
 use App\Repositories\CartItemsRepository;
 use App\Traits\AuthTrait;
 use App\Traits\ValidationTrait;
@@ -77,11 +78,11 @@ class Cart_Items_Service
         $page = $request->query('page', 1);
         $items = $request->query('items', 20);
 
-        $cart_items = $this->cartItemsRepository->getAll($items, $page);
-        $hasMorePages = $cart_items->hasMorePages();
+        $cart_item = $this->cartItemsRepository->getAll($items, $page);
+        $hasMorePages = $cart_item->hasMorePages();
 
         $data = [
-            'Cart_items' => CartItemsResource::collection($cart_items),
+            'Cart_items' => CartItemsResource::collection($cart_item),
             'hasMorePages' => $hasMorePages,
         ];
 
@@ -132,19 +133,16 @@ class Cart_Items_Service
      *     )
      * )
      */
-    public function getCart_itemsById(Cart_items $cart_items)
+    public function getCart_itemById(Cart_items $cart_item)
     {
         try {
-            $cart = $cart_items->cart;
-            if (! $cart) {
-                \Log::error('Cart not found for Cart_items ID: '.$cart_items->id);
-                throw new HttpResponseException(
-                    ResponseHelper::jsonResponse([], 'Cart not found', 404, false)
-                );
-            }
+            $cart = Cart::where('id', $cart_item->cart_id)->first();
+
             $this->checkOwnership($cart, 'Cart_items', 'perform');
-            $data = ['Cart_items' => CartItemsResource::make($cart_items)];
-            $response = ResponseHelper::jsonResponse($data, 'Cart_items retrieved successfully!');
+
+            $data = ['Cart_items' => CartItemsResource::make($cart_item)];
+
+            $response = ResponseHelper::jsonResponse($data, 'Cart_item retrieved successfully!');
         } catch (HttpResponseException $e) {
             $response = $e->getResponse();
         }
@@ -221,9 +219,11 @@ class Cart_Items_Service
     {
         try {
             $this->validate_Cart_items_Data($data);
-            $cart_items = $this->cartItemsRepository->create($data);
-            $data = ['Cart_items' => CartItemsResource::make($cart_items)];
-            $response = ResponseHelper::jsonResponse($data, 'Cart_items created successfully!', 201);
+            $warehouse = Warehouse::where('id', $data['warehouse_id'])->first();
+            $this->checkAmount($data, $warehouse);
+            $cart_item = $this->cartItemsRepository->create($data);
+            $data = ['Cart_items' => CartItemsResource::make($cart_item)];
+            $response = ResponseHelper::jsonResponse($data, 'Cart_item created successfully!', 201);
         } catch (HttpResponseException $e) {
             $response = $e->getResponse();
         }
@@ -307,11 +307,11 @@ class Cart_Items_Service
 
         $page = $request->query('page', 1);
         $items = $request->query('items', 20);
-        $cart_items = $this->cartItemsRepository->orderBy($column, $direction, $page, $items);
-        $hasMorePages = $cart_items->hasMorePages();
+        $cart_item = $this->cartItemsRepository->orderBy($column, $direction, $page, $items);
+        $hasMorePages = $cart_item->hasMorePages();
 
         $data = [
-            'Cart_items' => CartItemsResource::collection($cart_items),
+            'Cart_items' => CartItemsResource::collection($cart_item),
             'hasMorePages' => $hasMorePages,
         ];
 
@@ -419,15 +419,18 @@ class Cart_Items_Service
      *     )
      * )
      */
-    public function updateCart_items(Cart_items $cart_items, array $data)
+    public function updateCart_items(Cart_items $cart_item, array $data)
     {
         try {
             $this->validate_Cart_items_Data($data, 'sometimes', 0);
-            $cart = $cart_items->cart;
+            $cart = Cart::where('id', $cart_item->cart_id)->first();
             $this->checkOwnership($cart, 'Cart_items', 'update');
-            $cart_items = $this->cartItemsRepository->update($cart_items, $data);
-            $data = ['Cart_items' => CartItemsResource::make($cart_items)];
-            $response = ResponseHelper::jsonResponse($data, 'Cart_items updated successfully!');
+            $warehouse_id = $data['warehouse_id'] ?? $cart_item->warehouse->id;
+            $warehouse = Warehouse::where('id', $warehouse_id)->first();
+            $this->checkAmount($data, $warehouse);
+            $cart_item = $this->cartItemsRepository->update($cart_item, $data);
+            $data = ['Cart_items' => CartItemsResource::make($cart_item)];
+            $response = ResponseHelper::jsonResponse($data, 'Cart_item updated successfully!');
         } catch (HttpResponseException $e) {
             $response = $e->getResponse();
         }
@@ -482,13 +485,13 @@ class Cart_Items_Service
      *     )
      * )
      */
-    public function deleteCart_items(Cart_items $cart_items)
+    public function deleteCart_items(Cart_items $cart_item)
     {
         try {
-            $cart = $cart_items->cart;
+            $cart = Cart::where('id', $cart_item->cart_id)->first();
             $this->checkOwnership($cart, 'Cart_items', 'delete');
-            $this->cartItemsRepository->delete($cart_items);
-            $response = ResponseHelper::jsonResponse([], 'Cart_items deleted successfully!');
+            $this->cartItemsRepository->delete($cart_item);
+            $response = ResponseHelper::jsonResponse([], 'Cart_item deleted successfully!');
         } catch (HttpResponseException $e) {
             $response = $e->getResponse();
         }
@@ -500,7 +503,7 @@ class Cart_Items_Service
     {
         $validator = Validator::make($data, [
             'quantity' => "$rule|numeric|min:$limit",
-            'product_id' => "$rule|exists:products,id",
+            'warehouse_id' => "$rule|exists:warehouses,id",
         ]);
 
         if ($validator->fails()) {
