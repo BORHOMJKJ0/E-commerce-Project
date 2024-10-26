@@ -136,8 +136,8 @@ class Cart_Items_Service
     {
         try {
             $cart = $cart_items->cart;
-            if (!$cart) {
-                \Log::error('Cart not found for Cart_items ID: ' . $cart_items->id);
+            if (! $cart) {
+                \Log::error('Cart not found for Cart_items ID: '.$cart_items->id);
                 throw new HttpResponseException(
                     ResponseHelper::jsonResponse([], 'Cart not found', 404, false)
                 );
@@ -151,8 +151,6 @@ class Cart_Items_Service
 
         return $response;
     }
-
-
 
     /**
      * @OA\Post(

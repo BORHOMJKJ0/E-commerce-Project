@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Product;
 use App\Models\Cart;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class Cart_itemsFactory extends Factory

@@ -13,15 +13,15 @@ class CartItemsRepository
     public function getAll($items, $page)
     {
         return Cart_items::whereHas('cart', function ($query) {
-                $query->where('user_id', auth()->id());
-            })->paginate($items, ['*'], 'page', $page);
+            $query->where('user_id', auth()->id());
+        })->paginate($items, ['*'], 'page', $page);
     }
 
     public function orderBy($column, $direction, $page, $items)
     {
         return Cart_items::whereHas('cart', function ($query) {
-                $query->where('user_id', auth()->id());
-            })->orderBy($column, $direction)->paginate($items, ['*'], 'page', $page);
+            $query->where('user_id', auth()->id());
+        })->orderBy($column, $direction)->paginate($items, ['*'], 'page', $page);
     }
 
     public function create(array $data)
@@ -39,6 +39,7 @@ class CartItemsRepository
     {
         return $this->lockForUpdate(Cart_items::class, $cart_items->id, function ($locked_Cart_items) use ($data) {
             $locked_Cart_items->update($data);
+
             return $locked_Cart_items;
         });
     }

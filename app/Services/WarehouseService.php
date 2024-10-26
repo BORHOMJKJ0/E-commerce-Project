@@ -247,8 +247,8 @@ class WarehouseService
     public function createWarehouse(array $data)
     {
         try {
-            $this->validateWarehouseData($data);
             $product = Product::find($data['product_id']);
+            $this->validateWarehouseData($data);
             $this->checkOwnership($product, 'Warehouse', 'create');
             $this->checkDate($data, 'expiry_date', 'future');
             $warehouse = $this->warehouseRepository->create($data);
@@ -274,7 +274,7 @@ class WarehouseService
      *         required=true,
      *     description="Column you want to order the warehouses by it",
      *
-     *         @OA\Schema(type="string", enum={"expiry_date", "created_at", "updated_at"})
+     *         @OA\Schema(type="string", enum={"expiry_date", "created_at", "updated_at", "payment_date", "settlement_date", "pure_price"})
      *     ),
      *
      *     @OA\Parameter(
@@ -457,7 +457,7 @@ class WarehouseService
             ]);
         }
         try {
-            $this->validateWarehouseData($data, 'sometimes', 0);
+            $this->validateWarehouseData($data, $warehouse, 'sometimes', 0);
             $product = $warehouse->product;
             $this->checkOwnership($product, 'Warehouse', 'update');
 
@@ -534,7 +534,7 @@ class WarehouseService
         return $response;
     }
 
-    protected function validateWarehouseData(array $data, $rule = 'required', $limit = 1)
+    protected function validateWarehouseData(array $data, $warehouse = null, $rule = 'required', $limit = 1)
     {
         $validator = Validator::make($data, [
             'amount' => "$rule|numeric|min:$limit",
