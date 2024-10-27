@@ -107,6 +107,7 @@ class ProductResource extends JsonResource
             'total_amount' => (float) $this->warehouses->sum('amount'),
             'category' => $this->category->name,
             'comments' => $this->comments->count(),
+            'reviewers_number' => $this->reviewers->count(),
             'average_rating' => $this->reviews->avg('rating') ?: 0,
         ];
 
