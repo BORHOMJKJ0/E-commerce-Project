@@ -2,16 +2,16 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Models\Contact_information;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class UserSeeder extends Seeder
+class Contact_informationSeeder extends Seeder
 {
     public function run(): void
     {
         DB::transaction(function () {
-            User::factory(20)->create();
+            Contact_information::factory(10)->create();
         });
     }
 }

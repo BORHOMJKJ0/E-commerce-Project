@@ -11,7 +11,7 @@ class WarehouseSeeder extends Seeder
     public function run(): void
     {
         DB::transaction(function () {
-            Warehouse::factory(5)->create();
+            Warehouse::factory(10)->create();
         });
     }
 }

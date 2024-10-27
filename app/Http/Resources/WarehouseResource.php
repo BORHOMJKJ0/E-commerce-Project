@@ -11,6 +11,7 @@ use OpenApi\Annotations as OA;
  *     schema="WarehouseResource",
  *     type="object",
  *     description="Warehouse resource containing product details and offers",
+ *
  *     @OA\Property(property="id", type="integer", description="Warehouse ID", example=1),
  *     @OA\Property(property="amount", type="integer", description="Amount of the product in the warehouse", example=86),
  *     @OA\Property(property="expiry_date", type="string", description="Expiry date of the product", format="date", example="2025-01-14"),
@@ -26,7 +27,9 @@ use OpenApi\Annotations as OA;
  *         property="offers",
  *         type="array",
  *         description="List of offers for the product",
+ *
  *         @OA\Items(
+ *
  *             @OA\Property(property="id", type="integer", example=3),
  *             @OA\Property(property="discount_percentage", type="number", format="float", example=28.41),
  *             @OA\Property(property="start_date", type="string", format="date", example="2024-10-19"),

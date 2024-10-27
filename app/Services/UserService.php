@@ -9,6 +9,7 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserContactsResource;
 use App\Http\Resources\UserResource;
+use App\Models\Cart;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Traits\ValidationTrait;
@@ -26,10 +27,13 @@ class UserService
 
     protected $userRepository;
 
-    public function __construct(EmailVerificationController $EmailVerificationController, UserRepository $userRepository)
+    protected $cartService;
+
+    public function __construct(EmailVerificationController $EmailVerificationController, UserRepository $userRepository, CartService $cartService)
     {
         $this->EmailVerificationController = $EmailVerificationController;
         $this->userRepository = $userRepository;
+        $this->cartService = $cartService;
     }
 
     /**
@@ -263,6 +267,7 @@ class UserService
             'token_type' => 'bearer',
             'user' => new UserResource($user),
         ];
+        $this->cartService->createCart();
 
         return ResponseHelper::jsonResponse($data, 'Login successful');
     }
@@ -544,6 +549,8 @@ class UserService
      */
     public function destroy()
     {
+        $cart = Cart::where('user_id', auth()->id())->first();
+        $this->cartService->deleteCart($cart);
         $user = $this->userRepository->destroy();
 
         $data = ['user' => new UserContactsResource($user)];

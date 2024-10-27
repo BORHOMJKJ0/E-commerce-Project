@@ -86,15 +86,12 @@ class OfferFactory extends Factory
             $lastDiscount = $lastOffer->discount_percentage;
 
             if ($startDate->isAfter($lastOffer->start_date)) {
-                // New offer starts after the last offer, should be bigger
-                return min($lastDiscount + rand(1, 10), 100.0); // Limit to max 100%
+                return min($lastDiscount + rand(1, 10), 100.0);
             } else {
-                // New offer starts before the last offer, should be smaller
-                return max($lastDiscount - rand(1, 10), 0.0); // Limit to min 0%
+                return max($lastDiscount - rand(1, 10), 0.0);
             }
         }
 
-        // If no existing offers, generate a random discount freely
         if ($daysToExpiry <= 7) {
             return fake()->randomFloat(2, 50, 90);
         } elseif ($daysToExpiry <= 30) {

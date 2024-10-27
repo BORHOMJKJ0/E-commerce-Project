@@ -11,7 +11,7 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
         DB::transaction(function () {
-            Product::factory(10)->create();
+            Product::factory(5)->create();
         });
     }
 }

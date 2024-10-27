@@ -5,6 +5,8 @@ use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\ForgetPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\UserController;
+use App\Http\Controllers\Cart\CartController;
+use App\Http\Controllers\Cart\CartItemsController;
 use App\Http\Controllers\Category\CategoryController;
 use App\Http\Controllers\Comment\CommentController;
 use App\Http\Controllers\Contact\ContactInformationController;
@@ -12,7 +14,6 @@ use App\Http\Controllers\Contact\ContactTypeController;
 use App\Http\Controllers\Expression\ExpressionController;
 use App\Http\Controllers\Image\ImageController;
 use App\Http\Controllers\Offer\OfferController;
-use App\Http\Controllers\Product\FavoriteProductController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Review\ReviewController;
 use App\Http\Controllers\Warehouse\WarehouseController;
@@ -38,17 +39,7 @@ Route::middleware('api')->group(function () {
     Route::apiResource('reviews', ReviewController::class);
     Route::apiResource('comments', CommentController::class);
     Route::apiResource('images', ImageController::class);
-
-    Route::prefix('products/favorites')->controller(FavoriteProductController::class)->group(function () {
-        Route::get('index', 'index');
-        Route::post('store/{product}', 'store')->missing(function () {
-            return ResponseHelper::jsonResponse([], 'Product Not Found', 404, false);
-        });
-        Route::delete('destroy/{product}', 'destroy')->missing(function () {
-            return ResponseHelper::jsonResponse([], 'Product Not Found', 404, false);
-        });
-    });
-
+    Route::apiResource('cart_items', CartItemsController::class);
     Route::prefix('products')->controller(ProductController::class)->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');
         Route::get('/my/order/{column}/{direction}', 'MyProductsOrderBy');
@@ -63,9 +54,9 @@ Route::middleware('api')->group(function () {
         Route::get('/my/order/{column}/{direction}', 'MyCategoriesOrderBy');
         Route::get('/my/random', 'MyCategories');
     });
-    Route::get('warehouse/get_warehouse_have_offers', [WarehouseController::class, 'getWarehousesHaveOffers']);
     Route::prefix('warehouses')->controller(WarehouseController::class)->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');
+        Route::get('/get_warehouse_for_this_product/{product}', 'getWarehousesForSpecificProduct');
     });
     Route::prefix('offers')->controller(OfferController::class)->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');
@@ -86,6 +77,16 @@ Route::middleware('api')->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');
         Route::get('/my/order/{column}/{direction}', 'MyImagesOrderBy');
         Route::get('/my/random', 'MyImages');
+        Route::post('/search', 'searchByFilters');
+    });
+    Route::prefix('carts')->controller(CartController::class)->group(function () {
+        Route::get('/{cart}', 'show');
+        Route::post('/', 'store');
+        Route::put('/{cart}', 'update');
+        Route::delete('/{cart}', 'destroy');
+    });
+    Route::prefix('cart_items')->controller(CartItemsController::class)->group(function () {
+        Route::get('/order/{column}/{direction}', 'orderBy');
         Route::post('/search', 'searchByFilters');
     });
 });

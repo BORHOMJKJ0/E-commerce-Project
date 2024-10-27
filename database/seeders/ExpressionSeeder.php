@@ -11,7 +11,7 @@ class ExpressionSeeder extends Seeder
     public function run(): void
     {
         DB::transaction(function () {
-            Expression::factory(10)->create();
+            Expression::factory(15)->create();
         });
     }
 }
