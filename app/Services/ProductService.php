@@ -5,10 +5,12 @@ namespace App\Services;
 use App\Helpers\ResponseHelper;
 use App\Http\Requests\SearchProductRequest;
 use App\Http\Resources\ProductResource;
+use App\Models\Category;
 use App\Models\Product;
 use App\Repositories\ProductRepository;
 use App\Traits\AuthTrait;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -368,7 +370,7 @@ class ProductService
         $validColumns = ['name', 'price', 'created_at', 'updated_at'];
         $validDirections = ['asc', 'desc'];
 
-        if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
+        if (!in_array($column, $validColumns) || !in_array($direction, $validDirections)) {
             return ResponseHelper::jsonResponse([], 'Invalid column or direction', 400, false);
         }
         $page = $request->query('page', 1);
@@ -454,7 +456,7 @@ class ProductService
         $validColumns = ['name', 'price', 'created_at', 'updated_at'];
         $validDirections = ['asc', 'desc'];
 
-        if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
+        if (!in_array($column, $validColumns) || !in_array($direction, $validDirections)) {
             return ResponseHelper::jsonResponse([], 'Invalid column or direction', 400, false);
         }
         $page = $request->query('page', 1);
@@ -470,6 +472,69 @@ class ProductService
         return ResponseHelper::jsonResponse($data, 'Products ordered successfully!');
     }
 
+    /**
+     * @OA\Get(
+     *     path="api/products/search",
+     *     summary="Search products by filters",
+     *     description="Retrieve a paginated list of products filtered by various criteria.",
+     *     tags={"Products"},
+     *     security={{"bearerAuth":{}}},
+     *
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         description="Page number for pagination",
+     *         required=false,
+     *
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="items",
+     *         in="query",
+     *         description="Number of items per page",
+     *         required=false,
+     *
+     *         @OA\Schema(type="integer", example=10)
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Products retrieved successfully",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Products retrieved successfully"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Property(
+     *                     property="Products",
+     *                     type="array",
+     *
+     *                    @OA\Items(ref="#/components/schemas/ProductResource")
+     *                 ),
+     *
+     *                 @OA\Property(property="hasMorePages", type="boolean", example=true)
+     *             ),
+     *             @OA\Property(property="status_code", type="integer", example=200)
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=404,
+     *         description="No products found for the given filters",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="No products found for the given filters"),
+     *             @OA\Property(property="status_code", type="integer", example=404)
+     *         )
+     *     )
+     * )
+     */
     public function searchByFilters(SearchProductRequest $request)
     {
 
@@ -478,7 +543,7 @@ class ProductService
 
         $products = $this->productRepository->getProductsByFilters($request, $items, $page);
 
-        if (! $products) {
+        if (!$products) {
             return ResponseHelper::jsonResponse([], 'No products found for the given filters.');
         }
 

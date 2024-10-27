@@ -54,6 +54,9 @@ Route::middleware('api')->group(function () {
         Route::get('/my/order/{column}/{direction}', 'MyProductsOrderBy');
         Route::get('/my/random', 'MyProducts');
         Route::post('/search', 'searchByFilters');
+        Route::get('getByCategory/{category:name}', 'getProductByCategory')->missing(function () {
+            return ResponseHelper::jsonResponse([], 'Category Not Found', 404, false);
+        });
     });
     Route::prefix('categories')->controller(CategoryController::class)->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');

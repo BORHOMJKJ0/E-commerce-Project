@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\Product;
 
-use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
-use App\Repositories\UserRepository;
 use App\Services\FavoriteProductService;
 use Illuminate\Http\JsonResponse;
 
