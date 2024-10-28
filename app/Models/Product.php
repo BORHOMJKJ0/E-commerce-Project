@@ -74,6 +74,10 @@ class Product extends Model
             ->withPivot('rating');
     }
 
+    public function favorites()
+    {
+        return $this->belongsToMany(User::class, 'favorite_products', 'product_id', 'user_id')->withTimestamps();
+    }
     public function prunable()
     {
         $warehouseProductIds = Warehouse::pluck('product_id')->toArray();
