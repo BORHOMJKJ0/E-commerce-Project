@@ -29,6 +29,7 @@ class WarehouseController extends Controller
     {
         $warehouse = $this->warehouseService->createWarehouse($request->all());
         $data = ['warehouse' => WarehouseResource::make($warehouse)];
+
         return ResponseHelper::jsonResponse($data, 'Warehouse created successfully!', 201);
     }
 

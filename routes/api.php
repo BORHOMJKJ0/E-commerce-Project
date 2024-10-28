@@ -62,9 +62,9 @@ Route::middleware('api')->group(function () {
         });
     });
     Route::post('product/create_product_with_all_details', [ProductController::class, 'create_product_with_details']);
+    Route::get('warehouse/get_warehouse_have_offers', [WarehouseController::class, 'getWarehousesHaveOffers']);
     Route::prefix('warehouses')->controller(WarehouseController::class)->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');
-        Route::get('/get_warehouse_for_this_product/{product}', 'getWarehousesForSpecificProduct');
     });
     Route::prefix('offers')->controller(OfferController::class)->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');
