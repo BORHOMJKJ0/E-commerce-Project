@@ -32,11 +32,10 @@ class ProductService
     //    protected $fcmService;
 
     public function __construct(ProductRepository $productRepository, CategoryService $categoryService,
-                                WarehouseService  $warehouseService, OfferService $offerService,
-                                ImageService      $imageService,
+        WarehouseService $warehouseService, OfferService $offerService,
+        ImageService $imageService,
         //                                FcmService $fcmService
-    )
-    {
+    ) {
         $this->productRepository = $productRepository;
         $this->categoryService = $categoryService;
         $this->warehouseService = $warehouseService;
@@ -381,7 +380,7 @@ class ProductService
         $validColumns = ['name', 'price', 'created_at', 'updated_at'];
         $validDirections = ['asc', 'desc'];
 
-        if (!in_array($column, $validColumns) || !in_array($direction, $validDirections)) {
+        if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
             return ResponseHelper::jsonResponse([], 'Invalid column or direction', 400, false);
         }
         $page = $request->query('page', 1);
@@ -467,7 +466,7 @@ class ProductService
         $validColumns = ['name', 'price', 'created_at', 'updated_at'];
         $validDirections = ['asc', 'desc'];
 
-        if (!in_array($column, $validColumns) || !in_array($direction, $validDirections)) {
+        if (! in_array($column, $validColumns) || ! in_array($direction, $validDirections)) {
             return ResponseHelper::jsonResponse([], 'Invalid column or direction', 400, false);
         }
         $page = $request->query('page', 1);
@@ -554,7 +553,7 @@ class ProductService
 
         $products = $this->productRepository->getProductsByFilters($request, $items, $page);
 
-        if (!$products) {
+        if (! $products) {
             return ResponseHelper::jsonResponse([], 'No products found for the given filters.');
         }
 
@@ -800,7 +799,6 @@ class ProductService
 
             $warehousesData = $request->input('warehouse');
 
-
             foreach ($warehousesData as $warehouseData) {
                 $data = [
                     'amount' => $warehouseData['amount'],
@@ -832,6 +830,7 @@ class ProductService
 
             return ResponseHelper::jsonResponse([], 'Products and its details added successfully!', 201);
         });
+
         return ResponseHelper::jsonResponse([], 'Products and its details added successfully!', 201);
     }
 
