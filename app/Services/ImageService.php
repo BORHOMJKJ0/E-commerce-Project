@@ -668,7 +668,7 @@ class ImageService
     protected function validateImageData(array $data, $rule = 'required')
     {
         $validator = Validator::make($data, [
-            'image' => "$rule|image|max:5120",
+            'image' => "$rule|image",
             'main' => "$rule|nullable|boolean",
             'product_id' => "$rule|exists:products,id",
         ]);

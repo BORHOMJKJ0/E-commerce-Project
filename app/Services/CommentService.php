@@ -73,7 +73,7 @@ class CommentService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid parameters")
+     *             @OA\Property(property="message", type="string", example="Invalid parameters")
      *         )
      *     )
      * )
@@ -136,7 +136,7 @@ class CommentService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid parameters")
+     *             @OA\Property(property="message", type="string", example="Invalid parameters")
      *         )
      *     )
      * )
@@ -186,7 +186,7 @@ class CommentService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Comment not found")
+     *             @OA\Property(property="message", type="string", example="Comment not found")
      *         )
      *     )
      * )
@@ -259,7 +259,7 @@ class CommentService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid input data")
+     *             @OA\Property(property="message", type="string", example="Invalid input data")
      *         )
      *     ),
      *
@@ -269,7 +269,7 @@ class CommentService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="The text field is required when none of image are present.")
+     *             @OA\Property(property="message", type="string", example="The text field is required when none of image are present.")
      *         )
      *     ),
      * )
@@ -340,14 +340,16 @@ class CommentService
      *     ),
      *
      *     @OA\Response(
-     *         response=400,
-     *         description="Invalid column or direction",
+     *         response=401,
+     *         description="Invalid credentials",
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid column or direction or parameters")
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Invalid credentials. Please check your email and password"),
+     *             @OA\Property(property="status_code", type="integer", example=401)
      *         )
-     *     )
+     *     ),
      * )
      */
     public function getCommentsOrderedBy($column, $direction, Request $request)
@@ -427,14 +429,16 @@ class CommentService
      *     ),
      *
      *     @OA\Response(
-     *         response=400,
-     *         description="Invalid column or direction",
+     *         response=401,
+     *         description="Invalid credentials",
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid column or direction or parameters")
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Invalid credentials. Please check your email and password"),
+     *             @OA\Property(property="status_code", type="integer", example=401)
      *         )
-     *     )
+     *     ),
      * )
      */
     public function getMyCommentsOrderedBy($column, $direction, Request $request)
@@ -548,7 +552,7 @@ class CommentService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid input data")
+     *             @OA\Property(property="message", type="string", example="Invalid input data")
      *         )
      *     ),
      *
@@ -558,7 +562,7 @@ class CommentService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="You are not authorized to update this Comment.")
+     *             @OA\Property(property="message", type="string", example="You are not authorized to update this Comment.")
      *         )
      *     ),
      *
@@ -568,7 +572,7 @@ class CommentService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Comment not found")
+     *             @OA\Property(property="message", type="string", example="Comment not found")
      *         )
      *     )
      * )
@@ -622,7 +626,7 @@ class CommentService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="You are not authorized to delete this Comment.")
+     *             @OA\Property(property="message", type="string", example="You are not authorized to delete this Comment.")
      *         )
      *     ),
      *
@@ -632,7 +636,7 @@ class CommentService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Comment not found")
+     *             @OA\Property(property="message", type="string", example="Comment not found")
      *         )
      *     )
      * )

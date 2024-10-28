@@ -18,6 +18,1080 @@
         }
     ],
     "paths": {
+        "/api/carts/{id}": {
+            "get": {
+                "tags": [
+                    "Carts"
+                ],
+                "summary": "Get a single cart by ID",
+                "operationId": "ba6d284e299616f9c0055fdab67fb41e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the cart to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response"
+                    },
+                    "404": {
+                        "description": "Cart not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Cart not found"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Carts"
+                ],
+                "summary": "Update a cart",
+                "operationId": "9d561b9025161fe65bae59336e267427",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Cart ID you want to update it",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "User ID",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cart updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Vegetables"
+                                        },
+                                        "products": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Smartphone"
+                                                    },
+                                                    "user": {
+                                                        "type": "string",
+                                                        "example": "Hasan Zaeter"
+                                                    },
+                                                    "successful": {
+                                                        "type": "boolean",
+                                                        "example": true
+                                                    },
+                                                    "message": {
+                                                        "type": "string",
+                                                        "example": "Cart updated successfully"
+                                                    },
+                                                    "status_code": {
+                                                        "type": "integer",
+                                                        "example": 200
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invalid input data"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 400
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "forbidden error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "You are not authorized to update this Cart ."
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 403
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Cart not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Cart not found"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Carts"
+                ],
+                "summary": "Delete a Cart",
+                "operationId": "f928747449c0d00bd973b8ff7398d5b8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Cart ID you want to delete it",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cart deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Cart deleted successfully"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "forbidden error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "You are not authorized to delete this Cart."
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 403
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Cart not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Cart not found"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/carts": {
+            "post": {
+                "tags": [
+                    "Carts"
+                ],
+                "summary": "Create a Cart",
+                "operationId": "b233e4fe01661cdb844ba2178d1e3a27",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Cart created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "user": {
+                                            "type": "string",
+                                            "example": "Electronic devices"
+                                        },
+                                        "products": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "product_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "quantity": {
+                                                        "type": "integer",
+                                                        "example": 2
+                                                    },
+                                                    "price": {
+                                                        "type": "number",
+                                                        "format": "float",
+                                                        "example": 19.99
+                                                    },
+                                                    "successful": {
+                                                        "type": "boolean",
+                                                        "example": true
+                                                    },
+                                                    "message": {
+                                                        "type": "string",
+                                                        "example": "Cart created successfully"
+                                                    },
+                                                    "status_code": {
+                                                        "type": "integer",
+                                                        "example": 200
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invalid input data"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 400
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/cart_items": {
+            "get": {
+                "tags": [
+                    "Cart_items"
+                ],
+                "summary": "Get my Cart_items",
+                "operationId": "c0fc0dea57feeabfe32c2d56eada2267",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "items",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 20
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Cart_items returned successfully"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CartItemsResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invalid parameters"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 400
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Cart_items"
+                ],
+                "summary": "Create a Cart_items",
+                "operationId": "ed465982d390e945fcdb1c583e2bedbd",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "quantity",
+                                    "warehouse_id"
+                                ],
+                                "properties": {
+                                    "quantity": {
+                                        "description": "Cart_items quantity",
+                                        "type": "number",
+                                        "example": 100
+                                    },
+                                    "warehouse_id": {
+                                        "description": "warehouse ID that you want to add this Cart_items from it",
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Cart_items created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CartItemsResource"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "forbidden error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "You are not authorized to create this Cart_items ."
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 403
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invalid input data"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 400
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/cart_items/{id}": {
+            "get": {
+                "tags": [
+                    "Cart_items"
+                ],
+                "summary": "Get a Cart_items by ID",
+                "operationId": "8bf764085aa4fe842858b64543b2b095",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "your Cart_items ID you want to show it",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CartItemsResource"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "forbidden error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "You are not authorized to view this Cart_items."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "cart not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "cart not found"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Cart_items"
+                ],
+                "summary": "Update a Cart_items",
+                "operationId": "de9c9e85041ddc06329fc42a438e9d22",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "your Cart_items ID that you want to update it",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "quantity",
+                        "in": "query",
+                        "description": "The quantity of this Cart_items",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 100
+                        }
+                    },
+                    {
+                        "name": "warehouse_id",
+                        "in": "query",
+                        "description": "warehouse ID of this Cart_items",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cart_items updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "amount": {
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "expiry_date": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2025-12-31"
+                                        },
+                                        "cart": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Iphone 15"
+                                                },
+                                                "price": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": "499.99"
+                                                },
+                                                "category": {
+                                                    "type": "string",
+                                                    "example": "Smartphone"
+                                                },
+                                                "user": {
+                                                    "type": "string",
+                                                    "example": "Hasan Zaeter"
+                                                },
+                                                "successful": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "Cart_items updated successfully"
+                                                },
+                                                "status_code": {
+                                                    "type": "integer",
+                                                    "example": 200
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invalid input data"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 400
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "forbidden error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "You are not authorized to delete this Cart_items ."
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 403
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Cart_items not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Cart_items not found"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Cart_items"
+                ],
+                "summary": "Delete a Cart_items",
+                "operationId": "355a4270f1b2a9dc880bd112004408e0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "your Cart_items ID you want to delete it",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cart_items deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Cart_items deleted successfully"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "forbidden error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "You are not authorized to delete this Cart_items ."
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 403
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Cart_items not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Cart_items not found"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/cart_items/order/{column}/{direction}": {
+            "get": {
+                "tags": [
+                    "Cart_items"
+                ],
+                "summary": "Order My Cart_items by a specific column",
+                "operationId": "5b7d1ecc8b346b989602c5f906ae9b52",
+                "parameters": [
+                    {
+                        "name": "column",
+                        "in": "path",
+                        "description": "Column you want to order the Cart_items by it",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "quantity",
+                                "created_at",
+                                "updated_at"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "direction",
+                        "in": "path",
+                        "description": "Dircetion of ordering",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "items",
+                        "in": "query",
+                        "description": "Number of items per page ",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 20
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Cart_items returned successfully"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CartItemsResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid column or direction",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invalid column or direction or parameters"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 400
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/categories": {
             "get": {
                 "tags": [
@@ -67,7 +1141,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Invalid parameters"
                                         }
@@ -142,7 +1216,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Invalid input data"
                                         }
@@ -209,7 +1283,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Invalid parameters"
                                         }
@@ -263,7 +1337,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Category not found"
                                         }
@@ -351,7 +1425,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Invalid input data"
                                         }
@@ -367,7 +1441,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "You cannot update category with associated products."
                                         }
@@ -383,7 +1457,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Category not found"
                                         }
@@ -441,7 +1515,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "You are not authorized to delete this Category."
                                         }
@@ -457,7 +1531,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Category not found"
                                         }
@@ -545,15 +1619,23 @@
                             }
                         }
                     },
-                    "400": {
-                        "description": "Invalid column or direction",
+                    "401": {
+                        "description": "Invalid credentials",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
                                             "type": "string",
-                                            "example": "Invalid column or direction or parameters"
+                                            "example": "Invalid credentials. Please check your email and password"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 401
                                         }
                                     },
                                     "type": "object"
@@ -639,15 +1721,23 @@
                             }
                         }
                     },
-                    "400": {
-                        "description": "Invalid column or direction",
+                    "401": {
+                        "description": "Invalid credentials",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
                                             "type": "string",
-                                            "example": "Invalid column or direction or parameters"
+                                            "example": "Invalid credentials. Please check your email and password"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 401
                                         }
                                     },
                                     "type": "object"
@@ -712,7 +1802,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Invalid parameters"
                                         }
@@ -814,7 +1904,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Invalid input data"
                                         }
@@ -830,7 +1920,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "The text field is required when none of image are present."
                                         }
@@ -897,7 +1987,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Invalid parameters"
                                         }
@@ -951,7 +2041,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Comment not found"
                                         }
@@ -1073,7 +2163,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Invalid input data"
                                         }
@@ -1089,7 +2179,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "You are not authorized to update this Comment."
                                         }
@@ -1105,7 +2195,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Comment not found"
                                         }
@@ -1163,7 +2253,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "You are not authorized to delete this Comment."
                                         }
@@ -1179,7 +2269,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Comment not found"
                                         }
@@ -1266,15 +2356,23 @@
                             }
                         }
                     },
-                    "400": {
-                        "description": "Invalid column or direction",
+                    "401": {
+                        "description": "Invalid credentials",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
                                             "type": "string",
-                                            "example": "Invalid column or direction or parameters"
+                                            "example": "Invalid credentials. Please check your email and password"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 401
                                         }
                                     },
                                     "type": "object"
@@ -1359,15 +2457,23 @@
                             }
                         }
                     },
-                    "400": {
-                        "description": "Invalid column or direction",
+                    "401": {
+                        "description": "Invalid credentials",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
                                             "type": "string",
-                                            "example": "Invalid column or direction or parameters"
+                                            "example": "Invalid credentials. Please check your email and password"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 401
                                         }
                                     },
                                     "type": "object"
@@ -2142,24 +3248,23 @@
                         "content": {
                             "application/json": {
                                 "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CategoryResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
                                     "properties": {
-                                        "successful": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
-                                        "message": {
+                                        "error": {
                                             "type": "string",
-                                            "example": "Expressions retrieved successfully"
-                                        },
-                                        "data": {
-                                            "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/CategoryResource"
-                                            }
-                                        },
-                                        "status_code": {
-                                            "type": "integer",
-                                            "example": 200
+                                            "example": "Invalid parameters"
                                         }
                                     },
                                     "type": "object"
@@ -2198,12 +3303,8 @@
                                         "example": 1
                                     },
                                     "action": {
-                                        "description": "The Action, either 'like' or 'dislike'",
-                                        "type": "string",
-                                        "enum": [
-                                            "like",
-                                            "dislike"
-                                        ],
+                                        "description": "the Action Like or dislike",
+                                        "type": "enum",
                                         "example": "like"
                                     }
                                 },
@@ -2223,39 +3324,35 @@
                                             "type": "boolean",
                                             "example": true
                                         },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Expression created successfully"
-                                        },
-                                        "data": {
+                                        "expression": {
                                             "properties": {
-                                                "expression": {
-                                                    "properties": {
-                                                        "expression_id": {
-                                                            "type": "integer",
-                                                            "example": 11
-                                                        },
-                                                        "product_id": {
-                                                            "type": "integer",
-                                                            "example": 2
-                                                        },
-                                                        "user_id": {
-                                                            "type": "integer",
-                                                            "example": 1
-                                                        },
-                                                        "action": {
-                                                            "type": "string",
-                                                            "example": "like"
-                                                        }
-                                                    },
-                                                    "type": "object"
+                                                "expression_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "product_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "action": {
+                                                    "description": "The expression action, either 'like' or 'dislike'.",
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "like",
+                                                        "dislike"
+                                                    ],
+                                                    "example": "like"
+                                                },
+                                                "status_code": {
+                                                    "type": "integer",
+                                                    "example": 201
                                                 }
                                             },
                                             "type": "object"
-                                        },
-                                        "status_code": {
-                                            "type": "integer",
-                                            "example": 201
                                         }
                                     },
                                     "type": "object"
@@ -2275,11 +3372,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "Validation Failed"
-                                        },
-                                        "data": {
-                                            "type": "object",
-                                            "example": []
+                                            "example": "action input is invalid"
                                         },
                                         "status_code": {
                                             "type": "integer",
@@ -2303,7 +3396,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "Product Not Found"
+                                            "example": "Prodcut Not Found"
                                         },
                                         "status_code": {
                                             "type": "integer",
@@ -3439,7 +4532,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Invalid parameters"
                                         }
@@ -3583,7 +4676,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "You are not authorized to create this Offer."
                                         }
@@ -3599,7 +4692,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Invalid input data"
                                         }
@@ -3666,7 +4759,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Invalid parameters"
                                         }
@@ -3720,7 +4813,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Offer not found"
                                         }
@@ -3878,7 +4971,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Invalid input data"
                                         }
@@ -3894,7 +4987,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "You are not authorized to update this Offer."
                                         }
@@ -3910,7 +5003,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Offer not found"
                                         }
@@ -3968,7 +5061,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "You are not authorized to delete this Offer."
                                         }
@@ -3984,7 +5077,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Offer not found"
                                         }
@@ -4074,15 +5167,23 @@
                             }
                         }
                     },
-                    "400": {
-                        "description": "Invalid column or direction",
+                    "401": {
+                        "description": "Invalid credentials",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
                                             "type": "string",
-                                            "example": "Invalid column or direction or parameters"
+                                            "example": "Invalid credentials. Please check your email and password"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 401
                                         }
                                     },
                                     "type": "object"
@@ -4170,15 +5271,23 @@
                             }
                         }
                     },
-                    "400": {
-                        "description": "Invalid column or direction",
+                    "401": {
+                        "description": "Invalid credentials",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
                                             "type": "string",
-                                            "example": "Invalid column or direction or parameters"
+                                            "example": "Invalid credentials. Please check your email and password"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 401
                                         }
                                     },
                                     "type": "object"
@@ -4243,7 +5352,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Invalid parameters"
                                         }
@@ -4371,7 +5480,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "You are not authorized to add this product."
                                         }
@@ -4387,7 +5496,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Invalid input data"
                                         }
@@ -4454,7 +5563,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Invalid parameters"
                                         }
@@ -4508,7 +5617,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Product not found"
                                         }
@@ -4650,7 +5759,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Invalid input data"
                                         }
@@ -4666,7 +5775,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "You are not authorized to update this product."
                                         }
@@ -4682,7 +5791,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Product not found"
                                         }
@@ -4740,7 +5849,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "You are not authorized to delete this product."
                                         }
@@ -4756,7 +5865,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Product not found"
                                         }
@@ -4851,7 +5960,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Invalid column or direction or parameters"
                                         }
@@ -4940,15 +6049,23 @@
                             }
                         }
                     },
-                    "400": {
-                        "description": "Invalid column or direction",
+                    "401": {
+                        "description": "Invalid credentials",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
                                             "type": "string",
-                                            "example": "Invalid column or direction or parameters"
+                                            "example": "Invalid credentials. Please check your email and password"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 401
                                         }
                                     },
                                     "type": "object"
@@ -5013,7 +6130,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Invalid parameters"
                                         }
@@ -5093,7 +6210,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Invalid input data"
                                         }
@@ -5160,7 +6277,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Invalid parameters"
                                         }
@@ -5214,7 +6331,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Review not found"
                                         }
@@ -5300,7 +6417,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Invalid input data"
                                         }
@@ -5316,7 +6433,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Review not found"
                                         }
@@ -5374,7 +6491,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "You are not authorized to delete this Review."
                                         }
@@ -5390,7 +6507,7 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Rwview not found"
                                         }
@@ -5478,15 +6595,23 @@
                             }
                         }
                     },
-                    "400": {
-                        "description": "Invalid column or direction",
+                    "401": {
+                        "description": "Invalid credentials",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
                                             "type": "string",
-                                            "example": "Invalid column or direction or parameters"
+                                            "example": "Invalid credentials. Please check your email and password"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 401
                                         }
                                     },
                                     "type": "object"
@@ -5572,15 +6697,23 @@
                             }
                         }
                     },
-                    "400": {
-                        "description": "Invalid column or direction",
+                    "401": {
+                        "description": "Invalid credentials",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "error": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
                                             "type": "string",
-                                            "example": "Invalid column or direction or parameters"
+                                            "example": "Invalid credentials. Please check your email and password"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 401
                                         }
                                     },
                                     "type": "object"
@@ -6512,37 +7645,27 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Warehouses retrieved successfully!",
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/WarehouseResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid parameters",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "successful": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
                                         "message": {
                                             "type": "string",
-                                            "example": "Warehouses retrieved successfully!"
-                                        },
-                                        "data": {
-                                            "properties": {
-                                                "Warehouses": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "$ref": "#/components/schemas/WarehouseResource"
-                                                    }
-                                                },
-                                                "hasMorePages": {
-                                                    "type": "boolean",
-                                                    "example": false
-                                                }
-                                            },
-                                            "type": "object"
-                                        },
-                                        "status_code": {
-                                            "type": "integer",
-                                            "example": 200
+                                            "example": "Invalid parameters"
                                         }
                                     },
                                     "type": "object"
@@ -6580,13 +7703,13 @@
                                         "example": 100
                                     },
                                     "expiry_date": {
-                                        "description": "Warehouse expiry date",
+                                        "description": "Warehouse exoiry date",
                                         "type": "string",
                                         "format": "date",
                                         "example": "2024-12-01"
                                     },
                                     "product_id": {
-                                        "description": "Product ID that you want to add this warehouse to",
+                                        "description": "Product ID that you want to add this warehouse to it",
                                         "type": "integer",
                                         "example": 1
                                     }
@@ -6598,61 +7721,24 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Warehouse created successfully!",
+                        "description": "Warehouse created successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "successful": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Warehouse created successfully!"
-                                        },
-                                        "data": {
-                                            "properties": {
-                                                "Warehouses": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "$ref": "#/components/schemas/WarehouseResource"
-                                                    }
-                                                },
-                                                "hasMorePages": {
-                                                    "type": "boolean",
-                                                    "example": false
-                                                }
-                                            },
-                                            "type": "object"
-                                        },
-                                        "status_code": {
-                                            "type": "integer",
-                                            "example": 201
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/WarehouseResource"
                                 }
                             }
                         }
                     },
                     "403": {
-                        "description": "Forbidden error",
+                        "description": "forbidden error",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "successful": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
                                         "message": {
                                             "type": "string",
-                                            "example": "You are not authorized to create this warehouse."
-                                        },
-                                        "status_code": {
-                                            "type": "integer",
-                                            "example": 403
+                                            "example": "You are not authorized to create this warehouse ."
                                         }
                                     },
                                     "type": "object"
@@ -6666,21 +7752,9 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "successful": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
                                         "message": {
                                             "type": "string",
-                                            "example": "Validation Failed"
-                                        },
-                                        "data": {
-                                            "type": "object",
-                                            "example": []
-                                        },
-                                        "status_code": {
-                                            "type": "integer",
-                                            "example": 400
+                                            "example": "Invalid input data"
                                         }
                                     },
                                     "type": "object"
@@ -6717,40 +7791,11 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Warehouses retrieved successfully!",
+                        "description": "Successful response",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "successful": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Warehouses retrieved successfully!"
-                                        },
-                                        "data": {
-                                            "properties": {
-                                                "Warehouses": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "$ref": "#/components/schemas/WarehouseResource"
-                                                    }
-                                                },
-                                                "hasMorePages": {
-                                                    "type": "boolean",
-                                                    "example": false
-                                                }
-                                            },
-                                            "type": "object"
-                                        },
-                                        "status_code": {
-                                            "type": "integer",
-                                            "example": 200
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/WarehouseResource"
                                 }
                             }
                         }
@@ -6761,17 +7806,9 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "successful": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
                                         "message": {
                                             "type": "string",
                                             "example": "Product not found"
-                                        },
-                                        "status_code": {
-                                            "type": "integer",
-                                            "example": 404
                                         }
                                     },
                                     "type": "object"
@@ -6796,7 +7833,7 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "Your Warehouse ID that you want to update",
+                        "description": "your Warehouse ID that you want to update it",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -6806,7 +7843,7 @@
                     {
                         "name": "amount",
                         "in": "query",
-                        "description": "The amount of this warehouse",
+                        "description": "THe amount of this warehouse",
                         "required": false,
                         "schema": {
                             "type": "integer",
@@ -6826,37 +7863,45 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Warehouses updated successfully!",
+                        "description": "Warehouse updated successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "successful": {
-                                            "type": "boolean",
-                                            "example": true
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
                                         },
-                                        "message": {
+                                        "amount": {
+                                            "type": "integer",
+                                            "example": 0
+                                        },
+                                        "expiry_date": {
                                             "type": "string",
-                                            "example": "Warehouses updated successfully!"
+                                            "format": "date",
+                                            "example": "2025-12-31"
                                         },
-                                        "data": {
+                                        "product": {
                                             "properties": {
-                                                "Warehouses": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "$ref": "#/components/schemas/WarehouseResource"
-                                                    }
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Iphone 15"
                                                 },
-                                                "hasMorePages": {
-                                                    "type": "boolean",
-                                                    "example": false
+                                                "price": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": "499.99"
+                                                },
+                                                "category": {
+                                                    "type": "string",
+                                                    "example": "Smartphone"
+                                                },
+                                                "user": {
+                                                    "type": "string",
+                                                    "example": "Hasan Zaeter"
                                                 }
                                             },
                                             "type": "object"
-                                        },
-                                        "status_code": {
-                                            "type": "integer",
-                                            "example": 200
                                         }
                                     },
                                     "type": "object"
@@ -6870,21 +7915,9 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "successful": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
                                         "message": {
                                             "type": "string",
-                                            "example": "Validation Failed"
-                                        },
-                                        "data": {
-                                            "type": "object",
-                                            "example": []
-                                        },
-                                        "status_code": {
-                                            "type": "integer",
-                                            "example": 400
+                                            "example": "Invalid input data"
                                         }
                                     },
                                     "type": "object"
@@ -6893,22 +7926,14 @@
                         }
                     },
                     "403": {
-                        "description": "Forbidden error",
+                        "description": "forbidden error",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "successful": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
                                         "message": {
                                             "type": "string",
-                                            "example": "You are not authorized to update this warehouse."
-                                        },
-                                        "status_code": {
-                                            "type": "integer",
-                                            "example": 403
+                                            "example": "You are not authorized to delete this warehouse ."
                                         }
                                     },
                                     "type": "object"
@@ -6922,17 +7947,9 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "successful": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
                                         "message": {
                                             "type": "string",
                                             "example": "Warehouse not found"
-                                        },
-                                        "status_code": {
-                                            "type": "integer",
-                                            "example": 404
                                         }
                                     },
                                     "type": "object"
@@ -6957,7 +7974,7 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "Your Warehouse ID you want to delete",
+                        "description": "your Warehouse ID you want to delete it",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -6972,17 +7989,9 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "successful": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
                                         "message": {
                                             "type": "string",
                                             "example": "Warehouse deleted successfully"
-                                        },
-                                        "status_code": {
-                                            "type": "integer",
-                                            "example": 200
                                         }
                                     },
                                     "type": "object"
@@ -6991,22 +8000,14 @@
                         }
                     },
                     "403": {
-                        "description": "Forbidden error",
+                        "description": "forbidden error",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "successful": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "error": {
+                                        "message": {
                                             "type": "string",
-                                            "example": "You are not authorized to delete this warehouse."
-                                        },
-                                        "status_code": {
-                                            "type": "integer",
-                                            "example": 403
+                                            "example": "You are not authorized to delete this warehouse ."
                                         }
                                     },
                                     "type": "object"
@@ -7020,17 +8021,9 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "successful": {
-                                            "type": "boolean",
-                                            "example": false
-                                        },
-                                        "error": {
+                                        "message": {
                                             "type": "string",
                                             "example": "Warehouse not found"
-                                        },
-                                        "status_code": {
-                                            "type": "integer",
-                                            "example": 404
                                         }
                                     },
                                     "type": "object"
@@ -7046,80 +8039,58 @@
                 ]
             }
         },
-        "/warehouse/get_warehouse_have_offers": {
+        "/api/warehouses/get_warehouse_for_this_product/{product}": {
             "get": {
                 "tags": [
                     "Warehouse"
                 ],
-                "summary": "Get warehouses with active offers",
-                "description": "Retrieve a paginated list of warehouses that have active offers along with their current product prices based on discount.",
-                "operationId": "1e38f9b2897dd576163c4512e339bdc3",
+                "summary": "Get all warehouses by Product ID",
+                "operationId": "aac02f14c46a91151786fb8aef7fb7dc",
                 "parameters": [
                     {
-                        "name": "page",
-                        "in": "query",
-                        "description": "Page number for pagination",
-                        "required": false,
+                        "name": "product",
+                        "in": "path",
+                        "description": "Product ID you want to show all warehouses of it",
+                        "required": true,
                         "schema": {
                             "type": "integer",
-                            "default": 1
-                        }
-                    },
-                    {
-                        "name": "items",
-                        "in": "query",
-                        "description": "Number of items per page",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "default": 20
+                            "example": 1
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Warehouses retrieved successfully!",
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WarehouseResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "successful": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
                                         "message": {
                                             "type": "string",
-                                            "example": "Warehouses retrieved successfully!"
-                                        },
-                                        "data": {
-                                            "properties": {
-                                                "Warehouses": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "$ref": "#/components/schemas/WarehouseResource"
-                                                    }
-                                                },
-                                                "hasMorePages": {
-                                                    "type": "boolean",
-                                                    "example": false
-                                                }
-                                            },
-                                            "type": "object"
-                                        },
-                                        "status_code": {
-                                            "type": "integer",
-                                            "example": 200
+                                            "example": "Product not found"
                                         }
                                     },
                                     "type": "object"
                                 }
                             }
                         }
-                    },
-                    "400": {
-                        "description": "Bad Request"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/warehouses/order/{column}/{direction}": {
@@ -7133,7 +8104,7 @@
                     {
                         "name": "column",
                         "in": "path",
-                        "description": "Column you want to order the warehouses by",
+                        "description": "Column you want to order the warehouses by it",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -7150,7 +8121,7 @@
                     {
                         "name": "direction",
                         "in": "path",
-                        "description": "Direction of ordering",
+                        "description": "Dircetion of ordering",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -7173,7 +8144,7 @@
                     {
                         "name": "items",
                         "in": "query",
-                        "description": "Number of items per page",
+                        "description": "Number of items per page ",
                         "required": false,
                         "schema": {
                             "type": "integer",
@@ -7183,46 +8154,20 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Warehouses retrieved successfully!",
+                        "description": "Successful response",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "successful": {
-                                            "type": "boolean",
-                                            "example": true
-                                        },
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Warehouses retrieved successfully!"
-                                        },
-                                        "data": {
-                                            "properties": {
-                                                "Warehouses": {
-                                                    "type": "array",
-                                                    "items": {
-                                                        "$ref": "#/components/schemas/WarehouseResource"
-                                                    }
-                                                },
-                                                "hasMorePages": {
-                                                    "type": "boolean",
-                                                    "example": false
-                                                }
-                                            },
-                                            "type": "object"
-                                        },
-                                        "status_code": {
-                                            "type": "integer",
-                                            "example": 200
-                                        }
-                                    },
-                                    "type": "object"
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/WarehouseResource"
+                                    }
                                 }
                             }
                         }
                     },
-                    "400": {
-                        "description": "Invalid column or direction",
+                    "401": {
+                        "description": "Invalid credentials",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -7231,13 +8176,13 @@
                                             "type": "boolean",
                                             "example": false
                                         },
-                                        "error": {
+                                        "message": {
                                             "type": "string",
-                                            "example": "Invalid column or direction or parameters"
+                                            "example": "Invalid credentials. Please check your email and password"
                                         },
                                         "status_code": {
                                             "type": "integer",
-                                            "example": 400
+                                            "example": 401
                                         }
                                     },
                                     "type": "object"
@@ -7256,6 +8201,182 @@
     },
     "components": {
         "schemas": {
+            "CartItemsResource": {
+                "title": "Cart Item Resource",
+                "description": "Cart Item Resource schema",
+                "properties": {
+                    "id": {
+                        "description": "The ID of the cart item",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "quantity": {
+                        "description": "The quantity of the product in the cart item",
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "cart": {
+                        "description": "The cart to which this item belongs",
+                        "properties": {
+                            "id": {
+                                "description": "The ID of the cart",
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "user_name": {
+                                "description": "The full name of the cart's owner",
+                                "type": "string",
+                                "example": "John Doe"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "product": {
+                        "description": "The product details",
+                        "properties": {
+                            "id": {
+                                "description": "The ID of the product",
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "name": {
+                                "description": "The name of the product",
+                                "type": "string",
+                                "example": "Laptop"
+                            },
+                            "category": {
+                                "description": "The category of the product",
+                                "type": "string",
+                                "example": "Electronics"
+                            },
+                            "user": {
+                                "description": "The user who owns the product",
+                                "properties": {
+                                    "id": {
+                                        "description": "The ID of the product's owner",
+                                        "type": "integer",
+                                        "example": 10
+                                    },
+                                    "name": {
+                                        "description": "The full name of the product's owner",
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "CartResource": {
+                "title": "Cart Resource",
+                "description": "Cart Resource schema",
+                "properties": {
+                    "id": {
+                        "description": "The ID of the cart",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "user": {
+                        "description": "The user who owns the cart",
+                        "properties": {
+                            "id": {
+                                "description": "The ID of the user",
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "name": {
+                                "description": "The full name of the cart's owner",
+                                "type": "string",
+                                "example": "John Doe"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "items": {
+                        "description": "List of products in the cart",
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "id": {
+                                    "description": "The ID of the product",
+                                    "type": "integer",
+                                    "example": 1
+                                },
+                                "name": {
+                                    "description": "The name of the product",
+                                    "type": "string",
+                                    "example": "Laptop"
+                                },
+                                "total_quantity": {
+                                    "description": "The total quantity of this product in the cart",
+                                    "type": "integer",
+                                    "example": 5
+                                },
+                                "current_price": {
+                                    "description": "The current price of the product with the best offer applied",
+                                    "type": "number",
+                                    "format": "float",
+                                    "example": 299.99
+                                },
+                                "expiry_date": {
+                                    "description": "The expiry date of the product (if applicable)",
+                                    "type": "string",
+                                    "format": "date",
+                                    "example": "2024-12-31",
+                                    "nullable": true
+                                },
+                                "main_image": {
+                                    "description": "The main image of the product",
+                                    "properties": {
+                                        "id": {
+                                            "description": "The ID of the image",
+                                            "type": "integer",
+                                            "example": 101
+                                        },
+                                        "image": {
+                                            "description": "The URL of the image",
+                                            "type": "string",
+                                            "example": "https://example.com/image.jpg"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "nullable": true
+                                },
+                                "best_offer": {
+                                    "description": "The best available offer for the product",
+                                    "properties": {
+                                        "discount": {
+                                            "description": "The discount percentage",
+                                            "type": "string",
+                                            "example": "15.00 %"
+                                        },
+                                        "start_date": {
+                                            "description": "The start date of the offer",
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2024-01-01"
+                                        },
+                                        "end_date": {
+                                            "description": "The end date of the offer",
+                                            "type": "string",
+                                            "format": "date",
+                                            "example": "2024-01-31"
+                                        }
+                                    },
+                                    "type": "object",
+                                    "nullable": true
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "CategoryResource": {
                 "title": "Category Resource",
                 "description": "Category details",
@@ -7847,6 +8968,50 @@
                 },
                 "type": "object"
             },
+            "Cart": {
+                "title": "Cart Model",
+                "description": "Cart details",
+                "properties": {
+                    "id": {
+                        "description": "The ID of the cart",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "user_id": {
+                        "description": "The owner ID of this cart",
+                        "type": "integer",
+                        "example": 1
+                    }
+                },
+                "type": "object"
+            },
+            "Cart_items": {
+                "title": "Cart_items Model",
+                "description": "Cart_items details",
+                "properties": {
+                    "id": {
+                        "description": "The ID of the cart_item",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "quantity": {
+                        "description": "The quantity of the cart_item",
+                        "type": "integer",
+                        "example": 50
+                    },
+                    "warehouse_id": {
+                        "description": "The warehouse ID of the cart_item",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "cart_id": {
+                        "description": "The cart ID to the cart_item",
+                        "type": "integer",
+                        "example": 1
+                    }
+                },
+                "type": "object"
+            },
             "Category": {
                 "title": "Category Model",
                 "description": "Category details",
@@ -7878,14 +9043,20 @@
                         "type": "integer",
                         "example": 1
                     },
-                    "text": {
-                        "description": "The comment text. Must provide either 'text' or 'image', or both.",
+                    "title": {
+                        "description": "The comment title. Must provide either 'text' or 'image', or both.",
                         "type": "string",
-                        "example": "This is a comment",
+                        "example": "This is a comment title",
+                        "nullable": true
+                    },
+                    "text": {
+                        "description": "The comment text. Must provide either 'title' or 'image', or both.",
+                        "type": "string",
+                        "example": "This is a comment text",
                         "nullable": true
                     },
                     "image": {
-                        "description": "the image URL of an optional image. Must provide either 'text' or 'image', or both.",
+                        "description": "the image URL of an optional image. Must provide either 'text' or 'title', or both.",
                         "type": "string",
                         "example": "http://example.com/image.jpg",
                         "nullable": true
@@ -8198,6 +9369,14 @@
         }
     },
     "tags": [
+        {
+            "name": "Carts",
+            "description": "Carts"
+        },
+        {
+            "name": "Cart_items",
+            "description": "Cart_items"
+        },
         {
             "name": "Categories",
             "description": "Categories"

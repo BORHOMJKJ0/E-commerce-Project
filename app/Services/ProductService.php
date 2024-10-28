@@ -69,7 +69,7 @@ class ProductService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid parameters")
+     *             @OA\Property(property="message", type="string", example="Invalid parameters")
      *         )
      *     )
      * )
@@ -132,7 +132,7 @@ class ProductService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid parameters")
+     *             @OA\Property(property="message", type="string", example="Invalid parameters")
      *         )
      *     )
      * )
@@ -181,7 +181,7 @@ class ProductService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Product not found")
+     *             @OA\Property(property="message", type="string", example="Product not found")
      *         )
      *     )
      * )
@@ -268,7 +268,7 @@ class ProductService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="You are not authorized to add this product.")
+     *             @OA\Property(property="message", type="string", example="You are not authorized to add this product.")
      *         )
      *     ),
      *
@@ -278,7 +278,7 @@ class ProductService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid input data")
+     *             @OA\Property(property="message", type="string", example="Invalid input data")
      *         )
      *     )
      * )
@@ -358,7 +358,7 @@ class ProductService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid column or direction or parameters")
+     *             @OA\Property(property="message", type="string", example="Invalid column or direction or parameters")
      *         )
      *     )
      * )
@@ -439,14 +439,16 @@ class ProductService
      *     ),
      *
      *     @OA\Response(
-     *         response=400,
-     *         description="Invalid column or direction",
+     *         response=401,
+     *         description="Invalid credentials",
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid column or direction or parameters")
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Invalid credentials. Please check your email and password"),
+     *             @OA\Property(property="status_code", type="integer", example=401)
      *         )
-     *     )
+     *     ),
      * )
      */
     public function getMyProductsOrderedBy($column, $direction, Request $request)
@@ -579,7 +581,7 @@ class ProductService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid input data")
+     *             @OA\Property(property="message", type="string", example="Invalid input data")
      *         )
      *     ),
      *
@@ -589,7 +591,7 @@ class ProductService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="You are not authorized to update this product.")
+     *             @OA\Property(property="message", type="string", example="You are not authorized to update this product.")
      *         )
      *     ),
      *
@@ -599,7 +601,7 @@ class ProductService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Product not found")
+     *             @OA\Property(property="message", type="string", example="Product not found")
      *         )
      *     )
      * )
@@ -654,7 +656,7 @@ class ProductService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="You are not authorized to delete this product.")
+     *             @OA\Property(property="message", type="string", example="You are not authorized to delete this product.")
      *         )
      *     ),
      *
@@ -664,7 +666,7 @@ class ProductService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Product not found")
+     *             @OA\Property(property="message", type="string", example="Product not found")
      *         )
      *     )
      * )

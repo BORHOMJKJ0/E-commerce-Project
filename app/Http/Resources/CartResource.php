@@ -5,7 +5,57 @@ namespace App\Http\Resources;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Schema(
+ *     schema="CartResource",
+ *     type="object",
+ *     title="Cart Resource",
+ *     description="Cart Resource schema",
+ *
+ *     @OA\Property(property="id", type="integer", example=1, description="The ID of the cart"),
+ *     @OA\Property(
+ *         property="user",
+ *         type="object",
+ *         description="The user who owns the cart",
+ *         @OA\Property(property="id", type="integer", example=1, description="The ID of the user"),
+ *         @OA\Property(property="name", type="string", example="John Doe", description="The full name of the cart's owner")
+ *     ),
+ *     @OA\Property(
+ *         property="items",
+ *         type="array",
+ *         description="List of products in the cart",
+ *
+ *         @OA\Items(
+ *             type="object",
+ *
+ *             @OA\Property(property="id", type="integer", example=1, description="The ID of the product"),
+ *             @OA\Property(property="name", type="string", example="Laptop", description="The name of the product"),
+ *             @OA\Property(property="total_quantity", type="integer", example=5, description="The total quantity of this product in the cart"),
+ *             @OA\Property(property="current_price", type="number", format="float", example=299.99, description="The current price of the product with the best offer applied"),
+ *             @OA\Property(property="expiry_date", type="string", format="date",nullable=true,example="2024-12-31", description="The expiry date of the product (if applicable)"),
+ *             @OA\Property(
+ *                 property="main_image",
+ *                 nullable=true,
+ *                 type="object",
+ *                 description="The main image of the product",
+ *                 @OA\Property(property="id", type="integer", example=101, description="The ID of the image"),
+ *                 @OA\Property(property="image", type="string", example="https://example.com/image.jpg", description="The URL of the image")
+ *             ),
+ *             @OA\Property(
+ *                 property="best_offer",
+ *                 type="object",
+ *                 nullable=true,
+ *                 description="The best available offer for the product",
+ *                 @OA\Property(property="discount", type="string", example="15.00 %", description="The discount percentage"),
+ *                 @OA\Property(property="start_date", type="string", format="date", example="2024-01-01", description="The start date of the offer"),
+ *                 @OA\Property(property="end_date", type="string", format="date", example="2024-01-31", description="The end date of the offer")
+ *             )
+ *         )
+ *     )
+ * )
+ */
 class CartResource extends JsonResource
 {
     public function toArray(Request $request): array

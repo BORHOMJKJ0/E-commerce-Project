@@ -74,7 +74,7 @@ class ReviewService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid parameters")
+     *             @OA\Property(property="message", type="string", example="Invalid parameters")
      *         )
      *     )
      * )
@@ -136,7 +136,7 @@ class ReviewService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid parameters")
+     *             @OA\Property(property="message", type="string", example="Invalid parameters")
      *         )
      *     )
      * )
@@ -185,7 +185,7 @@ class ReviewService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Review not found")
+     *             @OA\Property(property="message", type="string", example="Review not found")
      *         )
      *     )
      * )
@@ -254,7 +254,7 @@ class ReviewService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid input data")
+     *             @OA\Property(property="message", type="string", example="Invalid input data")
      *         )
      *     ),
      * )
@@ -324,14 +324,16 @@ class ReviewService
      *     ),
      *
      *     @OA\Response(
-     *         response=400,
-     *         description="Invalid column or direction",
+     *         response=401,
+     *         description="Invalid credentials",
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid column or direction or parameters")
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Invalid credentials. Please check your email and password"),
+     *             @OA\Property(property="status_code", type="integer", example=401)
      *         )
-     *     )
+     *     ),
      * )
      */
     public function getReviewsOrderedBy($column, $direction, Request $request)
@@ -412,14 +414,16 @@ class ReviewService
      *     ),
      *
      *     @OA\Response(
-     *         response=400,
-     *         description="Invalid column or direction",
+     *         response=401,
+     *         description="Invalid credentials",
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid column or direction or parameters")
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Invalid credentials. Please check your email and password"),
+     *             @OA\Property(property="status_code", type="integer", example=401)
      *         )
-     *     )
+     *     ),
      * )
      */
     public function getMyReviewsOrderedBy($column, $direction, Request $request)
@@ -512,7 +516,7 @@ class ReviewService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid input data")
+     *             @OA\Property(property="message", type="string", example="Invalid input data")
      *         )
      *     ),
      *
@@ -522,7 +526,7 @@ class ReviewService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Review not found")
+     *             @OA\Property(property="message", type="string", example="Review not found")
      *         )
      *     )
      * )
@@ -574,7 +578,7 @@ class ReviewService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="You are not authorized to delete this Review.")
+     *             @OA\Property(property="message", type="string", example="You are not authorized to delete this Review.")
      *         )
      *     ),
      *
@@ -584,7 +588,7 @@ class ReviewService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Rwview not found")
+     *             @OA\Property(property="message", type="string", example="Rwview not found")
      *         )
      *     )
      * )

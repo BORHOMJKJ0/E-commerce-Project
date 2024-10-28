@@ -64,6 +64,10 @@ class CategoryService
      *         @OA\JsonContent(
      *             type="array",
      *
+     *    @OA\Property(property="successful", type="boolean", example=true),
+     *               @OA\Property(property="message", type="string", example="Categories returned successfully"),
+     *       @OA\Property(property="status_code", type="integer", example=200)
+     *
      *             @OA\Items(ref="#/components/schemas/CategoryResource")
      *         )
      *     ),
@@ -74,7 +78,9 @@ class CategoryService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid parameters")
+     *    @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Invalid parameters"),
+     *          @OA\Property(property="status_code", type="integer", example=400)
      *         )
      *     )
      * )
@@ -126,6 +132,10 @@ class CategoryService
      *         @OA\JsonContent(
      *             type="array",
      *
+     *    @OA\Property(property="successful", type="boolean", example=true),
+     *               @OA\Property(property="message", type="string", example="Categories returned successfully"),
+     *       @OA\Property(property="status_code", type="integer", example=200)
+     *
      *             @OA\Items(ref="#/components/schemas/CategoryResource")
      *         )
      *     ),
@@ -136,7 +146,9 @@ class CategoryService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid parameters")
+     *@OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Invalid parameters"),
+     *             @OA\Property(property="status_code", type="integer", example=400)
      *         )
      *     )
      * )
@@ -175,7 +187,9 @@ class CategoryService
      *     @OA\Response(
      *         response=200,
      *         description="Successful response",
-     *
+     *@OA\Property(property="successful", type="boolean", example=true),
+     *                @OA\Property(property="message", type="string", example="Category returned successfully"),
+     *        @OA\Property(property="status_code", type="integer", example=200)
      *         @OA\JsonContent(ref="#/components/schemas/CategoryResource")
      *     ),
      *
@@ -184,8 +198,9 @@ class CategoryService
      *         description="Category not found",
      *
      *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="error", type="string", example="Category not found")
+     *@OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Category not found"),
+     *           @OA\Property(property="status_code", type="integer", example=200)
      *         )
      *     )
      * )
@@ -248,7 +263,11 @@ class CategoryService
      *                 example={},
      *
      *             @OA\Items()
+     *
      *             )
+     * @OA\Property(property="successful", type="boolean", example=true),
+     *                @OA\Property(property="message", type="string", example="Category createed successfully"),
+     *        @OA\Property(property="status_code", type="integer", example=200)
      *         )
      *     ),
      *
@@ -257,8 +276,9 @@ class CategoryService
      *         description="Validation error",
      *
      *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="error", type="string", example="Invalid input data")
+     *@OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Invalid input data"),
+     *          @OA\Property(property="status_code", type="integer", example=200)
      *         )
      *     ),
      * )
@@ -323,7 +343,9 @@ class CategoryService
      *
      *         @OA\JsonContent(
      *             type="array",
-     *
+     *@OA\Property(property="successful", type="boolean", example=true),
+     *                @OA\Property(property="message", type="string", example="Categories returned successfully"),
+     *        @OA\Property(property="status_code", type="integer", example=200)
      *             @OA\Items(ref="#/components/schemas/CategoryResource")
      *         )
      *     ),
@@ -334,9 +356,11 @@ class CategoryService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid column or direction or parameters")
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Invalid column or direction or parameters"),
+     *             @OA\Property(property="status_code", type="integer", example=400)
      *         )
-     *     )
+     *     ),
      * )
      */
     public function getCategoriesOrderedBy($column, $direction, Request $request)
@@ -419,9 +443,11 @@ class CategoryService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid column or direction or parameters")
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Invalid column or direction or parameters"),
+     *             @OA\Property(property="status_code", type="integer", example=400)
      *         )
-     *     )
+     *     ),
      * )
      */
     public function getMyCategoriesOrderedBy($column, $direction, Request $request)
@@ -512,7 +538,7 @@ class CategoryService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid input data")
+     *             @OA\Property(property="message", type="string", example="Invalid input data")
      *         )
      *     ),
      *
@@ -522,7 +548,7 @@ class CategoryService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="You cannot update category with associated products.")
+     *             @OA\Property(property="message", type="string", example="You cannot update category with associated products.")
      *         )
      *     ),
      *
@@ -532,7 +558,7 @@ class CategoryService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Category not found")
+     *             @OA\Property(property="message", type="string", example="Category not found")
      *         )
      *     )
      * )
@@ -588,7 +614,7 @@ class CategoryService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="You are not authorized to delete this Category.")
+     *             @OA\Property(property="message", type="string", example="You are not authorized to delete this Category.")
      *         )
      *     ),
      *
@@ -598,7 +624,7 @@ class CategoryService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Category not found")
+     *             @OA\Property(property="message", type="string", example="Category not found")
      *         )
      *     )
      * )

@@ -77,7 +77,7 @@ class OfferService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid parameters")
+     *             @OA\Property(property="message", type="string", example="Invalid parameters")
      *         )
      *     )
      * )
@@ -140,7 +140,7 @@ class OfferService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid parameters")
+     *             @OA\Property(property="message", type="string", example="Invalid parameters")
      *         )
      *     )
      * )
@@ -190,7 +190,7 @@ class OfferService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Offer not found")
+     *             @OA\Property(property="message", type="string", example="Offer not found")
      *         )
      *     )
      * )
@@ -276,7 +276,7 @@ class OfferService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="You are not authorized to create this Offer.")
+     *             @OA\Property(property="message", type="string", example="You are not authorized to create this Offer.")
      *         )
      *     ),
      *
@@ -286,7 +286,7 @@ class OfferService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid input data")
+     *             @OA\Property(property="message", type="string", example="Invalid input data")
      *         )
      *     ),
      * )
@@ -375,14 +375,16 @@ class OfferService
      *     ),
      *
      *     @OA\Response(
-     *         response=400,
-     *         description="Invalid column or direction",
+     *         response=401,
+     *         description="Invalid credentials",
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid column or direction or parameters")
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Invalid credentials. Please check your email and password"),
+     *             @OA\Property(property="status_code", type="integer", example=401)
      *         )
-     *     )
+     *     ),
      * )
      */
     public function getOffersOrderedBy($column, $direction, Request $request)
@@ -463,14 +465,16 @@ class OfferService
      *     ),
      *
      *     @OA\Response(
-     *         response=400,
-     *         description="Invalid column or direction",
+     *         response=401,
+     *         description="Invalid credentials",
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid column or direction or parameters")
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Invalid credentials. Please check your email and password"),
+     *             @OA\Property(property="status_code", type="integer", example=401)
      *         )
-     *     )
+     *     ),
      * )
      */
     public function getMyOffersOrderedBy($column, $direction, Request $request)
@@ -597,7 +601,7 @@ class OfferService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid input data")
+     *             @OA\Property(property="message", type="string", example="Invalid input data")
      *         )
      *     ),
      *
@@ -607,7 +611,7 @@ class OfferService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="You are not authorized to update this Offer.")
+     *             @OA\Property(property="message", type="string", example="You are not authorized to update this Offer.")
      *         )
      *     ),
      *
@@ -617,7 +621,7 @@ class OfferService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Offer not found")
+     *             @OA\Property(property="message", type="string", example="Offer not found")
      *         )
      *     )
      * )
@@ -693,7 +697,7 @@ class OfferService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="You are not authorized to delete this Offer.")
+     *             @OA\Property(property="message", type="string", example="You are not authorized to delete this Offer.")
      *         )
      *     ),
      *
@@ -703,7 +707,7 @@ class OfferService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Offer not found")
+     *             @OA\Property(property="message", type="string", example="Offer not found")
      *         )
      *     )
      * )

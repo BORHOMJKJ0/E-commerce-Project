@@ -34,13 +34,13 @@ class CartService
      *     path="/api/carts/{id}",
      *     summary="Get a single cart by ID",
      *     tags={"Carts"},
-     *     security={{"bearerAuth": {} }},
+     *     security={{"bearerAuth": {}}},
      *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *     description="Cart ID you want to show it",
+     *         description="ID of the cart to retrieve",
      *
      *         @OA\Schema(type="integer", example=1)
      *     ),
@@ -49,7 +49,11 @@ class CartService
      *         response=200,
      *         description="Successful response",
      *
-     *         @OA\JsonContent(ref="#/components/schemas/CartResource")
+     *    @OA\Property(property="successful", type="boolean", example=true),
+     *              @OA\Property(property="message", type="string", example="Cart returned successfully"),
+     *      @OA\Property(property="status_code", type="integer", example=200),
+     *
+     *         @OA\Items(ref="#/components/schemas/CartResource")
      *     ),
      *
      *     @OA\Response(
@@ -58,7 +62,9 @@ class CartService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Cart not found")
+     *    @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Cart not found"),
+     *            @OA\Property(property="status_code", type="integer", example=404)
      *         )
      *     )
      * )
@@ -76,27 +82,24 @@ class CartService
      *     path="/api/carts",
      *     summary="Create a Cart",
      *     tags={"Carts"},
-     *     security={{"bearerAuth": {} }},
+     *     security={{"bearerAuth": {}}},
      *
      *     @OA\RequestBody(
      *         required=true,
      *
-     *      @OA\MediaType(
-     *             mediaType="multipart/form-data",
-     *    ),
+     *         @OA\MediaType(
+     *             mediaType="application/json",
      *
-     *    @OA\Header(
-     *         header="Content-Type",
-     *         description="Content-Type header",
+     *             @OA\Schema(
+     *                 type="object",
      *
-     *         @OA\Schema(type="string", example="application/json")
-     *     ),
-     *
-     *     @OA\Header(
-     *         header="Accept",
-     *         description="Accept header",
-     *
-     *         @OA\Schema(type="string", example="application/json")
+     *                 @OA\Property(
+     *                     property="user_id",
+     *                     type="integer",
+     *                     example=1
+     *                 ),
+     *             )
+     *         )
      *     ),
      *
      *     @OA\Response(
@@ -111,9 +114,17 @@ class CartService
      *             @OA\Property(
      *                 property="products",
      *                 type="array",
-     *                 example={},
      *
-     *             @OA\Items()
+     *                 @OA\Items(
+     *                     type="object",
+     *
+     *                     @OA\Property(property="product_id", type="integer", example=1),
+     *                     @OA\Property(property="quantity", type="integer", example=2),
+     *                     @OA\Property(property="price", type="number", format="float", example=19.99),
+     *         @OA\Property(property="successful", type="boolean", example=true),
+     *               @OA\Property(property="message", type="string", example="Cart created successfully"),
+     *       @OA\Property(property="status_code", type="integer", example=200)
+     *                 )
      *             )
      *         )
      *     ),
@@ -124,9 +135,11 @@ class CartService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid input data")
+     *    @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Invalid input data"),
+     *            @OA\Property(property="status_code", type="integer", example=400)
      *         )
-     *     ),
+     *     )
      * )
      */
     public function createCart()
@@ -146,27 +159,27 @@ class CartService
 
     /**
      * @OA\Put(
-     *     path="/api/categories/{id}",
-     *     summary="Update a category",
-     *     tags={"Categories"},
+     *     path="/api/carts/{id}",
+     *     summary="Update a cart",
+     *     tags={"Carts"},
      *     security={{"bearerAuth": {}}},
      *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *     description="Category ID you want to update it",
+     *     description="Cart ID you want to update it",
      *
      *         @OA\Schema(type="integer", example=1)
      *     ),
      *
      *     @OA\Parameter(
-     *         name="name",
+     *         name="user_id",
      *         in="query",
      *         required=false,
-     *     description="Category name",
+     *     description="User ID",
      *
-     *         @OA\Schema(type="string", example="Vegetables")
+     *         @OA\Schema(type="integer", example=1)
      *     ),
      *
      *     @OA\Header(
@@ -185,13 +198,13 @@ class CartService
      *
      *     @OA\Response(
      *         response=200,
-     *         description="Category updated successfully",
+     *         description="Cart updated successfully",
      *
      *         @OA\JsonContent(
      *             type="object",
      *
      *             @OA\Property(property="id", type="integer", example=1),
-     *             @OA\Property(property="name", type="string", example="Electronic devices"),
+     *             @OA\Property(property="name", type="string", example="Vegetables"),
      *             @OA\Property(
      *                 property="products",
      *                 type="array",
@@ -200,7 +213,10 @@ class CartService
      *                     type="object",
      *
      *                     @OA\Property(property="name", type="string", example="Smartphone"),
-     *                     @OA\Property(property="user", type="string", example="Hasan Zaeter")
+     *                     @OA\Property(property="user", type="string", example="Hasan Zaeter"),
+     *         @OA\Property(property="successful", type="boolean", example=true),
+     *               @OA\Property(property="message", type="string", example="Cart updated successfully"),
+     *       @OA\Property(property="status_code", type="integer", example=200)
      *                 )
      *             )
      *         )
@@ -212,7 +228,9 @@ class CartService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid input data")
+     *    @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Invalid input data"),
+     *            @OA\Property(property="status_code", type="integer", example=400)
      *         )
      *     ),
      *
@@ -222,17 +240,21 @@ class CartService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="You cannot update category with associated products.")
+     *    @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="You are not authorized to update this Cart ."),
+     *            @OA\Property(property="status_code", type="integer", example=403)
      *         )
      *     ),
      *
      *     @OA\Response(
      *         response=404,
-     *         description="Category not found",
+     *         description="Cart not found",
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Category not found")
+     *    @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Cart not found"),
+     *            @OA\Property(property="status_code", type="integer", example=404)
      *         )
      *     )
      * )
@@ -276,7 +298,9 @@ class CartService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="message", type="string", example="Cart deleted successfully")
+     *    @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Cart deleted successfully"),
+     *            @OA\Property(property="status_code", type="integer", example=200)
      *         )
      *     ),
      *
@@ -286,7 +310,9 @@ class CartService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="You are not authorized to delete this Cart.")
+     *    @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="You are not authorized to delete this Cart."),
+     *           @OA\Property(property="status_code", type="integer", example=403)
      *         )
      *     ),
      *
@@ -296,7 +322,9 @@ class CartService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Cart not found")
+     *    @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Cart not found"),
+     *          @OA\Property(property="status_code", type="integer", example=404)
      *         )
      *     )
      * )

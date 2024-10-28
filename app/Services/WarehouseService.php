@@ -67,7 +67,7 @@ class WarehouseService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid parameters")
+     *             @OA\Property(property="message", type="string", example="Invalid parameters")
      *         )
      *     )
      * )
@@ -117,7 +117,7 @@ class WarehouseService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Product not found")
+     *             @OA\Property(property="message", type="string", example="Product not found")
      *         )
      *     )
      * )
@@ -158,7 +158,7 @@ class WarehouseService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Product not found")
+     *             @OA\Property(property="message", type="string", example="Product not found")
      *         )
      *     )
      * )
@@ -229,7 +229,7 @@ class WarehouseService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="You are not authorized to create this warehouse .")
+     *             @OA\Property(property="message", type="string", example="You are not authorized to create this warehouse .")
      *         )
      *     ),
      *
@@ -239,7 +239,7 @@ class WarehouseService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid input data")
+     *             @OA\Property(property="message", type="string", example="Invalid input data")
      *         )
      *     ),
      * )
@@ -316,14 +316,16 @@ class WarehouseService
      *     ),
      *
      *     @OA\Response(
-     *         response=400,
-     *         description="Invalid column or direction",
+     *         response=401,
+     *         description="Invalid credentials",
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid column or direction or parameters")
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Invalid credentials. Please check your email and password"),
+     *             @OA\Property(property="status_code", type="integer", example=401)
      *         )
-     *     )
+     *     ),
      * )
      */
     public function getWarehousesOrderedBy($column, $direction, Request $request)
@@ -424,7 +426,7 @@ class WarehouseService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Invalid input data")
+     *             @OA\Property(property="message", type="string", example="Invalid input data")
      *         )
      *     ),
      *
@@ -434,7 +436,7 @@ class WarehouseService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="You are not authorized to delete this warehouse .")
+     *             @OA\Property(property="message", type="string", example="You are not authorized to delete this warehouse .")
      *         )
      *     ),
      *
@@ -444,7 +446,7 @@ class WarehouseService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Warehouse not found")
+     *             @OA\Property(property="message", type="string", example="Warehouse not found")
      *         )
      *     )
      * )
@@ -504,7 +506,7 @@ class WarehouseService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="You are not authorized to delete this warehouse .")
+     *             @OA\Property(property="message", type="string", example="You are not authorized to delete this warehouse .")
      *         )
      *     ),
      *
@@ -514,7 +516,7 @@ class WarehouseService
      *
      *         @OA\JsonContent(
      *
-     *             @OA\Property(property="error", type="string", example="Warehouse not found")
+     *             @OA\Property(property="message", type="string", example="Warehouse not found")
      *         )
      *     )
      * )
