@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Image;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ImageResource;
 use App\Models\Image;
 use App\Services\ImageService;
 use Illuminate\Http\JsonResponse;
@@ -30,7 +32,15 @@ class ImageController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        return $this->imageService->createimage($request->all());
+        $result = $this->imageService->createImage($request->all());
+        if ($result instanceof JsonResponse) {
+            return $result;
+        } elseif ($result instanceof Image) {
+            $data = [
+                'Image' => ImageResource::make($result),
+            ];
+            return ResponseHelper::jsonResponse($data, 'Image created successfully!', 201);
+        }
     }
 
     public function show(Image $image): JsonResponse

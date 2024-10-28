@@ -294,7 +294,6 @@ class OfferService
     public function createOffer(array $data)
     {
         try {
-
             $this->validateOfferData($data);
 
             $warehouse = Warehouse::findOrFail($data['warehouse_id']);
@@ -311,10 +310,8 @@ class OfferService
                 ->get();
             $this->checkDiscount($data['discount_percentage'], $data['start_date'], $existingOffers);
 
-            $offer = $this->offerRepository->create($data);
-            $data = ['offer' => OfferResource::make($offer)];
+            return $this->offerRepository->create($data);
 
-            return ResponseHelper::jsonResponse($data, 'Offer created successfully!', 201);
         } catch (HttpResponseException $e) {
             return $e->getResponse();
         }

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Warehouse;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\WarehouseResource;
 use App\Models\Warehouse;
 use App\Services\WarehouseService;
 use Illuminate\Http\JsonResponse;
@@ -25,7 +27,9 @@ class WarehouseController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        return $this->warehouseService->createWarehouse($request->all());
+        $warehouse = $this->warehouseService->createWarehouse($request->all());
+        $data = ['warehouse' => WarehouseResource::make($warehouse)];
+        return ResponseHelper::jsonResponse($data, 'Warehouse created successfully!', 201);
     }
 
     public function show(Warehouse $warehouse): JsonResponse

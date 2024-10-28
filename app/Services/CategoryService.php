@@ -616,6 +616,19 @@ class CategoryService
         return $response;
     }
 
+    public function CreateCategoryOrFind($category_name)
+    {
+        $category = Category::where('name', $category_name)->first();
+        if (! $category) {
+            $data = [
+                'name' => $category_name,
+            ];
+            $category = $this->categoryRepository->create($data);
+        }
+
+        return $category->id;
+    }
+
     protected function validateCategoryData(array $data, $rule = 'required')
     {
         $validator = Validator::make($data, [

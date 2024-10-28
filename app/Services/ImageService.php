@@ -288,17 +288,10 @@ class ImageService
                 return ResponseHelper::jsonResponse([], 'This product already has a main image.', 400);
             }
 
-            $image = $this->imageRepository->create($data);
-            $data = [
-                'Image' => ImageResource::make($image),
-            ];
-
-            $response = ResponseHelper::jsonResponse($data, 'Image created successfully!', 201);
+            return $this->imageRepository->create($data);
         } catch (HttpResponseException $e) {
-            $response = $e->getResponse();
+            return $e->getResponse();
         }
-
-        return $response;
     }
 
     /**
@@ -668,7 +661,7 @@ class ImageService
     protected function validateImageData(array $data, $rule = 'required')
     {
         $validator = Validator::make($data, [
-            'image' => "$rule|image|max:5120",
+            'image' => "$rule",
             'main' => "$rule|nullable|boolean",
             'product_id' => "$rule|exists:products,id",
         ]);

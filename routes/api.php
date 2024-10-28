@@ -54,6 +54,7 @@ Route::middleware('api')->group(function () {
         Route::get('/my/order/{column}/{direction}', 'MyCategoriesOrderBy');
         Route::get('/my/random', 'MyCategories');
     });
+    Route::post('product/create_product_with_all_details', [ProductController::class, 'create_product_with_details']);
     Route::prefix('warehouses')->controller(WarehouseController::class)->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');
         Route::get('/get_warehouse_for_this_product/{product}', 'getWarehousesForSpecificProduct');

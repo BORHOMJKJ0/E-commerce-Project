@@ -5,13 +5,13 @@ namespace App\Services;
 use App\Helpers\ResponseHelper;
 use App\Http\Requests\SearchProductRequest;
 use App\Http\Resources\ProductResource;
-use App\Models\Category;
 use App\Models\Product;
 use App\Repositories\ProductRepository;
 use App\Traits\AuthTrait;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -19,13 +19,29 @@ class ProductService
 {
     use AuthTrait;
 
-    protected $productRepository;
+    protected ProductRepository $productRepository;
 
-    protected $fcmService;
+    private OfferService $offerService;
 
-    public function __construct(ProductRepository $productRepository)
+    private CategoryService $categoryService;
+
+    private WarehouseService $warehouseService;
+
+    private ImageService $imageService;
+
+    //    protected $fcmService;
+
+    public function __construct(ProductRepository $productRepository, CategoryService $categoryService,
+                                WarehouseService  $warehouseService, OfferService $offerService,
+                                ImageService      $imageService,
+        //                                FcmService $fcmService
+    )
     {
         $this->productRepository = $productRepository;
+        $this->categoryService = $categoryService;
+        $this->warehouseService = $warehouseService;
+        $this->offerService = $offerService;
+        $this->imageService = $imageService;
         // $this->fcmService = $fcmService;
     }
 
@@ -285,19 +301,14 @@ class ProductService
      *     )
      * )
      */
-    public function createProduct(array $data)
+    public function createProduct(array $data): Product
     {
         $data['user_id'] = auth()->id();
         $this->validateProductData($data);
         $product = $this->productRepository->create($data);
 
         // $this->fcmService->notifyUsers($product);
-
-        $data = [
-            'Product' => ProductResource::make($product),
-        ];
-
-        return ResponseHelper::jsonResponse($data, 'Product created successfully!', 201);
+        return $product;
     }
 
     /**
@@ -748,7 +759,83 @@ class ProductService
         return $response;
     }
 
-    protected function validateProductData(array $data, $rule = 'required')
+    public function create_product_with_details(Request $request): JsonResponse
+    {
+        $request->validate([
+            'category_name' => 'required',
+            'product_name' => 'required',
+            'product_description' => 'required',
+            'product_price' => 'required',
+            'images' => 'required|array',
+            'warehouse' => 'required|array',
+            'warehouse.*.offers' => 'required|array',
+        ]);
+        DB::transaction(function () use ($request) {
+            $category_id = $this->categoryService->CreateCategoryOrFind($request->input('category_name'));
+
+            $data = [
+                'name' => $request->input('product_name'),
+                'description' => $request->input('product_description'),
+                'price' => $request->input('product_price'),
+                'category_id' => $category_id,
+            ];
+
+            $product = $this->createProduct($data);
+
+            $imagesData = $request->input('images');
+
+            foreach ($imagesData as $image) {
+
+                $data = [
+                    'image' => $image['image'],
+                    'main' => $image['main'],
+                    'product_id' => $product->id,
+                ];
+
+                $result = $this->imageService->createImage($data);
+                if ($result instanceof JsonResponse) {
+                    return $result;
+                }
+            }
+
+            $warehousesData = $request->input('warehouse');
+
+
+            foreach ($warehousesData as $warehouseData) {
+                $data = [
+                    'amount' => $warehouseData['amount'],
+                    'expiry_date' => $warehouseData['expiry_date'],
+                    'product_id' => $product->id,
+                ];
+
+                $warehouse = $this->warehouseService->createWarehouse($data);
+
+                if ($warehouse instanceof JsonResponse) {
+                    return $warehouse; // Abort if warehouse creation fails
+                }
+
+                foreach ($warehouseData['offers'] as $offer) {
+                    $offerData = [
+                        'discount_percentage' => $offer['discount_percentage'],
+                        'start_date' => $offer['start_date'],
+                        'end_date' => $offer['end_date'],
+                        'warehouse_id' => $warehouse->id,
+                    ];
+
+                    $offerResult = $this->offerService->createOffer($offerData);
+
+                    if ($offerResult instanceof JsonResponse) {
+                        return $offerResult; // Abort if offer creation fails
+                    }
+                }
+            }
+
+            return ResponseHelper::jsonResponse([], 'Products and its details added successfully!', 201);
+        });
+        return ResponseHelper::jsonResponse([], 'Products and its details added successfully!', 201);
+    }
+
+    protected function validateProductData(array $data, $rule = 'required'): void
     {
         $validator = Validator::make($data, [
             'name' => "$rule|string|max:255|unique:products,name",

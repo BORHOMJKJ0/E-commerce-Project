@@ -129,7 +129,7 @@ class CartService
      *     ),
      * )
      */
-    public function createCart()
+    public function createCart(): void
     {
         $carts = Cart::where('user_id', auth()->id())->get();
         if ($carts->isEmpty()) {
@@ -137,10 +137,6 @@ class CartService
             $data = [
                 'Cart' => CartResource::make($cart),
             ];
-
-            return ResponseHelper::jsonResponse($data, 'Cart created successfully!', 201);
-        } else {
-            return ResponseHelper::jsonResponse([], 'You already have a cart ', 400);
         }
     }
 
