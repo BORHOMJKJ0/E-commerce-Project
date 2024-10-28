@@ -760,78 +760,108 @@ class ProductService
 
     public function create_product_with_details(Request $request): JsonResponse
     {
-        $request->validate([
-            'category_name' => 'required',
-            'product_name' => 'required',
-            'product_description' => 'required',
-            'product_price' => 'required',
-            'images' => 'required|array',
-            'warehouse' => 'required|array',
-            'warehouse.*.offers' => 'required|array',
-        ]);
-        DB::transaction(function () use ($request) {
-            $category_id = $this->categoryService->CreateCategoryOrFind($request->input('category_name'));
 
-            $data = [
+        $this->validateCreateProductRequest($request);
+
+        return DB::transaction(function () use ($request) {
+
+            $category_id = $this->getCategoryId($request->input('category_name'));
+
+            $product = $this->createProduct([
                 'name' => $request->input('product_name'),
                 'description' => $request->input('product_description'),
                 'price' => $request->input('product_price'),
                 'category_id' => $category_id,
-            ];
+            ]);
 
-            $product = $this->createProduct($data);
+            $this->processProductImages($request->input('images'), $product->id);
 
-            $imagesData = $request->input('images');
-
-            foreach ($imagesData as $image) {
-
-                $data = [
-                    'image' => $image['image'],
-                    'main' => $image['main'],
-                    'product_id' => $product->id,
-                ];
-
-                $result = $this->imageService->createImage($data);
-                if ($result instanceof JsonResponse) {
-                    return $result;
-                }
-            }
-
-            $warehousesData = $request->input('warehouse');
-
-            foreach ($warehousesData as $warehouseData) {
-                $data = [
-                    'amount' => $warehouseData['amount'],
-                    'expiry_date' => $warehouseData['expiry_date'],
-                    'product_id' => $product->id,
-                ];
-
-                $warehouse = $this->warehouseService->createWarehouse($data);
-
-                if ($warehouse instanceof JsonResponse) {
-                    return $warehouse; // Abort if warehouse creation fails
-                }
-
-                foreach ($warehouseData['offers'] as $offer) {
-                    $offerData = [
-                        'discount_percentage' => $offer['discount_percentage'],
-                        'start_date' => $offer['start_date'],
-                        'end_date' => $offer['end_date'],
-                        'warehouse_id' => $warehouse->id,
-                    ];
-
-                    $offerResult = $this->offerService->createOffer($offerData);
-
-                    if ($offerResult instanceof JsonResponse) {
-                        return $offerResult; // Abort if offer creation fails
-                    }
-                }
-            }
+            $this->processWarehousesAndOffers($request->input('warehouse'), $product->id);
 
             return ResponseHelper::jsonResponse([], 'Products and its details added successfully!', 201);
         });
+    }
 
-        return ResponseHelper::jsonResponse([], 'Products and its details added successfully!', 201);
+    private function validateCreateProductRequest(Request $request)
+    {
+        $request->validate([
+            'category_name' => 'required',
+            'product_name' => 'required',
+            'product_description' => 'required',
+            'product_price' => 'required|numeric',
+            'images' => 'required|array',
+            'warehouse' => 'required|array',
+            'warehouse.*.offers' => 'required|array',
+        ]);
+    }
+
+    private function getCategoryId(string $categoryName): int
+    {
+        return $this->categoryService->CreateCategoryOrFind($categoryName);
+    }
+
+    private function processProductImages(array $images, int $productId)
+    {
+        foreach ($images as $image) {
+            $imageData = [
+                'image' => $image['image'],
+                'main' => $image['main'],
+                'product_id' => $productId,
+            ];
+
+            $result = $this->imageService->createImage($imageData);
+            if ($result instanceof JsonResponse) {
+                throw new \Exception('Image creation failed.');
+            }
+        }
+    }
+
+    private function processWarehousesAndOffers(array $warehouses, int $productId): void
+    {
+        foreach ($warehouses as $warehouseData) {
+
+            $warehouse = $this->createWarehouseForProduct($warehouseData, $productId);
+
+            $this->createOffersForWarehouse($warehouseData['offers'], $warehouse->id);
+        }
+    }
+
+    private function createWarehouseForProduct(array $warehouseData, int $productId)
+    {
+        $data = [
+            'amount' => $warehouseData['amount'],
+            'expiry_date' => $warehouseData['expiry_date'],
+            'product_id' => $productId,
+        ];
+
+        $warehouse = $this->warehouseService->createWarehouse($data);
+
+        //check if there is any error in creation
+        if ($warehouse instanceof JsonResponse) {
+            return $warehouse;
+        }
+
+        return $warehouse;
+    }
+
+    private function createOffersForWarehouse(array $offers, int $warehouseId): ?JsonResponse
+    {
+        foreach ($offers as $offer) {
+            $offerData = [
+                'discount_percentage' => $offer['discount_percentage'],
+                'start_date' => $offer['start_date'],
+                'end_date' => $offer['end_date'],
+                'warehouse_id' => $warehouseId,
+            ];
+
+            $offerResult = $this->offerService->createOffer($offerData);
+
+            if ($offerResult instanceof JsonResponse) {
+                return $offerResult;
+            }
+        }
+
+        return null;
     }
 
     protected function validateProductData(array $data, $rule = 'required'): void
