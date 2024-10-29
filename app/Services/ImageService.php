@@ -269,15 +269,20 @@ class ImageService
      *     ),
      * )
      */
-    public function createImage(array $data)
+    public function createImage(array $data, Request $request)
     {
         try {
             if (isset($data['main'])) {
                 $data['main'] = filter_var($data['main'], FILTER_VALIDATE_BOOLEAN);
             }
+
             $this->validateImageData($data);
 
-            $product = Product::find($data['product_id']);
+            $data['image'] = $request->file('image');
+            $path = $data['image']->store('images', 'public');
+            $data['image'] = $path;
+
+            $product = Product::findOrFail($data['product_id']);
             $this->checkOwnership($product, 'Image', 'create');
 
             $hasMainImage = Image::where('product_id', $data['product_id'])
@@ -289,17 +294,17 @@ class ImageService
             }
 
             $image = $this->imageRepository->create($data);
-            $data = [
-                'Image' => ImageResource::make($image),
-            ];
 
-            $response = ResponseHelper::jsonResponse($data, 'Image created successfully!', 201);
+            return ResponseHelper::jsonResponse(
+                ['Image' => ImageResource::make($image)],
+                'Image created successfully!',
+                201
+            );
         } catch (HttpResponseException $e) {
-            $response = $e->getResponse();
+            return $e->getResponse();
         }
-
-        return $response;
     }
+
 
     /**
      * @OA\Get(
@@ -665,10 +670,10 @@ class ImageService
         return $response;
     }
 
-    protected function validateImageData(array $data, $rule = 'required')
+    public function validateImageData(array $data, $rule = 'required')
     {
         $validator = Validator::make($data, [
-            'image' => "$rule|image",
+            'image' => "$rule|image|mimes:jpeg,png,jpg,gif,svg|max:2048",
             'main' => "$rule|nullable|boolean",
             'product_id' => "$rule|exists:products,id",
         ]);

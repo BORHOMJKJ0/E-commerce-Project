@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Offer;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\OfferResource;
 use App\Models\Offer;
 use App\Services\OfferService;
 use Illuminate\Http\JsonResponse;
@@ -30,7 +32,15 @@ class OfferController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        return $this->offerService->createOffer($request->all());
+        $offer = $this->offerService->createOffer($request->all());
+        if ($offer instanceof Offer) {
+            $data = ['offer' => OfferResource::make($offer)];
+
+            return ResponseHelper::jsonResponse($data, 'Offer created successfully!', 201);
+        } else {
+            return $offer;
+        }
+
     }
 
     public function show(Offer $offer): JsonResponse

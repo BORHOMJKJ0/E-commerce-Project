@@ -34,39 +34,39 @@ class Handler extends ExceptionHandler
         });
     }
 
-    public function render($request, Throwable $exception)
-    {
-        if ($exception instanceof ModelNotFoundException) {
-            $modelName = $exception->getModel();
-
-            switch ($modelName) {
-                case 'App\\Models\\Product':
-                    return ResponseHelper::jsonResponse([], 'Product Not Found', 404, false);
-                case 'App\\Models\\Category':
-                    return ResponseHelper::jsonResponse([], 'Category Not Found', 404, false);
-                case 'App\\Models\\Offer':
-                    return ResponseHelper::jsonResponse([], 'Offer Not Found', 404, false);
-                case 'App\\Models\\Warehouse':
-                    return ResponseHelper::jsonResponse([], 'Warehouse Not Found', 404, false);
-                case 'App\\Models\\Review':
-                    return ResponseHelper::jsonResponse([], 'Review Not Found', 404, false);
-                case 'App\\Models\\Comment':
-                    return ResponseHelper::jsonResponse([], 'Comment Not Found', 404, false);
-                case 'App\\Models\\User':
-                    return ResponseHelper::jsonResponse([], 'User Not Found', 404, false);
-                case 'App\\Models\\Image':
-                    return ResponseHelper::jsonResponse([], 'Image Not Found', 404, false);
-                case 'App\\Models\\Cart':
-                    return ResponseHelper::jsonResponse([], 'Cart Not Found', 404, false);
-                default:
-                    return ResponseHelper::jsonResponse([], 'Resource not found', 404, false);
-            }
-        }
-
-        if ($exception instanceof HttpResponseException) {
-            return ResponseHelper::jsonResponse([], $exception->getMessage(), $exception->getCode(), false);
-        }
-
-        return parent::render($request, $exception);
-    }
+    //    public function render($request, Throwable $exception)
+    //    {
+    //        if ($exception instanceof ModelNotFoundException) {
+    //            $modelName = $exception->getModel();
+    //
+    //            switch ($modelName) {
+    //                case 'App\\Models\\Product':
+    //                    return ResponseHelper::jsonResponse([], 'Product Not Found', 404, false);
+    //                case 'App\\Models\\Category':
+    //                    return ResponseHelper::jsonResponse([], 'Category Not Found', 404, false);
+    //                case 'App\\Models\\Offer':
+    //                    return ResponseHelper::jsonResponse([], 'Offer Not Found', 404, false);
+    //                case 'App\\Models\\Warehouse':
+    //                    return ResponseHelper::jsonResponse([], 'Warehouse Not Found', 404, false);
+    //                case 'App\\Models\\Review':
+    //                    return ResponseHelper::jsonResponse([], 'Review Not Found', 404, false);
+    //                case 'App\\Models\\Comment':
+    //                    return ResponseHelper::jsonResponse([], 'Comment Not Found', 404, false);
+    //                case 'App\\Models\\User':
+    //                    return ResponseHelper::jsonResponse([], 'User Not Found', 404, false);
+    //                case 'App\\Models\\Image':
+    //                    return ResponseHelper::jsonResponse([], 'Image Not Found', 404, false);
+    //                case 'App\\Models\\Cart':
+    //                    return ResponseHelper::jsonResponse([], 'Cart Not Found', 404, false);
+    //                default:
+    //                    return ResponseHelper::jsonResponse([], 'Resource not found', 404, false);
+    //            }
+    //        }
+    //
+    //        if ($exception instanceof HttpResponseException) {
+    //            return ResponseHelper::jsonResponse([], $exception->getMessage(), $exception->getCode(), false);
+    //        }
+    //
+    //        return parent::render($request, $exception);
+    //    }
 }

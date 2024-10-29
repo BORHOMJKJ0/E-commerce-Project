@@ -44,7 +44,6 @@ class CategoryService
      *         in="query",
      *         required=false,
      *         description="Page number",
-     *
      *         @OA\Schema(type="integer", example=1)
      *     ),
      *
@@ -53,38 +52,37 @@ class CategoryService
      *         in="query",
      *         required=false,
      *         description="Number of items per page",
-     *
      *         @OA\Schema(type="integer", example=20)
      *     ),
      *
      *     @OA\Response(
      *         response=200,
      *         description="Successful response",
-     *
      *         @OA\JsonContent(
-     *             type="array",
-     *
-     *    @OA\Property(property="successful", type="boolean", example=true),
-     *               @OA\Property(property="message", type="string", example="Categories returned successfully"),
-     *       @OA\Property(property="status_code", type="integer", example=200)
-     *
-     *             @OA\Items(ref="#/components/schemas/CategoryResource")
+     *             type="object",
+     *             @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Categories returned successfully"),
+     *             @OA\Property(property="status_code", type="integer", example=200),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(ref="#/components/schemas/CategoryResource")
+     *             )
      *         )
      *     ),
      *
      *     @OA\Response(
      *         response=400,
      *         description="Invalid parameters",
-     *
      *         @OA\JsonContent(
-     *
-     *    @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="successful", type="boolean", example=false),
      *             @OA\Property(property="message", type="string", example="Invalid parameters"),
-     *          @OA\Property(property="status_code", type="integer", example=400)
+     *             @OA\Property(property="status_code", type="integer", example=400)
      *         )
      *     )
      * )
      */
+
     public function getAllCategories(Request $request)
     {
         $page = $request->query('page', 1);
@@ -105,14 +103,13 @@ class CategoryService
      *     path="/api/categories/my",
      *     summary="Get My categories",
      *     tags={"Categories"},
-     *     security={{"bearerAuth": {} }},
+     *     security={{"bearerAuth": {}}},
      *
      *     @OA\Parameter(
      *         name="page",
      *         in="query",
      *         required=false,
      *         description="Page number",
-     *
      *         @OA\Schema(type="integer", example=1)
      *     ),
      *
@@ -121,32 +118,30 @@ class CategoryService
      *         in="query",
      *         required=false,
      *         description="Number of items per page",
-     *
      *         @OA\Schema(type="integer", example=20)
      *     ),
      *
      *     @OA\Response(
      *         response=200,
      *         description="Successful response",
-     *
      *         @OA\JsonContent(
-     *             type="array",
-     *
-     *    @OA\Property(property="successful", type="boolean", example=true),
-     *               @OA\Property(property="message", type="string", example="Categories returned successfully"),
-     *       @OA\Property(property="status_code", type="integer", example=200)
-     *
-     *             @OA\Items(ref="#/components/schemas/CategoryResource")
+     *             type="object",
+     *             @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Categories returned successfully"),
+     *             @OA\Property(property="status_code", type="integer", example=200),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(ref="#/components/schemas/CategoryResource")
+     *             )
      *         )
      *     ),
      *
      *     @OA\Response(
      *         response=400,
      *         description="Invalid parameters",
-     *
      *         @OA\JsonContent(
-     *
-     *@OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="successful", type="boolean", example=false),
      *             @OA\Property(property="message", type="string", example="Invalid parameters"),
      *             @OA\Property(property="status_code", type="integer", example=400)
      *         )
@@ -173,34 +168,39 @@ class CategoryService
      *     path="/api/categories/{id}",
      *     summary="Get a category by ID",
      *     tags={"Categories"},
-     *     security={{"bearerAuth": {} }},
+     *     security={{"bearerAuth": {}}},
      *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *         description="ID of the category you want to show it",
-     *
-     *          @OA\Schema(type="integer", example=1)
+     *         description="ID of the category to retrieve",
+     *         @OA\Schema(type="integer", example=1)
      *     ),
      *
      *     @OA\Response(
      *         response=200,
      *         description="Successful response",
-     *@OA\Property(property="successful", type="boolean", example=true),
-     *                @OA\Property(property="message", type="string", example="Category returned successfully"),
-     *        @OA\Property(property="status_code", type="integer", example=200)
-     *         @OA\JsonContent(ref="#/components/schemas/CategoryResource")
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Category returned successfully"),
+     *             @OA\Property(property="status_code", type="integer", example=200),
+     *             @OA\Property(
+     *                 property="data",
+     *                 ref="#/components/schemas/CategoryResource"
+     *             )
+     *         )
      *     ),
      *
      *     @OA\Response(
      *         response=404,
      *         description="Category not found",
-     *
      *         @OA\JsonContent(
-     *@OA\Property(property="successful", type="boolean", example=false),
+     *             type="object",
+     *             @OA\Property(property="successful", type="boolean", example=false),
      *             @OA\Property(property="message", type="string", example="Category not found"),
-     *           @OA\Property(property="status_code", type="integer", example=200)
+     *             @OA\Property(property="status_code", type="integer", example=404)
      *         )
      *     )
      * )
@@ -217,68 +217,45 @@ class CategoryService
      *     path="/api/categories",
      *     summary="Create a category",
      *     tags={"Categories"},
-     *     security={{"bearerAuth": {} }},
+     *     security={{"bearerAuth": {}}},
      *
      *     @OA\RequestBody(
      *         required=true,
-     *
-     *      @OA\MediaType(
+     *         @OA\MediaType(
      *             mediaType="multipart/form-data",
-     *
      *             @OA\Schema(
      *                 type="object",
      *                 required={"name"},
-     *
-     *                 @OA\Property(property="name", type="string", example="Fruits",description="Category name"),
+     *                 @OA\Property(property="name", type="string", example="Fruits", description="Category name")
      *             )
      *         )
-     *     ),
-     *
-     *    @OA\Header(
-     *         header="Content-Type",
-     *         description="Content-Type header",
-     *
-     *         @OA\Schema(type="string", example="application/json")
-     *     ),
-     *
-     *     @OA\Header(
-     *         header="Accept",
-     *         description="Accept header",
-     *
-     *         @OA\Schema(type="string", example="application/json")
      *     ),
      *
      *     @OA\Response(
      *         response=201,
      *         description="Category created successfully",
-     *
      *         @OA\JsonContent(
      *             type="object",
-     *
      *             @OA\Property(property="id", type="integer", example=1),
      *             @OA\Property(property="name", type="string", example="Electronic devices"),
      *             @OA\Property(
      *                 property="products",
      *                 type="array",
-     *                 example={},
-     *
-     *             @OA\Items()
-     *
-     *             )
-     * @OA\Property(property="successful", type="boolean", example=true),
-     *                @OA\Property(property="message", type="string", example="Category createed successfully"),
-     *        @OA\Property(property="status_code", type="integer", example=200)
+     *                 @OA\Items()
+     *             ),
+     *             @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Category created successfully"),
+     *             @OA\Property(property="status_code", type="integer", example=201)
      *         )
      *     ),
      *
      *     @OA\Response(
      *         response=400,
      *         description="Validation error",
-     *
      *         @OA\JsonContent(
-     *@OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="successful", type="boolean", example=false),
      *             @OA\Property(property="message", type="string", example="Invalid input data"),
-     *          @OA\Property(property="status_code", type="integer", example=200)
+     *             @OA\Property(property="status_code", type="integer", example=400)
      *         )
      *     ),
      * )
@@ -299,14 +276,13 @@ class CategoryService
      *     path="/api/categories/order/{column}/{direction}",
      *     summary="Order categories by a specific column",
      *     tags={"Categories"},
-     *     security={{"bearerAuth": {} }},
+     *     security={{"bearerAuth": {}}},
      *
      *     @OA\Parameter(
      *         name="column",
      *         in="path",
      *         required=true,
-     *         description="Column you want to order the categories by it",
-     *
+     *         description="Column to order the categories by",
      *         @OA\Schema(type="string", enum={"name", "created_at", "updated_at"})
      *     ),
      *
@@ -314,8 +290,7 @@ class CategoryService
      *         name="direction",
      *         in="path",
      *         required=true,
-     *        description="Dircetion of ordering",
-     *
+     *         description="Direction of ordering",
      *         @OA\Schema(type="string", enum={"asc", "desc"})
      *     ),
      *
@@ -324,7 +299,6 @@ class CategoryService
      *         in="query",
      *         required=false,
      *         description="Page number",
-     *
      *         @OA\Schema(type="integer", example=1)
      *     ),
      *
@@ -332,35 +306,35 @@ class CategoryService
      *         name="items",
      *         in="query",
      *         required=false,
-     *         description="Number of items per page ",
-     *
+     *         description="Number of items per page",
      *         @OA\Schema(type="integer", example=20)
      *     ),
      *
      *     @OA\Response(
      *         response=200,
      *         description="Successful response",
-     *
      *         @OA\JsonContent(
-     *             type="array",
-     *@OA\Property(property="successful", type="boolean", example=true),
-     *                @OA\Property(property="message", type="string", example="Categories returned successfully"),
-     *        @OA\Property(property="status_code", type="integer", example=200)
-     *             @OA\Items(ref="#/components/schemas/CategoryResource")
+     *             type="object",
+     *             @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Categories returned successfully"),
+     *             @OA\Property(property="status_code", type="integer", example=200),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(ref="#/components/schemas/CategoryResource")
+     *             )
      *         )
      *     ),
      *
      *     @OA\Response(
      *         response=400,
      *         description="Invalid column or direction",
-     *
      *         @OA\JsonContent(
-     *
      *             @OA\Property(property="successful", type="boolean", example=false),
      *             @OA\Property(property="message", type="string", example="Invalid column or direction or parameters"),
      *             @OA\Property(property="status_code", type="integer", example=400)
      *         )
-     *     ),
+     *     )
      * )
      */
     public function getCategoriesOrderedBy($column, $direction, Request $request)
@@ -388,14 +362,13 @@ class CategoryService
      *     path="/api/categories/my/order/{column}/{direction}",
      *     summary="Order My categories by a specific column",
      *     tags={"Categories"},
-     *     security={{"bearerAuth": {} }},
+     *     security={{"bearerAuth": {}}},
      *
      *     @OA\Parameter(
      *         name="column",
      *         in="path",
      *         required=true,
-     *     description="Column you want to order the categories by it",
-     *
+     *         description="Column to order the categories by",
      *         @OA\Schema(type="string", enum={"name", "created_at", "updated_at"})
      *     ),
      *
@@ -403,8 +376,7 @@ class CategoryService
      *         name="direction",
      *         in="path",
      *         required=true,
-     *        description="Dircetion of ordering",
-     *
+     *         description="Direction of ordering",
      *         @OA\Schema(type="string", enum={"asc", "desc"})
      *     ),
      *
@@ -413,7 +385,6 @@ class CategoryService
      *         in="query",
      *         required=false,
      *         description="Page number",
-     *
      *         @OA\Schema(type="integer", example=1)
      *     ),
      *
@@ -421,33 +392,35 @@ class CategoryService
      *         name="items",
      *         in="query",
      *         required=false,
-     *         description="Number of items per page ",
-     *
+     *         description="Number of items per page",
      *         @OA\Schema(type="integer", example=20)
      *     ),
      *
      *     @OA\Response(
      *         response=200,
      *         description="Successful response",
-     *
      *         @OA\JsonContent(
-     *             type="array",
-     *
-     *             @OA\Items(ref="#/components/schemas/CategoryResource")
+     *             type="object",
+     *             @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Categories returned successfully"),
+     *             @OA\Property(property="status_code", type="integer", example=200),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(ref="#/components/schemas/CategoryResource")
+     *             )
      *         )
      *     ),
      *
      *     @OA\Response(
      *         response=400,
      *         description="Invalid column or direction",
-     *
      *         @OA\JsonContent(
-     *
      *             @OA\Property(property="successful", type="boolean", example=false),
      *             @OA\Property(property="message", type="string", example="Invalid column or direction or parameters"),
      *             @OA\Property(property="status_code", type="integer", example=400)
      *         )
-     *     ),
+     *     )
      * )
      */
     public function getMyCategoriesOrderedBy($column, $direction, Request $request)
@@ -640,6 +613,19 @@ class CategoryService
         }
 
         return $response;
+    }
+
+    public function CreateCategoryOrFind($category_name)
+    {
+        $category = Category::where('name', $category_name)->first();
+        if (! $category) {
+            $data = [
+                'name' => $category_name,
+            ];
+            $category = $this->categoryRepository->create($data);
+        }
+
+        return $category->id;
     }
 
     protected function validateCategoryData(array $data, $rule = 'required')

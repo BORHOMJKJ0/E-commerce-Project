@@ -9,7 +9,9 @@ use App\Models\Product;
 use App\Repositories\ProductRepository;
 use App\Traits\AuthTrait;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -17,13 +19,28 @@ class ProductService
 {
     use AuthTrait;
 
-    protected $productRepository;
+    protected ProductRepository $productRepository;
 
-    protected $fcmService;
+    private OfferService $offerService;
 
-    public function __construct(ProductRepository $productRepository)
-    {
+    private CategoryService $categoryService;
+
+    private WarehouseService $warehouseService;
+
+    private ImageService $imageService;
+
+    //    protected $fcmService;
+
+    public function __construct(ProductRepository $productRepository, CategoryService $categoryService,
+        WarehouseService $warehouseService, OfferService $offerService,
+        ImageService $imageService,
+        //                                FcmService $fcmService
+    ) {
         $this->productRepository = $productRepository;
+        $this->categoryService = $categoryService;
+        $this->warehouseService = $warehouseService;
+        $this->offerService = $offerService;
+        $this->imageService = $imageService;
         // $this->fcmService = $fcmService;
     }
 
@@ -283,19 +300,14 @@ class ProductService
      *     )
      * )
      */
-    public function createProduct(array $data)
+    public function createProduct(array $data): Product
     {
         $data['user_id'] = auth()->id();
         $this->validateProductData($data);
         $product = $this->productRepository->create($data);
 
         // $this->fcmService->notifyUsers($product);
-
-        $data = [
-            'Product' => ProductResource::make($product),
-        ];
-
-        return ResponseHelper::jsonResponse($data, 'Product created successfully!', 201);
+        return $product;
     }
 
     /**
@@ -472,6 +484,69 @@ class ProductService
         return ResponseHelper::jsonResponse($data, 'Products ordered successfully!');
     }
 
+    /**
+     * @OA\Get(
+     *     path="api/products/search",
+     *     summary="Search products by filters",
+     *     description="Retrieve a paginated list of products filtered by various criteria.",
+     *     tags={"Products"},
+     *     security={{"bearerAuth":{}}},
+     *
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         description="Page number for pagination",
+     *         required=false,
+     *
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="items",
+     *         in="query",
+     *         description="Number of items per page",
+     *         required=false,
+     *
+     *         @OA\Schema(type="integer", example=10)
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Products retrieved successfully",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Products retrieved successfully"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Property(
+     *                     property="Products",
+     *                     type="array",
+     *
+     *                    @OA\Items(ref="#/components/schemas/ProductResource")
+     *                 ),
+     *
+     *                 @OA\Property(property="hasMorePages", type="boolean", example=true)
+     *             ),
+     *             @OA\Property(property="status_code", type="integer", example=200)
+     *         )
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=404,
+     *         description="No products found for the given filters",
+     *
+     *         @OA\JsonContent(
+     *
+     *             @OA\Property(property="successful", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="No products found for the given filters"),
+     *             @OA\Property(property="status_code", type="integer", example=404)
+     *         )
+     *     )
+     * )
+     */
     public function searchByFilters(SearchProductRequest $request)
     {
 
@@ -685,7 +760,113 @@ class ProductService
         return $response;
     }
 
-    protected function validateProductData(array $data, $rule = 'required')
+    public function create_product_with_details(Request $request): JsonResponse
+    {
+
+        $this->validateCreateProductRequest($request);
+
+        return DB::transaction(function () use ($request) {
+
+            $category_id = $this->getCategoryId($request->input('category_name'));
+
+            $product = $this->createProduct([
+                'name' => $request->input('product_name'),
+                'description' => $request->input('product_description'),
+                'price' => $request->input('product_price'),
+                'category_id' => $category_id,
+            ]);
+
+            $this->processProductImages($request->input('images'), $product->id);
+
+            $this->processWarehousesAndOffers($request->input('warehouse'), $product->id);
+
+            return ResponseHelper::jsonResponse([], 'Products and its details added successfully!', 201);
+        });
+    }
+
+    private function validateCreateProductRequest(Request $request)
+    {
+        $request->validate([
+            'category_name' => 'required',
+            'product_name' => 'required',
+            'product_description' => 'required',
+            'product_price' => 'required|numeric',
+            'images' => 'required|array',
+            'warehouse' => 'required|array',
+            'warehouse.*.offers' => 'required|array',
+        ]);
+    }
+
+    private function getCategoryId(string $categoryName): int
+    {
+        return $this->categoryService->CreateCategoryOrFind($categoryName);
+    }
+
+    private function processProductImages(array $images, int $productId)
+    {
+        foreach ($images as $image) {
+            $imageData = [
+                'image' => $image['image'],
+                'main' => $image['main'],
+                'product_id' => $productId,
+            ];
+
+            $result = $this->imageService->createImage($imageData);
+            if ($result instanceof JsonResponse) {
+                throw new \Exception('Image creation failed.');
+            }
+        }
+    }
+
+    private function processWarehousesAndOffers(array $warehouses, int $productId): void
+    {
+        foreach ($warehouses as $warehouseData) {
+
+            $warehouse = $this->createWarehouseForProduct($warehouseData, $productId);
+
+            $this->createOffersForWarehouse($warehouseData['offers'], $warehouse->id);
+        }
+    }
+
+    private function createWarehouseForProduct(array $warehouseData, int $productId)
+    {
+        $data = [
+            'amount' => $warehouseData['amount'],
+            'expiry_date' => $warehouseData['expiry_date'],
+            'product_id' => $productId,
+        ];
+
+        $warehouse = $this->warehouseService->createWarehouse($data);
+
+        //check if there is any error in creation
+        if ($warehouse instanceof JsonResponse) {
+            return $warehouse;
+        }
+
+        return $warehouse;
+    }
+
+    private function createOffersForWarehouse(array $offers, int $warehouseId): ?JsonResponse
+    {
+        foreach ($offers as $offer) {
+            $offerData = [
+                'discount_percentage' => $offer['discount_percentage'],
+                'start_date' => $offer['start_date'],
+                'end_date' => $offer['end_date'],
+                'warehouse_id' => $warehouseId,
+            ];
+
+            $offerResult = $this->offerService->createOffer($offerData);
+
+            if ($offerResult instanceof JsonResponse) {
+                return $offerResult;
+            }
+        }
+
+        return null;
+    }
+
+    protected function validateProductData(array $data, $rule = 'required'): void
     {
         $validator = Validator::make($data, [
             'name' => "$rule|string|max:255|unique:products,name",

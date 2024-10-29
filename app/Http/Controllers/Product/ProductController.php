@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Product;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchProductRequest;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Services\ProductService;
 use Illuminate\Http\JsonResponse;
@@ -33,7 +35,12 @@ class ProductController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        return $this->productService->createProduct($request->all());
+        $product = $this->productService->createProduct($request->all());
+        $data = [
+            'Product' => ProductResource::make($product),
+        ];
+
+        return ResponseHelper::jsonResponse($data, 'Product created successfully!', 201);
     }
 
     public function searchByFilters(SearchProductRequest $request)
@@ -64,5 +71,10 @@ class ProductController extends Controller
     public function destroy(Product $product): JsonResponse
     {
         return $this->productService->deleteProduct($product);
+    }
+
+    public function create_product_with_details(Request $request): JsonResponse
+    {
+        return $this->productService->create_product_with_details($request);
     }
 }

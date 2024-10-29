@@ -783,7 +783,7 @@
                                                 },
                                                 "message": {
                                                     "type": "string",
-                                                    "example": "Cart_items updated successfully"
+                                                    "example": "Cart_item updated successfully"
                                                 },
                                                 "status_code": {
                                                     "type": "integer",
@@ -908,7 +908,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "Cart_items deleted successfully"
+                                            "example": "Cart_item deleted successfully"
                                         },
                                         "status_code": {
                                             "type": "integer",
@@ -1127,10 +1127,27 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/CategoryResource"
-                                    }
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Categories returned successfully"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/CategoryResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -1141,9 +1158,17 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
                                         "message": {
                                             "type": "string",
                                             "example": "Invalid parameters"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 400
                                         }
                                     },
                                     "type": "object"
@@ -1201,8 +1226,19 @@
                                         },
                                         "products": {
                                             "type": "array",
-                                            "items": {},
-                                            "example": []
+                                            "items": {}
+                                        },
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Category created successfully"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 201
                                         }
                                     },
                                     "type": "object"
@@ -1216,9 +1252,17 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
                                         "message": {
                                             "type": "string",
                                             "example": "Invalid input data"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 400
                                         }
                                     },
                                     "type": "object"
@@ -1269,10 +1313,27 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/CategoryResource"
-                                    }
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Categories returned successfully"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/CategoryResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -1283,9 +1344,17 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
                                         "message": {
                                             "type": "string",
                                             "example": "Invalid parameters"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 400
                                         }
                                     },
                                     "type": "object"
@@ -1312,7 +1381,7 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID of the category you want to show it",
+                        "description": "ID of the category to retrieve",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -1326,7 +1395,24 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/CategoryResource"
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Category returned successfully"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/CategoryResource"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -1337,9 +1423,17 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
                                         "message": {
                                             "type": "string",
                                             "example": "Category not found"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 404
                                         }
                                     },
                                     "type": "object"
@@ -1560,7 +1654,7 @@
                     {
                         "name": "column",
                         "in": "path",
-                        "description": "Column you want to order the categories by it",
+                        "description": "Column to order the categories by",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -1574,7 +1668,7 @@
                     {
                         "name": "direction",
                         "in": "path",
-                        "description": "Dircetion of ordering",
+                        "description": "Direction of ordering",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -1597,7 +1691,7 @@
                     {
                         "name": "items",
                         "in": "query",
-                        "description": "Number of items per page ",
+                        "description": "Number of items per page",
                         "required": false,
                         "schema": {
                             "type": "integer",
@@ -1611,16 +1705,33 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/CategoryResource"
-                                    }
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Categories returned successfully"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/CategoryResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
                     },
-                    "401": {
-                        "description": "Invalid credentials",
+                    "400": {
+                        "description": "Invalid column or direction",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1631,11 +1742,11 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "Invalid credentials. Please check your email and password"
+                                            "example": "Invalid column or direction or parameters"
                                         },
                                         "status_code": {
                                             "type": "integer",
-                                            "example": 401
+                                            "example": 400
                                         }
                                     },
                                     "type": "object"
@@ -1662,7 +1773,7 @@
                     {
                         "name": "column",
                         "in": "path",
-                        "description": "Column you want to order the categories by it",
+                        "description": "Column to order the categories by",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -1676,7 +1787,7 @@
                     {
                         "name": "direction",
                         "in": "path",
-                        "description": "Dircetion of ordering",
+                        "description": "Direction of ordering",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -1699,7 +1810,7 @@
                     {
                         "name": "items",
                         "in": "query",
-                        "description": "Number of items per page ",
+                        "description": "Number of items per page",
                         "required": false,
                         "schema": {
                             "type": "integer",
@@ -1713,16 +1824,33 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/CategoryResource"
-                                    }
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Categories returned successfully"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/CategoryResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
                     },
-                    "401": {
-                        "description": "Invalid credentials",
+                    "400": {
+                        "description": "Invalid column or direction",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1733,11 +1861,11 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "Invalid credentials. Please check your email and password"
+                                            "example": "Invalid column or direction or parameters"
                                         },
                                         "status_code": {
                                             "type": "integer",
-                                            "example": 401
+                                            "example": 400
                                         }
                                     },
                                     "type": "object"
@@ -3731,6 +3859,270 @@
                         }
                     }
                 }
+            }
+        },
+        "/api/products/favorites/index": {
+            "get": {
+                "tags": [
+                    "Favorite Products"
+                ],
+                "summary": "Retrieve all favorite products",
+                "description": "Get a paginated list of the user's favorite products with details, images, category, and other associated data.",
+                "operationId": "50b2184d57469400b70385ee70dfaebd",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number for pagination",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "items",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "retrieve all favorite products"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/ProductResource"
+                                            }
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "api/products/favorites/store/{product_id}": {
+            "post": {
+                "tags": [
+                    "Favorite Products"
+                ],
+                "summary": "Add a product to the user's favorites",
+                "description": "Adds the specified product to the authenticated user's list of favorite products.",
+                "operationId": "571f68482a29b1f9d91723abf5457d79",
+                "parameters": [
+                    {
+                        "name": "product_id",
+                        "in": "path",
+                        "description": "ID of the product to add to favorites",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product added to favorites successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Product added to favorites"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 401
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Product Not Found"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "api/products/favorites/destroy/{product_id}": {
+            "delete": {
+                "tags": [
+                    "Favorite Products"
+                ],
+                "summary": "Remove a product from the user's favorites",
+                "description": "Removes the specified product from the authenticated user's list of favorite products.",
+                "operationId": "3e7e2c27030ab29e98912b149db55171",
+                "parameters": [
+                    {
+                        "name": "product_id",
+                        "in": "path",
+                        "description": "ID of the product to remove from favorites",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product removed from favorites successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Product removed from favorites"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 401
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found in favorites",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Product Not Found"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/images": {
@@ -6066,6 +6458,108 @@
                                         "status_code": {
                                             "type": "integer",
                                             "example": 401
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "api/products/search": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Search products by filters",
+                "description": "Retrieve a paginated list of products filtered by various criteria.",
+                "operationId": "247b6fda735dcd5e414f2428f457e69c",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number for pagination",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "items",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Products retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Products retrieved successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "Products": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/ProductResource"
+                                                    }
+                                                },
+                                                "hasMorePages": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No products found for the given filters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "successful": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No products found for the given filters"
+                                        },
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 404
                                         }
                                     },
                                     "type": "object"
@@ -9396,6 +9890,10 @@
         {
             "name": "Expressions",
             "description": "Expressions"
+        },
+        {
+            "name": "Favorite Products",
+            "description": "Favorite Products"
         },
         {
             "name": "Images",
