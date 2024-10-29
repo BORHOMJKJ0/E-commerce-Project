@@ -15,7 +15,7 @@ class ImageResource extends JsonResource
      *     title="Image Resource",
      *
      *     @OA\Property(property="id", type="integer", example=1),
-     *     @OA\Property(property="image", type="string", example="https://example.com/image.jpg"),
+     *     @OA\Property(property="image", type="string", example="http://127.0.0.1:8000/storage/images/image.png"),
      *     @OA\Property(property="product", type="object", description="Product related to the image",
      *     @OA\Property(property="id", type="integer", example=1, description="The ID of the product"),
      *     @OA\Property(property="name", type="string", example="Iphone 15", description="The name of the product"),
@@ -29,7 +29,9 @@ class ImageResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $imageUrl = asset('storage/' . $this->image);        return [
+        $imageUrl = config('app.url').'/storage/'.$this->image;
+
+        return [
             'id' => $this->id,
             'image' => $imageUrl,
             'main' => $this->main,

@@ -10,6 +10,7 @@ use App\Repositories\WarehouseRepository;
 use App\Traits\AuthTrait;
 use App\Traits\ValidationTrait;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -131,44 +132,66 @@ class WarehouseService
 
     /**
      * @OA\Get(
-     *     path="/api/warehouses/get_warehouse_for_this_product/{product}",
-     *     summary="Get all warehouses by Product ID",
+     *     path="/warehouse/get_warehouse_have_offers",
+     *     summary="Get warehouses with active offers",
+     *     description="Retrieve a paginated list of warehouses that have active offers along with their current product prices based on discount.",
      *     tags={"Warehouse"},
-     *     security={{"bearerAuth": {} }},
      *
      *     @OA\Parameter(
-     *         name="product",
-     *         in="path",
-     *         required=true,
-     *     description="Product ID you want to show all warehouses of it",
+     *         name="page",
+     *         in="query",
+     *         description="Page number for pagination",
+     *         required=false,
      *
-     *        @OA\Schema(type="integer", example=1)
+     *         @OA\Schema(type="integer", default=1)
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="items",
+     *         in="query",
+     *         description="Number of items per page",
+     *         required=false,
+     *
+     *         @OA\Schema(type="integer", default=20)
      *     ),
      *
      *     @OA\Response(
      *         response=200,
-     *         description="Successful response",
+     *         description="Warehouses retrieved successfully!",
      *
-     *         @OA\JsonContent(ref="#/components/schemas/WarehouseResource")
+     *         @OA\JsonContent(
+     *             type="object",
+     *
+     *             @OA\Property(property="successful", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Warehouses retrieved successfully!"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Property(
+     *                     property="Warehouses",
+     *                     type="array",
+     *
+     *                     @OA\Items(ref="#/components/schemas/WarehouseResource")
+     *                 ),
+     *
+     *                 @OA\Property(property="hasMorePages", type="boolean", example=false)
+     *             ),
+     *             @OA\Property(property="status_code", type="integer", example=200)
+     *         )
      *     ),
      *
      *     @OA\Response(
-     *         response=404,
-     *         description="Product not found",
-     *
-     *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="message", type="string", example="Product not found")
-     *         )
+     *         response=400,
+     *         description="Bad Request"
      *     )
      * )
      */
-    public function getWarehousesByProductID(Product $product, Request $request)
+    public function getWarehousesHaveOffers(Request $request): JsonResponse
     {
         $page = $request->query('page', 1);
         $items = $request->query('items', 20);
 
-        $warehouses = $this->warehouseRepository->getProductWarehouses($product, $items, $page);
+        $warehouses = $this->warehouseRepository->getWarehousesWithActiveOffers($items, $page);
         $hasMorePages = $warehouses->hasMorePages();
 
         $data = [

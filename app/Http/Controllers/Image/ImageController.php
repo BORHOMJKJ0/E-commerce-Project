@@ -16,7 +16,7 @@ class ImageController extends Controller
 
     public function __construct(ImageService $imageService)
     {
-       // $this->middleware('auth:api');
+        // $this->middleware('auth:api');
         $this->imageService = $imageService;
     }
 
@@ -32,7 +32,7 @@ class ImageController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        $result = $this->imageService->createImage($request->all(),$request);
+        $result = $this->imageService->createImage($request->all(), $request);
         if ($result instanceof JsonResponse) {
             return $result;
         } elseif ($result instanceof Image) {

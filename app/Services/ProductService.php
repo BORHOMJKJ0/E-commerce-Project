@@ -784,7 +784,7 @@ class ProductService
         });
     }
 
-    private function validateCreateProductRequest(Request $request)
+    private function validateCreateProductRequest(Request $request): void
     {
         $request->validate([
             'category_name' => 'required',
@@ -802,7 +802,7 @@ class ProductService
         return $this->categoryService->CreateCategoryOrFind($categoryName);
     }
 
-    private function processProductImages(array $images, int $productId)
+    private function processProductImages(array $images, int $productId): void
     {
         foreach ($images as $image) {
             $imageData = [
@@ -840,7 +840,7 @@ class ProductService
 
         //check if there is any error in creation
         if ($warehouse instanceof JsonResponse) {
-            return $warehouse;
+            throw new \Exception('Warehouse creation failed.');
         }
 
         return $warehouse;

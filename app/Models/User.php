@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use OpenApi\Annotations as OA;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 /**
@@ -63,7 +62,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function favoriteProducts()
     {
-        return $this->belongsToMany(Product::class, 'favorite_products')->withTimestamps();
+        return $this->belongsToMany(Product::class, 'favorite_products', 'user_id', 'product_id')->withTimestamps();
     }
 
     public function reviews()

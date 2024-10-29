@@ -5,7 +5,6 @@ namespace App\Http\Resources;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use OpenApi\Annotations as OA;
 
 /**
  * @OA\Schema(
@@ -24,7 +23,7 @@ use OpenApi\Annotations as OA;
  *         @OA\Items(
  *             type="object",
  *
- *             @OA\Property(property="image", type="string", description="Product Image URL"),
+ *     @OA\Property(property="image", type="string", example="http://127.0.0.1:8000/storage/images/image.png"),
  *             @OA\Property(property="id", type="integer", example=1, description="Image ID"),
  *         )
  *     ),
@@ -93,6 +92,7 @@ class ProductResource extends JsonResource
                 'image' => $mainImage->image,
             ] : null,
             'price' => (float) $this->price,
+            'isFavorite' => $this->favorites()->where(['user_id' => auth()->id(), 'product_id' => $this->id])->exists() ? 1 : 0,
             'current_price' => (float) $currentPrice,
             'user' => $this->user->first_name.' '.$this->user->last_name,
 

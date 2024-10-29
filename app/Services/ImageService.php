@@ -278,8 +278,7 @@ class ImageService
 
             $this->validateImageData($data);
 
-            $data['image'] = $request->file('image');
-            $path = $data['image']->store('images', 'public');
+            $path = $request->file('image')->store('images', 'public');
             $data['image'] = $path;
 
             $product = Product::findOrFail($data['product_id']);
@@ -304,7 +303,6 @@ class ImageService
             return $e->getResponse();
         }
     }
-
 
     /**
      * @OA\Get(
@@ -673,7 +671,7 @@ class ImageService
     public function validateImageData(array $data, $rule = 'required')
     {
         $validator = Validator::make($data, [
-            'image' => "$rule|image|mimes:jpeg,png,jpg,gif,svg|max:2048",
+            'image' => "$rule|image|mimes:jpg,jpeg,png,gif,svg",
             'main' => "$rule|nullable|boolean",
             'product_id' => "$rule|exists:products,id",
         ]);
