@@ -609,7 +609,7 @@ class ReviewService
     protected function validateReviewData(array $data, $rule = 'required')
     {
         $validator = Validator::make($data, [
-            'rating' => "$rule|integer|between:0,5",
+            'rating' => "$rule",
             'product_id' => "$rule|exists:products,id",
         ]);
 

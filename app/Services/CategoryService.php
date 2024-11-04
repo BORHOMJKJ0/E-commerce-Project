@@ -676,7 +676,7 @@ class CategoryService
     protected function validateCategoryData(array $data, $rule = 'required')
     {
         $validator = Validator::make($data, [
-            'name' => "$rule|string|max:100|unique:categories,name",
+            'name' => "$rule|unique:categories,name",
         ]);
 
         if ($validator->fails()) {

@@ -10,6 +10,7 @@ use App\Repositories\ImageRepository;
 use App\Traits\AuthTrait;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -477,7 +478,7 @@ class ImageService
     /**
      * @OA\Put(
      *     path="/api/images/{id}",
-     *     summary="Update a Image",
+     *     summary="Update an Image",
      *     tags={"Images"},
      *     security={{"bearerAuth": {}}},
      *
@@ -485,55 +486,44 @@ class ImageService
      *         name="id",
      *         in="path",
      *         required=true,
-     *     description="Image ID you want to update it",
+     *         description="Image ID you want to update",
      *
      *         @OA\Schema(type="integer", example=1)
      *     ),
      *
-     *     @OA\Parameter(
-     *         name="image",
-     *         in="query",
+     *     @OA\RequestBody(
      *         required=false,
-     *     description="Product Image",
      *
-     *         @OA\Schema(type="string", format="binary")
-     *     ),
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
      *
-     *     @OA\Parameter(
-     *         name="main",
-     *         in="query",
-     *         required=false,
-     *     description="Whether the image is the main image for the product",
+     *             @OA\Schema(
      *
-     *         @OA\Schema(type="boolean", example=false)
-     *     ),
-     *
-     *     @OA\Parameter(
-     *         name="product_id",
-     *         in="query",
-     *         required=false,
-     *     description="Product ID that image belong to it",
-     *
-     *         @OA\Schema(type="integer", example=1)
-     *     ),
-     *
-     *     @OA\Header(
-     *         header="Content-Type",
-     *         description="Content-Type header",
-     *
-     *         @OA\Schema(type="string", example="application/json")
-     *     ),
-     *
-     *     @OA\Header(
-     *         header="Accept",
-     *         description="Accept header",
-     *
-     *         @OA\Schema(type="string", example="application/json")
+     *                 @OA\Property(
+     *                     property="image",
+     *                     type="string",
+     *                     format="binary",
+     *                     description="Product Image"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="main",
+     *                     type="boolean",
+     *                     example=false,
+     *                     description="Whether the image is the main image for the product"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="product_id",
+     *                     type="integer",
+     *                     example=1,
+     *                     description="Product ID that image belongs to"
+     *                 )
+     *             )
+     *         )
      *     ),
      *
      *     @OA\Response(
-     *         response=201,
-     *         description="Image created successfully",
+     *         response=200,
+     *         description="Image updated successfully",
      *
      *         @OA\JsonContent(
      *             type="object",
@@ -546,7 +536,7 @@ class ImageService
      *                 @OA\Property(property="id", type="integer", example=2, description="The ID of the product"),
      *                 @OA\Property(property="name", type="string", example="meat", description="The name of the product"),
      *                 @OA\Property(property="price", type="number", format="float", example=200, description="The price of the product"),
-     *                 @OA\Property(property="description", type="string", example="This is a greate product", description="The description of the product"),
+     *                 @OA\Property(property="description", type="string", example="This is a great product", description="The description of the product"),
      *                 @OA\Property(property="category", type="string", example="hakunamatata", description="The category of the product"),
      *                 @OA\Property(property="user", type="string", example="Muhammad Aydi", description="The owner of the product")
      *             )
@@ -563,7 +553,7 @@ class ImageService
      *         )
      *     ),
      *
-     *    @OA\Response(
+     *     @OA\Response(
      *         response=403,
      *         description="forbidden error",
      *
@@ -590,14 +580,22 @@ class ImageService
             if (isset($data['main'])) {
                 $data['main'] = filter_var($data['main'], FILTER_VALIDATE_BOOLEAN);
             }
+
             $this->validateImageData($data, 'sometimes');
             $this->checkOwnership($image->product, 'Image', 'update');
-            if (isset($data['product_id'])) {
-                $product = Product::find($data['product_id']);
-                $this->checkOwnership($product, 'Image', 'update');
-            }$image = $this->imageRepository->update($image, $data);
+
+            if (isset($data['image'])) {
+                if ($image->image && Storage::disk('public')->exists($image->image)) {
+                    Storage::disk('public')->delete($image->image);
+                }
+                $path = $data['image']->store('images', 'public');
+                $data['image'] = $path;
+            }
+
+            $updatedImage = $this->imageRepository->update($image, $data);
+
             $data = [
-                'Image' => ImageResource::make($image),
+                'Image' => ImageResource::make($updatedImage),
             ];
 
             $response = ResponseHelper::jsonResponse($data, 'Image updated successfully!');
@@ -671,8 +669,8 @@ class ImageService
     public function validateImageData(array $data, $rule = 'required')
     {
         $validator = Validator::make($data, [
-            'image' => "$rule|image|mimes:jpg,jpeg,png,gif,svg",
-            'main' => "$rule|nullable|boolean",
+            'image' => "$rule",
+            'main' => "$rule",
             'product_id' => "$rule|exists:products,id",
         ]);
 

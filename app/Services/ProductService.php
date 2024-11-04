@@ -869,9 +869,9 @@ class ProductService
     protected function validateProductData(array $data, $rule = 'required'): void
     {
         $validator = Validator::make($data, [
-            'name' => "$rule|string|max:255|unique:products,name",
-            'price' => "$rule|numeric|min:0",
-            'description' => "$rule|string|max:1000",
+            'name' => "$rule|unique:products,name",
+            'price' => "$rule",
+            'description' => "$rule",
             'category_id' => "$rule|exists:categories,id",
         ]);
 

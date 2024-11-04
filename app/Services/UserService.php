@@ -9,7 +9,6 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserContactsResource;
 use App\Http\Resources\UserResource;
-use App\Models\Cart;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Traits\ValidationTrait;
@@ -549,8 +548,7 @@ class UserService
      */
     public function destroy()
     {
-        $cart = Cart::where('user_id', auth()->id())->first();
-        $this->cartService->deleteCart($cart);
+        $this->cartService->deleteCart();
         $user = $this->userRepository->destroy();
 
         $data = ['user' => new UserContactsResource($user)];

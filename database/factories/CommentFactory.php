@@ -9,22 +9,11 @@ class CommentFactory extends Factory
 {
     public function definition(): array
     {
-        $review = Review::doesntHave('comment')->inRandomOrder()->first();
-        if (! $review) {
-            $review = Review::factory()->create();
-        }
-        $hasText = rand(0, 1) == 1;
-        $hasImage = rand(0, 1) == 1;
-
-        if (! $hasText && ! $hasImage) {
-            $hasText = true;
-        }
 
         return [
-            'title' => $hasText ? fake()->sentence : null,
-            'text' => $hasText ? fake()->realText : null,
-            'image' => $hasImage ? fake()->imageUrl(200, 200) : null,
-            'review_id' => $review->id,
+            'title' => fake()->sentence,
+            'text' => fake()->realText,
+            'review_id' => Review::all()->random()->id,
         ];
     }
 }

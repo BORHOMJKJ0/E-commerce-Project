@@ -16,15 +16,15 @@ class ImageResource extends JsonResource
      *
      *     @OA\Property(property="id", type="integer", example=1),
      *     @OA\Property(property="image", type="string", example="http://127.0.0.1:8000/storage/images/image.png"),
+     *     @OA\Property(property="main", type="boolean", example=true, description="Indicates if this is the main image"),
      *     @OA\Property(property="product", type="object", description="Product related to the image",
-     *     @OA\Property(property="id", type="integer", example=1, description="The ID of the product"),
-     *     @OA\Property(property="name", type="string", example="Iphone 15", description="The name of the product"),
-     *     @OA\Property(property="price", type="number", format="float", example=499.99, description="The price of the product"),
-     *     @OA\Property(property="description", type="string", example="A high-end smartphone with excellent features and a sleek design.", description="The description of the product"),
-     *     @OA\Property(property="category", type="string", example="Smartphones", description="The category of the product"),
-     *     @OA\Property(property="user", type="string", example="Hasan Zaeter", description="The owner of the product"),
+     *         @OA\Property(property="id", type="integer", example=1, description="The ID of the product"),
+     *         @OA\Property(property="name", type="string", example="Iphone 15", description="The name of the product"),
+     *         @OA\Property(property="price", type="number", format="float", example=499.99, description="The price of the product"),
+     *         @OA\Property(property="description", type="string", example="A high-end smartphone with excellent features and a sleek design.", description="The description of the product"),
+     *         @OA\Property(property="category", type="string", example="Smartphones", description="The category of the product"),
+     *         @OA\Property(property="user", type="string", example="Hasan Zaeter", description="The owner of the product")
      *     )
-     * )
      * )
      */
     public function toArray(Request $request): array

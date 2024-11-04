@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers\Image;
 
-use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ImageResource;
 use App\Models\Image;
 use App\Services\ImageService;
 use Illuminate\Http\JsonResponse;
@@ -16,13 +14,13 @@ class ImageController extends Controller
 
     public function __construct(ImageService $imageService)
     {
-        // $this->middleware('auth:api');
+        $this->middleware('auth:api');
         $this->imageService = $imageService;
     }
 
     public function index(Request $request): JsonResponse
     {
-        return $this->imageService->getAllimages($request);
+        return $this->imageService->getAllImages($request);
     }
 
     public function MyImages(Request $request): JsonResponse
@@ -32,26 +30,17 @@ class ImageController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        $result = $this->imageService->createImage($request->all(), $request);
-        if ($result instanceof JsonResponse) {
-            return $result;
-        } elseif ($result instanceof Image) {
-            $data = [
-                'Image' => ImageResource::make($result),
-            ];
-
-            return ResponseHelper::jsonResponse($data, 'Image created successfully!', 201);
-        }
+        return $this->imageService->createImage($request->all(), $request);
     }
 
     public function show(Image $image): JsonResponse
     {
-        return $this->imageService->getimageById($image);
+        return $this->imageService->getImageById($image);
     }
 
     public function orderBy($column, $direction, Request $request): JsonResponse
     {
-        return $images = $this->imageService->getimagesOrderedBy($column, $direction, $request);
+        return $images = $this->imageService->getImagesOrderedBy($column, $direction, $request);
     }
 
     public function MyImagesOrderBy($column, $direction, Request $request): JsonResponse
@@ -59,13 +48,13 @@ class ImageController extends Controller
         return $this->imageService->getMyImagesOrderedBy($column, $direction, $request);
     }
 
-    public function update(Request $request, Image $image): JsonResponse
+    public function update(Image $image, Request $request): JsonResponse
     {
-        return $this->imageService->updateimage($image, $request->all());
+        return $this->imageService->updateImage($image, $request->all());
     }
 
     public function destroy(Image $image): JsonResponse
     {
-        return $this->imageService->deleteimage($image);
+        return $this->imageService->deleteImage($image);
     }
 }

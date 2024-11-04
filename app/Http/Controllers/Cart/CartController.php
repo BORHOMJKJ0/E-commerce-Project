@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Cart;
 
 use App\Http\Controllers\Controller;
-use App\Models\Cart;
 use App\Services\CartService;
 use Illuminate\Http\JsonResponse;
 
@@ -22,18 +21,18 @@ class CartController extends Controller
         return $this->cartService->createCart();
     }
 
-    public function update(Cart $cart)
+    public function update()
     {
-        return $this->cartService->updateCart($cart);
+        return $this->cartService->updateCart();
     }
 
-    public function show(Cart $Cart): JsonResponse
+    public function show(): JsonResponse
     {
-        return $this->cartService->getCartById($Cart);
+        return $this->cartService->getCartById();
     }
 
-    public function destroy(Cart $Cart): JsonResponse
+    public function destroy(): JsonResponse
     {
-        return $this->cartService->deleteCart($Cart);
+        return $this->cartService->deleteCart();
     }
 }

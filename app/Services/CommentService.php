@@ -10,6 +10,7 @@ use App\Traits\AuthTrait;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class CommentService
 {
@@ -276,7 +277,7 @@ class CommentService
      */
     public function createComment(array $data)
     {
-        $this->validateCommentData($data, 'required', 'create');
+        $this->validateCommentData($data);
         $this->checkReviewOwnership($data['review_id']);
         $this->checkReview($data['review_id']);
         $comment = $this->commentRepository->create($data);
@@ -582,7 +583,6 @@ class CommentService
         try {
             $this->validateCommentData($data, 'sometimes');
             $this->checkComment($comment, 'Comment', 'update');
-
             $comment = $this->commentRepository->update($comment, $data);
 
             $data = ['comment' => CommentResource::make($comment)];
@@ -654,24 +654,15 @@ class CommentService
         return $response;
     }
 
-    protected function validateCommentData(array $data, $rule = 'required', $method = 'any')
+    protected function validateCommentData(array $data, $rule = 'required')
     {
         $validator = Validator::make($data, [
-            'title' => 'required_without_all:text|nullable|string|max:255',
-            'text' => 'required_without_all:image|nullable|string|max:1000',
-            'image' => 'required_without_all:title|nullable|image|max:5120',
+            'title' => "$rule",
+            'text' => "$rule",
             'review_id' => "$rule|exists:reviews,id",
-        ],
-            [
-                'text.required_without_all' => 'You must provide either an image or both title and text.',
-                'title.required_without_all' => 'You must provide either an image or both title and text.',
-                'image.required_without_all' => 'You must provide either an image or both title and text.',
-            ]);
-
+        ]);
         if ($validator->fails()) {
-            throw new HttpResponseException(
-                ResponseHelper::jsonResponse([], $validator->errors()->first(), 400, false)
-            );
+            throw new ValidationException($validator);
         }
     }
 }

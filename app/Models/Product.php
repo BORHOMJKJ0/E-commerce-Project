@@ -17,13 +17,9 @@ use OpenApi\Annotations as OA;
  *
  *     @OA\Property(property="id", type="integer", example=1,description="The ID of the product"),
  *     @OA\Property(property="name", type="string", example="Smartphone",description="The name of the product"),
- *     @OA\Property(property="image", type="string", example="product_image.jpg",description="The image of the product"),
  *     @OA\Property(property="price", type="number", format="float", example=499.99,description="The price of the product"),
  *     @OA\Property(property="description", type="string", example="Samsung A30s white color 8Ram 128GB space",description="The description of the product"),
- *     @OA\Property(property="current_price", type="number", format="float", example=422.49,description="The pure price of the product"),
  *     @OA\Property(property="user_id", type="integer", example=1,description="The owner ID of the product"),
- *     @OA\Property(property="total_amount", type="integer", example=100,description="The total amount of the product"),
- *     @OA\Property(property="expiry_date", type="string", format="date", example="2024-12-01",description="The expiry date of the product"),
  *     @OA\Property(property="category_id", type="integer", example=1,description="The category related to the product")
  * )
  */

@@ -41,7 +41,7 @@ use OpenApi\Annotations as OA;
  *                 type="object",
  *                 description="The main image of the product",
  *                 @OA\Property(property="id", type="integer", example=101, description="The ID of the image"),
- *                 @OA\Property(property="image", type="string", example="https://example.com/image.jpg", description="The URL of the image")
+ *                 @OA\Property(property="image", type="string", example="http://127.0.0.1:8000/storage/images/main_image_of_product.png", description="The URL of the image")
  *             ),
  *             @OA\Property(
  *                 property="best_offer",

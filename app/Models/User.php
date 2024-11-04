@@ -15,12 +15,12 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  *     description="User details",
  *
  *     @OA\Property(property="id", type="integer", example=1,description="The ID of the user"),
- *     @OA\Property(property="First_Name", type="string", example="John",description="The first name of the user"),
- *     @OA\Property(property="Last_Name", type="string", example="Doe", nullable=true,description="The second name of the user"),
+ *     @OA\Property(property="first_name", type="string", example="John",description="The first name of the user"),
+ *     @OA\Property(property="last_name", type="string", example="Doe", nullable=true,description="The second name of the user"),
  *     @OA\Property(property="email", type="string", example="john.doe@example.com",description="The email of the user"),
  *     @OA\Property(property="fcm_token", type="string", example="sample_fcm_token", nullable=true,description="The fcm token of the user"),
  *     @OA\Property(property="mobile", type="string", example="1234567890",description="The phone number of the user"),
- *     @OA\Property(property="Address", type="string", example="123 Main St", nullable=true,description="The address of the user"),
+ *     @OA\Property(property="address", type="string", example="123 Main St", nullable=true,description="The address of the user"),
  * )
  */
 class User extends Authenticatable implements JWTSubject

@@ -25,18 +25,6 @@
                 ],
                 "summary": "Get a single cart by ID",
                 "operationId": "ba6d284e299616f9c0055fdab67fb41e",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID of the cart to retrieve",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "Successful response"
@@ -78,28 +66,6 @@
                 ],
                 "summary": "Update a cart",
                 "operationId": "9d561b9025161fe65bae59336e267427",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Cart ID you want to update it",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    },
-                    {
-                        "name": "user_id",
-                        "in": "query",
-                        "description": "User ID",
-                        "required": false,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "Cart updated successfully",
@@ -234,18 +200,6 @@
                 ],
                 "summary": "Delete a Cart",
                 "operationId": "f928747449c0d00bd973b8ff7398d5b8",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Cart ID you want to delete it",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "Cart deleted successfully",
@@ -4446,53 +4400,50 @@
                 "tags": [
                     "Images"
                 ],
-                "summary": "Update a Image",
+                "summary": "Update an Image",
                 "operationId": "6d687db0214bbb727bd8e0c30d12e016",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "Image ID you want to update it",
+                        "description": "Image ID you want to update",
                         "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "example": 1
-                        }
-                    },
-                    {
-                        "name": "image",
-                        "in": "query",
-                        "description": "Product Image",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
-                            "format": "binary"
-                        }
-                    },
-                    {
-                        "name": "main",
-                        "in": "query",
-                        "description": "Whether the image is the main image for the product",
-                        "required": false,
-                        "schema": {
-                            "type": "boolean",
-                            "example": false
-                        }
-                    },
-                    {
-                        "name": "product_id",
-                        "in": "query",
-                        "description": "Product ID that image belong to it",
-                        "required": false,
                         "schema": {
                             "type": "integer",
                             "example": 1
                         }
                     }
                 ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "image": {
+                                        "description": "New image file",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "main": {
+                                        "description": "Whether the image is the main image for the product",
+                                        "type": "boolean",
+                                        "example": false
+                                    },
+                                    "product_id": {
+                                        "description": "ID of the product the image belongs to",
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
-                    "201": {
-                        "description": "Image created successfully",
+                    "200": {
+                        "description": "Image updated successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -4507,46 +4458,46 @@
                                             "type": "string"
                                         },
                                         "main": {
-                                            "description": "Whether the image is the main image for the product",
+                                            "description": "Main image indicator",
                                             "type": "boolean",
                                             "example": false
                                         },
                                         "product_id": {
-                                            "description": "The ID of the product the image belongs to",
+                                            "description": "Product ID",
                                             "type": "integer",
                                             "example": 2
                                         },
                                         "product": {
-                                            "description": "Product details associated with the image",
+                                            "description": "Product details",
                                             "properties": {
                                                 "id": {
-                                                    "description": "The ID of the product",
+                                                    "description": "Product ID",
                                                     "type": "integer",
                                                     "example": 2
                                                 },
                                                 "name": {
-                                                    "description": "The name of the product",
+                                                    "description": "Product name",
                                                     "type": "string",
                                                     "example": "meat"
                                                 },
                                                 "price": {
-                                                    "description": "The price of the product",
+                                                    "description": "Product price",
                                                     "type": "number",
                                                     "format": "float",
                                                     "example": 200
                                                 },
                                                 "description": {
-                                                    "description": "The description of the product",
+                                                    "description": "Product description",
                                                     "type": "string",
-                                                    "example": "This is a greate product"
+                                                    "example": "This is a great product"
                                                 },
                                                 "category": {
-                                                    "description": "The category of the product",
+                                                    "description": "Product category",
                                                     "type": "string",
                                                     "example": "hakunamatata"
                                                 },
                                                 "user": {
-                                                    "description": "The owner of the product",
+                                                    "description": "Owner name",
                                                     "type": "string",
                                                     "example": "Muhammad Aydi"
                                                 }
@@ -4576,14 +4527,14 @@
                         }
                     },
                     "403": {
-                        "description": "forbidden error",
+                        "description": "Forbidden error",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "error": {
                                             "type": "string",
-                                            "example": "You cannot update Image with associated products."
+                                            "example": "Cannot update Image with associated products."
                                         }
                                     },
                                     "type": "object"
@@ -4600,6 +4551,22 @@
                                         "error": {
                                             "type": "string",
                                             "example": "Image not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "304": {
+                        "description": "No update made",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No changes were detected, image not updated."
                                         }
                                     },
                                     "type": "object"
@@ -8856,7 +8823,7 @@
                                         "image": {
                                             "description": "The URL of the image",
                                             "type": "string",
-                                            "example": "https://example.com/image.jpg"
+                                            "example": "http://127.0.0.1:8000/storage/images/main_image_of_product.png"
                                         }
                                     },
                                     "type": "object",
@@ -8953,17 +8920,15 @@
                         "type": "string",
                         "example": "John Doe"
                     },
+                    "title": {
+                        "description": "The title of the comment",
+                        "type": "string",
+                        "example": "Excellent product!"
+                    },
                     "text": {
                         "description": "The comment text",
                         "type": "string",
-                        "example": "This is a great product!",
-                        "nullable": true
-                    },
-                    "image": {
-                        "description": "The image URL attached to the comment",
-                        "type": "string",
-                        "example": "http://example.com/image.jpg",
-                        "nullable": true
+                        "example": "This is a great product!"
                     }
                 },
                 "type": "object"
@@ -9000,6 +8965,11 @@
                     "image": {
                         "type": "string",
                         "example": "http://127.0.0.1:8000/storage/images/image.png"
+                    },
+                    "main": {
+                        "description": "Indicates if this is the main image",
+                        "type": "boolean",
+                        "example": true
                     },
                     "product": {
                         "description": "Product related to the image",
@@ -9124,37 +9094,49 @@
                         "type": "string",
                         "example": "Iphone 15"
                     },
+                    "image": {
+                        "description": "Main image of the product",
+                        "properties": {
+                            "id": {
+                                "description": "Image ID",
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "image": {
+                                "description": "Image URL",
+                                "type": "string",
+                                "example": "http://127.0.0.1:8000/storage/images/image.png"
+                            }
+                        },
+                        "type": "object"
+                    },
                     "images": {
-                        "description": "Images related to the product",
+                        "description": "Additional images related to the product",
                         "type": "array",
                         "items": {
                             "properties": {
-                                "image": {
-                                    "type": "string",
-                                    "example": "http://127.0.0.1:8000/storage/images/image.png"
-                                },
                                 "id": {
                                     "description": "Image ID",
                                     "type": "integer",
-                                    "example": 1
+                                    "example": 2
+                                },
+                                "image": {
+                                    "description": "Additional image URL",
+                                    "type": "string",
+                                    "example": "http://127.0.0.1:8000/storage/images/another_image.png"
                                 }
                             },
                             "type": "object"
                         }
                     },
                     "price": {
-                        "description": "The price of the product",
+                        "description": "The original price of the product",
                         "type": "number",
                         "format": "float",
                         "example": 499.99
                     },
-                    "description": {
-                        "description": "The description of the product",
-                        "type": "string",
-                        "example": "A high-end smartphone with excellent features and a sleek design."
-                    },
                     "current_price": {
-                        "description": "The current price of the product after discounts",
+                        "description": "The discounted price, if applicable",
                         "type": "number",
                         "format": "float",
                         "example": 449.99
@@ -9164,59 +9146,22 @@
                         "type": "string",
                         "example": "Hasan Zaeter"
                     },
-                    "expressions": {
-                        "description": "Expressions related to the product",
-                        "properties": {
-                            "views": {
-                                "description": "The number of views of the product",
-                                "type": "integer",
-                                "example": 120
-                            },
-                            "likes": {
-                                "description": "The number of likes of the product",
-                                "type": "integer",
-                                "example": 45
-                            },
-                            "dislikes": {
-                                "description": "The number of dislikes of the product",
-                                "type": "integer",
-                                "example": 5
-                            }
-                        },
-                        "type": "object"
-                    },
-                    "total_amount": {
-                        "description": "The total amount of product available",
-                        "type": "integer",
-                        "example": 50
-                    },
-                    "expiry_date": {
-                        "description": "The expiry date of the product",
-                        "type": "string",
-                        "format": "date",
-                        "example": "2025-12-31"
-                    },
-                    "category": {
-                        "description": "The category of the product",
-                        "type": "string",
-                        "example": "Smartphones"
-                    },
                     "best_offer": {
-                        "description": "Details of the best offer for the product",
+                        "description": "Details of the best available offer",
                         "properties": {
                             "discount": {
-                                "description": "The discount percentage of the best offer",
+                                "description": "Discount percentage",
                                 "type": "string",
                                 "example": "10.00 %"
                             },
                             "starting_at": {
-                                "description": "The start date of the best offer",
+                                "description": "Offer start date",
                                 "type": "string",
                                 "format": "date",
                                 "example": "2024-09-01"
                             },
                             "ending_at": {
-                                "description": "The end date of the best offer",
+                                "description": "Offer end date",
                                 "type": "string",
                                 "format": "date",
                                 "example": "2024-12-31"
@@ -9225,21 +9170,134 @@
                         "type": "object"
                     },
                     "max_expiry_date": {
-                        "description": "The maximum expiry date of all warehouses holding the product",
+                        "description": "Maximum expiry date among warehouses",
                         "type": "string",
                         "format": "date",
                         "example": "2025-12-31"
                     },
+                    "total_amount": {
+                        "description": "Total quantity of product available across warehouses",
+                        "type": "integer",
+                        "example": 50
+                    },
+                    "category": {
+                        "description": "Category name",
+                        "type": "string",
+                        "example": "Smartphones"
+                    },
                     "comments": {
-                        "description": "The number of comments on the product",
+                        "description": "Number of comments on the product",
                         "type": "integer",
                         "example": 5
                     },
+                    "expressions": {
+                        "description": "Social expressions like views, likes, dislikes",
+                        "properties": {
+                            "views": {
+                                "description": "View count",
+                                "type": "integer",
+                                "example": 120
+                            },
+                            "likes": {
+                                "description": "Like count",
+                                "type": "integer",
+                                "example": 45
+                            },
+                            "dislikes": {
+                                "description": "Dislike count",
+                                "type": "integer",
+                                "example": 5
+                            }
+                        },
+                        "type": "object"
+                    },
                     "average_rating": {
-                        "description": "The average rating of the product",
+                        "description": "Average rating score",
                         "type": "number",
                         "format": "float",
                         "example": 4.5
+                    },
+                    "ratings_count": {
+                        "description": "Count of ratings by score",
+                        "properties": {
+                            "1_star": {
+                                "description": "1-star rating count",
+                                "type": "integer",
+                                "example": 10
+                            },
+                            "2_star": {
+                                "description": "2-star rating count",
+                                "type": "integer",
+                                "example": 5
+                            },
+                            "3_star": {
+                                "description": "3-star rating count",
+                                "type": "integer",
+                                "example": 20
+                            },
+                            "4_star": {
+                                "description": "4-star rating count",
+                                "type": "integer",
+                                "example": 30
+                            },
+                            "5_star": {
+                                "description": "5-star rating count",
+                                "type": "integer",
+                                "example": 50
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "reviewers_number": {
+                        "description": "Number of reviewers",
+                        "type": "integer",
+                        "example": 60
+                    },
+                    "reviewers": {
+                        "description": "List of product reviews",
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "name": {
+                                    "description": "Reviewer name",
+                                    "type": "string",
+                                    "example": "John Doe"
+                                },
+                                "rating": {
+                                    "description": "Rating score",
+                                    "type": "integer",
+                                    "example": 5
+                                },
+                                "comment": {
+                                    "description": "Review comment",
+                                    "properties": {
+                                        "id": {
+                                            "description": "Comment ID",
+                                            "type": "integer",
+                                            "example": 101
+                                        },
+                                        "title": {
+                                            "description": "The title of the comment",
+                                            "type": "string",
+                                            "example": "Excellent product!"
+                                        },
+                                        "text": {
+                                            "description": "Comment text",
+                                            "type": "string",
+                                            "example": "This is a great product!"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "created_at": {
+                                    "description": "Review creation date",
+                                    "type": "string",
+                                    "format": "date",
+                                    "example": "2024-10-25"
+                                }
+                            },
+                            "type": "object"
+                        }
                     }
                 },
                 "type": "object"
@@ -9267,17 +9325,15 @@
                                 "type": "integer",
                                 "example": 1
                             },
+                            "title": {
+                                "description": "The title of the comment",
+                                "type": "string",
+                                "example": "Amazing!"
+                            },
                             "text": {
                                 "description": "The comment text",
                                 "type": "string",
-                                "example": "Great product!",
-                                "nullable": true
-                            },
-                            "image": {
-                                "description": "The image URL attached to the comment",
-                                "type": "string",
-                                "example": "http://example.com/image.jpg",
-                                "nullable": true
+                                "example": "Great product!"
                             }
                         },
                         "type": "object",
@@ -9314,6 +9370,12 @@
                             }
                         },
                         "type": "object"
+                    },
+                    "created_at": {
+                        "description": "The date when the review was created",
+                        "type": "string",
+                        "format": "date",
+                        "example": "2024-10-25"
                     }
                 },
                 "type": "object"
@@ -9382,7 +9444,7 @@
                         "type": "string",
                         "example": "John"
                     },
-                    "Llast_name": {
+                    "last_name": {
                         "description": "The last name of the user",
                         "type": "string",
                         "example": "Doe",
@@ -9574,7 +9636,7 @@
                     "image": {
                         "description": "the image URL of an optional image. Must provide either 'text' or 'title', or both.",
                         "type": "string",
-                        "example": "http://example.com/image.jpg",
+                        "example": "http://127.0.0.1:8000/storage/images/comment_image.png",
                         "nullable": true
                     }
                 },
@@ -9668,7 +9730,12 @@
                     "image": {
                         "description": "The URL of the image",
                         "type": "string",
-                        "example": "https://example.com/image.jpg"
+                        "example": "http://127.0.0.1:8000/storage/images/image.png"
+                    },
+                    "main": {
+                        "description": "Sign if this is the main image or not",
+                        "type": "boolean",
+                        "example": 1
                     },
                     "product_id": {
                         "description": "The ID of the product that the image belongs to",
@@ -9727,11 +9794,6 @@
                         "type": "string",
                         "example": "Smartphone"
                     },
-                    "image": {
-                        "description": "The image of the product",
-                        "type": "string",
-                        "example": "product_image.jpg"
-                    },
                     "price": {
                         "description": "The price of the product",
                         "type": "number",
@@ -9743,27 +9805,10 @@
                         "type": "string",
                         "example": "Samsung A30s white color 8Ram 128GB space"
                     },
-                    "current_price": {
-                        "description": "The pure price of the product",
-                        "type": "number",
-                        "format": "float",
-                        "example": 422.49
-                    },
                     "user_id": {
                         "description": "The owner ID of the product",
                         "type": "integer",
                         "example": 1
-                    },
-                    "total_amount": {
-                        "description": "The total amount of the product",
-                        "type": "integer",
-                        "example": 100
-                    },
-                    "expiry_date": {
-                        "description": "The expiry date of the product",
-                        "type": "string",
-                        "format": "date",
-                        "example": "2024-12-01"
                     },
                     "category_id": {
                         "description": "The category related to the product",
@@ -9809,12 +9854,12 @@
                         "type": "integer",
                         "example": 1
                     },
-                    "First_Name": {
+                    "first_name": {
                         "description": "The first name of the user",
                         "type": "string",
                         "example": "John"
                     },
-                    "Last_Name": {
+                    "last_name": {
                         "description": "The second name of the user",
                         "type": "string",
                         "example": "Doe",
@@ -9836,7 +9881,7 @@
                         "type": "string",
                         "example": "1234567890"
                     },
-                    "Address": {
+                    "address": {
                         "description": "The address of the user",
                         "type": "string",
                         "example": "123 Main St",

@@ -13,7 +13,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *
  *     @OA\Property(property="id", type="integer", example=1,description="The ID of the user"),
  *     @OA\Property(property="first_name", type="string", example="John",description="The first name of the user"),
- *     @OA\Property(property="Llast_name", type="string", example="Doe", nullable=true,description="The last name of the user"),
+ *     @OA\Property(property="last_name", type="string", example="Doe", nullable=true,description="The last name of the user"),
  *     @OA\Property(property="email", type="string", example="john.doe@example.com",description="The email of the user"),
  *     @OA\Property(property="mobile", type="string", example="+1234567890",description="The Phone number of the user"),
  *     @OA\Property(property="address", type="string", example="123 Main St, Anytown, USA", nullable=true,description="The Address of the user"),

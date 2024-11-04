@@ -22,8 +22,8 @@ class ReviewResource extends JsonResource
      *         nullable=true,
      *         description="Comment related to the review",
      *         @OA\Property(property="id", type="integer", example=1, description="The ID of the comment"),
-     *         @OA\Property(property="text", type="string", nullable=true, example="Great product!", description="The comment text"),
-     *         @OA\Property(property="image", type="string", nullable=true, example="http://example.com/image.jpg", description="The image URL attached to the comment")
+     *         @OA\Property(property="title", type="string" ,example="Amazing!", description="The title of the comment"),
+     *         @OA\Property(property="text", type="string",  example="Great product!", description="The comment text"),
      *     ),
      *     @OA\Property(
      *         property="product",
@@ -38,7 +38,8 @@ class ReviewResource extends JsonResource
      *         description="The details of the user who left the review",
      *         @OA\Property(property="id", type="integer", example=1, description="The ID of the user"),
      *         @OA\Property(property="name", type="string", example="John Doe", description="The name of the user")
-     *     )
+     *     ),
+     *     @OA\Property(property="created_at", type="string", format="date", example="2024-10-25", description="The date when the review was created")
      * )
      */
     public function toArray(Request $request): array
@@ -48,9 +49,8 @@ class ReviewResource extends JsonResource
             'rating' => $this->rating,
             'comment' => $this->comment ? [
                 'id' => $this->comment->id,
-                'title' => $this->comment->title ?? null,
-                'text' => $this->comment->text ?? null,
-                'image' => $this->comment->image ?? null,
+                'title' => $this->comment->title,
+                'text' => $this->comment->text,
             ] : null,
             'product' => [
                 'id' => $this->product->id,

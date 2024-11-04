@@ -36,15 +36,6 @@ class CartService
      *     tags={"Carts"},
      *     security={{"bearerAuth": {}}},
      *
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="ID of the cart to retrieve",
-     *
-     *         @OA\Schema(type="integer", example=1)
-     *     ),
-     *
      *     @OA\Response(
      *         response=200,
      *         description="Successful response",
@@ -69,9 +60,9 @@ class CartService
      *     )
      * )
      */
-    public function getCartById(Cart $cart)
+    public function getCartById()
     {
-        $this->checkOwnership($cart, 'Cart', 'show');
+        $cart = Cart::where('user_id', auth()->id())->first();
         $data = ['Cart' => CartResource::make($cart)];
 
         return ResponseHelper::jsonResponse($data, 'Cart retrieved successfully!');
@@ -160,24 +151,6 @@ class CartService
      *     tags={"Carts"},
      *     security={{"bearerAuth": {}}},
      *
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *     description="Cart ID you want to update it",
-     *
-     *         @OA\Schema(type="integer", example=1)
-     *     ),
-     *
-     *     @OA\Parameter(
-     *         name="user_id",
-     *         in="query",
-     *         required=false,
-     *     description="User ID",
-     *
-     *         @OA\Schema(type="integer", example=1)
-     *     ),
-     *
      *     @OA\Header(
      *         header="Content-Type",
      *         description="Content-Type header",
@@ -255,9 +228,10 @@ class CartService
      *     )
      * )
      */
-    public function updateCart(Cart $cart)
+    public function updateCart()
     {
         try {
+            $cart = Cart::where('user_id', auth()->id())->first();
             $this->checkOwnership($cart, 'Cart', 'update');
             $cart = $this->cartRepository->update($cart);
             $data = [
@@ -278,15 +252,6 @@ class CartService
      *     summary="Delete a Cart",
      *     tags={"Carts"},
      *     security={{"bearerAuth": {} }},
-     *
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *     description="Cart ID you want to delete it",
-     *
-     *          @OA\Schema(type="integer", example=1)
-     *     ),
      *
      *     @OA\Response(
      *         response=200,
@@ -325,9 +290,10 @@ class CartService
      *     )
      * )
      */
-    public function deleteCart(Cart $cart)
+    public function deleteCart()
     {
         try {
+            $cart = Cart::where('user_id', auth()->id())->first();
             $this->checkOwnership($cart, 'Cart', 'delete');
             $this->cartRepository->delete($cart);
             $response = ResponseHelper::jsonResponse([], 'Cart deleted successfully!');

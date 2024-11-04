@@ -456,7 +456,7 @@ class Cart_Items_Service
     public function updateCart_items(Cart_items $cart_item, array $data)
     {
         try {
-            $this->validate_Cart_items_Data($data, 'sometimes', 0);
+            $this->validate_Cart_items_Data($data, 'sometimes');
             $cart = Cart::where('id', $cart_item->cart_id)->first();
             $this->checkOwnership($cart, 'Cart_items', 'update');
             $warehouse_id = $data['warehouse_id'] ?? $cart_item->warehouse->id;
@@ -539,10 +539,10 @@ class Cart_Items_Service
         return $response;
     }
 
-    protected function validate_Cart_items_Data(array $data, $rule = 'required', $limit = 1)
+    protected function validate_Cart_items_Data(array $data, $rule = 'required')
     {
         $validator = Validator::make($data, [
-            'quantity' => "$rule|numeric|min:$limit",
+            'quantity' => "$rule",
             'warehouse_id' => "$rule|exists:warehouses,id",
         ]);
 

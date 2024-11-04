@@ -86,12 +86,13 @@ Route::middleware('api')->group(function () {
         Route::get('/my/order/{column}/{direction}', 'MyImagesOrderBy');
         Route::get('/my/random', 'MyImages');
         Route::post('/search', 'searchByFilters');
+        Route::post('/update/{image}', 'update');
     });
     Route::prefix('carts')->controller(CartController::class)->group(function () {
-        Route::get('/{cart}', 'show');
+        Route::get('/', 'show');
         Route::post('/', 'store');
-        Route::put('/{cart}', 'update');
-        Route::delete('/{cart}', 'destroy');
+        Route::put('/', 'update');
+        Route::delete('/', 'destroy');
     });
     Route::prefix('cart_items')->controller(CartItemsController::class)->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');

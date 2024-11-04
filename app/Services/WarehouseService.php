@@ -482,7 +482,7 @@ class WarehouseService
             ]);
         }
         try {
-            $this->validateWarehouseData($data, $warehouse, 'sometimes', 0);
+            $this->validateWarehouseData($data);
             $product = $warehouse->product;
             $this->checkOwnership($product, 'Warehouse', 'update');
 
@@ -559,11 +559,11 @@ class WarehouseService
         return $response;
     }
 
-    protected function validateWarehouseData(array $data, $warehouse = null, $rule = 'required', $limit = 1)
+    protected function validateWarehouseData(array $data, $rule = 'requied')
     {
         $validator = Validator::make($data, [
-            'amount' => "$rule|numeric|min:$limit",
-            'expiry_date' => "$rule|date|after_or_equal:payment_date",
+            'amount' => "$rule",
+            'expiry_date' => "$rule",
             'product_id' => "$rule|exists:products,id",
         ]);
 
