@@ -559,7 +559,7 @@ class WarehouseService
         return $response;
     }
 
-    protected function validateWarehouseData(array $data, $rule = 'requied')
+    protected function validateWarehouseData(array $data, $rule = 'required')
     {
         $validator = Validator::make($data, [
             'amount' => "$rule",
