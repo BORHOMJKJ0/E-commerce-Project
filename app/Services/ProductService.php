@@ -300,14 +300,18 @@ class ProductService
      *     )
      * )
      */
-    public function createProduct(array $data): Product
+    public function createProduct(array $data): JsonResponse
     {
         $data['user_id'] = auth()->id();
         $this->validateProductData($data);
         $product = $this->productRepository->create($data);
 
         // $this->fcmService->notifyUsers($product);
-        return $product;
+        $data = [
+            'Product' => ProductResource::make($product),
+        ];
+
+        return ResponseHelper::jsonResponse($data, 'Product created successfully!', 201);
     }
 
     /**
