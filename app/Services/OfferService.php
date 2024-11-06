@@ -310,11 +310,16 @@ class OfferService
                 ->get();
             $this->checkDiscount($data['discount_percentage'], $data['start_date'], $existingOffers);
 
-            return $this->offerRepository->create($data);
-
+            $offer = $this->offerRepository->create($data);
+            $data = [
+                'Offer' => OfferResource::make($offer),
+            ];
+            $response = ResponseHelper::jsonResponse($data, 'Offer created successfully!', 201);
         } catch (HttpResponseException $e) {
             return $e->getResponse();
         }
+
+        return $response;
     }
 
     /**
@@ -643,6 +648,8 @@ class OfferService
             $discount = $data['discount_percentage'] ?? $offer->discount_percentage;
 
             $this->checkDate($data, 'start_date', 'now');
+            $this->checkDate($data, 'end_date', 'now');
+
             $this->checkOfferDates($offer, 'update');
             $this->checkOfferEndDate($warehouse->expiry_date, $offer->end_date, $endDate);
 
@@ -727,11 +734,18 @@ class OfferService
     protected function validateOfferData(array $data, $rule = 'required')
     {
         $warehouse = Warehouse::findOrFail($data['warehouse_id']);
+
+        $formattedExpiryDate = $warehouse->expiry_date->format('Y-m-d');
+
         $validator = Validator::make($data, [
             'discount_percentage' => "$rule|numeric|between:0,100",
             'start_date' => "$rule|date",
-            'end_date' => "$rule|date|after:start_date|before_or_equal: $warehouse->expiry_date",
+            'end_date' => "$rule|date|after:start_date|before_or_equal:$formattedExpiryDate",
             'warehouse_id' => "$rule|exists:warehouses,id",
+        ]);
+
+        $validator->setCustomMessages([
+            'end_date.before_or_equal' => "The end date field must be a date before or equal to {$formattedExpiryDate}.",
         ]);
 
         if ($validator->fails()) {

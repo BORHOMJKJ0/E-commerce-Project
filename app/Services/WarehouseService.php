@@ -275,8 +275,10 @@ class WarehouseService
             $this->checkOwnership($product, 'Warehouse', 'create');
             $this->checkDate($data, 'expiry_date', 'future');
             $warehouse = $this->warehouseRepository->create($data);
-
-            return $warehouse;
+            $data = [
+                'Warehouse' => WarehouseResource::make($warehouse),
+            ];
+            $response = ResponseHelper::jsonResponse($data, 'Warehouse created successfully!', 201);
         } catch (HttpResponseException $e) {
             $response = $e->getResponse();
         }
@@ -482,7 +484,7 @@ class WarehouseService
             ]);
         }
         try {
-            $this->validateWarehouseData($data);
+            $this->validateWarehouseData($data, 'sometimes');
             $product = $warehouse->product;
             $this->checkOwnership($product, 'Warehouse', 'update');
 

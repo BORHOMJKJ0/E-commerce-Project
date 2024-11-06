@@ -4421,7 +4421,7 @@
                             "schema": {
                                 "properties": {
                                     "image": {
-                                        "description": "New image file",
+                                        "description": "Product Image",
                                         "type": "string",
                                         "format": "binary"
                                     },
@@ -4431,7 +4431,7 @@
                                         "example": false
                                     },
                                     "product_id": {
-                                        "description": "ID of the product the image belongs to",
+                                        "description": "Product ID that image belongs to",
                                         "type": "integer",
                                         "example": 1
                                     }
@@ -4458,46 +4458,46 @@
                                             "type": "string"
                                         },
                                         "main": {
-                                            "description": "Main image indicator",
+                                            "description": "Whether the image is the main image for the product",
                                             "type": "boolean",
                                             "example": false
                                         },
                                         "product_id": {
-                                            "description": "Product ID",
+                                            "description": "The ID of the product the image belongs to",
                                             "type": "integer",
                                             "example": 2
                                         },
                                         "product": {
-                                            "description": "Product details",
+                                            "description": "Product details associated with the image",
                                             "properties": {
                                                 "id": {
-                                                    "description": "Product ID",
+                                                    "description": "The ID of the product",
                                                     "type": "integer",
                                                     "example": 2
                                                 },
                                                 "name": {
-                                                    "description": "Product name",
+                                                    "description": "The name of the product",
                                                     "type": "string",
                                                     "example": "meat"
                                                 },
                                                 "price": {
-                                                    "description": "Product price",
+                                                    "description": "The price of the product",
                                                     "type": "number",
                                                     "format": "float",
                                                     "example": 200
                                                 },
                                                 "description": {
-                                                    "description": "Product description",
+                                                    "description": "The description of the product",
                                                     "type": "string",
                                                     "example": "This is a great product"
                                                 },
                                                 "category": {
-                                                    "description": "Product category",
+                                                    "description": "The category of the product",
                                                     "type": "string",
                                                     "example": "hakunamatata"
                                                 },
                                                 "user": {
-                                                    "description": "Owner name",
+                                                    "description": "The owner of the product",
                                                     "type": "string",
                                                     "example": "Muhammad Aydi"
                                                 }
@@ -4527,14 +4527,14 @@
                         }
                     },
                     "403": {
-                        "description": "Forbidden error",
+                        "description": "forbidden error",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "error": {
                                             "type": "string",
-                                            "example": "Cannot update Image with associated products."
+                                            "example": "You cannot update Image with associated products."
                                         }
                                     },
                                     "type": "object"
@@ -4551,22 +4551,6 @@
                                         "error": {
                                             "type": "string",
                                             "example": "Image not found"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "304": {
-                        "description": "No update made",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "No changes were detected, image not updated."
                                         }
                                     },
                                     "type": "object"

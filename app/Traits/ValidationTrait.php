@@ -40,6 +40,18 @@ trait ValidationTrait
                 "The {$name} must be in the future.",
                 400, false));
         }
+        if ($name === 'end_date' && isset($data['start_date'])) {
+            $startDate = Carbon::parse($data['start_date']);
+            if ($startDate->gte($dateTime)) {
+                throw new HttpResponseException(ResponseHelper::jsonResponse(
+                    [],
+                    "The {$name} must be after {$startDate->toDateString()}.",
+                    400,
+                    false
+                ));
+            }
+        }
+
     }
 
     public function checkOfferEndDate($expiryDate, $end_date, ?string $offer_end = null)
