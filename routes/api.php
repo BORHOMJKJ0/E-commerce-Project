@@ -14,6 +14,7 @@ use App\Http\Controllers\Contact\ContactTypeController;
 use App\Http\Controllers\Expression\ExpressionController;
 use App\Http\Controllers\Image\ImageController;
 use App\Http\Controllers\Offer\OfferController;
+use App\Http\Controllers\OrderItemsController;
 use App\Http\Controllers\Product\FavoriteProductController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Review\ReviewController;
@@ -98,6 +99,10 @@ Route::middleware('api')->group(function () {
         Route::get('/order/{column}/{direction}', 'orderBy');
         Route::post('/search', 'searchByFilters');
     });
+    Route::prefix('order_items')->controller(OrderItemsController::class)->group(function () {
+        Route::get('place', 'placeOrder');
+    });
+
 });
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

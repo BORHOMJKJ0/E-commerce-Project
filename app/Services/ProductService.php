@@ -780,7 +780,7 @@ class ProductService
                 'category_id' => $category_id,
             ]);
 
-            $this->processProductImages($request->input('images'), $product->id);
+            //$this->processProductImages($request->input('images'), $product->id);
 
             $this->processWarehousesAndOffers($request->input('warehouse'), $product->id);
 
@@ -795,7 +795,7 @@ class ProductService
             'product_name' => 'required',
             'product_description' => 'required',
             'product_price' => 'required|numeric',
-            'images' => 'required|array',
+            //'images' => 'required|array',
             'warehouse' => 'required|array',
             'warehouse.*.offers' => 'required|array',
         ]);
@@ -862,8 +862,9 @@ class ProductService
 
             $offerResult = $this->offerService->createOffer($offerData);
 
+            //check if there is any error in creation
             if ($offerResult instanceof JsonResponse) {
-                return $offerResult;
+                throw new \Exception('Offer creation failed.');
             }
         }
 

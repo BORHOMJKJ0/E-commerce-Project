@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Prunable;
-use OpenApi\Annotations as OA;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * @OA\Schema(
@@ -45,6 +45,11 @@ class Warehouse extends Model
     {
         return $this->belongsToMany(Cart_items::class)
             ->withPivot('quantity');
+    }
+
+    public function order_items(): BelongsToMany
+    {
+        return $this->belongsToMany(Order_items::class);
     }
 
     public function prunable()

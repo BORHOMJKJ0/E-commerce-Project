@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class CartItemsController extends Controller
 {
-    protected $cart_items_items_Service;
+    protected Cart_Items_Service $cart_items_Service;
 
     public function __construct(Cart_Items_Service $cart_items_items_Service)
     {
