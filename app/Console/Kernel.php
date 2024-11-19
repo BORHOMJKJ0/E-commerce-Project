@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Models\Offer;
+use App\Models\Order_item;
 use App\Models\Product;
 use App\Models\Warehouse;
 use Illuminate\Console\Scheduling\Schedule;
@@ -15,7 +16,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('app:delete-expired-otps')->everyMinute();
         $schedule->command('app:check-email-verification')->everyMinute();
         $schedule->command('model:prune', [
-            '--model' => [Offer::class, Product::class, Warehouse::class],
+            '--model' => [Offer::class, Product::class, Warehouse::class, Order_item::class],
         ])->hourly();
         $schedule->command('queue:work')->everyMinute();
     }

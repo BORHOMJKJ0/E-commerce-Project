@@ -49,7 +49,7 @@ class Warehouse extends Model
 
     public function order_items(): BelongsToMany
     {
-        return $this->belongsToMany(Order_items::class);
+        return $this->belongsToMany(Order_item::class);
     }
 
     public function prunable()

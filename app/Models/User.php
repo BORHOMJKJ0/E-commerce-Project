@@ -26,7 +26,6 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
-
     protected $dateFormat = 'Y-m-d H:i:s';
 
     protected $guarded = [];

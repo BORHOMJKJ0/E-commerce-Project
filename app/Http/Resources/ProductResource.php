@@ -155,7 +155,6 @@ class ProductResource extends JsonResource
             $data['ratings_count'] = $ratingsCount;
             $data['images'] = $this->images->map(function ($image) {
                 $imageUrl = config('app.url').'/storage/'.$image->image;
-
                 return [
                     'id' => $image->id,
                     'image' => $imageUrl,

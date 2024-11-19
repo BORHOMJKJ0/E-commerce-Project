@@ -14,6 +14,7 @@ use App\Http\Controllers\Contact\ContactTypeController;
 use App\Http\Controllers\Expression\ExpressionController;
 use App\Http\Controllers\Image\ImageController;
 use App\Http\Controllers\Offer\OfferController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderItemsController;
 use App\Http\Controllers\Product\FavoriteProductController;
 use App\Http\Controllers\Product\ProductController;
@@ -101,8 +102,14 @@ Route::middleware('api')->group(function () {
     });
     Route::prefix('order_items')->controller(OrderItemsController::class)->group(function () {
         Route::get('place', 'placeOrder');
+        Route::get('myOrder', 'myOrderItems');
     });
-
+    Route::prefix('orders')->controller(OrderController::class)->group(function () {
+        Route::delete('delete/{order}', 'delete')->missing(function () {
+            return ResponseHelper::jsonResponse([], 'Order Not Found', 404, false);
+        });
+        Route::get('myOrders', 'myOrders');
+    });
 });
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

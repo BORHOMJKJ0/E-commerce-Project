@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Order_items extends Model
+class Order_item extends Model
 {
-    use HasFactory;
+    use HasFactory,Prunable;
 
     protected $table = 'order_items';
 
@@ -23,5 +24,10 @@ class Order_items extends Model
     {
         return $this->belongsTo(Order::class);
     }
-
+    public function prunable()
+    {
+        return static::whereHas('warehouse', function ($query) {
+            $query->where('expiry_date', '<', now());
+        });
+    }
 }
